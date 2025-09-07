@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>$ETRX Presale • Etheria</title>
+  <meta name="description" content="$ETRX — the official utility token of Etheria. Presale coming soon on Ethereum." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind via CDN for fast iteration -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--bg:#0a0f19;--ink:#ffffff;--cyan:#59d1ff;--blue:#4a7dff;--orange:#ff7a3d}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    .etherian-glow{background:
+      radial-gradient(60% 40% at 50% 0%, rgba(89,209,255,.22), transparent 60%),
+      radial-gradient(40% 30% at 85% 15%, rgba(255,122,61,.16), transparent 65%),
+      radial-gradient(35% 25% at 20% 10%, rgba(74,125,255,.14), transparent 65%)}
+    .card{backdrop-filter: blur(6px)}
+  </style>
+</head>
+<body>
+  <!-- HERO -->
+  <div class="relative etherian-glow">
+    <header class="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 shadow-lg shadow-cyan-500/30 ring-1 ring-cyan-300/40"></div>
+        <div class="text-sm sm:text-base tracking-wide opacity-90">Etheria</div>
+      </div>
+      <nav class="hidden gap-6 text-sm opacity-80 md:flex">
+        <a class="hover:opacity-100" href="#about">About</a>
+        <a class="hover:opacity-100" href="#token">Tokenomics</a>
+        <a class="hover:opacity-100" href="#faq">FAQ</a>
+      </nav>
+      <a href="#notify" class="rounded-2xl border border-white/15 bg-white/5 px-4 py-2 text-sm hover:bg-white/10">Get Notified</a>
+    </header>
+
+    <section class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-16 pt-8 md:grid-cols-2 md:pt-16">
+      <div>
+        <h1 class="text-4xl font-extrabold leading-tight md:text-6xl">The Official Token of Etheria
+          <br/><span class="bg-gradient-to-r from-cyan-300 to-blue-500 bg-clip-text text-transparent">$ETRX Presale</span></h1>
+        <p class="mt-4 max-w-prose text-white/80">Powering realms, artifacts, marketplace perks, governance and community rewards — built on Ethereum.</p>
+
+        <!-- COUNTDOWN -->
+        <div class="mt-8">
+          <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-widest text-white/60">Presale starts in</div>
+          <div class="flex gap-3 text-center" id="countdown">
+            <!-- boxes injected by JS -->
+          </div>
+        </div>
+
+        <ul class="mt-8 grid grid-cols-2 gap-3 text-sm text-white/90 sm:text-base">
+          <li class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">Supply: <b>10,000,000</b></li>
+          <li class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">Network: <b>Ethereum</b></li>
+          <li class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">Symbol: <b>ETRX</b></li>
+          <li class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">Presale: <b>Coming Soon</b></li>
+        </ul>
+      </div>
+
+      <!-- BUY CARD (disabled until contract is set) -->
+      <div class="card rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-cyan-500/10">
+        <h3 class="text-xl font-semibold">Join the Presale</h3>
+        <p class="mt-1 text-sm text-white/70">Connect later to purchase when live. This demo site is safe to publish now — no contract required.</p>
+
+        <form class="mt-6 space-y-4" onsubmit="event.preventDefault()">
+          <label class="block text-sm text-white/80">Amount (ETH)</label>
+          <input type="number" min="0.01" step="0.01" value="0.10"
+                 class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 font-mono outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"
+                 placeholder="0.10"/>
+          <button id="buyBtn" disabled
+                  class="w-full cursor-not-allowed rounded-2xl bg-white/10 px-4 py-3 text-center text-sm font-semibold text-white/40">
+            Coming Soon — Contract Pending
+          </button>
+          <p class="text-xs text-white/50">When $ETRX presale is live, this button will let you connect a wallet and buy directly from the smart contract.</p>
+        </form>
+
+        <div class="mt-6 grid grid-cols-2 gap-3 text-xs text-white/70">
+          <div class="rounded-2xl bg-[#0b1221] p-3 ring-1 ring-white/10">Governance & utility across Etheria</div>
+          <div class="rounded-2xl bg-[#0b1221] p-3 ring-1 ring-white/10">Discounts on mints & marketplace perks</div>
+          <div class="rounded-2xl bg-[#0b1221] p-3 ring-1 ring-white/10">Airdrops & staking rewards</div>
+          <div class="rounded-2xl bg-[#0b1221] p-3 ring-1 ring-white/10">Future bridge support</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about" class="mx-auto max-w-6xl px-6 py-16">
+    <h2 class="text-2xl font-bold">What is $ETRX?</h2>
+    <p class="mt-3 max-w-3xl text-white/80">$ETRX is the utility token of Etheria — used to unlock rare Realms & Artifacts, vote on lore and direction, access exclusive drops, and power the Etherian marketplace. Holders may receive airdrops and in‑world benefits as the universe expands.</p>
+  </section>
+
+  <!-- TOKENOMICS -->
+  <section id="token" class="mx-auto max-w-6xl px-6 pb-16">
+    <h2 class="text-2xl font-bold">Tokenomics (Draft)</h2>
+    <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Community</b><br/><span class="text-white/70">40% — rewards, airdrops, staking</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Treasury</b><br/><span class="text-white/70">20% — growth & partnerships</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Liquidity</b><br/><span class="text-white/70">15% — DEX/CEX listings</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Team & Mods</b><br/><span class="text-white/70">15% — Caifu, Cheetah, contributors</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Advisors</b><br/><span class="text-white/70">5% — ambassadors & marketing</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Reserve</b><br/><span class="text-white/70">5% — burns & expansions</span></div>
+    </div>
+  </section>
+
+  <!-- NOTIFY / EMAIL -->
+  <section id="notify" class="mx-auto max-w-6xl px-6 pb-20">
+    <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
+      <h3 class="text-xl font-semibold">Get notified when the presale opens</h3>
+      <form class="mt-4 flex flex-col gap-3 sm:flex-row" action="https://formspree.io/f/your-id" method="POST">
+        <input required name="email" type="email" placeholder="you@example.com" class="flex-1 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400" />
+        <button class="rounded-2xl bg-cyan-500/90 px-5 py-3 font-semibold text-black hover:bg-cyan-400" type="submit">Notify Me</button>
+      </form>
+      <p class="mt-2 text-xs text-white/60">We’ll only email you about $ETRX presale timing. Unsubscribe anytime.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="mx-auto max-w-6xl px-6 pb-24">
+    <h2 class="text-2xl font-bold">FAQ</h2>
+    <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Do I need ETH now?</b><br/><span class="text-white/70">No. This site is for announcements and whitelisting until the smart contracts are deployed.</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>How will buying work?</b><br/><span class="text-white/70">When live, you’ll connect MetaMask and buy directly from the presale contract. Your ETRX will be delivered to your wallet.</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>What chains are supported?</b><br/><span class="text-white/70">Launching on Ethereum. Future bridge support is planned.</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Is there a whitelist?</b><br/><span class="text-white/70">Join the email list above. Early Etherian holders may receive priority.</span></div>
+    </div>
+  </section>
+
+  <footer class="border-t border-white/10 py-10">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-sm text-white/60 md:flex-row">
+      <div>© <span id="year"></span> Etheria • $ETRX</div>
+      <div class="flex items-center gap-4">
+        <a href="https://twitter.com/enteretheria" target="_blank" class="hover:text-white">Twitter</a>
+        <a href="#" class="hover:text-white">Telegram</a>
+        <a href="#" class="hover:text-white">Mirror</a>
+        <a href="#" class="hover:text-white">OpenSea</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ===== CONFIG YOU CAN EDIT LATER =====
+    const PRESALE_START = new Date(Date.now() + 1000 * 60 * 60 * 24 * 3); // +3 days (demo)
+    const PRESALE_END   = new Date(Date.now() + 1000 * 60 * 60 * 24 * 10); // +10 days (demo)
+
+    const phaseLabel = document.getElementById('phaseLabel');
+    const countdown  = document.getElementById('countdown');
+    const yearEl     = document.getElementById('year');
+    yearEl.textContent = new Date().getFullYear();
+
+    function box(v,label){
+      const d=document.createElement('div');
+      d.className='w-20 rounded-2xl bg-white/5 p-3 ring-1 ring-white/10';
+      d.innerHTML=`<div class="text-3xl font-bold">${v}</div><div class="text-xs uppercase text-white/60">${label}</div>`;
+      return d;
+    }
+
+    function tick(){
+      const now = new Date();
+      let phase = 'live';
+      if (now < PRESALE_START) phase = 'upcoming';
+      if (now > PRESALE_END) phase = 'ended';
+
+      phaseLabel.textContent = phase==='upcoming' ? 'Presale starts in' : phase==='live' ? 'Presale ends in' : 'Presale has ended';
+
+      const target = phase==='upcoming' ? PRESALE_START : PRESALE_END;
+      const diff = Math.max(0, target.getTime() - now.getTime());
+      const s = Math.floor(diff/1000);
+      const d = Math.floor(s/86400);
+      const h = Math.floor((s%86400)/3600);
+      const m = Math.floor((s%3600)/60);
+      const ss = s%60;
+
+      countdown.replaceChildren(box(d,'d'), box(h,'h'), box(m,'m'), box(ss,'s'));
+    }
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
