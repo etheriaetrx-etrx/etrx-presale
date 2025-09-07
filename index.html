@@ -5,10 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>$ETRX • Etheria Presale</title>
   <meta name="description" content="$ETRX — the official utility token of Etheria. Presale soon on Ethereum."/>
+  <!-- cache-busting so updates show immediately -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com?v=2"></script>
   <style>
     :root{--bg:#0a0f19;--ink:#ffffff}
     body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
@@ -43,7 +48,7 @@
     <div class="order-2 md:order-1">
       <h1 class="text-4xl font-extrabold leading-tight md:text-6xl">
         The Official Token of Etheria
-        <br/><span class="bg-gradient-to-r from-cyan-300 to-blue-500 bg-clip-text text-transparent">$ETRX Presale</span>
+        <br/><span class="bg-gradient-to-r from-cyan-300 to-blue-500 bg-clip-text text-transparent">$ETRX Launch</span>
       </h1>
       <p class="mt-4 max-w-prose text-white/80">
         Powering realms, artifacts, governance and community rewards. Built on Ethereum for permanence and reach.
@@ -51,8 +56,9 @@
 
       <!-- Countdown -->
       <div class="mt-8">
-        <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-widest text-white/60">Presale starts in</div>
+        <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-widest text-white/60">Launch begins in</div>
         <div class="flex gap-3 text-center" id="countdown"></div>
+        <div class="mt-2 text-xs text-white/50" id="whenText"></div>
       </div>
 
       <!-- Stats -->
@@ -60,7 +66,7 @@
         <li class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">Supply: <b>10,000,000</b></li>
         <li class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">Network: <b>Ethereum</b></li>
         <li class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">Symbol: <b>ETRX</b></li>
-        <li class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">Presale: <b>Coming Soon</b></li>
+        <li class="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10">Launch: <b>Oct 31, 2025</b></li>
       </ul>
     </div>
 
@@ -82,12 +88,12 @@
     </div>
   </section>
 
-  <!-- Presale card -->
+  <!-- Presale/Buy card -->
   <section class="mx-auto max-w-6xl px-6">
     <div class="card rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-cyan-500/10">
-      <h3 class="text-xl font-semibold">Join the Presale</h3>
+      <h3 class="text-xl font-semibold">Join the Launch</h3>
       <p class="mt-1 text-sm text-white/70">
-        Connect later to purchase when live. This page is safe to host now — no contracts required yet.
+        Wallet connect and purchase flow will unlock once contracts are live.
       </p>
       <form class="mt-6 space-y-4" onsubmit="event.preventDefault()">
         <label class="block text-sm text-white/80">Amount (ETH)</label>
@@ -99,7 +105,7 @@
           Coming Soon — Contract Pending
         </button>
         <p class="text-xs text-white/50">
-          When $ETRX presale is live, this button will connect with MetaMask and buy directly from the presale contract.
+          When live, this button will connect with MetaMask and buy directly from the launch contract.
         </p>
       </form>
       <div class="mt-6 grid grid-cols-2 gap-3 text-xs text-white/70">
@@ -134,28 +140,28 @@
     </div>
   </section>
 
-  <!-- Road to Mainnet -->
+  <!-- Road -->
   <section id="road" class="mx-auto max-w-6xl px-6 py-16">
     <h2 class="text-2xl font-bold">Road to Mainnet</h2>
     <ol class="mt-5 space-y-3 text-white/80">
-      <li>1) Presale site live, whitelist open</li>
+      <li>1) Launch site & whitelist open</li>
       <li>2) Community reveal + partnerships</li>
       <li>3) $ETRX token deploy on Ethereum</li>
-      <li>4) Presale contract live + claim page</li>
-      <li>5) Listing + liquidity + cross-chain bridge planning</li>
+      <li>4) Launch contract live + claim page</li>
+      <li>5) Listing + liquidity + bridge planning</li>
     </ol>
   </section>
 
   <!-- Notify -->
   <section id="notify" class="mx-auto max-w-6xl px-6 pb-20">
     <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
-      <h3 class="text-xl font-semibold">Get notified when the presale opens</h3>
+      <h3 class="text-xl font-semibold">Get notified when the launch opens</h3>
       <form class="mt-4 flex flex-col gap-3 sm:flex-row" action="https://formspree.io/f/your-id" method="POST">
         <input required name="email" type="email" placeholder="you@example.com"
                class="flex-1 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"/>
         <button class="rounded-2xl bg-cyan-500/90 px-5 py-3 font-semibold text-black hover:bg-cyan-400" type="submit">Notify Me</button>
       </form>
-      <p class="mt-2 text-xs text-white/60">We’ll only email you about $ETRX presale timing. Unsubscribe anytime.</p>
+      <p class="mt-2 text-xs text-white/60">We’ll only email you about $ETRX timing. Unsubscribe anytime.</p>
     </div>
   </section>
 
@@ -164,7 +170,7 @@
     <h2 class="text-2xl font-bold">FAQ</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
       <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Do I need ETH now?</b><br/><span class="text-white/70">No. This site is for announcements and whitelisting until smart contracts are deployed.</span></div>
-      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>How will buying work?</b><br/><span class="text-white/70">When live, you’ll connect MetaMask and buy directly from the presale contract. ETRX will be delivered to your wallet.</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>How will buying work?</b><br/><span class="text-white/70">When live, you’ll connect MetaMask and buy directly from the launch contract. ETRX will be delivered to your wallet.</span></div>
       <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>What chains are supported?</b><br/><span class="text-white/70">Launching on Ethereum. Future bridge support is planned.</span></div>
       <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Is there a whitelist?</b><br/><span class="text-white/70">Join the email list above. Early Etherian holders may receive priority.</span></div>
     </div>
@@ -184,36 +190,56 @@
   </footer>
 
   <script>
-    // Demo countdown (edit these when you have dates)
-    const PRESALE_START = new Date(Date.now() + 1000*60*60*24*3);
-    const PRESALE_END   = new Date(Date.now() + 1000*60*60*24*10);
+    // ==== FIXED LAUNCH WINDOW (UTC) ====
+    // Launch starts: Oct 31, 2025 00:00:00 UTC
+    // Launch ends:   Nov 05, 2025 00:00:00 UTC (adjust as you wish)
+    const PRESALE_START = new Date('2025-10-31T00:00:00Z');
+    const PRESALE_END   = new Date('2025-11-07T00:00:00Z');
 
     const phaseLabel = document.getElementById('phaseLabel');
     const countdown  = document.getElementById('countdown');
+    const whenText   = document.getElementById('whenText');
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Helper for the little “Launch: … UTC / local time …” line
+    const fmtUTC = (d)=> d.toUTCString().replace(' GMT',' UTC');
+    const fmtLoc = (d)=> d.toLocaleString([], {year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+    whenText.textContent = `Launch: ${fmtUTC(PRESALE_START)} • Local: ${fmtLoc(PRESALE_START)}`;
 
     function box(v,label){
       const d=document.createElement('div');
       d.className='w-20 rounded-2xl bg-white/5 p-3 ring-1 ring-white/10';
-      d.innerHTML=`<div class="text-3xl font-bold">${v}</div><div class="text-xs uppercase text-white/60">${label}</div>`;
+      d.innerHTML=`<div class="text-3xl font-bold">${String(v).padStart(2,'0')}</div>
+                   <div class="text-xs uppercase text-white/60">${label}</div>`;
       return d;
     }
+
     function tick(){
       const now = new Date();
       let phase = 'live';
       if (now < PRESALE_START) phase = 'upcoming';
-      if (now > PRESALE_END) phase = 'ended';
-      phaseLabel.textContent = phase==='upcoming' ? 'Presale starts in' : phase==='live' ? 'Presale ends in' : 'Presale has ended';
-      const target = phase==='upcoming' ? PRESALE_START : PRESALE_END;
+      if (now > PRESALE_END)   phase = 'ended';
+
+      phaseLabel.textContent =
+        phase==='upcoming' ? 'Launch begins in' :
+        phase==='live'     ? 'Launch ends in'   :
+                             'Launch has ended';
+
+      const target = phase==='upcoming' ? PRESALE_START :
+                     phase==='live'     ? PRESALE_END   : now;
+
       const diff = Math.max(0, target.getTime() - now.getTime());
-      const s = Math.floor(diff/1000);
-      const d = Math.floor(s/86400);
-      const h = Math.floor((s%86400)/3600);
-      const m = Math.floor((s%3600)/60);
+      const s  = Math.floor(diff/1000);
+      const d  = Math.floor(s/86400);
+      const h  = Math.floor((s%86400)/3600);
+      const m  = Math.floor((s%3600)/60);
       const ss = s%60;
+
       countdown.replaceChildren(box(d,'d'), box(h,'h'), box(m,'m'), box(ss,'s'));
     }
-    tick(); setInterval(tick, 1000);
+
+    tick();
+    setInterval(tick, 1000);
   </script>
 </body>
 </html>
