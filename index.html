@@ -11,18 +11,52 @@
   <meta http-equiv="Pragma" content="no-cache"/>
   <meta http-equiv="Expires" content="0"/>
 
+  <!-- SEO / Social -->
+  <link rel="canonical" href="https://etheriaetrx-etrx.github.io/etrx-presale/">
+  <meta property="og:title" content="$ETRX • Etheria Launch">
+  <meta property="og:description" content="The official utility token of Etheria. Launch begins Oct 31, 2025.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://etheriaetrx-etrx.github.io/etrx-presale/">
+  <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png?v=6">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@enteretheria">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <!-- Structured data: Event (launch window) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Event",
+    "name":"$ETRX • Etheria Token Launch",
+    "startDate":"2025-10-31T00:00:00Z",
+    "endDate":"2025-11-07T00:00:00Z",
+    "eventAttendanceMode":"https://schema.org/OnlineEventAttendanceMode",
+    "eventStatus":"https://schema.org/EventScheduled",
+    "image":["https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png?v=6"],
+    "description":"The official utility token of Etheria. Launch window on Ethereum.",
+    "organizer":{"@type":"Organization","name":"Etheria","url":"https://etheriaetrx-etrx.github.io/etrx-presale/"},
+    "location":{"@type":"VirtualLocation","url":"https://etheriaetrx-etrx.github.io/etrx-presale/"}
+  }
+  </script>
+
+  <!-- Basic CSP (best-effort for GH Pages) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://etheriaetrx-etrx.github.io;
+                 img-src 'self' data: https:;
+                 script-src 'self' https://cdn.tailwindcss.com 'unsafe-inline';
+                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+                 font-src https://fonts.gstatic.com;
+                 connect-src 'self';
+                 object-src 'none';
+                 base-uri 'self';
+                 frame-ancestors 'none'">
+
   <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com?v=3" defer></script>
-
-  <!-- Social -->
-  <meta property="og:title" content="$ETRX • Etheria Launch">
-  <meta property="og:description" content="The official utility token of Etheria. Launch begins Oct 31, 2025.">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png?v=6">
-  <meta name="twitter:card" content="summary_large_image">
+  <!-- Remove defer so styles are ready pre-paint -->
+  <script src="https://cdn.tailwindcss.com?v=3"></script>
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/logo.png">
@@ -63,9 +97,15 @@
     }
     .btn-primary:hover{ filter:saturate(1.05) brightness(1.05) }
 
+    /* Focus / a11y */
+    :focus-visible { outline: 2px solid var(--ether-cyan); outline-offset: 2px; }
+
     /* Background canvas behind content */
     #orbCanvas{ position:fixed; inset:0; z-index:0; pointer-events:none; filter:drop-shadow(0 0 24px rgba(34,211,238,.08)); }
     .z-10{ position:relative; z-index:10 }
+
+    /* Sticky launch bar */
+    #launchBar{ position:sticky; bottom:0; z-index:50; backdrop-filter:blur(8px) }
 
     @media (prefers-reduced-motion: reduce){
       #orbCanvas{ display:none }
@@ -75,6 +115,9 @@
 </head>
 
 <body class="etherian-bg">
+  <!-- Skip link -->
+  <a href="#about" class="sr-only focus:not-sr-only fixed left-3 top-3 z-50 rounded-lg bg-white/10 px-3 py-2 ring-1 ring-white/20">Skip to content</a>
+
   <!-- Floating orbs / starfield -->
   <canvas id="orbCanvas" aria-hidden="true"></canvas>
 
@@ -111,7 +154,12 @@
       <div class="mt-8">
         <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-widest" style="color:var(--text-dim)">Launch begins in</div>
         <div class="flex gap-3 text-center" id="countdown" aria-live="polite"></div>
-        <div class="mt-2 text-xs" id="whenText" style="color:var(--text-dim)"></div>
+
+        <div class="mt-2 flex items-center gap-3 text-xs" style="color:var(--text-dim)">
+          <span id="whenText"></span>
+          <button id="tzToggle" class="underline underline-offset-4 opacity-90 hover:opacity-100">Show times in UTC</button>
+        </div>
+
         <noscript>
           <p class="mt-2 text-xs" style="color:var(--text-dim)">Launch begins Oct 31, 2025 00:00 UTC • Ends Nov 07, 2025 00:00 UTC</p>
         </noscript>
@@ -126,16 +174,17 @@
       </ul>
     </div>
 
-    <!-- Hero image column — full height -->
+    <!-- Hero image column — fixed path (no leading slash) -->
     <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px]">
       <img
-        src="/etrx-presale/assets/Background.png?v=6"
+        src="assets/Background.png?v=6"
         alt="Etheria Background"
         width="1280" height="720"
         fetchpriority="high"
         class="h-full w-full rounded-3xl ring-1 ring-white/10 object-cover"
         loading="eager"
         decoding="async"
+        onerror="this.outerHTML='<div class=&quot;h-full w-full rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-orange-500/10 flex items-center justify-center text-white/50&quot;>Background image missing</div>'"
       />
     </div>
   </section>
@@ -163,15 +212,15 @@
     </div>
   </section>
 
-  <!-- Road -->
+  <!-- Road (card style + hover) -->
   <section id="road" class="z-10 mx-auto max-w-6xl px-6 py-16">
     <h2 class="text-2xl font-bold">Road to Mainnet</h2>
-    <ol class="mt-5 space-y-3" style="color:var(--text-muted)">
-      <li>1) Launch site &amp; whitelist open</li>
-      <li>2) Community reveal + partnerships</li>
-      <li>3) $ETRX token deploy on Ethereum</li>
-      <li>4) Launch contract live + claim page</li>
-      <li>5) Listing + liquidity + bridge planning</li>
+    <ol class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2" style="color:var(--text-muted)">
+      <li class="rounded-2xl panel ring-panel p-4 transition-transform hover:-translate-y-0.5">1) Launch site &amp; whitelist open</li>
+      <li class="rounded-2xl panel ring-panel p-4 transition-transform hover:-translate-y-0.5">2) Community reveal + partnerships</li>
+      <li class="rounded-2xl panel ring-panel p-4 transition-transform hover:-translate-y-0.5">3) $ETRX token deploy on Ethereum</li>
+      <li class="rounded-2xl panel ring-panel p-4 transition-transform hover:-translate-y-0.5">4) Launch contract live + claim page</li>
+      <li class="rounded-2xl panel ring-panel p-4 transition-transform hover:-translate-y-0.5 sm:col-span-2">5) Listing + liquidity + bridge planning</li>
     </ol>
   </section>
 
@@ -179,24 +228,54 @@
   <section id="notify" class="z-10 mx-auto max-w-6xl px-6 pb-20">
     <div class="rounded-3xl panel p-6 card">
       <h3 class="text-xl font-semibold">Get notified when the launch opens</h3>
-      <form class="mt-4 flex flex-col gap-3 sm:flex-row" action="https://formspree.io/f/your-id" method="POST">
+      <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row" action="https://formspree.io/f/your-id" method="POST">
         <label class="sr-only" for="email">Email</label>
         <input required id="email" name="email" type="email" placeholder="you@example.com"
                class="flex-1 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-[var(--ether-blue)]"/>
+        <input type="hidden" name="_redirect" value="https://etheriaetrx-etrx.github.io/etrx-presale/#notify-success">
         <button class="btn-primary rounded-2xl px-5 py-3" type="submit">Notify Me</button>
       </form>
-      <p class="mt-2 text-xs" style="color:var(--text-dim)">We’ll only email you about $ETRX timing. Unsubscribe anytime.</p>
+      <p id="notifyMsg" class="mt-2 text-xs hidden" style="color:var(--text-dim)">Thanks! We’ll email you about $ETRX timing.</p>
+      <p class="mt-1 text-xs" style="color:var(--text-dim)">We’ll only email you about $ETRX timing. Unsubscribe anytime.</p>
     </div>
   </section>
 
-  <!-- FAQ -->
+  <!-- FAQ (collapsible) -->
   <section id="faq" class="z-10 mx-auto max-w-6xl px-6 pb-24">
     <h2 class="text-2xl font-bold">FAQ</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
-      <div class="rounded-2xl panel p-5 ring-panel"><b>Do I need ETH now?</b><br/><span style="color:var(--text-dim)">No. This site is for announcements and whitelisting until smart contracts are deployed.</span></div>
-      <div class="rounded-2xl panel p-5 ring-panel"><b>How will buying work?</b><br/><span style="color:var(--text-dim)">When live, you’ll connect MetaMask and buy directly from the launch contract. ETRX will be delivered to your wallet.</span></div>
-      <div class="rounded-2xl panel p-5 ring-panel"><b>What chains are supported?</b><br/><span style="color:var(--text-dim)">Launching on Ethereum. Future bridge support is planned.</span></div>
-      <div class="rounded-2xl panel p-5 ring-panel"><b>Is there a whitelist?</b><br/><span style="color:var(--text-dim)">Join the email list above. Early Etherian holders may receive priority.</span></div>
+      <div class="rounded-2xl panel ring-panel">
+        <button class="w-full flex items-center justify-between p-5 text-left">
+          <b>Do I need ETH now?</b><span aria-hidden="true">+</span>
+        </button>
+        <div class="px-5 pb-5 hidden" style="color:var(--text-dim)">
+          No. This site is for announcements and whitelisting until smart contracts are deployed.
+        </div>
+      </div>
+      <div class="rounded-2xl panel ring-panel">
+        <button class="w-full flex items-center justify-between p-5 text-left">
+          <b>How will buying work?</b><span aria-hidden="true">+</span>
+        </button>
+        <div class="px-5 pb-5 hidden" style="color:var(--text-dim)">
+          When live, you’ll connect MetaMask and buy directly from the launch contract. ETRX will be delivered to your wallet.
+        </div>
+      </div>
+      <div class="rounded-2xl panel ring-panel">
+        <button class="w-full flex items-center justify-between p-5 text-left">
+          <b>What chains are supported?</b><span aria-hidden="true">+</span>
+        </button>
+        <div class="px-5 pb-5 hidden" style="color:var(--text-dim)">
+          Launching on Ethereum. Future bridge support is planned.
+        </div>
+      </div>
+      <div class="rounded-2xl panel ring-panel">
+        <button class="w-full flex items-center justify-between p-5 text-left">
+          <b>Is there a whitelist?</b><span aria-hidden="true">+</span>
+        </button>
+        <div class="px-5 pb-5 hidden" style="color:var(--text-dim)">
+          Join the email list above. Early Etherian holders may receive priority.
+        </div>
+      </div>
     </div>
   </section>
 
@@ -213,6 +292,12 @@
     </div>
   </footer>
 
+  <!-- Sticky Launch Bar (shows in last 14 days) -->
+  <div id="launchBar" class="hidden mx-auto max-w-6xl m-3 rounded-2xl panel ring-panel p-4 flex items-center justify-between">
+    <span class="text-sm" style="color:var(--text-muted)"><b>$ETRX</b> launches soon. Don’t miss it.</span>
+    <a href="#notify" class="btn-primary rounded-2xl px-4 py-2 text-sm">Get Notified</a>
+  </div>
+
   <script>
     // ==== FIXED LAUNCH WINDOW (UTC) ====
     const PRESALE_START = new Date('2025-10-31T00:00:00Z');
@@ -224,9 +309,27 @@
     const whenText   = $('whenText');
     $('year').textContent = new Date().getFullYear();
 
-    const fmtUTC = (d)=> d.toUTCString().replace(' GMT',' UTC');
-    const fmtLoc = (d)=> d.toLocaleString([], {year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true});
-    whenText.textContent = `Launch: ${fmtUTC(PRESALE_START)} • Local: ${fmtLoc(PRESALE_START)} — Ends: ${fmtUTC(PRESALE_END)}`;
+    // Time formatting & UTC toggle
+    let showUTC=false;
+    const tzBtn = $('tzToggle');
+    function fmt(d){
+      return showUTC
+        ? d.toUTCString().replace(' GMT',' UTC')
+        : d.toLocaleString([], {year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true});
+    }
+    function updateWhen(){
+      whenText.textContent = `Launch: ${fmt(PRESALE_START)} — Ends: ${fmt(PRESALE_END)}`;
+    }
+    tzBtn.addEventListener('click', ()=>{
+      showUTC=!showUTC;
+      tzBtn.textContent = showUTC ? 'Show times in Local' : 'Show times in UTC';
+      updateWhen();
+    });
+
+    // Better countdown accuracy (avoid drift)
+    const t0 = Date.now();
+    const p0 = performance.now();
+    const nowAccurate = ()=> new Date(t0 + (performance.now()-p0));
 
     function box(v,label){
       const d=document.createElement('div');
@@ -237,48 +340,62 @@
     }
     function phase(now){ if(now<PRESALE_START) return 'upcoming'; if(now>PRESALE_END) return 'ended'; return 'live'; }
     function tick(){
-      const now=new Date(); const ph=phase(now);
+      const now = nowAccurate(); const ph=phase(now);
       phaseLabel.textContent = ph==='upcoming'?'Launch begins in':ph==='live'?'Launch ends in':'Launch has ended';
       const target = ph==='upcoming'?PRESALE_START:ph==='live'?PRESALE_END:now;
       const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
       const d=Math.floor(s/86400), h=Math.floor((s%86400)/3600), m=Math.floor((s%3600)/60), ss=s%60;
       countdown.replaceChildren(box(d,'d'),box(h,'h'),box(m,'m'),box(ss,'s'));
     }
+    updateWhen();
     tick(); const interval=setInterval(tick,1000); addEventListener('beforeunload',()=>clearInterval(interval),{once:true});
 
-    // ==== FLOATING ORBS / STARFIELD ====
-    (function(){
-      const canvas=$('orbCanvas'), ctx=canvas.getContext('2d');
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      let w,h,dpr,stars=[],running=true;
-      function resize(){ dpr=Math.min(devicePixelRatio||1,2); w=canvas.width=Math.floor(innerWidth*dpr); h=canvas.height=Math.floor(innerHeight*dpr); canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px'; init(); }
-      function rand(a,b){ return a+Math.random()*(b-a) }
-      function makeStar(depth=1){
-        const r=rand(.6,1.8)*(4-depth)*dpr*.4, speed=rand(.03,.12)*(4-depth)*dpr, x=rand(0,w), y=rand(0,h);
-        const hue=Math.random()<.55?205:24, sat=95, light=hue===205?70:62, alphaBase=rand(.35,.75), twinkleAmp=rand(.2,.6), twinkleSpd=rand(.002,.006), dir=Math.random()<.5?-1:1;
-        return {x,y,r,speed,depth,hue,sat,light,alphaBase,twinkleAmp,twinkleSpd,dir,t:rand(0,Math.PI*2)};
-      }
-      function init(){ const density=Math.round((innerWidth*innerHeight)/18000); stars=[]; for(let i=0;i<density;i++) stars.push(makeStar(i%3+1)); }
-      function draw(s){
-        s.t+=s.twinkleSpd; const a=s.alphaBase+Math.sin(s.t)*s.twinkleAmp*.25;
-        const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4);
-        g.addColorStop(0,`hsla(${s.hue} ${s.sat}% ${s.light}% / ${a})`);
-        g.addColorStop(1,`hsla(${s.hue} ${s.sat}% 10% / 0)`);
-        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(s.x,s.y,s.r*4,0,Math.PI*2); ctx.fill();
-        ctx.fillStyle=`hsla(${s.hue} ${s.sat}% ${s.light+10}% / ${a+.05})`; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
-      }
-      function step(){
-        if(!running) return;
-        ctx.clearRect(0,0,w,h);
-        for(const s of stars){
-          s.y+=s.speed*s.dir; s.x+=Math.sin((s.y+s.depth*50)*.001)*.2*(4-s.depth);
-          if(s.y<-10) s.y=h+10; if(s.y>h+10) s.y=-10; if(s.x<-10) s.x=w+10; if(s.x>w+10) s.x=-10;
-          draw(s);
+    // Sticky launch bar (show within last 14 days before start)
+    const SHOW_BAR_DAYS = 14;
+    function toggleBar(){
+      const days=(PRESALE_START - new Date())/86400000;
+      $('launchBar').classList.toggle('hidden', !(days>0 && days<=SHOW_BAR_DAYS));
+    }
+    toggleBar(); setInterval(toggleBar, 60_000);
+
+    // Smooth scroll + active nav highlight
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id=a.getAttribute('href').slice(1);
+        const el=document.getElementById(id);
+        if(!el) return;
+        e.preventDefault();
+        el.scrollIntoView({behavior:'smooth', block:'start'});
+        history.replaceState(null,'','#'+id);
+      });
+    });
+    const sections=[...document.querySelectorAll('section[id]')];
+    const navLinks=[...document.querySelectorAll('header nav a[href^="#"]')];
+    const map=new Map(navLinks.map(l=>[l.getAttribute('href').slice(1),l]));
+    const io=new IntersectionObserver((ents)=>{
+      ents.forEach(ent=>{
+        if(ent.isIntersecting){
+          const id=ent.target.id;
+          navLinks.forEach(l=>l.classList.remove('text-white','opacity-100'));
+          const link=map.get(id); if(link) link.classList.add('text-white','opacity-100');
         }
-        requestAnimationFrame(step);
-      }
-      resize(); step(); addEventListener('resize',resize,{passive:true}); addEventListener('visibilitychange',()=>{running=document.visibilityState==='visible'; if(running) requestAnimationFrame(step);});
-    })();
+      });
+    }, {rootMargin:'-30% 0px -60% 0px', threshold:0.01});
+    sections.forEach(s=>io.observe(s));
+
+    // FAQ collapsible
+    document.querySelectorAll('#faq .panel > button').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const ans=btn.nextElementSibling;
+        ans.classList.toggle('hidden');
+        btn.querySelector('span').textContent = ans.classList.contains('hidden') ? '+' : '–';
+      });
+    });
+
+    // Notify success message
+    if(location.hash==='#notify-success'){
+      const msg=$('notifyMsg'); if(msg) msg.classList.remove('hidden');
+    }
   </script>
 </body>
 </html>
