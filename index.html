@@ -51,17 +51,19 @@
   }
   </script>
 
-  <!-- CSP (added unpkg + *.reown.com to cover new infra/fallback CDN) -->
+  <!-- CSP (expanded for WalletConnect/Modal CDNs + APIs) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' https://etheriaetrx-etrx.github.io;
                  img-src 'self' data: https:;
                  script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://unpkg.com 'unsafe-inline';
-                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net;
                  font-src https://fonts.gstatic.com;
-                 connect-src 'self' https://formspree.io https://cloudflare-eth.com
-                               https://rpc.walletconnect.com https://api.walletconnect.com https://*.walletconnect.com
-                               https://*.reown.com
-                               wss://relay.walletconnect.com wss://*.walletconnect.com wss://*.reown.com;
+                 connect-src 'self'
+                              https://formspree.io
+                              https://cloudflare-eth.com
+                              https://rpc.walletconnect.com https://api.walletconnect.com https://explorer-api.walletconnect.com https://*.walletconnect.com
+                              https://*.reown.com
+                              wss://relay.walletconnect.com wss://*.walletconnect.com wss://*.reown.com;
                  worker-src 'self';
                  object-src 'none';
                  base-uri 'self';
@@ -77,6 +79,10 @@
 
   <!-- Ethers.js -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+  <!-- WalletConnect Modal CSS (load both; whichever is reachable will be used) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.6.2/dist/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@walletconnect/modal@2.6.2/dist/style.css">
 
   <!-- Preload hero image -->
   <link rel="preload" as="image" href="assets/Background.png">
@@ -565,23 +571,32 @@
     });
   }
 
-  // --- Dynamic loader for WalletConnect UMD with fallback ---
+  // --- Dynamic loader for WalletConnect UMD + Modal (with dual CDN fallback) ---
   function loadScript(src){
     return new Promise((resolve,reject)=>{
-      const s=document.createElement('script'); s.src=src; s.async=true; s.onload=resolve; s.onerror=reject; document.head.appendChild(s);
+      const s=document.createElement('script'); s.src=src; s.async=true; s.onload=()=>resolve(src); s.onerror=()=>reject(new Error('Script load failed: '+src)); document.head.appendChild(s);
     });
   }
   async function ensureWalletConnectLoaded(){
-    if (window.WalletConnectEthereumProvider) return true;
-    try{
-      await loadScript('https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js');
-    }catch{}
-    if (window.WalletConnectEthereumProvider) return true;
-    // fallback CDN
-    try{
-      await loadScript('https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js');
-    }catch{}
-    return !!window.WalletConnectEthereumProvider;
+    // Provider
+    if (!window.WalletConnectEthereumProvider){
+      try{ await loadScript('https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js'); }
+      catch{}
+    }
+    if (!window.WalletConnectEthereumProvider){
+      try{ await loadScript('https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js'); }
+      catch{}
+    }
+    // Modal (for QR UI)
+    if (!window.WalletConnectModal){
+      try{ await loadScript('https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.6.2/dist/index.umd.min.js'); }
+      catch{}
+    }
+    if (!window.WalletConnectModal){
+      try{ await loadScript('https://unpkg.com/@walletconnect/modal@2.6.2/dist/index.umd.min.js'); }
+      catch{}
+    }
+    return !!(window.WalletConnectEthereumProvider);
   }
   function getEthereumProviderCtor(){
     return window.WalletConnectEthereumProvider?.default || window.WalletConnectEthereumProvider || null;
@@ -591,9 +606,9 @@
     wcNote.textContent = 'Connecting… '; const spin=document.createElement('span'); spin.className='spinner'; wcNote.appendChild(spin);
     try{
       const ok = await ensureWalletConnectLoaded();
-      if(!ok){ wcNote.textContent='WalletConnect library failed to load (check ad blockers / CSP).'; return; }
+      if(!ok){ wcNote.textContent='WalletConnect scripts are blocked (try disabling ad/tracker blockers for *.walletconnect.com / *.reown.com or use another browser).'; return; }
       const EthereumProvider = getEthereumProviderCtor();
-      if(!EthereumProvider){ wcNote.textContent='WalletConnect provider not available in window.'; return; }
+      if(!EthereumProvider){ wcNote.textContent='WalletConnect provider not available in window after load.'; return; }
       if(!WC_PROJECT_ID){ wcNote.textContent='Project ID missing. Add it in the code.'; return; }
 
       const wc = await EthereumProvider.init({
@@ -611,7 +626,7 @@
       wcNote.textContent='';
     }catch(err){
       console.error('WalletConnect error', err);
-      wcNote.textContent = 'Failed to open WalletConnect. Try a different browser or disable ad blockers.';
+      wcNote.textContent = 'WalletConnect failed to start (network/CSP). Try a different browser or disable ad blockers.';
     }
   }
 
