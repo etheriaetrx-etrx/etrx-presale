@@ -19,7 +19,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@ETRXDreamscapes">
 
-<!-- Keep original CSP so Tailwind CDN loads (prevents broken layout) -->
+<!-- CSP: keep permissive for Tailwind CDN / inline scripts (prevents broken layout) -->
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self' https://etheriaetrx-etrx.github.io;
            img-src 'self' data: https:;
@@ -34,12 +34,22 @@
 
 <meta name="theme-color" content="#05070d">
 
-<!-- Fonts -->
+<!-- Performance -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 
-<!-- Libraries (same as original setup) -->
+<!-- Fonts & Libraries -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script>
+  /* Tiny Tailwind extension for nicer hero type & measure */
+  tailwind = {
+    theme:{ extend:{
+      fontSize:{ 'hero':'clamp(2.25rem, 4vw + 1rem, 3.75rem)' },
+      maxWidth:{ 'measure':'65ch' }
+    }}
+  }
+</script>
 <script src="https://cdn.tailwindcss.com?v=3"></script>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 
@@ -50,33 +60,32 @@
 <style>
 :root{
   color-scheme: dark;
-  --bg:#05070d;
-  --panel:rgba(255,255,255,.06);
-  --ring:rgba(0,255,255,.18);
-  --dim:rgba(255,255,255,.66);
-  --muted:rgba(255,255,255,.88);
-  --neon-cyan: 0 255 255;
-  --neon-blue: 84 178 255;
-  --neon-violet: 208 128 255;
-  --neon-orange: 255 147 76;
+  --bg:#05070d; --panel:rgba(255,255,255,.06); --ring:rgba(0,255,255,.18);
+  --dim:rgba(255,255,255,.66); --muted:rgba(255,255,255,.88);
+  --neon-cyan: 0 255 255; --neon-blue: 84 178 255; --neon-violet: 208 128 255; --neon-orange: 255 147 76;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
 
 /* Neon look */
 .neon-text{
-  text-shadow:
-    0 0 6px rgba(var(--neon-cyan)/.8),
-    0 0 24px rgba(var(--neon-blue)/.45),
-    0 0 48px rgba(var(--neon-violet)/.35);
+  text-shadow: 0 0 6px rgba(var(--neon-cyan)/.8), 0 0 24px rgba(var(--neon-blue)/.45), 0 0 48px rgba(var(--neon-violet)/.35);
 }
-.neon-grad{background:linear-gradient(90deg, rgb(var(--neon-orange)), rgb(var(--neon-blue))); -webkit-background-clip:text; background-clip:text; color:transparent}
+.neon-grad{
+  background: linear-gradient(90deg, rgb(var(--neon-orange)), rgb(var(--neon-blue)));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  background-size:200% 100%; animation: sweep 6s linear infinite;
+}
+@keyframes sweep{ to{ background-position:-200% 0 } }
 
 .glass{backdrop-filter: blur(12px); background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border:1px solid var(--ring)}
-.card{border-radius:18px; box-shadow:
-  0 0 0 1px rgba(0,255,255,.08) inset,
-  0 8px 30px rgba(0,255,255,.08),
-  0 0 60px rgba(130, 200, 255, .06)}
+.card{
+  border-radius:18px; box-shadow: 0 0 0 1px rgba(0,255,255,.08) inset, 0 8px 30px rgba(0,255,255,.08), 0 0 60px rgba(130,200,255,.06);
+  transition: transform .2s ease, box-shadow .25s ease;
+}
+.card:hover{ transform: translateY(-2px) }
+.card:active{ transform: translateY(0) scale(.997) }
+.card:focus-within{ box-shadow: 0 0 0 2px rgba(0,255,255,.25), 0 8px 30px rgba(0,255,255,.08) }
 .card-outline{position:relative}
 .card-outline::before{
   content:""; position:absolute; inset:-1px; border-radius:inherit; pointer-events:none;
@@ -87,7 +96,7 @@ body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple
 }
 @keyframes spinBorder { to { transform: rotate(360deg) } }
 
-/* BTN */
+/* Buttons */
 .btn-primary{
   position:relative; display:inline-flex; align-items:center; gap:.55rem; padding:.75rem 1rem;
   border-radius:14px; font-weight:800; color:#02040a;
@@ -95,74 +104,65 @@ body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple
   box-shadow: 0 0 16px rgba(255,147,76,.45), 0 0 24px rgba(84,178,255,.35);
 }
 .btn-primary:hover{ transform: translateY(-1px) scale(1.01) }
-.btn-ghost{
-  border:1px solid rgba(0,255,255,.25);
-  background: rgba(255,255,255,.03);
-  padding:.6rem .9rem; border-radius:12px;
-}
+.btn-ghost{ border:1px solid rgba(0,255,255,.25); background: rgba(255,255,255,.03); padding:.6rem .9rem; border-radius:12px; }
 .hidden-important{ display:none !important }
 .small-dim{ color:var(--dim) }
 .title-glow{ text-shadow:0 0 14px rgba(0,255,255,.3), 0 0 36px rgba(84,178,255,.25) }
 .tabular{ font-variant-numeric: tabular-nums }
 
+/* Header elevation on scroll */
+.header-float{ backdrop-filter: blur(10px); background:rgba(4,7,12,.5); border-bottom:1px solid rgba(0,255,255,.12); transition: background .2s ease }
+
 /* Starfield canvas */
 #orbCanvas{ position:fixed; inset:0; z-index:0; pointer-events:none; filter:drop-shadow(0 0 24px rgba(0,255,255,.12)) }
-.scanlines{ position:fixed; inset:0; z-index:0; pointer-events:none;
-  background: repeating-linear-gradient( to bottom, rgba(255,255,255,.03), rgba(255,255,255,.03) 1px, transparent 2px, transparent 4px );
-  mix-blend-mode: soft-light; opacity:.20;
-}
+.scanlines{ position:fixed; inset:0; z-index:0; pointer-events:none; background: repeating-linear-gradient( to bottom, rgba(255,255,255,.03), rgba(255,255,255,.03) 1px, transparent 2px, transparent 4px ); mix-blend-mode: soft-light; opacity:.20; }
 
-/* Holographic foil hover for cards */
+/* Holo hover */
 .holo{ position:relative; overflow:hidden; }
 .holo::after{
   content:""; position:absolute; inset:-150% -150%;
-  background:
-    conic-gradient(from 0deg, #fff0, #fff3 10%, #fff0 20%),
-    linear-gradient(120deg, #ff934c55, #54b2ff55, #d080ff55);
+  background: conic-gradient(from 0deg, #fff0, #fff3 10%, #fff0 20%), linear-gradient(120deg, #ff934c55, #54b2ff55, #d080ff55);
   mix-blend-mode:screen; filter:saturate(1.4) blur(10px); opacity:.25;
-  transform:translateX(-30%);
-  transition: transform .8s ease, opacity .3s ease;
+  transform:translateX(-30%); transition: transform .8s ease, opacity .3s ease;
 }
 .holo:hover::after{ transform:translateX(30%); opacity:.45 }
 
-/* Neon underline links */
-a.laser{
-  background: linear-gradient(90deg, #00ffff 0 0) bottom left / 0 2px no-repeat;
-  transition: background-size .3s ease;
-}
+/* Laser underline */
+a.laser{ background: linear-gradient(90deg, #00ffff 0 0) bottom left / 0 2px no-repeat; transition: background-size .3s ease; }
 a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 /* FAQ */
 .faq-item{ border:1px solid #00ffff22; border-radius:14px; overflow:hidden }
 .faq-header{ position:relative; width:100%; display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding:1rem 1.25rem; text-align:left }
-.faq-header::after{
-  content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
-  background: linear-gradient(90deg, #00ffff44, transparent);
-}
+.faq-header::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background: linear-gradient(90deg, #00ffff44, transparent); }
 .faq-body{ padding: 0 1.25rem; max-height:0; transition:max-height .28s ease, padding .2s ease }
 .faq-body.open { padding: .25rem 1.25rem 1rem; }
 .faq-chevron { transition: transform .25s ease }
 .faq-item.open{ box-shadow:0 0 24px #00ffff22 inset }
 
-/* Hero image reflection */
-.hero-reflect{ position:relative; overflow:hidden }
-.hero-reflect::after{
-  content:""; position:absolute; top:-40%; left:-30%; width:60%; height:180%;
-  transform: rotate(25deg); pointer-events:none; opacity:.12;
-  background: linear-gradient( to right, transparent 0, #fff6 30%, transparent 60% );
-  filter: blur(12px);
-}
-.hero-reflect:hover::after{ opacity:.18 }
+/* Hero vignette */
+.hero-vignette{ position:absolute; inset:0; pointer-events:none; background: radial-gradient(80% 60% at 50% 10%, transparent 0 60%, rgba(0,0,0,.35) 100%); }
+
+/* Inputs validity hints */
+input:focus{ outline:none }
+input:is([type="email"],[type="text"]).is-valid{ box-shadow: 0 0 0 2px #10b98166 }
+input:is([type="email"],[type="text"]).is-invalid{ box-shadow: 0 0 0 2px #ef444466 }
 
 /* Skip link */
 .skip-link{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
 .skip-link:focus{ position:fixed; left:1rem; top:1rem; width:auto; height:auto; padding:.5rem .75rem; background:#06b6d4; color:#000; border-radius:.5rem; z-index:50 }
 
+/* Section divider / containment */
+.section-divider{ height:1px; background:linear-gradient(90deg, #00ffff33, transparent, #d080ff33) }
+section{ contain: layout paint style }
+
+/* Toast */
+.toast{ z-index:60; }
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
-  .card-outline::before{ display:none }
-  .holo::after{ display:none }
+  .card-outline::before, .holo::after{ display:none }
 }
 </style>
 </head>
@@ -172,7 +172,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <canvas id="orbCanvas" aria-hidden="true"></canvas>
 <div class="scanlines" aria-hidden="true"></div>
 
-<header class="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+<header id="siteHeader" class="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
   <div class="flex items-center gap-3">
     <img src="assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-cyan-400/20 object-contain bg-white/5"/>
     <div class="text-sm tracking-wide small-dim">Etheria</div>
@@ -207,17 +207,18 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 </div>
 
 <!-- Hero -->
-<section class="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-stretch gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
+<section class="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-stretch gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10 hero">
+  <div class="hero-vignette" aria-hidden="true"></div>
   <div class="order-2 md:order-1">
-    <h1 class="title-glow neon-text text-4xl font-extrabold leading-tight md:text-6xl">
+    <h1 class="title-glow neon-text text-hero leading-tight md:text-6xl">
       The Official Token of Etheria<br/>
       <span class="neon-grad">$ETRX Presale</span>
     </h1>
-    <p class="mt-4 max-w-prose small-dim">Powering realms, artifacts, governance and community rewards. Built on Ethereum for permanence and reach.</p>
+    <p class="mt-4 max-w-measure small-dim">Powering realms, artifacts, governance and community rewards. Built on Ethereum for permanence and reach.</p>
 
     <!-- Countdown -->
-    <div class="mt-8 glass card card-outline p-5">
-      <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-widest small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
+    <div class="mt-8 glass card card-outline p-5 reveal" data-delay="0">
+      <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-[.15em] small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
       <div id="countdown" class="flex gap-3 text-center" aria-live="polite"></div>
 
       <div class="mt-3 text-xs flex flex-col gap-1 small-dim">
@@ -238,10 +239,10 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     </div>
 
     <ul class="mt-6 grid grid-cols-2 gap-3 text-sm sm:text-base">
-      <li class="glass card holo p-4"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Supply: <b>10,000,000</b></li>
-      <li class="glass card holo p-4"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Network: <b>Ethereum</b></li>
-      <li class="glass card holo p-4"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Symbol: <b>ETRX</b></li>
-      <li class="glass card holo p-4"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Presale: <b>Sep 24 → Oct 1</b></li>
+      <li class="glass card holo p-4 reveal" data-delay="50"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Supply: <b>10,000,000</b></li>
+      <li class="glass card holo p-4 reveal" data-delay="100"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Network: <b>Ethereum</b></li>
+      <li class="glass card holo p-4 reveal" data-delay="150"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Symbol: <b>ETRX</b></li>
+      <li class="glass card holo p-4 reveal" data-delay="200"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Presale: <b>Sep 24 → Oct 1</b></li>
     </ul>
 
     <div class="mt-4 text-xs small-dim">
@@ -259,51 +260,65 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   </div>
 
   <!-- Hero image -->
-  <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px]">
-    <img src="assets/Background.png" alt="Etheria Background" width="1280" height="720"
-      class="h-full w-full rounded-3xl ring-1 ring-cyan-400/15 object-cover hero-reflect" loading="eager" decoding="async"
+  <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px] reveal" data-delay="0">
+    <img
+      src="assets/Background.png"
+      srcset="assets/Background-640.jpg 640w, assets/Background-960.jpg 960w, assets/Background.png 1280w"
+      sizes="(max-width: 768px) 100vw, 50vw"
+      alt="Etheria Background"
+      width="1280" height="720"
+      class="h-full w-full rounded-3xl ring-1 ring-cyan-400/15 object-cover hero-reflect"
+      loading="eager" decoding="async"
       onerror="this.outerHTML='<div class=&quot;h-full w-full rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-orange-500/10 flex items-center justify-center text-white/50&quot;>Background image missing</div>'"/>
   </div>
 </section>
 
+<div class="section-divider max-w-6xl mx-auto"></div>
+
 <!-- About -->
 <section id="about" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-  <h2 class="text-2xl font-bold neon-text">What is $ETRX?</h2>
-  <p class="mt-3 max-w-3xl small-dim">
+  <h2 class="text-2xl font-bold neon-text reveal">What is $ETRX?</h2>
+  <p class="mt-3 max-w-3xl small-dim reveal" data-delay="50">
     $ETRX is the utility token of Etheria — used to unlock rare Realms &amp; Artifacts, vote on lore and direction,
     access exclusive drops, and power the Etherian economy. Holders may receive airdrops and in-world benefits.
   </p>
 </section>
 
+<div class="section-divider max-w-6xl mx-auto"></div>
+
 <!-- Tokenomics -->
 <section id="token" class="relative z-10 mx-auto max-w-6xl px-6">
-  <h2 class="text-2xl font-bold neon-text">Tokenomics (Overview)</h2>
+  <h2 class="text-2xl font-bold neon-text reveal">Tokenomics (Overview)</h2>
   <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
-    <div class="glass card card-outline holo p-5"><b>Utility</b><br/><span class="small-dim">Access to Realms &amp; Artifacts, governance votes, allowlists, and in-world boosts.</span></div>
-    <div class="glass card card-outline holo p-5"><b>Distribution Model</b><br/><span class="small-dim">Phased: presale participants, ecosystem growth, contributors, liquidity, reserves.</span></div>
-    <div class="glass card card-outline holo p-5"><b>Lockups &amp; Cliff</b><br/><span class="small-dim">Contributor and reserve tranches unlock gradually to align long-term incentives.</span></div>
-    <div class="glass card card-outline holo p-5"><b>Emissions</b><br/><span class="small-dim">No hard farming emissions at launch; rewards focus on quests and on-chain participation.</span></div>
-    <div class="glass card card-outline holo p-5"><b>Liquidity Approach</b><br/><span class="small-dim">Initial pools post-TGE with transparent on-chain adds; bridge exploration comes later.</span></div>
-    <div class="glass card card-outline holo p-5"><b>Governance</b><br/><span class="small-dim">Progressive decentralization — votes start with lore/world decisions.</span></div>
+    <div class="glass card card-outline holo p-5 reveal" data-delay="0"><b>Utility</b><br/><span class="small-dim">Access to Realms &amp; Artifacts, governance votes, allowlists, and in-world boosts.</span></div>
+    <div class="glass card card-outline holo p-5 reveal" data-delay="50"><b>Distribution Model</b><br/><span class="small-dim">Phased: presale participants, ecosystem growth, contributors, liquidity, reserves.</span></div>
+    <div class="glass card card-outline holo p-5 reveal" data-delay="100"><b>Lockups &amp; Cliff</b><br/><span class="small-dim">Contributor and reserve tranches unlock gradually to align long-term incentives.</span></div>
+    <div class="glass card card-outline holo p-5 reveal" data-delay="150"><b>Emissions</b><br/><span class="small-dim">No hard farming emissions at launch; rewards focus on quests and on-chain participation.</span></div>
+    <div class="glass card card-outline holo p-5 reveal" data-delay="200"><b>Liquidity Approach</b><br/><span class="small-dim">Initial pools post-TGE with transparent on-chain adds; bridge exploration comes later.</span></div>
+    <div class="glass card card-outline holo p-5 reveal" data-delay="250"><b>Governance</b><br/><span class="small-dim">Progressive decentralization — votes start with lore/world decisions.</span></div>
   </div>
-  <p class="mt-3 text-xs small-dim">Note: Detailed allocations/percentages will be shared closer to TGE.</p>
+  <p class="mt-3 text-xs small-dim reveal" data-delay="300">Note: Detailed allocations/percentages will be shared closer to TGE.</p>
 </section>
+
+<div class="section-divider max-w-6xl mx-auto"></div>
 
 <!-- Road -->
 <section id="road" class="relative z-10 mx-auto max-w-6xl px-6 py-14">
-  <h2 class="text-2xl font-bold neon-text">Road to Mainnet</h2>
+  <h2 class="text-2xl font-bold neon-text reveal">Road to Mainnet</h2>
   <ol class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 small-dim">
-    <li class="glass card holo p-4">1) Launch site &amp; whitelist open</li>
-    <li class="glass card holo p-4">2) Community reveal + partnerships</li>
-    <li class="glass card holo p-4">3) Presale window opens (this page)</li>
-    <li class="glass card holo p-4">4) TGE: distribution to presale wallets</li>
-    <li class="glass card holo p-4 sm:col-span-2">5) Initial listings + liquidity + bridge planning</li>
+    <li class="glass card holo p-4 reveal" data-delay="0">1) Launch site &amp; whitelist open</li>
+    <li class="glass card holo p-4 reveal" data-delay="50">2) Community reveal + partnerships</li>
+    <li class="glass card holo p-4 reveal" data-delay="100">3) Presale window opens (this page)</li>
+    <li class="glass card holo p-4 reveal" data-delay="150">4) TGE: distribution to presale wallets</li>
+    <li class="glass card holo p-4 sm:col-span-2 reveal" data-delay="200">5) Initial listings + liquidity + bridge planning</li>
   </ol>
 </section>
 
+<div class="section-divider max-w-6xl mx-auto"></div>
+
 <!-- Notify & Allowlist -->
 <section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-24">
-  <div class="glass card card-outline holo p-6">
+  <div class="glass card card-outline holo p-6 reveal">
     <h3 class="text-xl font-semibold neon-text">Get notified when the presale opens</h3>
 
     <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row"
@@ -350,9 +365,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 <!-- FAQ -->
 <section id="faq" class="relative z-10 mx-auto max-w-6xl px-6 pb-8">
-  <h2 class="text-2xl font-bold neon-text">FAQ</h2>
+  <h2 class="text-2xl font-bold neon-text reveal">FAQ</h2>
   <div class="mt-4 grid gap-3">
-    <div class="faq-item">
+    <div class="faq-item reveal">
       <button class="faq-header" aria-expanded="false">
         <span>When does the presale run?</span>
         <span class="faq-chevron">⌄</span>
@@ -361,7 +376,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <p class="small-dim">Sep 24 → Oct 1, 2025 (UTC). Use the toggle to view local time.</p>
       </div>
     </div>
-    <div class="faq-item">
+    <div class="faq-item reveal">
       <button class="faq-header" aria-expanded="false">
         <span>Will there be a TGE?</span>
         <span class="faq-chevron">⌄</span>
@@ -401,7 +416,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 }
 </script>
 
-<!-- App JS (kept compatible with original CSP/CDN setup) -->
+<!-- App JS -->
 <script>
 'use strict';
 
@@ -417,6 +432,10 @@ const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('wal
 
 /* Year */
 $('year').textContent = new Date().getFullYear();
+
+/* Header elevation on scroll */
+const header = document.getElementById('siteHeader');
+addEventListener('scroll', ()=> header.classList.toggle('header-float', scrollY>12), {passive:true});
 
 /* Time formatting */
 const fmtBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
@@ -494,7 +513,37 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-/* FAQ expand + neon open state */
+/* Active nav highlight on scroll */
+const navLinks = [...document.querySelectorAll('nav a[href^="#"]')];
+const navMap = navLinks.map(a=>({a, id:a.getAttribute('href').slice(1)}));
+const secIO = new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    const hit = navMap.find(n=>n.id===e.target.id);
+    if(hit && e.isIntersecting){
+      navMap.forEach(n=>n.a.classList.remove('text-white'));
+      hit.a.classList.add('text-white');
+    }
+  });
+},{ rootMargin:'-45% 0px -45% 0px', threshold:0.01 });
+navMap.forEach(n=>{ const el=document.getElementById(n.id); el && secIO.observe(el); });
+
+/* Reveal-on-scroll */
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  els.forEach(el => { el.style.opacity=0; el.style.transform='translateY(12px)'; el.style.transition='opacity .5s ease, transform .5s ease'; });
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach((e)=>{
+      if(e.isIntersecting){
+        e.target.style.opacity=1; e.target.style.transform='translateY(0)';
+        e.target.style.transitionDelay = (Number(e.target.dataset.delay)||0)+'ms';
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:.12});
+  els.forEach(el=>io.observe(el));
+})();
+
+/* FAQ expand */
 document.querySelectorAll('.faq-item')?.forEach(item=>{
   const btn=item.querySelector('.faq-header'); const body=item.querySelector('.faq-body'); const chev=item.querySelector('.faq-chevron');
   btn.addEventListener('click', ()=>{
@@ -511,13 +560,20 @@ document.querySelectorAll('.faq-item')?.forEach(item=>{
   });
 });
 
-/* ===== Formspree (AJAX) ===== */
+/* ===== Formspree (AJAX) + validity hints ===== */
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
 async function postFormspree(data){
   const res=await fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify(data) });
   if(!res.ok) throw new Error('Bad response'); return res.json().catch(()=>({}));
 }
 const notifyForm=$('notifyForm'), notifyMsg=$('notifyMsg'), notifySuccess=$('notifySuccess');
+const email = document.getElementById('email');
+email?.addEventListener('input', ()=>{
+  const ok = email.checkValidity();
+  email.classList.toggle('is-valid', ok);
+  email.classList.toggle('is-invalid', !ok && email.value.length>0);
+});
+
 if (notifyForm){
   notifyForm.addEventListener('submit', async (e)=>{
     e.preventDefault(); notifyMsg.classList.add('hidden');
@@ -526,8 +582,10 @@ if (notifyForm){
       notifyForm.setAttribute('aria-busy','true');
       await postFormspree(Object.fromEntries(fd.entries()));
       notifyForm.classList.add('hidden'); notifySuccess.classList.remove('hidden');
+      toast('Check your email to confirm ✉️');
     } catch(err){
       notifyMsg.textContent='Submission failed. Please check your connection and try again.'; notifyMsg.classList.remove('hidden');
+      toast('Submission failed. Try again.', true);
     } finally {
       notifyForm.removeAttribute('aria-busy');
     }
@@ -584,7 +642,11 @@ if (wlForm){
       const list=JSON.parse(localStorage.getItem('etrx_wl')||'[]'); if(!list.includes(finalAddr)) list.push(finalAddr);
       localStorage.setItem('etrx_wl', JSON.stringify(list)); await postFormspree({ wallet: finalAddr, type: 'allowlist' });
       wlForm.classList.add('hidden'); wlSuccess.classList.remove('hidden');
-    }catch(err){ wlMsg.textContent='Saved locally. Network submit failed — please try again later.'; wlMsg.classList.remove('hidden'); }
+      toast('Wallet submitted ✅');
+    }catch(err){
+      wlMsg.textContent='Saved locally. Network submit failed — please try again later.'; wlMsg.classList.remove('hidden');
+      toast('Saved locally. Network error.', true);
+    }
   });
 }
 
@@ -592,7 +654,7 @@ if (wlForm){
 let activeProvider=null;
 function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
 
-/* Modal open/close (light focus management) */
+/* Modal open/close + focus trap */
 let lastFocus=null;
 function showModal(show){
   if(show){
@@ -610,13 +672,24 @@ function openModal(){ discoverInjected(); showModal(true); }
 modalClose.addEventListener('click', ()=> showModal(false));
 modal.addEventListener('click', (e)=>{ if(e.target===modal) showModal(false); });
 
+// Focus trap + Esc close
+document.addEventListener('keydown', (e)=>{
+  if(!modal.classList.contains('flex')) return;
+  const nodes = modal.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])');
+  const first = nodes[0], last = nodes[nodes.length-1];
+  if(e.key === 'Tab'){
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  } else if(e.key === 'Escape'){ showModal(false); }
+});
+
 async function ensureMainnet(provider, hexChain='0x1'){
   try{
     const current=await provider.request({ method:'eth_chainId' });
     if(current?.toLowerCase()===hexChain.toLowerCase()) return true;
     await provider.request({ method:'wallet_switchEthereumChain', params:[{ chainId: hexChain }] });
     return true;
-  } catch(err){ console.warn('Chain switch failed', err); return false; }
+  } catch(err){ console.warn('Chain switch failed', err); toast('Please switch to Ethereum Mainnet in your wallet.', true); return false; }
 }
 
 function discoverInjected(){
@@ -652,7 +725,7 @@ function discoverInjected(){
         try{
           const accounts=await provider.request({ method:'eth_requestAccounts' });
           await onConnected(provider, accounts?.[0]||null);
-        }catch(err){ console.warn('Injected connect error', err); }
+        }catch(err){ console.warn('Injected connect error', err); toast('Could not connect to wallet.', true); }
       });
       walletList.appendChild(btn);
     });
@@ -670,6 +743,7 @@ async function onConnected(provider, account){
   provider.on?.('accountsChanged', (accs)=>{ walletShort.textContent=shortAddr(accs?.[0]||''); localStorage.setItem('etrx_wallet', accs?.[0]||''); });
   provider.on?.('disconnect', ()=>{ doDisconnect(); });
   provider.on?.('chainChanged', async ()=>{ await ensureMainnet(provider); });
+  toast('Wallet connected ✅');
 }
 function doDisconnect(){
   try{ activeProvider?.disconnect?.(); }catch{}
@@ -677,6 +751,7 @@ function doDisconnect(){
   walletPill.classList.add('hidden');
   connectBtn.classList.remove('hidden-important');
   openConnect?.classList.remove('hidden-important');
+  toast('Disconnected', true);
 }
 disconnectBtn.addEventListener('click', doDisconnect);
 
@@ -702,9 +777,18 @@ if (shareBtn && navigator.share){
     setTimeout(()=>shareBtn.textContent='Share this launch', 1500);
   });
 }
+
+/* Toast helper */
+function toast(msg, isWarn=false){
+  const t=document.createElement('div');
+  t.className='toast fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-2 rounded-lg glass card text-sm';
+  t.style.borderColor = isWarn ? 'rgba(255,99,99,.35)' : 'var(--ring)';
+  t.textContent=msg; document.body.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .25s'; t.addEventListener('transitionend', ()=>t.remove(), {once:true}); }, 2000);
+}
 </script>
 
-<!-- Starfield (unchanged visuals, minor perf guard) -->
+<!-- Starfield (perf-aware) -->
 <script>
 (function(){
   const canvas=document.getElementById('orbCanvas'); if(!canvas) return;
