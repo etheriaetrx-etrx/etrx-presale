@@ -22,7 +22,7 @@
   <meta name="twitter:site" content="@ETRXDreamscapes">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
-  <!-- Event structured data (updated dates) -->
+  <!-- Event structured data -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -39,7 +39,7 @@
   }
   </script>
 
-  <!-- FAQ structured data (updated dates) -->
+  <!-- FAQ structured data -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -51,8 +51,7 @@
   }
   </script>
 
-  <!-- Basic CSP (best-effort for GH Pages).
-       Added jsdelivr (ethers.js) and Cloudflare ETH RPC for ENS resolution. -->
+  <!-- CSP: added jsdelivr (ethers.js) and Cloudflare ETH RPC for ENS -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' https://etheriaetrx-etrx.github.io;
                  img-src 'self' data: https:;
@@ -65,7 +64,6 @@
                  base-uri 'self';
                  frame-ancestors 'none'">
 
-  <!-- Theme -->
   <meta name="theme-color" content="#0b0f18">
 
   <!-- Fonts & Tailwind -->
@@ -74,13 +72,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com?v=3"></script>
 
-  <!-- Ethers.js (for ENS resolution) -->
+  <!-- Ethers.js (ENS resolution) -->
   <script defer src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 
   <!-- Preload hero image -->
   <link rel="preload" as="image" href="assets/Background.png">
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/logo.png">
 
   <style>
@@ -96,11 +92,7 @@
       --text-dim:rgba(255,255,255,.62);
     }
     *{ box-sizing:border-box }
-    body{
-      margin:0; background:var(--ether-bg); color:#fff;
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      overflow-x:hidden;
-    }
+    body{ margin:0; background:var(--ether-bg); color:#fff; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; overflow-x:hidden; }
     .etherian-bg{
       background:
         radial-gradient(60% 40% at 50% 0%, color-mix(in oklab, var(--ether-cyan) 24%, transparent), transparent 60%),
@@ -112,10 +104,7 @@
     .card{ backdrop-filter: blur(8px) }
     .panel{ background:var(--panel); border:1px solid var(--ring) }
     .ring-panel{ box-shadow:0 0 0 1px var(--ring) inset }
-    .btn-primary{
-      background: linear-gradient(90deg, var(--ether-orange), var(--ether-blue));
-      color:#0b0f18; font-weight:700;
-    }
+    .btn-primary{ background: linear-gradient(90deg, var(--ether-orange), var(--ether-blue)); color:#0b0f18; font-weight:700; }
     .btn-primary:hover{ filter:saturate(1.05) brightness(1.05) }
     :focus-visible { outline: 2px solid var(--ether-cyan); outline-offset: 2px; }
     #orbCanvas{ position:fixed; inset:0; z-index:0; pointer-events:none; filter:drop-shadow(0 0 24px rgba(34,211,238,.08)); }
@@ -167,12 +156,17 @@
 
       <!-- Countdown -->
       <div class="mt-8">
-        <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-widest" style="color:var(--text-dim)">Presale begins in</div>
+        <div id="phaseLabel" class="mb-1 text-xs uppercase tracking-widest" style="color:var(--text-dim)">Presale begins in — <span id="modeLabel">UTC</span></div>
         <div class="flex gap-3 text-center" id="countdown" aria-live="polite"></div>
 
-        <div class="mt-2 flex flex-wrap items-center gap-3 text-xs" style="color:var(--text-dim)">
-          <span id="whenText"></span>
-          <button id="tzToggle" class="underline underline-offset-4 opacity-90 hover:opacity-100">Show times in UTC</button>
+        <div class="mt-3 text-xs flex flex-col gap-1" style="color:var(--text-dim)">
+          <!-- Primary line (larger) -->
+          <div id="whenPrimary" class="text-sm text-white/90"></div>
+          <!-- Secondary line (always visible) -->
+          <div id="whenSecondary"></div>
+          <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100">
+            Make Local primary
+          </button>
         </div>
 
         <!-- Progress / What's next -->
@@ -189,7 +183,7 @@
         </div>
 
         <noscript>
-          <p class="mt-2 text-xs" style="color:var(--text-dim)">Presale: Oct 31 → Nov 5, 2025 (UTC). TGE/listing follows after presale.</p>
+          <p class="mt-2 text-xs" style="color:var(--text-dim)">Presale: Oct 31, 2025, 12:00 AM UTC → Nov 5, 2025, 12:00 AM UTC. TGE/listing follows after presale.</p>
         </noscript>
       </div>
 
@@ -207,7 +201,7 @@
         distribution to participants, and initial listings/liquidity. Exact TGE timing will be announced on our socials.
       </div>
 
-      <!-- Socials row -->
+      <!-- Socials -->
       <div class="mt-6 flex flex-wrap items-center gap-3 text-sm" style="color:var(--text-dim)">
         <span>Follow updates:</span>
         <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="hover:text-white">Twitter</a>
@@ -286,9 +280,7 @@
         <label class="sr-only" for="email">Email</label>
         <input required id="email" name="email" type="email" placeholder="you@example.com"
                class="flex-1 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-[var(--ether-blue)]"/>
-        <!-- Helpful metadata -->
         <input type="hidden" name="form_name" value="notify"/>
-        <!-- Redirect used only if JS disabled -->
         <input type="hidden" name="_redirect" value="https://etheriaetrx-etrx.github.io/etrx-presale/#notify-success">
         <button class="btn-primary rounded-2xl px-5 py-3" type="submit">Notify Me</button>
       </form>
@@ -317,10 +309,9 @@
           <button class="btn-primary rounded-2xl px-5 py-3" type="submit">Join Allowlist</button>
         </form>
 
-        <!-- ENS/validation helper line -->
         <p id="wlHelp" class="mt-2 text-xs" style="color:var(--text-dim)"></p>
 
-        <!-- Success card (hidden by default) -->
+        <!-- Success card -->
         <div id="wlSuccess" class="hidden mt-3 rounded-2xl panel ring-panel p-5 sm:col-span-2">
           <div class="text-sm">✅ Wallet submitted! We’ll verify allowlist details before presale.</div>
           <div class="mt-1 text-xs" style="color:var(--text-dim)"></div>
@@ -400,24 +391,40 @@
   const PRESALE_END   = new Date('2025-11-05T00:00:00Z');
 
   const $ = (id)=> document.getElementById(id);
-  const phaseLabel = $('phaseLabel');
-  const countdown  = $('countdown');
-  const whenText   = $('whenText');
+  const phaseLabel   = $('phaseLabel');
+  const countdown    = $('countdown');
+  const whenPrimary  = $('whenPrimary');
+  const whenSecondary= $('whenSecondary');
+  const modeLabel    = $('modeLabel');
   $('year').textContent = new Date().getFullYear();
 
-  // --- Time formatting & UTC toggle ---
-  let showUTC=false;
-  const tzBtn = $('tzToggle');
-  const fmtUTC = (d)=> d.toUTCString().replace(' GMT',' UTC');
-  const fmtLoc = (d)=> d.toLocaleString([], {year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true});
-  const fmt = (d)=> showUTC ? fmtUTC(d) : fmtLoc(d);
+  // --- Formatting helpers ---
+  // Concise format with explicit zone label
+  const fmtOptsBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
+  const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZone:'UTC', timeZoneName:'short' });        // e.g., Oct 31, 2025, 12:00 AM UTC
+  const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZoneName:'short' });                        // e.g., Oct 30, 2025, 07:00 PM CDT/CST
 
+  // Primary mode (true = UTC first). We default to UTC to match the official window.
+  let primaryUTC = true;
+
+  // Show both lines; swap which is primary
   function updateWhen(){
-    whenText.textContent = `Presale: ${fmt(PRESALE_START)} → ${fmt(PRESALE_END)} • TGE/listing follow after presale`;
+    if (primaryUTC){
+      whenPrimary.textContent   = `Presale: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
+      whenSecondary.textContent = `Local time: ${fmtLoc(PRESALE_START)} → ${fmtLoc(PRESALE_END)}`;
+      modeLabel.textContent = 'UTC';
+      tzToggle.textContent = 'Make Local primary';
+    }else{
+      whenPrimary.textContent   = `Presale: ${fmtLoc(PRESALE_START)} → ${fmtLoc(PRESALE_END)}`;
+      whenSecondary.textContent = `UTC time: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
+      modeLabel.textContent = 'Local';
+      tzToggle.textContent = 'Make UTC primary';
+    }
   }
-  tzBtn.addEventListener('click', ()=>{
-    showUTC=!showUTC;
-    tzBtn.textContent = showUTC ? 'Show times in Local' : 'Show times in UTC';
+
+  const tzToggle = $('tzToggle');
+  tzToggle.addEventListener('click', ()=>{
+    primaryUTC = !primaryUTC;
     updateWhen();
   });
 
@@ -445,8 +452,13 @@
     const now = nowAccurate();
     const ph=phase(now);
     if (phaseLabel) {
-      phaseLabel.textContent = ph==='upcoming'?'Presale begins in':ph==='live'?'Presale ends in':'Presale ended';
+      // Include current mode in the label
+      phaseLabel.innerHTML = `Presale ${ph==='upcoming'?'begins':'ends'} in — <span id="modeLive">${primaryUTC?'UTC':'Local'}</span>`;
     }
+    // Keep the small mode label in sync too
+    const modeLive = document.getElementById('modeLive');
+    if (modeLive) modeLive.textContent = primaryUTC ? 'UTC' : 'Local';
+
     const target = ph==='upcoming'?PRESALE_START:ph==='live'?PRESALE_END:now;
     const diff = Math.max(0, target-now);
     const s=Math.floor(diff/1000);
@@ -482,12 +494,11 @@
   updateProgress();
   setInterval(updateProgress, 30_000);
 
-  // Sticky launch bar (show within last 14 days before start)
+  // Sticky launch bar (show within last 14 days before start) + mobile CTA
   const SHOW_BAR_DAYS = 14;
   function toggleBar(){
     const days=(PRESALE_START - new Date())/86400000;
     $('launchBar').classList.toggle('hidden', !(days>0 && days<=SHOW_BAR_DAYS));
-    // Mobile sticky CTA: show outside of footer vicinity
     const cta = document.getElementById('stickyCTA');
     if (window.innerWidth < 768) cta.classList.remove('hidden');
     else cta.classList.add('hidden');
@@ -531,11 +542,8 @@
   });
 
   // ===== Formspree integration (AJAX) =====
-  // NOTE on Double Opt-In:
-  // Turn on "Email verification / Double opt-in" for form f/mandalyp in your Formspree dashboard.
-  // This code shows an inline success card that tells users to confirm their email.
+  // Double opt-in: enable "Email verification" for f/mandalyp in your Formspree dashboard.
   const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
-
   async function postFormspree(data){
     const res = await fetch(FORMSPREE_ENDPOINT, {
       method:'POST',
@@ -577,7 +585,6 @@
   const wlHelp = document.getElementById('wlHelp');
   const wlSuccess = document.getElementById('wlSuccess');
 
-  // Provide gentle, live hints about input
   const addrRe = /^0x[a-fA-F0-9]{40}$/;
   const ensRe  = /^[a-z0-9-]+(\.[a-z0-9-]+)*\.eth$/i;
 
@@ -602,22 +609,13 @@
     walletInput.addEventListener('input', async ()=>{
       wlMsg.classList.add('hidden');
       const v = walletInput.value.trim();
-      if (!v){
-        setHelp('');
-        return;
-      }
-      if (addrRe.test(v)){
-        setHelp('Looks like a valid Ethereum address.', true);
-        return;
-      }
+      if (!v){ setHelp(''); return; }
+      if (addrRe.test(v)){ setHelp('Looks like a valid Ethereum address.', true); return; }
       if (ensRe.test(v)){
         setHelp('Checking ENS…');
         const addr = await resolveIfEns(v);
-        if (addr){
-          setHelp(`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`, true);
-        }else{
-          setHelp('Could not resolve this ENS name.');
-        }
+        if (addr){ setHelp(`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`, true); }
+        else     { setHelp('Could not resolve this ENS name.'); }
         return;
       }
       setHelp('Enter a valid 0x… address or an ENS name like yourname.eth');
@@ -633,19 +631,13 @@
       if (trap) return; // honeypot
 
       let finalAddr = null;
-
       if (addrRe.test(wallet)){
         finalAddr = wallet;
       }else if (ensRe.test(wallet)){
         wlHelp.textContent = 'Resolving ENS…';
         const resolved = await resolveIfEns(wallet);
-        if (resolved) {
-          finalAddr = resolved;
-        } else {
-          wlMsg.textContent = 'Enter a valid address, or a resolvable ENS name.';
-          wlMsg.classList.remove('hidden');
-          return;
-        }
+        if (resolved) finalAddr = resolved;
+        else { wlMsg.textContent = 'Enter a valid address, or a resolvable ENS name.'; wlMsg.classList.remove('hidden'); return; }
       }else{
         wlMsg.textContent = 'Enter a valid 0x… address or ENS name (yourname.eth).';
         wlMsg.classList.remove('hidden');
@@ -653,12 +645,10 @@
       }
 
       try{
-        // Persist locally as a convenience
         const list = JSON.parse(localStorage.getItem('etrx_wl')||'[]');
         if (!list.includes(finalAddr)) list.push(finalAddr);
         localStorage.setItem('etrx_wl', JSON.stringify(list));
 
-        // Send to Formspree
         await postFormspree({ wallet: finalAddr, type: 'allowlist' });
 
         wlForm.classList.add('hidden');
@@ -721,7 +711,7 @@
     function init(){
       const baseDensity = (innerWidth*innerHeight)/18000;
       const cores = (navigator.hardwareConcurrency||4);
-      const density = Math.round(baseDensity * Math.min(1, cores/8)); // lower on low-spec
+      const density = Math.round(baseDensity * Math.min(1, cores/8));
       stars=[];
       for(let i=0;i<density;i++) stars.push(makeStar(i%3+1));
     }
