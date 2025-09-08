@@ -38,7 +38,6 @@
            base-uri 'self';
            frame-ancestors 'none';
            upgrade-insecure-requests">
-
 <meta name="theme-color" content="#05070d">
 <meta name="robots" content="index,follow,max-image-preview:large"/>
 
@@ -51,14 +50,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script>
-  /* Tailwind CDN config */
   window.tailwind = {}
-  tailwind.config = {
-    theme:{ extend:{
-      fontSize:{ 'hero':'clamp(2.25rem, 4vw + 1rem, 3.75rem)' },
-      maxWidth:{ 'measure':'65ch' }
-    }}
-  }
+  tailwind.config = { theme:{ extend:{
+    fontSize:{ 'hero':'clamp(2.25rem, 4vw + 1rem, 3.75rem)' },
+    maxWidth:{ 'measure':'65ch' }
+  }}}
 </script>
 <script src="https://cdn.tailwindcss.com?v=3" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" defer></script>
@@ -79,7 +75,42 @@ body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple
 
 /* Layers */
 main, section, header, footer, .glass, .card { position:relative; z-index:2; isolation:isolate }
-#orbCanvas, .scanlines { pointer-events:none !important; z-index:0 }
+.scanlines { position:fixed; inset:0; z-index:0; pointer-events:none; background: repeating-linear-gradient( to bottom, rgba(255,255,255,.03), rgba(255,255,255,.03) 1px, transparent 2px, transparent 4px ); mix-blend-mode: soft-light; opacity:.18; }
+
+/* ===== Etheria background: Aurora + Wisps ===== */
+#bgAurora{
+  position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(0,255,255,.10), transparent 60%),
+    radial-gradient(80% 50% at 20% 10%, rgba(84,178,255,.12), transparent 60%),
+    radial-gradient(80% 50% at 80% 15%, rgba(255,147,76,.10), transparent 60%);
+}
+#bgAurora::before,
+#bgAurora::after{
+  content:""; position:absolute; inset:-20%; pointer-events:none; filter: blur(24px) saturate(1.1);
+  mix-blend-mode:screen; opacity:.45;
+  background:
+    conic-gradient(from 0deg at 50% 50%,
+      rgba(0,255,255,.28),
+      rgba(84,178,255,.28),
+      rgba(208,128,255,.26),
+      rgba(255,147,76,.22),
+      rgba(0,255,255,.28));
+  animation: auroraSweep 28s linear infinite;
+}
+#bgAurora::after{
+  opacity:.30; filter: blur(34px);
+  background:
+    radial-gradient(120% 120% at 30% 20%, rgba(0,255,255,.22), transparent 55%),
+    radial-gradient(120% 120% at 70% 25%, rgba(208,128,255,.16), transparent 55%),
+    radial-gradient(140% 100% at 50% -10%, rgba(84,178,255,.18), transparent 60%);
+  animation: auroraDrift 22s ease-in-out infinite alternate;
+}
+@keyframes auroraSweep { to { transform: rotate(360deg); } }
+@keyframes auroraDrift { from { transform: translateY(-3%) } to { transform: translateY(3%) } }
+
+/* Wisps canvas sits above aurora */
+#wispCanvas{ position:fixed; inset:0; z-index:1; pointer-events:none; }
 
 /* Neon text */
 .neon-text{
@@ -128,10 +159,6 @@ main, section, header, footer, .glass, .card { position:relative; z-index:2; iso
 /* Header elevation */
 .header-float{ backdrop-filter: blur(10px); background:rgba(4,7,12,.5); border-bottom:1px solid rgba(0,255,255,.12); transition: background .2s ease }
 
-/* Starfield canvas / scanlines */
-#orbCanvas{ position:fixed; inset:0; z-index:0; filter:drop-shadow(0 0 24px rgba(0,255,255,.12)) }
-.scanlines{ position:fixed; inset:0; z-index:0; background: repeating-linear-gradient( to bottom, rgba(255,255,255,.03), rgba(255,255,255,.03) 1px, transparent 2px, transparent 4px ); mix-blend-mode: soft-light; opacity:.20; }
-
 /* Holo hover */
 .holo{ position:relative; overflow:hidden; }
 .holo::after{
@@ -163,26 +190,22 @@ input:focus{ outline:none }
 input:is([type="email"],[type="text"]).is-valid{ box-shadow: 0 0 0 2px #10b98166 }
 input:is([type="email"],[type="text"]).is-invalid{ box-shadow: 0 0 0 2px #ef444466 }
 
-/* Section containment (keeps perf) */
+/* Section containment */
 section{ contain: layout paint style }
-/* BUT: let the hero glow bleed freely */
+/* Let the hero glow bleed freely */
 .hero{ contain: none; overflow: visible; }
 
 /* Toast */
 .toast{ z-index:60; }
 
-/* ===== Hero image: stronger, neon, animated glow (no clipping) ===== */
-.hero-glow{
-  position:relative; border-radius:1.5rem; /* rounded-3xl */
-  overflow: visible; /* belt + suspenders */
-}
+/* ===== Hero image: stronger neon, animated glow ===== */
+.hero-glow{ position:relative; border-radius:1.5rem; overflow:visible; }
 .hero-glow::before,
 .hero-glow::after{
   content:""; position:absolute; border-radius:inherit; pointer-events:none; inset:-22px;
   mix-blend-mode:screen;
 }
 .hero-glow::before{
-  /* vivid rotating halo */
   background: conic-gradient(from 0deg at 50% 50%,
     rgba(0,255,255,.32),
     rgba(84,178,255,.36),
@@ -190,12 +213,9 @@ section{ contain: layout paint style }
     rgba(255,147,76,.30),
     rgba(0,255,255,.32));
   filter: blur(46px) saturate(1.35) brightness(1.05);
-  opacity:.55;
-  animation: glowSpin 18s linear infinite;
-  transform-origin: 50% 50%;
+  opacity:.55; animation: glowSpin 18s linear infinite;
 }
 .hero-glow::after{
-  /* soft breathing aura */
   background: radial-gradient(120% 120% at 50% 50%,
     rgba(0,255,255,.22),
     rgba(84,178,255,.18) 35%,
@@ -203,12 +223,10 @@ section{ contain: layout paint style }
     rgba(255,147,76,.12) 75%,
     transparent 85%);
   filter: blur(36px) saturate(1.15);
-  opacity:.42;
-  animation: glowPulse 7.5s ease-in-out infinite alternate;
+  opacity:.42; animation: glowPulse 7.5s ease-in-out infinite alternate;
 }
 .hero-glow img{
   position:relative; display:block; border-radius:inherit;
-  /* neon rim + subtle cyan drop shadows */
   box-shadow:
     0 0 0 1px rgba(0,255,255,.22) inset,
     0 22px 60px rgba(84,178,255,.18),
@@ -220,7 +238,7 @@ section{ contain: layout paint style }
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
-  .card-outline::before, .holo::after, .hero-glow::before, .hero-glow::after{ display:none }
+  #bgAurora::before, #bgAurora::after, .card-outline::before, .holo::after, .hero-glow::before, .hero-glow::after{ display:none }
 }
 </style>
 </head>
@@ -231,10 +249,12 @@ section{ contain: layout paint style }
   </div>
 </noscript>
 
-<a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
-
-<canvas id="orbCanvas" aria-hidden="true"></canvas>
+<!-- Etheria background -->
+<div id="bgAurora" aria-hidden="true"></div>
+<canvas id="wispCanvas" aria-hidden="true"></canvas>
 <div class="scanlines" aria-hidden="true"></div>
+
+<a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
 
 <header id="siteHeader" class="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
   <div class="flex items-center gap-3">
@@ -323,7 +343,7 @@ section{ contain: layout paint style }
     </div>
   </div>
 
-  <!-- Hero image with stronger neon glow -->
+  <!-- Hero image -->
   <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px] reveal" data-delay="0">
     <div class="hero-glow h-full w-full rounded-3xl">
       <img
@@ -481,11 +501,9 @@ section{ contain: layout paint style }
 }
 </script>
 
-<!-- App JS -->
+<!-- App JS (countdown, forms, wallet, etc.) -->
 <script>
 'use strict'
-
-/* ===== Presale window (UTC) ===== */
 const PRESALE_START = new Date('2025-09-24T00:00:00Z');
 const PRESALE_END   = new Date('2025-10-01T00:00:00Z');
 
@@ -495,7 +513,6 @@ const phaseLabel=$('phaseLabel'), countdown=$('countdown'), whenPrimary=$('whenP
 const connectBtn=$('connectBtn'), openConnect=$('openConnect'), modal=$('walletModal'), modalClose=$('modalClose');
 const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn'), phaseName=$('phaseName');
 
-/* Year */
 $('year').textContent = new Date().getFullYear();
 
 /* Header elevation on scroll */
@@ -507,7 +524,7 @@ const fmtBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', 
 const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtBase, timeZone:'UTC', timeZoneName:'short' });
 const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtBase, timeZoneName:'short' });
 
-/* Persisted timezone preference (guarded for privacy modes) */
+/* localStorage helpers */
 function safeGet(key, fallback=null){ try{ return localStorage.getItem(key) ?? fallback }catch{ return fallback } }
 function safeSet(key, val){ try{ localStorage.setItem(key, val) }catch{} }
 
@@ -529,9 +546,7 @@ function updateWhen(){
 }
 const tzToggle = document.getElementById('tzToggle');
 tzToggle?.addEventListener('click', ()=>{
-  primaryUTC=!primaryUTC;
-  safeSet('etrx_tz', primaryUTC ? 'utc' : 'local');
-  updateWhen();
+  primaryUTC=!primaryUTC; safeSet('etrx_tz', primaryUTC ? 'utc' : 'local'); updateWhen();
 });
 
 /* precision clock */
@@ -588,7 +603,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-/* Active nav highlight on scroll */
+/* Active nav highlight */
 const navLinks = [...document.querySelectorAll('nav a[href^="#"]')];
 const navMap = navLinks.map(a=>({a, id:a.getAttribute('href').slice(1)}));
 const secIO = new IntersectionObserver(es=>{
@@ -651,7 +666,6 @@ email?.addEventListener('input', ()=>{
   email.classList.toggle('is-valid', ok);
   email.classList.toggle('is-invalid', !ok && email.value.length>0);
 });
-
 if (notifyForm){
   notifyForm.addEventListener('submit', async (e)=>{
     e.preventDefault(); notifyMsg.classList.add('hidden');
@@ -756,7 +770,6 @@ function openModal(){ discoverInjected(); showModal(true); }
 modalClose.addEventListener('click', ()=> showModal(false));
 modal.addEventListener('click', (e)=>{ if(e.target===modal) showModal(false); });
 
-// Focus trap + Esc
 document.addEventListener('keydown', (e)=>{
   if(!modal.classList.contains('flex')) return;
   const nodes = modal.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])');
@@ -853,7 +866,7 @@ function doDisconnect(){
 }
 disconnectBtn.addEventListener('click', doDisconnect);
 
-/* Restore previous session (guarded) */
+/* Restore previous session */
 const prev = safeGet('etrx_wallet','');
 if (prev){
   walletShort.textContent = shortAddr(prev);
@@ -887,75 +900,72 @@ function toast(msg, isWarn=false){
 }
 </script>
 
-<!-- Starfield -->
+<!-- Etheria Wisps (perf-aware) -->
 <script>
 (function(){
-  const canvas=document.getElementById('orbCanvas'); if(!canvas) return;
-  if (navigator?.connection?.saveData) return; // respect Save-Data
-  const ctx=canvas.getContext('2d');
+  const canvas=document.getElementById('wispCanvas'); if(!canvas) return;
+  if (navigator?.connection?.saveData) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  let w,h,dpr,stars=[],running=true;
+
+  const ctx=canvas.getContext('2d');
+  let w=0,h=0,dpr=1,running=true, wisps=[];
 
   function resize(){
-    dpr=Math.min(devicePixelRatio||1,2);
-    w=canvas.width=Math.floor(innerWidth*dpr);
-    h=canvas.height=Math.floor(innerHeight*dpr);
+    dpr = Math.min(devicePixelRatio||1,2);
+    w = canvas.width = Math.floor(innerWidth*dpr);
+    h = canvas.height= Math.floor(innerHeight*dpr);
     canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px';
-    init();
+    makeWisps();
   }
-  function rand(a,b){ return a+Math.random()*(b-a) }
-  function makeStar(depth=1){
-    const r=rand(.6,1.8)*(4-depth)*dpr*.45, speed=rand(.03,.12)*(4-depth)*dpr,
-          x=rand(0,w), y=rand(0,h);
-    const tone = Math.random()<.5 ? 'rgba(0,255,255,' : 'rgba(84,178,255,';
-    const alphaBase=rand(.45,.8), twinkleAmp=rand(.25,.6), twinkleSpd=rand(.002,.006), dir=Math.random()<.5?-1:1;
-    return {x,y,r,speed,depth,tone,alphaBase,twinkleAmp,twinkleSpd,dir,t:rand(0,Math.PI*2)};
+
+  function rand(a,b){ return a + Math.random()*(b-a) }
+  function makeWisps(){
+    const base = Math.min(120, Math.round((innerWidth*innerHeight)/50000));
+    wisps = new Array(base).fill(0).map(()=>({
+      x: rand(0,w), y: rand(h*0.55, h*1.05),
+      r: rand(2*dpr, 5*dpr),
+      vx: rand(-0.05,0.05)*dpr, vy: rand(-0.15,-0.05)*dpr,
+      huePick: Math.random(),
+      tw: rand(0, Math.PI*2), tws: rand(0.005,0.012)
+    }));
   }
-  function init(){
-    const baseDensity=(innerWidth*innerHeight)/16000;
-    const cores=(navigator.hardwareConcurrency||4);
-    const isLowMem = (navigator.deviceMemory && navigator.deviceMemory <= 4);
-    const density=Math.min(Math.round(baseDensity * Math.min(1, cores/8) * (isLowMem?0.6:1)), 450);
-    stars=[]; for(let i=0;i<density;i++) stars.push(makeStar(i%3+1));
+
+  function col(u){
+    // cyan -> blue -> violet -> orange (subtle)
+    if(u<0.5) return `rgba(84,178,255,${0.18 + u*0.25})`;
+    if(u<0.75) return `rgba(208,128,255,${0.18 + (u-0.5)*0.2})`;
+    return `rgba(255,147,76,${0.16 + (u-0.75)*0.18})`;
   }
-  function drawStar(s){
-    s.t+=s.twinkleSpd; const a=s.alphaBase+Math.sin(s.t)*s.twinkleAmp*.25;
-    const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4);
-    g.addColorStop(0, s.tone + a + ')'); g.addColorStop(1, s.tone + '0)');
-    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(s.x,s.y,s.r*4,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle=s.tone + Math.min(1,a+.08) + ')'; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
-  }
-  function drawConstellations(){
-    ctx.lineWidth=0.7*dpr;
-    for (let i=0;i<stars.length;i++){
-      const a=stars[i];
-      for (let j=i+1;j<i+8 && j<stars.length;j++){
-        const b=stars[j];
-        const dx=a.x-b.x, dy=a.y-b.y;
-        const dist2=dx*dx+dy*dy;
-        if (dist2 < (60*dpr)*(60*dpr)){
-          const near = 1 - Math.sqrt(dist2)/(60*dpr);
-          ctx.strokeStyle=`rgba(84,178,255,${0.04 + 0.08*near})`;
-          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-        }
-      }
-    }
-  }
-  function step(){
+
+  function draw(){
     if(!running) return;
     ctx.clearRect(0,0,w,h);
-    for(const s of stars){
-      s.y+=s.speed*s.dir;
-      s.x+=Math.sin((s.y+s.depth*40)*.001)*.2*(4-s.depth);
-      if(s.y<-10) s.y=h+10; if(s.y>h+10) s.y=-10; if(s.x<-10) s.x=w+10; if(s.x>w+10) s.x=-10;
-      drawStar(s);
+
+    for(const p of wisps){
+      p.tw += p.tws;
+      const a = 0.5 + Math.sin(p.tw)*0.5; // twinkle 0..1
+      p.x += p.vx + Math.sin(p.y*0.001)*0.12*dpr;
+      p.y += p.vy;
+
+      // wrap
+      if(p.y < -20) { p.y = h + 10; p.x = rand(0,w); }
+      if(p.x < -10) p.x = w+10; if(p.x > w+10) p.x = -10;
+
+      const grad = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
+      grad.addColorStop(0, col(p.huePick));
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = grad;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r*(2.5+a*1.2),0,Math.PI*2); ctx.fill();
+      ctx.globalCompositeOperation = 'source-over';
     }
-    drawConstellations();
-    requestAnimationFrame(step);
+
+    requestAnimationFrame(draw);
   }
-  resize(); step();
-  addEventListener('resize',resize,{passive:true});
-  addEventListener('visibilitychange',()=>{running=document.visibilityState==='visible'; if(running) requestAnimationFrame(step);});
+
+  resize(); draw();
+  addEventListener('resize', resize, {passive:true});
+  addEventListener('visibilitychange', ()=>{ running = document.visibilityState==='visible'; if(running) requestAnimationFrame(draw); });
 })();
 </script>
 </body>
