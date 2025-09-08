@@ -22,7 +22,7 @@
   <meta name="twitter:site" content="@enteretheria">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
-  <!-- Structured data: Event (presale window) -->
+  <!-- Event structured data -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -39,6 +39,18 @@
   }
   </script>
 
+  <!-- FAQ structured data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"Is this a presale or the live coin?","acceptedAnswer":{"@type":"Answer","text":"This page is for the presale window (Oct 31 → Nov 7, 2025 UTC). After presale, we proceed to TGE (token generation & distribution) and initial listings/liquidity."}},
+      {"@type":"Question","name":"How will buying work?","acceptedAnswer":{"@type":"Answer","text":"When live, you’ll connect MetaMask and participate directly in the presale contract. Post-TGE, $ETRX will be distributed and appear in your wallet."}}
+    ]
+  }
+  </script>
+
   <!-- Basic CSP (best-effort for GH Pages) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' https://etheriaetrx-etrx.github.io;
@@ -46,17 +58,28 @@
                  script-src 'self' https://cdn.tailwindcss.com 'unsafe-inline';
                  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
                  font-src https://fonts.gstatic.com;
-                 connect-src 'self';
+                 connect-src 'self' https://formspree.io;
+                 worker-src 'self';
                  object-src 'none';
                  base-uri 'self';
                  frame-ancestors 'none'">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0b0f18">
 
   <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- IMPORTANT: no defer to avoid flash and ensure styles are ready -->
   <script src="https://cdn.tailwindcss.com?v=3"></script>
+
+  <!-- Preload + responsive hero -->
+  <link rel="preload" as="image" href="assets/Background.png?v=6" imagesrcset="
+    assets/Background-640.jpg 640w,
+    assets/Background-960.jpg 960w,
+    assets/Background-1280.jpg 1280w,
+    assets/Background.png?v=6 1600w" imagesizes="(max-width: 768px) 100vw, 50vw">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/logo.png">
@@ -64,22 +87,13 @@
   <style>
     :root{
       color-scheme: dark;
-      --ether-blue:#3b82f6;   /* blue-500 */
-      --ether-cyan:#22d3ee;   /* cyan-400 */
-      --ether-orange:#f97316; /* orange-500 */
-      --ether-bg:#090e17;
-      --panel:rgba(255,255,255,.06);
-      --ring:rgba(255,255,255,.12);
-      --text-muted:rgba(255,255,255,.78);
-      --text-dim:rgba(255,255,255,.62);
+      --ether-blue:#3b82f6;   --ether-cyan:#22d3ee;
+      --ether-orange:#f97316; --ether-bg:#090e17;
+      --panel:rgba(255,255,255,.06); --ring:rgba(255,255,255,.12);
+      --text-muted:rgba(255,255,255,.78); --text-dim:rgba(255,255,255,.62);
     }
     *{ box-sizing:border-box }
-    body{
-      margin:0; background:var(--ether-bg); color:#fff;
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      overflow-x:hidden;
-    }
-    /* Etherian cavern glow */
+    body{ margin:0; background:var(--ether-bg); color:#fff; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; overflow-x:hidden; }
     .etherian-bg{
       background:
         radial-gradient(60% 40% at 50% 0%, color-mix(in oklab, var(--ether-cyan) 24%, transparent), transparent 60%),
@@ -91,22 +105,12 @@
     .card{ backdrop-filter: blur(8px) }
     .panel{ background:var(--panel); border:1px solid var(--ring) }
     .ring-panel{ box-shadow:0 0 0 1px var(--ring) inset }
-    .btn-primary{
-      background: linear-gradient(90deg, var(--ether-orange), var(--ether-blue));
-      color:#0b0f18; font-weight:700;
-    }
+    .btn-primary{ background: linear-gradient(90deg, var(--ether-orange), var(--ether-blue)); color:#0b0f18; font-weight:700; }
     .btn-primary:hover{ filter:saturate(1.05) brightness(1.05) }
-
-    /* Focus / a11y */
     :focus-visible { outline: 2px solid var(--ether-cyan); outline-offset: 2px; }
-
-    /* Background canvas behind content */
     #orbCanvas{ position:fixed; inset:0; z-index:0; pointer-events:none; filter:drop-shadow(0 0 24px rgba(34,211,238,.08)); }
     .z-10{ position:relative; z-index:10 }
-
-    /* Sticky launch bar */
     #launchBar{ position:sticky; bottom:0; z-index:50; backdrop-filter:blur(8px) }
-
     @media (prefers-reduced-motion: reduce){
       #orbCanvas{ display:none }
       *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
@@ -155,9 +159,22 @@
         <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-widest" style="color:var(--text-dim)">Presale begins in</div>
         <div class="flex gap-3 text-center" id="countdown" aria-live="polite"></div>
 
-        <div class="mt-2 flex items-center gap-3 text-xs" style="color:var(--text-dim)">
+        <div class="mt-2 flex flex-wrap items-center gap-3 text-xs" style="color:var(--text-dim)">
           <span id="whenText"></span>
           <button id="tzToggle" class="underline underline-offset-4 opacity-90 hover:opacity-100">Show times in UTC</button>
+        </div>
+
+        <!-- Progress / What's next -->
+        <div class="mt-4 rounded-2xl panel ring-panel p-4">
+          <div class="flex items-center justify-between text-xs" style="color:var(--text-dim)">
+            <span>Phase: Presale</span><span id="phaseEta"></span>
+          </div>
+          <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+            <div id="phaseBar" class="h-full bg-gradient-to-r from-[var(--ether-orange)] to-[var(--ether-blue)]" style="width:0%"></div>
+          </div>
+          <ul class="mt-3 grid grid-cols-3 gap-2 text-[11px]" style="color:var(--text-dim)">
+            <li>📬 Whitelist</li><li>🕒 Presale (now)</li><li>🚀 TGE & Listing</li>
+          </ul>
         </div>
 
         <noscript>
@@ -178,18 +195,38 @@
         <b>What happens next?</b> After the presale window closes, we proceed to Token Generation Event (TGE), distribution to participants,
         and initial listings/liquidity. Exact TGE timing will be announced on our socials.
       </div>
+
+      <!-- Socials row -->
+      <div class="mt-6 flex flex-wrap items-center gap-3 text-sm" style="color:var(--text-dim)">
+        <span>Follow updates:</span>
+        <a href="https://twitter.com/enteretheria" target="_blank" rel="noopener noreferrer" class="hover:text-white">Twitter</a> ·
+        <a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-white">Telegram</a> ·
+        <a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-white">Mirror</a>
+      </div>
+
+      <!-- Share & connect teaser -->
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <button id="shareLaunch" class="rounded-2xl border border-white/15 bg-white/5 px-4 py-2 text-sm hover:bg-white/10">
+          Share this launch
+        </button>
+        <button disabled class="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-4 py-2 text-sm opacity-60 cursor-not-allowed">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 7a2 2 0 0 1 2-2h12a4 4 0 0 1 4 4v1h-3.5a2.5 2.5 0 1 0 0 5H21v1a4 4 0 0 1-4 4H5a2 2 0 0 1-2-2zM21 12h-3.5a1.5 1.5 0 0 0 0 3H21z"/></svg>
+          Connect Wallet (coming soon)
+        </button>
+      </div>
     </div>
 
-    <!-- Hero image column — fixed path (no leading slash) -->
+    <!-- Hero image column — responsive -->
     <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px]">
       <img
         src="assets/Background.png?v=6"
+        srcset="assets/Background-640.jpg 640w, assets/Background-960.jpg 960w, assets/Background-1280.jpg 1280w, assets/Background.png?v=6 1600w"
+        sizes="(max-width: 768px) 100vw, 50vw"
         alt="Etheria Background"
         width="1280" height="720"
         fetchpriority="high"
         class="h-full w-full rounded-3xl ring-1 ring-white/10 object-cover"
-        loading="eager"
-        decoding="async"
+        loading="eager" decoding="async"
         onerror="this.outerHTML='<div class=&quot;h-full w-full rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-orange-500/10 flex items-center justify-center text-white/50&quot;>Background image missing</div>'"
       />
     </div>
@@ -209,35 +246,17 @@
   <section id="token" class="z-10 mx-auto max-w-6xl px-6">
     <h2 class="text-2xl font-bold">Tokenomics (Overview)</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
-      <div class="rounded-2xl panel p-5 ring-panel">
-        <b>Utility</b><br/>
-        <span style="color:var(--text-dim)">Access to Etherian Realms &amp; Artifacts, governance votes, allowlists, and in-world boosts.</span>
-      </div>
-      <div class="rounded-2xl panel p-5 ring-panel">
-        <b>Distribution Model</b><br/>
-        <span style="color:var(--text-dim)">Phased: presale participants, ecosystem growth, contributors, liquidity, and long-term reserves.</span>
-      </div>
-      <div class="rounded-2xl panel p-5 ring-panel">
-        <b>Lockups &amp; Cliff</b><br/>
-        <span style="color:var(--text-dim)">Contributor and reserve tranches unlock gradually to align long-term incentives.</span>
-      </div>
-      <div class="rounded-2xl panel p-5 ring-panel">
-        <b>Emissions</b><br/>
-        <span style="color:var(--text-dim)">No hard farming emissions at launch; rewards focus on community quests and on-chain participation.</span>
-      </div>
-      <div class="rounded-2xl panel p-5 ring-panel">
-        <b>Liquidity Approach</b><br/>
-        <span style="color:var(--text-dim)">Initial pools post-TGE with transparent on-chain adds; bridge exploration comes later.</span>
-      </div>
-      <div class="rounded-2xl panel p-5 ring-panel">
-        <b>Governance</b><br/>
-        <span style="color:var(--text-dim)">Progressive decentralization — votes start with lore/world decisions and expand with the universe.</span>
-      </div>
+      <div class="rounded-2xl panel p-5 ring-panel"><b>Utility</b><br/><span style="color:var(--text-dim)">Access to Etherian Realms &amp; Artifacts, governance votes, allowlists, and in-world boosts.</span></div>
+      <div class="rounded-2xl panel p-5 ring-panel"><b>Distribution Model</b><br/><span style="color:var(--text-dim)">Phased: presale participants, ecosystem growth, contributors, liquidity, and long-term reserves.</span></div>
+      <div class="rounded-2xl panel p-5 ring-panel"><b>Lockups &amp; Cliff</b><br/><span style="color:var(--text-dim)">Contributor and reserve tranches unlock gradually to align long-term incentives.</span></div>
+      <div class="rounded-2xl panel p-5 ring-panel"><b>Emissions</b><br/><span style="color:var(--text-dim)">No hard farming emissions at launch; rewards focus on community quests and on-chain participation.</span></div>
+      <div class="rounded-2xl panel p-5 ring-panel"><b>Liquidity Approach</b><br/><span style="color:var(--text-dim)">Initial pools post-TGE with transparent on-chain adds; bridge exploration comes later.</span></div>
+      <div class="rounded-2xl panel p-5 ring-panel"><b>Governance</b><br/><span style="color:var(--text-dim)">Progressive decentralization — votes start with lore/world decisions and expand with the universe.</span></div>
     </div>
     <p class="mt-3 text-xs" style="color:var(--text-dim)">Note: Detailed allocations/percentages will be shared closer to TGE.</p>
   </section>
 
-  <!-- Road (card style + hover) -->
+  <!-- Road -->
   <section id="road" class="z-10 mx-auto max-w-6xl px-6 py-16">
     <h2 class="text-2xl font-bold">Road to Mainnet</h2>
     <ol class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2" style="color:var(--text-muted)">
@@ -249,7 +268,7 @@
     </ol>
   </section>
 
-  <!-- Notify -->
+  <!-- Notify & Allowlist -->
   <section id="notify" class="z-10 mx-auto max-w-6xl px-6 pb-20">
     <div class="rounded-3xl panel p-6 card">
       <h3 class="text-xl font-semibold">Get notified when the presale opens</h3>
@@ -261,11 +280,23 @@
         <button class="btn-primary rounded-2xl px-5 py-3" type="submit">Notify Me</button>
       </form>
       <p id="notifyMsg" class="mt-2 text-xs hidden" style="color:var(--text-dim)">Thanks! We’ll email you about $ETRX timing.</p>
-      <p class="mt-1 text-xs" style="color:var(--text-dim)">We’ll only email you about $ETRX timing. Unsubscribe anytime.</p>
+      <p class="mt-1 text-xs" style="color:var(--text-dim)">We only use your info for presale notifications. No spam.</p>
+
+      <!-- Wallet allowlist form -->
+      <form id="wlForm" class="mt-6 grid gap-3 sm:grid-cols-[1fr_auto]">
+        <label class="sr-only" for="wallet">Ethereum wallet</label>
+        <input id="wallet" name="wallet" inputmode="text" autocomplete="off"
+               placeholder="0x… your Ethereum address"
+               class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-[var(--ether-blue)]" />
+        <!-- Honeypot -->
+        <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
+        <button class="btn-primary rounded-2xl px-5 py-3" type="submit">Join Allowlist</button>
+        <p id="wlMsg" class="sm:col-span-2 text-xs hidden" style="color:var(--text-dim)"></p>
+      </form>
     </div>
   </section>
 
-  <!-- FAQ (collapsible) -->
+  <!-- FAQ -->
   <section id="faq" class="z-10 mx-auto max-w-6xl px-6 pb-24">
     <h2 class="text-2xl font-bold">FAQ</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -274,7 +305,7 @@
           <b>Is this a presale or the live coin?</b><span aria-hidden="true">+</span>
         </button>
         <div class="px-5 pb-5 hidden" style="color:var(--text-dim)">
-          This page is for the <b>presale window</b> (Oct 31 → Nov 7, 2025 UTC). After presale, we proceed to <b>TGE</b> (token generation & distribution) and <b>initial listings/liquidity</b>.
+          This page is for the <b>presale window</b> (Oct 31 → Nov 7, 2025 UTC). After presale, we proceed to <b>TGE</b> and <b>initial listings/liquidity</b>.
         </div>
       </div>
       <div class="rounded-2xl panel ring-panel">
@@ -309,10 +340,10 @@
     <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-sm" style="color:var(--text-dim)">
       <div>© <span id="year"></span> Etheria • $ETRX</div>
       <div class="flex items-center gap-4">
-        <a href="https://twitter.com/enteretheria" target="_blank" rel="noopener" class="hover:text-white">Twitter</a>
-        <a href="#" target="_blank" rel="noopener" class="hover:text-white">Telegram</a>
-        <a href="#" target="_blank" rel="noopener" class="hover:text-white">Mirror</a>
-        <a href="#" target="_blank" rel="noopener" class="hover:text-white">OpenSea</a>
+        <a href="https://twitter.com/enteretheria" target="_blank" rel="noopener noreferrer" class="hover:text-white">Twitter</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-white">Telegram</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-white">Mirror</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-white">OpenSea</a>
       </div>
     </div>
   </footer>
@@ -339,7 +370,7 @@
     const tzBtn = $('tzToggle');
     const fmtUTC = (d)=> d.toUTCString().replace(' GMT',' UTC');
     const fmtLoc = (d)=> d.toLocaleString([], {year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true});
-    function fmt(d){ return showUTC ? fmtUTC(d) : fmtLoc(d); }
+    const fmt = (d)=> showUTC ? fmtUTC(d) : fmtLoc(d);
     function updateWhen(){
       whenText.textContent = `Presale: ${fmt(PRESALE_START)} → ${fmt(PRESALE_END)} • TGE/listing follow after presale`;
     }
@@ -368,7 +399,7 @@
     function loop(){
       const now = nowAccurate();
       const ph=phase(now);
-      phaseLabel.textContent = ph==='upcoming'?'Presale begins in':ph==='live'?'Presale ends in':'Presale ended';
+      if (phaseLabel) { phaseLabel.textContent = ph==='upcoming'?'Presale begins in':ph==='live'?'Presale ends in':'Presale ended'; }
 
       const target = ph==='upcoming'?PRESALE_START:ph==='live'?PRESALE_END:now;
       const diff = Math.max(0, target-now);
@@ -385,6 +416,23 @@
 
     updateWhen();
     loop();
+
+    // Presale progress bar (0–100% between start and end)
+    const phaseBar = $('phaseBar');
+    const phaseEta = $('phaseEta');
+    function updateProgress(){
+      const now = new Date();
+      let pct = 0;
+      if (now <= PRESALE_START) pct = 0;
+      else if (now >= PRESALE_END) pct = 100;
+      else pct = ((now - PRESALE_START) / (PRESALE_END - PRESALE_START)) * 100;
+
+      if (phaseBar) phaseBar.style.width = `${pct}%`;
+      const endIn = Math.max(0, PRESALE_END - now);
+      const hrs = Math.floor(endIn/36e5), mins = Math.floor((endIn%36e5)/6e4);
+      if (phaseEta) phaseEta.textContent = (endIn===0) ? 'Ended' : `Ends in ${hrs}h ${String(mins).padStart(2,'0')}m`;
+    }
+    updateProgress(); setInterval(updateProgress, 30_000);
 
     // Sticky launch bar (show within last 14 days before start)
     const SHOW_BAR_DAYS = 14;
@@ -433,6 +481,66 @@
       const msg=$('notifyMsg'); if(msg) msg.classList.remove('hidden');
     }
 
+    // Wallet allowlist submission
+    const wlForm = document.getElementById('wlForm');
+    if (wlForm){
+      wlForm.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const fd = new FormData(wlForm);
+        const addr = (fd.get('wallet')||'').trim();
+        const trap = (fd.get('company')||'').trim();
+        const msg = document.getElementById('wlMsg');
+        const isHexAddr = /^0x[a-fA-F0-9]{40}$/.test(addr);
+        if (trap) return; // honeypot tripped
+        if (!isHexAddr){
+          msg.textContent = 'Enter a valid Ethereum address (0x…40 hex chars).';
+          msg.classList.remove('hidden'); return;
+        }
+        const list = JSON.parse(localStorage.getItem('etrx_wl')||'[]');
+        if (!list.includes(addr)) list.push(addr);
+        localStorage.setItem('etrx_wl', JSON.stringify(list));
+
+        // Optional: forward to Formspree JSON endpoint (replace form ID)
+        try{
+          await fetch('https://formspree.io/f/your-id', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ wallet: addr, type: 'allowlist' })
+          });
+          msg.textContent = 'Wallet submitted! We’ll verify allowlist details before presale.';
+        }catch{
+          msg.textContent = 'Saved locally. Network submit failed — we’ll try again later.';
+        }
+        msg.classList.remove('hidden');
+        wlForm.reset();
+      });
+    }
+
+    // Share button
+    const shareBtn = document.getElementById('shareLaunch');
+    if (shareBtn && navigator.share){
+      shareBtn.addEventListener('click', async ()=>{
+        try{
+          await navigator.share({
+            title: '$ETRX • Etheria Presale',
+            text: 'Presale runs Oct 31 → Nov 7 (UTC). Join the allowlist.',
+            url: location.href
+          });
+        }catch{}
+      });
+    }else if(shareBtn){
+      shareBtn.addEventListener('click', ()=>{
+        navigator.clipboard.writeText(location.href);
+        shareBtn.textContent = 'Link copied!';
+        setTimeout(()=>shareBtn.textContent='Share this launch', 1500);
+      });
+    }
+
+    // Register service worker (for assets only; HTML stays fresh)
+    if ('serviceWorker' in navigator){
+      navigator.serviceWorker.register('./sw.js');
+    }
+
     // ==== FLOATING ORBS / STARFIELD ====
     (function(){
       const canvas=$('orbCanvas'), ctx=canvas.getContext('2d');
@@ -445,7 +553,12 @@
         const hue=Math.random()<.55?205:24, sat=95, light=hue===205?70:62, alphaBase=rand(.35,.75), twinkleAmp=rand(.2,.6), twinkleSpd=rand(.002,.006), dir=Math.random()<.5?-1:1;
         return {x,y,r,speed,depth,hue,sat,light,alphaBase,twinkleAmp,twinkleSpd,dir,t:rand(0,Math.PI*2)};
       }
-      function init(){ const density=Math.round((innerWidth*innerHeight)/18000); stars=[]; for(let i=0;i<density;i++) stars.push(makeStar(i%3+1)); }
+      function init(){
+        const baseDensity = (innerWidth*innerHeight)/18000;
+        const cores = (navigator.hardwareConcurrency||4);
+        const density = Math.round(baseDensity * Math.min(1, cores/8)); // lower on low-spec
+        stars=[]; for(let i=0;i<density;i++) stars.push(makeStar(i%3+1));
+      }
       function draw(s){
         s.t+=s.twinkleSpd; const a=s.alphaBase+Math.sin(s.t)*s.twinkleAmp*.25;
         const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4);
