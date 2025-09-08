@@ -9,6 +9,7 @@
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 
+<!-- Canonical & Social -->
 <link rel="canonical" href="https://etheriaetrx-etrx.github.io/etrx-presale/">
 <meta property="og:title" content="$ETRX • Etheria Presale">
 <meta property="og:description" content="The official utility token of Etheria. Presale runs Sep 24 → Oct 1, 2025 (UTC).">
@@ -18,7 +19,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@ETRXDreamscapes">
 
-<!-- CSP: injected wallets only (original, permissive for Tailwind CDN) -->
+<!-- Keep original CSP so Tailwind CDN loads (prevents broken layout) -->
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self' https://etheriaetrx-etrx.github.io;
            img-src 'self' data: https:;
@@ -33,12 +34,16 @@
 
 <meta name="theme-color" content="#05070d">
 
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Libraries (same as original setup) -->
 <script src="https://cdn.tailwindcss.com?v=3"></script>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 
+<!-- Assets -->
 <link rel="preload" as="image" href="assets/Background.png">
 <link rel="icon" type="image/png" href="assets/logo.png">
 
@@ -107,7 +112,7 @@ body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple
   mix-blend-mode: soft-light; opacity:.20;
 }
 
-/* (NEW) Holographic foil hover for cards */
+/* Holographic foil hover for cards */
 .holo{ position:relative; overflow:hidden; }
 .holo::after{
   content:""; position:absolute; inset:-150% -150%;
@@ -120,14 +125,14 @@ body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple
 }
 .holo:hover::after{ transform:translateX(30%); opacity:.45 }
 
-/* (NEW) Animated underline links (neon laser) */
+/* Neon underline links */
 a.laser{
   background: linear-gradient(90deg, #00ffff 0 0) bottom left / 0 2px no-repeat;
   transition: background-size .3s ease;
 }
 a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
-/* (NEW) FAQ neon separators */
+/* FAQ */
 .faq-item{ border:1px solid #00ffff22; border-radius:14px; overflow:hidden }
 .faq-header{ position:relative; width:100%; display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding:1rem 1.25rem; text-align:left }
 .faq-header::after{
@@ -139,7 +144,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 .faq-chevron { transition: transform .25s ease }
 .faq-item.open{ box-shadow:0 0 24px #00ffff22 inset }
 
-/* (NEW) Hero image reflection */
+/* Hero image reflection */
 .hero-reflect{ position:relative; overflow:hidden }
 .hero-reflect::after{
   content:""; position:absolute; top:-40%; left:-30%; width:60%; height:180%;
@@ -148,6 +153,10 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   filter: blur(12px);
 }
 .hero-reflect:hover::after{ opacity:.18 }
+
+/* Skip link */
+.skip-link{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+.skip-link:focus{ position:fixed; left:1rem; top:1rem; width:auto; height:auto; padding:.5rem .75rem; background:#06b6d4; color:#000; border-radius:.5rem; z-index:50 }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
@@ -158,6 +167,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 </style>
 </head>
 <body>
+<a href="#about" class="skip-link">Skip to content</a>
+
 <canvas id="orbCanvas" aria-hidden="true"></canvas>
 <div class="scanlines" aria-hidden="true"></div>
 
@@ -173,20 +184,21 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     <a class="laser hover:opacity-100" href="#faq">FAQ</a>
   </nav>
   <div class="flex items-center gap-3">
-    <button id="connectBtn" class="btn-primary text-sm">Connect Wallet</button>
-    <div id="walletPill" class="btn-ghost text-xs hidden">
+    <button id="connectBtn" class="btn-primary text-sm" aria-haspopup="dialog" aria-controls="walletModal">Connect Wallet</button>
+    <div id="walletPill" class="btn-ghost text-xs hidden" aria-live="polite">
       <span id="walletShort" class="addr"></span>
       <button id="disconnectBtn" class="ml-2 underline underline-offset-4">Disconnect</button>
     </div>
   </div>
 </header>
 
-<!-- Wallet modal (injected only) -->
-<div id="walletModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4">
-  <div class="glass card card-outline w-[min(420px,92vw)] p-4">
+<!-- Wallet modal -->
+<div id="walletModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
+     role="dialog" aria-modal="true" aria-labelledby="walletModalTitle">
+  <div class="glass card card-outline w-[min(420px,92vw)] p-4" data-modal-surface>
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold neon-text">Choose a wallet</h3>
-      <button id="modalClose" class="text-white/70 hover:text-white">✕</button>
+      <h3 id="walletModalTitle" class="text-lg font-semibold neon-text">Choose a wallet</h3>
+      <button id="modalClose" class="text-white/70 hover:text-white" aria-label="Close dialog">✕</button>
     </div>
     <p class="mt-1 text-xs small-dim">Use a browser wallet (MetaMask, Rabby, Brave, Frame, etc.).</p>
     <div id="walletList" class="mt-4 grid gap-2"></div>
@@ -242,7 +254,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     </div>
     <div class="mt-4 flex flex-wrap items-center gap-3">
       <button id="shareLaunch" class="btn-primary text-sm"><span>Share this launch</span></button>
-      <button id="openConnect" class="btn-ghost text-sm">Connect Wallet</button>
+      <button id="openConnect" class="btn-ghost text-sm" aria-haspopup="dialog" aria-controls="walletModal">Connect Wallet</button>
     </div>
   </div>
 
@@ -299,12 +311,14 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
       <label class="sr-only" for="email">Email</label>
       <input required id="email" name="email" type="email" placeholder="you@example.com"
              class="flex-1 rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"/>
+      <!-- Honeypot -->
+      <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
       <input type="hidden" name="form_name" value="notify"/>
       <input type="hidden" name="_redirect" value="https://etheriaetrx-etrx.github.io/etrx-presale/#notify-success">
       <button class="btn-primary" type="submit">Notify Me</button>
     </form>
 
-    <div id="notifySuccess" class="hidden mt-4 glass card p-5">
+    <div id="notifySuccess" class="hidden mt-4 glass card p-5" role="status" aria-live="polite">
       <div class="text-sm">✅ Thanks! Please check your inbox to confirm your email.</div>
       <div class="mt-1 text-xs small-dim">Tip: If you don’t see it, look in spam/promotions.</div>
     </div>
@@ -325,7 +339,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
       </form>
 
       <p id="wlHelp" class="mt-2 text-xs small-dim"></p>
-      <div id="wlSuccess" class="hidden mt-3 glass card p-5 sm:col-span-2">
+      <div id="wlSuccess" class="hidden mt-3 glass card p-5 sm:col-span-2" role="status" aria-live="polite">
         <div class="text-sm">✅ Wallet submitted! We’ll verify allowlist details before presale.</div>
         <div class="mt-1 text-xs small-dim">You’ll be notified by email before the window opens.</div>
       </div>
@@ -334,16 +348,63 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   </div>
 </section>
 
+<!-- FAQ -->
+<section id="faq" class="relative z-10 mx-auto max-w-6xl px-6 pb-8">
+  <h2 class="text-2xl font-bold neon-text">FAQ</h2>
+  <div class="mt-4 grid gap-3">
+    <div class="faq-item">
+      <button class="faq-header" aria-expanded="false">
+        <span>When does the presale run?</span>
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-body" hidden>
+        <p class="small-dim">Sep 24 → Oct 1, 2025 (UTC). Use the toggle to view local time.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-header" aria-expanded="false">
+        <span>Will there be a TGE?</span>
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-body" hidden>
+        <p class="small-dim">Yes—after the presale window closes, we’ll distribute to presale wallets and seed initial listings/liquidity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer class="relative z-10 border-t border-cyan-400/15 py-10 small-dim">
   <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-sm">
     <div>© <span id="year"></span> Etheria • $ETRX</div>
     <div class="flex items-center gap-4"><a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer">Twitter</a></div>
+    <p class="mt-2 max-w-3xl text-center text-xs opacity-80">
+      Disclaimer: This site and presale information are for community use only and do not constitute an offer to sell or a solicitation to buy any financial instrument. Participation may be restricted by local laws. Crypto assets are volatile and carry risk.
+    </p>
   </div>
 </footer>
 
 <a href="#notify" id="stickyCTA" class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">Get notified for $ETRX</a>
 
+<!-- Schema.org event (SEO) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "ETRX Presale",
+  "startDate": "2025-09-24T00:00:00Z",
+  "endDate": "2025-10-01T00:00:00Z",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+  "url": "https://etheriaetrx-etrx.github.io/etrx-presale/",
+  "image": "https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png",
+  "organizer": { "@type": "Organization", "name": "Etheria" }
+}
+</script>
+
+<!-- App JS (kept compatible with original CSP/CDN setup) -->
 <script>
+'use strict';
+
 /* ===== Presale window (UTC) ===== */
 const PRESALE_START = new Date('2025-09-24T00:00:00Z');
 const PRESALE_END   = new Date('2025-10-01T00:00:00Z');
@@ -354,14 +415,16 @@ const phaseLabel=$('phaseLabel'), countdown=$('countdown'), whenPrimary=$('whenP
 const connectBtn=$('connectBtn'), openConnect=$('openConnect'), modal=$('walletModal'), modalClose=$('modalClose');
 const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn');
 
+/* Year */
 $('year').textContent = new Date().getFullYear();
 
-/* time formatting */
+/* Time formatting */
 const fmtBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
 const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtBase, timeZone:'UTC', timeZoneName:'short' });
 const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtBase, timeZoneName:'short' });
 
-let primaryUTC = true;
+/* Persisted timezone preference */
+let primaryUTC = (localStorage.getItem('etrx_tz') || 'utc') === 'utc';
 function updateWhen(){
   if (primaryUTC){
     whenPrimary.textContent   = `Presale: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
@@ -375,7 +438,12 @@ function updateWhen(){
     tzToggle.textContent='Make UTC primary';
   }
 }
-const tzToggle = document.getElementById('tzToggle'); tzToggle?.addEventListener('click', ()=>{ primaryUTC=!primaryUTC; updateWhen(); });
+const tzToggle = document.getElementById('tzToggle');
+tzToggle?.addEventListener('click', ()=>{
+  primaryUTC=!primaryUTC;
+  localStorage.setItem('etrx_tz', primaryUTC ? 'utc' : 'local');
+  updateWhen();
+});
 
 /* precision clock */
 const t0 = Date.now(), p0 = performance.now();
@@ -432,8 +500,7 @@ document.querySelectorAll('.faq-item')?.forEach(item=>{
   btn.addEventListener('click', ()=>{
     const open=item.classList.contains('open');
     if(!open){
-      item.classList.add('open');
-      btn.setAttribute('aria-expanded','true');
+      item.classList.add('open'); btn.setAttribute('aria-expanded','true');
       body.hidden=false; body.style.maxHeight=body.scrollHeight+'px'; body.classList.add('open'); chev.style.transform='rotate(180deg)';
     } else {
       btn.setAttribute('aria-expanded','false');
@@ -454,45 +521,94 @@ const notifyForm=$('notifyForm'), notifyMsg=$('notifyMsg'), notifySuccess=$('not
 if (notifyForm){
   notifyForm.addEventListener('submit', async (e)=>{
     e.preventDefault(); notifyMsg.classList.add('hidden');
-    try{ const fd=new FormData(notifyForm); await postFormspree(Object.fromEntries(fd.entries())); notifyForm.classList.add('hidden'); notifySuccess.classList.remove('hidden'); }
-    catch(err){ notifyMsg.textContent='Submission failed. Please check your connection and try again.'; notifyMsg.classList.remove('hidden'); }
+    const fd=new FormData(notifyForm); const trap=(fd.get('company')||'').trim(); if(trap) return;
+    try{
+      notifyForm.setAttribute('aria-busy','true');
+      await postFormspree(Object.fromEntries(fd.entries()));
+      notifyForm.classList.add('hidden'); notifySuccess.classList.remove('hidden');
+    } catch(err){
+      notifyMsg.textContent='Submission failed. Please check your connection and try again.'; notifyMsg.classList.remove('hidden');
+    } finally {
+      notifyForm.removeAttribute('aria-busy');
+    }
   });
 }
 if(location.hash==='#notify-success'){ notifyForm?.classList.add('hidden'); notifySuccess?.classList.remove('hidden'); }
 
-/* ===== ENS-aware allowlist ===== */
+/* ===== ENS-aware allowlist (debounced) ===== */
 const wlForm=$('wlForm'), wlMsg=$('wlMsg'), wlHelp=$('wlHelp'), wlSuccess=$('wlSuccess');
 const addrRe=/^0x[a-fA-F0-9]{40}$/; const ensRe=/^[a-z0-9-]+(\.[a-z0-9-]+)*\.eth$/i;
 function setHelp(text, ok=false){ wlHelp.textContent=text||''; wlHelp.style.color= ok ? 'var(--muted)' : 'var(--dim)'; }
-const providerENS = new (window.ethers?.providers.JsonRpcProvider || function(){})('https://cloudflare-eth.com');
-async function resolveIfEns(value){ if(!value || !ensRe.test(value)) return null; try{ if(!providerENS || !providerENS.resolveName) return null; const resolved=await providerENS.resolveName(value); return resolved||null; }catch{ return null; } }
+
+let providerENS = null;
+if (window.ethers?.providers?.JsonRpcProvider) {
+  providerENS = new window.ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
+}
+let ensTimer=null;
+async function resolveIfEns(value){
+  if(!value || !ensRe.test(value) || value.length>255) return null;
+  if(!providerENS?.resolveName) return null;
+  try{ const resolved = await providerENS.resolveName(value); return resolved||null; }catch{ return null; }
+}
+
 if (wlForm){
   const walletInput=$('wallet');
-  walletInput.addEventListener('input', async ()=>{
-    wlMsg.classList.add('hidden'); const v=walletInput.value.trim(); if(!v){ setHelp(''); return; }
+  walletInput.addEventListener('input', ()=>{
+    wlMsg.classList.add('hidden');
+    const v=walletInput.value.trim();
+    if(!v){ setHelp(''); return; }
     if(addrRe.test(v)){ setHelp('Looks like a valid Ethereum address.', true); return; }
-    if(ensRe.test(v)){ setHelp('Checking ENS…'); const addr=await resolveIfEns(v); setHelp(addr?`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`:'Could not resolve this ENS name.', !!addr); return; }
+    if(ensRe.test(v)){
+      setHelp('Checking ENS…');
+      clearTimeout(ensTimer);
+      ensTimer = setTimeout(async ()=>{
+        const addr=await resolveIfEns(v);
+        setHelp(addr?`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`:'Could not resolve this ENS name.', !!addr);
+      }, 200);
+      return;
+    }
     setHelp('Enter a valid 0x… address or an ENS name like yourname.eth');
   });
+
   wlForm.addEventListener('submit', async (e)=>{
     e.preventDefault(); wlMsg.classList.add('hidden');
     const fd=new FormData(wlForm); const trap=(fd.get('company')||'').trim(); let wallet=(fd.get('wallet')||'').trim(); if(trap) return;
     let finalAddr=null;
     if(addrRe.test(wallet)){ finalAddr=wallet; }
-    else if(ensRe.test(wallet)){ wlHelp.textContent='Resolving ENS…'; const resolved=await resolveIfEns(wallet);
-      if(resolved) finalAddr=resolved; else { wlMsg.textContent='Enter a valid address, or a resolvable ENS name.'; wlMsg.classList.remove('hidden'); return; } }
-    else { wlMsg.textContent='Enter a valid 0x… address or ENS name (yourname.eth).'; wlMsg.classList.remove('hidden'); return; }
-    try{ const list=JSON.parse(localStorage.getItem('etrx_wl')||'[]'); if(!list.includes(finalAddr)) list.push(finalAddr);
+    else if(ensRe.test(wallet)){
+      wlHelp.textContent='Resolving ENS…';
+      const resolved=await resolveIfEns(wallet);
+      if(resolved) finalAddr=resolved; else { wlMsg.textContent='Enter a valid address, or a resolvable ENS name.'; wlMsg.classList.remove('hidden'); return; }
+    } else { wlMsg.textContent='Enter a valid 0x… address or ENS name (yourname.eth).'; wlMsg.classList.remove('hidden'); return; }
+    try{
+      const list=JSON.parse(localStorage.getItem('etrx_wl')||'[]'); if(!list.includes(finalAddr)) list.push(finalAddr);
       localStorage.setItem('etrx_wl', JSON.stringify(list)); await postFormspree({ wallet: finalAddr, type: 'allowlist' });
       wlForm.classList.add('hidden'); wlSuccess.classList.remove('hidden');
     }catch(err){ wlMsg.textContent='Saved locally. Network submit failed — please try again later.'; wlMsg.classList.remove('hidden'); }
   });
 }
 
-/* ===== Injected wallet connection only ===== */
+/* ===== Injected wallet connection only (EIP-6963 aware) ===== */
 let activeProvider=null;
 function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
-function showModal(show){ modal.classList.toggle('hidden', !show); modal.classList.toggle('flex', show); }
+
+/* Modal open/close (light focus management) */
+let lastFocus=null;
+function showModal(show){
+  if(show){
+    lastFocus = document.activeElement;
+    modal.classList.remove('hidden'); modal.classList.add('flex');
+    const f = modal.querySelector('button, [href], input, [tabindex]:not([tabindex="-1"])');
+    f?.focus();
+  } else {
+    modal.classList.add('hidden'); modal.classList.remove('flex');
+    lastFocus?.focus();
+  }
+}
+function openModal(){ discoverInjected(); showModal(true); }
+[connectBtn, openConnect].forEach(btn=> btn?.addEventListener('click', openModal));
+modalClose.addEventListener('click', ()=> showModal(false));
+modal.addEventListener('click', (e)=>{ if(e.target===modal) showModal(false); });
 
 async function ensureMainnet(provider, hexChain='0x1'){
   try{
@@ -505,40 +621,44 @@ async function ensureMainnet(provider, hexChain='0x1'){
 
 function discoverInjected(){
   walletList.innerHTML = '';
-  const providers = []; const announced = [];
+  const entries = [];
+  const announced = [];
   function onAnnounce(e){ announced.push(e.detail); }
   window.addEventListener('eip6963:announceProvider', onAnnounce, { once:false });
   window.dispatchEvent(new Event('eip6963:requestProvider'));
+
   if (window.ethereum){
-    if(window.ethereum.providers?.length){ window.ethereum.providers.forEach(p=> providers.push(p)); }
-    else { providers.push(window.ethereum); }
-  }
-  const entries=[];
-  if(announced.length){ announced.forEach(({info,provider})=> entries.push({ name: info?.name || 'Browser Wallet', provider })); }
-  else if(providers.length){
+    const providers = window.ethereum.providers?.length ? window.ethereum.providers : [window.ethereum];
     providers.forEach(p=>{
       const name = p.isMetaMask ? 'MetaMask' : p.isBraveWallet ? 'Brave Wallet' : p.isRabby ? 'Rabby' : p.isFrame ? 'Frame' : 'Browser Wallet';
       entries.push({ name, provider:p });
     });
   }
-  if(!entries.length){
-    const btn=document.createElement('button');
-    btn.className='btn-ghost opacity-70 cursor-not-allowed'; btn.disabled=true;
-    btn.innerHTML='No browser wallet detected';
-    walletList.appendChild(btn); return;
-  }
-  entries.forEach(({name,provider})=>{
-    const btn=document.createElement('button');
-    btn.className='btn-ghost text-left'; btn.style.display='flex'; btn.style.justifyContent='space-between';
-    btn.innerHTML=`<span>🧩 ${name}</span><span class="small-dim">Use extension</span>`;
-    btn.addEventListener('click', async ()=>{
-      showModal(false);
-      try{ const accounts=await provider.request({ method:'eth_requestAccounts' }); await onConnected(provider, accounts?.[0]||null); }
-      catch(err){ console.warn('Injected connect error', err); }
+  setTimeout(()=>{
+    const merged = announced.length ? announced.map(({info,provider})=>({name:info?.name||'Browser Wallet', provider})) : entries;
+    if(!merged.length){
+      const el = document.createElement('div');
+      el.className = 'small-dim';
+      el.textContent = 'No browser wallet detected.';
+      walletList.appendChild(el);
+      return;
+    }
+    merged.forEach(({name,provider})=>{
+      const btn=document.createElement('button');
+      btn.className='btn-ghost text-left flex items-center justify-between';
+      btn.innerHTML=`<span>🧩 ${name}</span><span class="small-dim">Use extension</span>`;
+      btn.addEventListener('click', async ()=>{
+        showModal(false);
+        try{
+          const accounts=await provider.request({ method:'eth_requestAccounts' });
+          await onConnected(provider, accounts?.[0]||null);
+        }catch(err){ console.warn('Injected connect error', err); }
+      });
+      walletList.appendChild(btn);
     });
-    walletList.appendChild(btn);
-  });
+  }, 350);
 }
+
 async function onConnected(provider, account){
   activeProvider = provider;
   await ensureMainnet(provider);
@@ -559,25 +679,36 @@ function doDisconnect(){
   openConnect?.classList.remove('hidden-important');
 }
 disconnectBtn.addEventListener('click', doDisconnect);
-function openModal(){ discoverInjected(); showModal(true); }
-[connectBtn, openConnect].forEach(btn=> btn?.addEventListener('click', openModal));
-modalClose.addEventListener('click', ()=> showModal(false));
-modal.addEventListener('click', (e)=>{ if(e.target===modal) showModal(false); });
 
 /* Restore previous session */
 const prev = localStorage.getItem('etrx_wallet');
-if (prev){ walletShort.textContent = shortAddr(prev); walletPill.classList.remove('hidden'); connectBtn.classList.add('hidden-important'); openConnect?.classList.add('hidden-important'); }
+if (prev){
+  walletShort.textContent = shortAddr(prev);
+  walletPill.classList.remove('hidden');
+  connectBtn.classList.add('hidden-important');
+  openConnect?.classList.add('hidden-important');
+}
 
 /* Share */
 const shareBtn=$('shareLaunch');
-if (shareBtn && navigator.share){ shareBtn.addEventListener('click', async ()=>{ try{ await navigator.share({ title:'$ETRX • Etheria Presale', text:'Presale runs Sep 24 → Oct 1 (UTC). Join the allowlist.', url: location.href }); }catch{} }); }
-else if(shareBtn){ shareBtn.addEventListener('click', ()=>{ navigator.clipboard.writeText(location.href); shareBtn.textContent='Link copied!'; setTimeout(()=>shareBtn.textContent='Share this launch', 1500); }); }
+if (shareBtn && navigator.share){
+  shareBtn.addEventListener('click', async ()=>{
+    try{ await navigator.share({ title:'$ETRX • Etheria Presale', text:'Presale runs Sep 24 → Oct 1 (UTC). Join the allowlist.', url: location.href }); }catch{}
+  });
+}else if(shareBtn){
+  shareBtn.addEventListener('click', ()=>{
+    navigator.clipboard.writeText(location.href);
+    shareBtn.textContent='Link copied!';
+    setTimeout(()=>shareBtn.textContent='Share this launch', 1500);
+  });
+}
 </script>
 
-<!-- Starfield with CONSTELLATION lines -->
+<!-- Starfield (unchanged visuals, minor perf guard) -->
 <script>
 (function(){
-  const canvas=document.getElementById('orbCanvas'), ctx=canvas.getContext('2d');
+  const canvas=document.getElementById('orbCanvas'); if(!canvas) return;
+  const ctx=canvas.getContext('2d');
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   let w,h,dpr,stars=[],running=true;
 
@@ -599,7 +730,8 @@ else if(shareBtn){ shareBtn.addEventListener('click', ()=>{ navigator.clipboard.
   function init(){
     const baseDensity=(innerWidth*innerHeight)/16000;
     const cores=(navigator.hardwareConcurrency||4);
-    const density=Math.round(baseDensity * Math.min(1, cores/8));
+    const isLowMem = (navigator.deviceMemory && navigator.deviceMemory <= 4);
+    const density=Math.round(baseDensity * Math.min(1, cores/8) * (isLowMem?0.6:1));
     stars=[]; for(let i=0;i<density;i++) stars.push(makeStar(i%3+1));
   }
   function drawStar(s){
@@ -610,8 +742,6 @@ else if(shareBtn){ shareBtn.addEventListener('click', ()=>{ navigator.clipboard.
     ctx.fillStyle=`${s.tone}${Math.min(1,a+.08)})`; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
   }
   function drawConstellations(){
-    // connect near neighbors for a subtle constellation effect
-    // limit comparisons for perf: only check next few stars
     ctx.lineWidth=0.7*dpr;
     for (let i=0;i<stars.length;i++){
       const a=stars[i];
@@ -619,7 +749,7 @@ else if(shareBtn){ shareBtn.addEventListener('click', ()=>{ navigator.clipboard.
         const b=stars[j];
         const dx=a.x-b.x, dy=a.y-b.y;
         const dist2=dx*dx+dy*dy;
-        if (dist2 < (60*dpr)*(60*dpr)){ // ~60px neighborhood
+        if (dist2 < (60*dpr)*(60*dpr)){
           const near = 1 - Math.sqrt(dist2)/(60*dpr);
           ctx.strokeStyle=`rgba(84,178,255,${0.04 + 0.08*near})`;
           ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
