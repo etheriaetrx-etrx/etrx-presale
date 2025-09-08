@@ -25,7 +25,7 @@
 <meta name="twitter:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
 <meta name="twitter:image:alt" content="Etheria presale hero art">
 
-<!-- CSP: allow Tailwind CDN + inline for this single-file build -->
+<!-- CSP (single-file build) -->
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self' https://etheriaetrx-etrx.github.io;
            img-src 'self' data: https:;
@@ -77,13 +77,11 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
 
-/* Ensure content always sits above decorative layers */
+/* Layers */
 main, section, header, footer, .glass, .card { position:relative; z-index:2; isolation:isolate }
-
-/* Decorative layers — never capture clicks */
 #orbCanvas, .scanlines { pointer-events:none !important; z-index:0 }
 
-/* Neon look */
+/* Neon text */
 .neon-text{
   text-shadow: 0 0 6px rgba(var(--neon-cyan)/.8), 0 0 24px rgba(var(--neon-blue)/.45), 0 0 48px rgba(var(--neon-violet)/.35);
 }
@@ -94,6 +92,7 @@ main, section, header, footer, .glass, .card { position:relative; z-index:2; iso
 }
 @keyframes sweep{ to{ background-position:-200% 0 } }
 
+/* Cards */
 .glass{backdrop-filter: blur(12px); background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border:1px solid var(--ring)}
 .card{
   border-radius:18px; box-shadow: 0 0 0 1px rgba(0,255,255,.08) inset, 0 8px 30px rgba(0,255,255,.08), 0 0 60px rgba(130,200,255,.06);
@@ -126,10 +125,10 @@ main, section, header, footer, .glass, .card { position:relative; z-index:2; iso
 .title-glow{ text-shadow:0 0 14px rgba(0,255,255,.3), 0 0 36px rgba(84,178,255,.25) }
 .tabular{ font-variant-numeric: tabular-nums }
 
-/* Header elevation on scroll */
+/* Header elevation */
 .header-float{ backdrop-filter: blur(10px); background:rgba(4,7,12,.5); border-bottom:1px solid rgba(0,255,255,.12); transition: background .2s ease }
 
-/* Starfield canvas */
+/* Starfield canvas / scanlines */
 #orbCanvas{ position:fixed; inset:0; z-index:0; filter:drop-shadow(0 0 24px rgba(0,255,255,.12)) }
 .scanlines{ position:fixed; inset:0; z-index:0; background: repeating-linear-gradient( to bottom, rgba(255,255,255,.03), rgba(255,255,255,.03) 1px, transparent 2px, transparent 4px ); mix-blend-mode: soft-light; opacity:.20; }
 
@@ -159,55 +158,64 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 /* Hero vignette */
 .hero-vignette{ position:absolute; inset:0; pointer-events:none; background: radial-gradient(80% 60% at 50% 10%, transparent 0 60%, rgba(0,0,0,.35) 100%); z-index:1 }
 
-/* Inputs validity hints */
+/* Inputs */
 input:focus{ outline:none }
 input:is([type="email"],[type="text"]).is-valid{ box-shadow: 0 0 0 2px #10b98166 }
 input:is([type="email"],[type="text"]).is-invalid{ box-shadow: 0 0 0 2px #ef444466 }
 
-/* Section divider / containment */
-.section-divider{ height:1px; background:linear-gradient(90deg, #00ffff33, transparent, #d080ff33) }
+/* Section containment (keeps perf) */
 section{ contain: layout paint style }
+/* BUT: let the hero glow bleed freely */
+.hero{ contain: none; overflow: visible; }
 
 /* Toast */
 .toast{ z-index:60; }
 
-/* ===== Softer, animated hero image glow (around Background.png) ===== */
+/* ===== Hero image: stronger, neon, animated glow (no clipping) ===== */
 .hero-glow{
-  position:relative; border-radius:1.5rem; /* match rounded-3xl */
+  position:relative; border-radius:1.5rem; /* rounded-3xl */
+  overflow: visible; /* belt + suspenders */
 }
 .hero-glow::before,
 .hero-glow::after{
-  content:""; position:absolute; inset:-10px; border-radius:inherit; pointer-events:none;
+  content:""; position:absolute; border-radius:inherit; pointer-events:none; inset:-22px;
+  mix-blend-mode:screen;
 }
 .hero-glow::before{
-  /* very soft rotating halo */
+  /* vivid rotating halo */
   background: conic-gradient(from 0deg at 50% 50%,
-    rgba(var(--neon-blue)/.18),
-    rgba(var(--neon-violet)/.18),
-    rgba(var(--neon-orange)/.18),
-    rgba(var(--neon-blue)/.18));
-  filter: blur(34px) saturate(1.05);
-  opacity:.28;
-  animation: glowSpin 24s linear infinite;
+    rgba(0,255,255,.32),
+    rgba(84,178,255,.36),
+    rgba(208,128,255,.34),
+    rgba(255,147,76,.30),
+    rgba(0,255,255,.32));
+  filter: blur(46px) saturate(1.35) brightness(1.05);
+  opacity:.55;
+  animation: glowSpin 18s linear infinite;
   transform-origin: 50% 50%;
 }
 .hero-glow::after{
-  /* gentle breathing glow */
+  /* soft breathing aura */
   background: radial-gradient(120% 120% at 50% 50%,
-    rgba(84,178,255,.16),
-    rgba(208,128,255,.10) 35%,
-    rgba(255,147,76,.08) 60%,
-    transparent 70%);
-  filter: blur(26px);
-  opacity:.22;
-  animation: glowPulse 7s ease-in-out infinite alternate;
+    rgba(0,255,255,.22),
+    rgba(84,178,255,.18) 35%,
+    rgba(208,128,255,.14) 60%,
+    rgba(255,147,76,.12) 75%,
+    transparent 85%);
+  filter: blur(36px) saturate(1.15);
+  opacity:.42;
+  animation: glowPulse 7.5s ease-in-out infinite alternate;
 }
 .hero-glow img{
   position:relative; display:block; border-radius:inherit;
-  box-shadow: 0 0 0 1px rgba(0,255,255,.12) inset, 0 10px 34px rgba(84,178,255,.14);
+  /* neon rim + subtle cyan drop shadows */
+  box-shadow:
+    0 0 0 1px rgba(0,255,255,.22) inset,
+    0 22px 60px rgba(84,178,255,.18),
+    0 0 80px rgba(0,255,255,.18);
 }
 @keyframes glowSpin { to { transform: rotate(360deg); } }
-@keyframes glowPulse { from { opacity:.18; filter: blur(22px); } to { opacity:.32; filter: blur(32px); } }
+@keyframes glowPulse { from { opacity:.32; filter: blur(28px); } to { opacity:.48; filter: blur(40px); } }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
@@ -263,7 +271,7 @@ section{ contain: layout paint style }
 </div>
 
 <!-- Hero -->
-<section class="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-stretch gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10 hero">
+<section class="hero relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-stretch gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
   <div class="hero-vignette" aria-hidden="true"></div>
   <div class="order-2 md:order-1">
     <h1 class="title-glow neon-text text-hero leading-tight md:text-6xl">
@@ -315,7 +323,7 @@ section{ contain: layout paint style }
     </div>
   </div>
 
-  <!-- Hero image with softer, animated glow -->
+  <!-- Hero image with stronger neon glow -->
   <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px] reveal" data-delay="0">
     <div class="hero-glow h-full w-full rounded-3xl">
       <img
@@ -356,7 +364,7 @@ section{ contain: layout paint style }
   <p class="mt-3 text-xs small-dim reveal" data-delay="300">Note: Detailed allocations/percentages will be shared closer to TGE.</p>
 </section>
 
-<div class="section-divider max-w-6xl mx_auto"></div>
+<div class="section-divider max-w-6xl mx-auto"></div>
 
 <!-- Road -->
 <section id="road" class="relative z-10 mx-auto max-w-6xl px-6 py-14">
@@ -610,7 +618,7 @@ navMap.forEach(n=>{ const el=document.getElementById(n.id); el && secIO.observe(
   els.forEach(el=>io.observe(el));
 })();
 
-/* FAQ expand (ARIA-friendly) */
+/* FAQ expand */
 document.querySelectorAll('.faq-item')?.forEach(item=>{
   const btn=item.querySelector('.faq-header'); const body=item.querySelector('.faq-body'); const chev=item.querySelector('.faq-chevron');
   btn.addEventListener('click', ()=>{
@@ -626,7 +634,7 @@ document.querySelectorAll('.faq-item')?.forEach(item=>{
   });
 });
 
-/* ===== Formspree (AJAX) + validity hints ===== */
+/* ===== Formspree (AJAX) ===== */
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
 async function postFormspree(data){
   const ctrl = new AbortController();
@@ -663,7 +671,7 @@ if (notifyForm){
 }
 if(location.hash==='#notify-success'){ notifyForm?.classList.add('hidden'); notifySuccess?.classList.remove('hidden'); }
 
-/* ===== ENS-aware allowlist (debounced) ===== */
+/* ===== ENS-aware allowlist ===== */
 const wlForm=$('wlForm'), wlMsg=$('wlMsg'), wlHelp=$('wlHelp'), wlSuccess=$('wlSuccess');
 const addrRe=/^0x[a-fA-F0-9]{40}$/; const ensRe=/^[a-z0-9-]+(\.[a-z0-9-]+)*\.eth$/i;
 function setHelp(text, ok=false){ wlHelp.textContent=text||''; wlHelp.style.color= ok ? 'var(--muted)' : 'var(--dim)'; }
@@ -678,8 +686,7 @@ async function resolveIfEns(value){
   if(!providerENS?.resolveName) return null;
   try{
     const ctrl=new AbortController(); const timeout=setTimeout(()=>ctrl.abort(),10000);
-    const resolved = await providerENS.resolveName(value); // soft timeout
-    clearTimeout(timeout);
+    const resolved = await providerENS.resolveName(value); clearTimeout(timeout);
     return resolved||null;
   }catch{ return null; }
 }
@@ -726,7 +733,7 @@ if (wlForm){
   });
 }
 
-/* ===== Injected wallet connection only (EIP-6963 aware) ===== */
+/* ===== Injected wallet (EIP-6963 aware) ===== */
 let activeProvider=null;
 function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
 
@@ -749,7 +756,7 @@ function openModal(){ discoverInjected(); showModal(true); }
 modalClose.addEventListener('click', ()=> showModal(false));
 modal.addEventListener('click', (e)=>{ if(e.target===modal) showModal(false); });
 
-// Focus trap + Esc close (guard when no focusables)
+// Focus trap + Esc
 document.addEventListener('keydown', (e)=>{
   if(!modal.classList.contains('flex')) return;
   const nodes = modal.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])');
@@ -869,7 +876,7 @@ if (shareBtn && navigator.share){
   });
 }
 
-/* Toast helper (non-focus stealing) */
+/* Toast */
 function toast(msg, isWarn=false){
   const t=document.createElement('div');
   t.setAttribute('role','status'); t.setAttribute('aria-live','polite'); t.setAttribute('aria-atomic','true');
@@ -880,7 +887,7 @@ function toast(msg, isWarn=false){
 }
 </script>
 
-<!-- Starfield (perf-aware) -->
+<!-- Starfield -->
 <script>
 (function(){
   const canvas=document.getElementById('orbCanvas'); if(!canvas) return;
@@ -908,7 +915,7 @@ function toast(msg, isWarn=false){
     const baseDensity=(innerWidth*innerHeight)/16000;
     const cores=(navigator.hardwareConcurrency||4);
     const isLowMem = (navigator.deviceMemory && navigator.deviceMemory <= 4);
-    const density=Math.min(Math.round(baseDensity * Math.min(1, cores/8) * (isLowMem?0.6:1)), 450); // cap
+    const density=Math.min(Math.round(baseDensity * Math.min(1, cores/8) * (isLowMem?0.6:1)), 450);
     stars=[]; for(let i=0;i<density;i++) stars.push(makeStar(i%3+1));
   }
   function drawStar(s){
