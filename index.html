@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>$ETRX • Etheria Presale</title>
-  <meta name="description" content="$ETRX — the official utility token of Etheria. Presale soon on Ethereum."/>
+  <title>$ETRX • Etheria Launch</title>
+  <meta name="description" content="$ETRX — the official utility token of Etheria. Launch on Ethereum."/>
   <!-- cache-busting so updates show immediately -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
   <meta http-equiv="Pragma" content="no-cache"/>
@@ -13,10 +13,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com?v=2"></script>
+  <script src="https://cdn.tailwindcss.com?v=3"></script>
+
+  <!-- Simple SVG favicon (can replace later with /assets/favicon.png) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%237dd3fc'/%3E%3Cstop offset='1' stop-color='%2360a5fa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M32 6l12 20-12 20L20 26 32 6z' fill='url(%23g)'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23a5f3fc'/%3E%3C/svg%3E" />
+
   <style>
     :root{--bg:#0a0f19;--ink:#ffffff}
     body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+
+    /* Etherian cave ambience */
     .etherian-bg{
       background:
         radial-gradient(60% 40% at 50% 0%, rgba(56,189,248,.20), transparent 60%),
@@ -25,11 +31,42 @@
         #0a0f19;
     }
     .card{backdrop-filter: blur(6px)}
+
+    /* Ambient particles */
+    .particles { pointer-events:none; position:fixed; inset:0; overflow:hidden; z-index:0; }
+    .particle {
+      position:absolute; width:3px; height:3px; border-radius:9999px;
+      background:radial-gradient(circle, #93c5fd 0%, rgba(147,197,253,.0) 70%);
+      animation: drift linear infinite;
+      filter: drop-shadow(0 0 6px rgba(147,197,253,.8));
+      opacity:.5;
+    }
+    @keyframes drift {
+      0%   { transform: translateY(110vh) translateX(0); }
+      100% { transform: translateY(-10vh) translateX(var(--dx, 60px)); }
+    }
   </style>
 </head>
+
 <body class="etherian-bg">
+  <!-- Ambient particles -->
+  <div class="particles" id="particles"></div>
+  <script>
+    // create 40 softly drifting particles
+    for (let i=0;i<40;i++){
+      const p=document.createElement('span');
+      p.className='particle';
+      p.style.left = Math.random()*100+'vw';
+      p.style.animationDuration = (18+Math.random()*16)+'s';
+      p.style.animationDelay = (-Math.random()*16)+'s';
+      p.style.opacity = (0.25+Math.random()*0.6).toFixed(2);
+      p.style.setProperty('--dx', (Math.random()*120-60)+'px');
+      document.getElementById('particles').appendChild(p);
+    }
+  </script>
+
   <!-- Nav -->
-  <header class="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+  <header class="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
     <div class="flex items-center gap-3">
       <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 shadow-lg shadow-cyan-500/30 ring-1 ring-cyan-300/40"></div>
       <div class="text-sm sm:text-base tracking-wide opacity-90">Etheria</div>
@@ -44,7 +81,7 @@
   </header>
 
   <!-- Hero -->
-  <section class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
+  <section class="relative z-10 mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
     <div class="order-2 md:order-1">
       <h1 class="text-4xl font-extrabold leading-tight md:text-6xl">
         The Official Token of Etheria
@@ -86,10 +123,45 @@
         <path d="M160 108l14 10-10 18h16l-34 42 10-28h-16l20-42Z" fill="#0ea5e9" opacity=".9"/>
       </svg>
     </div>
+
+    <!-- Floating shards decoration -->
+    <div class="pointer-events-none relative -mt-6 md:col-span-2">
+      <svg viewBox="0 0 600 250" class="w-full opacity-70">
+        <defs>
+          <linearGradient id="cg" x1="0" y1="0" x2="1" y2="1">
+            <stop stop-color="#93c5fd"/><stop offset="1" stop-color="#60a5fa"/>
+          </linearGradient>
+          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <g filter="url(#glow)" fill="url(#cg)" opacity=".75">
+          <path d="M90 170 l12 -40 l22 26 l-10 34 z"><animate attributeName="transform" dur="12s" repeatCount="indefinite" values="translate(0,0);translate(6,-12);translate(0,0)"/></path>
+          <path d="M190 120 l10 -30 l16 22 l-8 26 z"><animate attributeName="transform" dur="10s" repeatCount="indefinite" values="translate(0,0);translate(-4,-10);translate(0,0)"/></path>
+          <path d="M310 160 l14 -38 l20 24 l-10 30 z"><animate attributeName="transform" dur="13s" repeatCount="indefinite" values="translate(0,0);translate(5,-14);translate(0,0)"/></path>
+          <path d="M450 130 l12 -32 l18 18 l-8 28 z"><animate attributeName="transform" dur="11s" repeatCount="indefinite" values="translate(0,0);translate(4,-12);translate(0,0)"/></path>
+        </g>
+      </svg>
+    </div>
   </section>
 
-  <!-- Presale/Buy card -->
-  <section class="mx-auto max-w-6xl px-6">
+  <!-- Divider -->
+  <div class="relative z-10 my-12 flex items-center justify-center">
+    <svg viewBox="0 0 420 60" class="h-8 w-auto drop-shadow-[0_0_12px_rgba(56,189,248,.45)]">
+      <defs>
+        <linearGradient id="rg" x1="0" y1="0" x2="1" y2="0">
+          <stop stop-color="#7dd3fc"/><stop offset="1" stop-color="#60a5fa"/>
+        </linearGradient>
+      </defs>
+      <path d="M10 30 H170" stroke="url(#rg)" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+      <path d="M250 30 H410" stroke="url(#rg)" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+      <path d="M210 8 L238 30 L210 52 L182 30 Z" fill="url(#rg)"/>
+      <circle cx="210" cy="30" r="6" fill="#a5f3fc"/>
+    </svg>
+  </div>
+
+  <!-- Buy/Launch card -->
+  <section class="relative z-10 mx-auto max-w-6xl px-6">
     <div class="card rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-cyan-500/10">
       <h3 class="text-xl font-semibold">Join the Launch</h3>
       <p class="mt-1 text-sm text-white/70">
@@ -108,17 +180,31 @@
           When live, this button will connect with MetaMask and buy directly from the launch contract.
         </p>
       </form>
-      <div class="mt-6 grid grid-cols-2 gap-3 text-xs text-white/70">
-        <div class="rounded-2xl bg-[#0b1221] p-3 ring-1 ring-white/10">Governance & utility across Etheria</div>
-        <div class="rounded-2xl bg-[#0b1221] p-3 ring-1 ring-white/10">Discounts on mints & marketplace perks</div>
-        <div class="rounded-2xl bg-[#0b1221] p-3 ring-1 ring-white/10">Airdrops & staking rewards</div>
-        <div class="rounded-2xl bg-[#0b1221] p-3 ring-1 ring-white/10">Future bridge support</div>
+
+      <!-- Utilities w/ icons -->
+      <div class="mt-6 grid grid-cols-2 gap-3 text-xs text-white/80">
+        <div class="flex items-center gap-3 rounded-2xl bg-[#0b1221] p-3 ring-1 ring-white/10">
+          <svg viewBox="0 0 24 24" class="h-5 w-5 text-cyan-300"><path fill="currentColor" d="M12 2l3.5 6L22 9l-5 4 .5 7L12 17l-5.5 3 1-7-5-4 6.5-1z"/></svg>
+          <span>Governance & utility across Etheria</span>
+        </div>
+        <div class="flex items-center gap-3 rounded-2xl bg-[#0b1221] p-3 ring-1 ring-white/10">
+          <svg viewBox="0 0 24 24" class="h-5 w-5 text-cyan-300"><path fill="currentColor" d="M12 3l7 4v6c0 5-7 8-7 8s-7-3-7-8V7z"/></svg>
+          <span>Discounts on mints & marketplace perks</span>
+        </div>
+        <div class="flex items-center gap-3 rounded-2xl bg-[#0b1221] p-3 ring-1 ring-white/10">
+          <svg viewBox="0 0 24 24" class="h-5 w-5 text-cyan-300"><path fill="currentColor" d="M12 2a7 7 0 017 7v2h2v6h-6v-6h2V9a5 5 0 10-10 0v2h2v6H3v-6h2V9a7 7 0 017-7z"/></svg>
+          <span>Airdrops & staking rewards</span>
+        </div>
+        <div class="flex items-center gap-3 rounded-2xl bg-[#0b1221] p-3 ring-1 ring-white/10">
+          <svg viewBox="0 0 24 24" class="h-5 w-5 text-cyan-300"><path fill="currentColor" d="M6 3h12l3 4-9 14L3 7z"/></svg>
+          <span>Future bridge support</span>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- About -->
-  <section id="about" class="mx-auto max-w-6xl px-6 py-16">
+  <section id="about" class="relative z-10 mx-auto max-w-6xl px-6 py-16">
     <h2 class="text-2xl font-bold">What is $ETRX?</h2>
     <p class="mt-3 max-w-3xl text-white/80">
       $ETRX is the utility token of Etheria — used to unlock rare Realms & Artifacts, vote on lore and direction,
@@ -128,7 +214,7 @@
   </section>
 
   <!-- Tokenomics -->
-  <section id="token" class="mx-auto max-w-6xl px-6">
+  <section id="token" class="relative z-10 mx-auto max-w-6xl px-6">
     <h2 class="text-2xl font-bold">Tokenomics (Draft)</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
       <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Community</b><br/><span class="text-white/70">40% — rewards, airdrops, staking</span></div>
@@ -141,7 +227,7 @@
   </section>
 
   <!-- Road -->
-  <section id="road" class="mx-auto max-w-6xl px-6 py-16">
+  <section id="road" class="relative z-10 mx-auto max-w-6xl px-6 py-16">
     <h2 class="text-2xl font-bold">Road to Mainnet</h2>
     <ol class="mt-5 space-y-3 text-white/80">
       <li>1) Launch site & whitelist open</li>
@@ -153,9 +239,10 @@
   </section>
 
   <!-- Notify -->
-  <section id="notify" class="mx-auto max-w-6xl px-6 pb-20">
+  <section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-20">
     <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
       <h3 class="text-xl font-semibold">Get notified when the launch opens</h3>
+      <!-- Replace action URL with your Formspree / Beehiiv / Mailchimp endpoint -->
       <form class="mt-4 flex flex-col gap-3 sm:flex-row" action="https://formspree.io/f/your-id" method="POST">
         <input required name="email" type="email" placeholder="you@example.com"
                class="flex-1 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"/>
@@ -166,7 +253,7 @@
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="mx-auto max-w-6xl px-6 pb-24">
+  <section id="faq" class="relative z-10 mx-auto max-w-6xl px-6 pb-24">
     <h2 class="text-2xl font-bold">FAQ</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
       <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Do I need ETH now?</b><br/><span class="text-white/70">No. This site is for announcements and whitelisting until smart contracts are deployed.</span></div>
@@ -177,7 +264,7 @@
   </section>
 
   <!-- Footer -->
-  <footer class="border-t border-white/10 py-10">
+  <footer class="relative z-10 border-t border-white/10 py-10">
     <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-sm text-white/60 md:flex-row">
       <div>© <span id="year"></span> Etheria • $ETRX</div>
       <div class="flex items-center gap-4">
@@ -192,7 +279,7 @@
   <script>
     // ==== FIXED LAUNCH WINDOW (UTC) ====
     // Launch starts: Oct 31, 2025 00:00:00 UTC
-    // Launch ends:   Nov 05, 2025 00:00:00 UTC (adjust as you wish)
+    // Launch ends:   Nov 07, 2025 00:00:00 UTC
     const PRESALE_START = new Date('2025-10-31T00:00:00Z');
     const PRESALE_END   = new Date('2025-11-07T00:00:00Z');
 
@@ -201,7 +288,7 @@
     const whenText   = document.getElementById('whenText');
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Helper for the little “Launch: … UTC / local time …” line
+    // Show UTC + local time helper line
     const fmtUTC = (d)=> d.toUTCString().replace(' GMT',' UTC');
     const fmtLoc = (d)=> d.toLocaleString([], {year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit'});
     whenText.textContent = `Launch: ${fmtUTC(PRESALE_START)} • Local: ${fmtLoc(PRESALE_START)}`;
