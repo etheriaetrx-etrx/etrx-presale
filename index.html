@@ -17,8 +17,11 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://etheriaetrx-etrx.github.io/etrx-presale/">
 <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="720">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@ETRXDreamscapes">
+<meta name="twitter:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
 
 <!-- CSP: allow Tailwind CDN + inline for this single-file build -->
 <meta http-equiv="Content-Security-Policy"
@@ -43,7 +46,7 @@
 <!-- Fonts & Libraries -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script>
-  /* Use the recommended Tailwind CDN config shape */
+  /* Tailwind CDN config */
   window.tailwind = {}
   tailwind.config = {
     theme:{ extend:{
@@ -130,9 +133,8 @@ main, section, header, footer, .glass, .card { position:relative; z-index:2; iso
 .holo::after{
   content:""; position:absolute; inset:-150% -150%;
   background: conic-gradient(from 0deg, #fff0, #fff3 10%, #fff0 20%), linear-gradient(120deg, #ff934c55, #54b2ff55, #d080ff55);
-  mix-blend-mode:screen; filter:saturate(1.4) blur(10px); opacity:.25;
+  mix-blend-mode:screen; filter:saturate(1.4) blur(10px); opacity:.25; pointer-events:none;
   transform:translateX(-30%); transition: transform .8s ease, opacity .3s ease;
-  pointer-events:none;
 }
 .holo:hover::after{ transform:translateX(30%); opacity:.45 }
 
@@ -172,6 +174,12 @@ section{ contain: layout paint style }
 </style>
 </head>
 <body>
+<noscript>
+  <div style="position:relative;z-index:3;margin:1rem auto;max-width:60rem;padding:.75rem 1rem;border:1px solid #0ff3;border-radius:10px;background:#06121a;color:#bfefff;font:14px/1.3 Inter,system-ui">
+    JavaScript is disabled — countdown and forms require it.
+  </div>
+</noscript>
+
 <a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
 
 <canvas id="orbCanvas" aria-hidden="true"></canvas>
@@ -446,8 +454,11 @@ const fmtBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', 
 const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtBase, timeZone:'UTC', timeZoneName:'short' });
 const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtBase, timeZoneName:'short' });
 
-/* Persisted timezone preference */
-let primaryUTC = (localStorage.getItem('etrx_tz') || 'utc') === 'utc';
+/* Persisted timezone preference (guarded for privacy modes) */
+function safeGet(key, fallback=null){ try{ return localStorage.getItem(key) ?? fallback }catch{ return fallback } }
+function safeSet(key, val){ try{ localStorage.setItem(key, val) }catch{} }
+
+let primaryUTC = (safeGet('etrx_tz', 'utc') || 'utc') === 'utc';
 function updateWhen(){
   if (primaryUTC){
     whenPrimary.textContent   = `Presale: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
@@ -466,7 +477,7 @@ function updateWhen(){
 const tzToggle = document.getElementById('tzToggle');
 tzToggle?.addEventListener('click', ()=>{
   primaryUTC=!primaryUTC;
-  localStorage.setItem('etrx_tz', primaryUTC ? 'utc' : 'local');
+  safeSet('etrx_tz', primaryUTC ? 'utc' : 'local');
   updateWhen();
 });
 
@@ -477,7 +488,7 @@ const nowAccurate = ()=> new Date(t0 + (performance.now()-p0));
 function phase(now){ if(now < PRESALE_START) return 'upcoming'; if(now > PRESALE_END) return 'ended'; return 'live'; }
 function box(v,label){
   const d=document.createElement('div');
-  d.className='w-22 rounded-xl glass card p-3 text-center';
+  d.className='w-[5.5rem] rounded-xl glass card p-3 text-center';
   d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text">${String(v).padStart(2,'0')}</div><div class="text-[11px] uppercase small-dim">${label}</div>`;
   return d;
 }
@@ -644,8 +655,9 @@ if (wlForm){
       if(resolved) finalAddr=resolved; else { wlMsg.textContent='Enter a valid address, or a resolvable ENS name.'; wlMsg.classList.remove('hidden'); return; }
     } else { wlMsg.textContent='Enter a valid 0x… address or ENS name (yourname.eth).'; wlMsg.classList.remove('hidden'); return; }
     try{
-      const list=JSON.parse(localStorage.getItem('etrx_wl')||'[]'); if(!list.includes(finalAddr)) list.push(finalAddr);
-      localStorage.setItem('etrx_wl', JSON.stringify(list)); await postFormspree({ wallet: finalAddr, type: 'allowlist' });
+      const list=JSON.parse(safeGet('etrx_wl','[]')||'[]'); if(!list.includes(finalAddr)) list.push(finalAddr);
+      safeSet('etrx_wl', JSON.stringify(list));
+      await postFormspree({ wallet: finalAddr, type: 'allowlist' });
       wlForm.classList.add('hidden'); wlSuccess.classList.remove('hidden');
       toast('Wallet submitted ✅');
     }catch(err){
@@ -742,19 +754,19 @@ function discoverInjected(){
 async function onConnected(provider, account){
   activeProvider = provider;
   await ensureMainnet(provider);
-  localStorage.setItem('etrx_wallet', account||'');
+  safeSet('etrx_wallet', account||'');
   walletShort.textContent = shortAddr(account||'');
   walletPill.classList.remove('hidden');
   connectBtn.classList.add('hidden-important');
   openConnect?.classList.add('hidden-important');
-  provider.on?.('accountsChanged', (accs)=>{ walletShort.textContent=shortAddr(accs?.[0]||''); localStorage.setItem('etrx_wallet', accs?.[0]||''); });
+  provider.on?.('accountsChanged', (accs)=>{ walletShort.textContent=shortAddr(accs?.[0]||''); safeSet('etrx_wallet', accs?.[0]||''); });
   provider.on?.('disconnect', ()=>{ doDisconnect(); });
   provider.on?.('chainChanged', async ()=>{ await ensureMainnet(provider); });
   toast('Wallet connected ✅');
 }
 function doDisconnect(){
   try{ activeProvider?.disconnect?.(); }catch{}
-  activeProvider=null; localStorage.removeItem('etrx_wallet');
+  activeProvider=null; safeSet('etrx_wallet','');
   walletPill.classList.add('hidden');
   connectBtn.classList.remove('hidden-important');
   openConnect?.classList.remove('hidden-important');
@@ -762,8 +774,8 @@ function doDisconnect(){
 }
 disconnectBtn.addEventListener('click', doDisconnect);
 
-/* Restore previous session */
-const prev = localStorage.getItem('etrx_wallet');
+/* Restore previous session (guarded) */
+const prev = safeGet('etrx_wallet','');
 if (prev){
   walletShort.textContent = shortAddr(prev);
   walletPill.classList.remove('hidden');
