@@ -275,10 +275,12 @@
 
       <!-- Email notify -->
       <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row"
-            action="https://formspree.io/f/mandalyp" method="POST">
+            action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true">
         <label class="sr-only" for="email">Email</label>
         <input required id="email" name="email" type="email" placeholder="you@example.com"
                class="flex-1 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-[var(--ether-blue)]"/>
+        <!-- Optional subject/helpful metadata -->
+        <input type="hidden" name="form_name" value="notify"/>
         <input type="hidden" name="_redirect" value="https://etheriaetrx-etrx.github.io/etrx-presale/#notify-success">
         <button class="btn-primary rounded-2xl px-5 py-3" type="submit">Notify Me</button>
       </form>
@@ -286,12 +288,15 @@
       <p class="mt-1 text-xs" style="color:var(--text-dim)">We only use your info for presale notifications. No spam.</p>
 
       <!-- Wallet allowlist form -->
-      <form id="wlForm" class="mt-6 grid gap-3 sm:grid-cols-[1fr_auto]">
+      <form id="wlForm" class="mt-6 grid gap-3 sm:grid-cols-[1fr_auto]"
+            action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate>
         <label class="sr-only" for="wallet">Ethereum wallet</label>
         <input id="wallet" name="wallet" inputmode="text" autocomplete="off" placeholder="0x… your Ethereum address"
                class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-[var(--ether-blue)]" />
-        <!-- Honeypot -->
+        <!-- Honeypot (spam trap) -->
         <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
+        <!-- Tag this submission in Formspree -->
+        <input type="hidden" name="type" value="allowlist" />
         <button class="btn-primary rounded-2xl px-5 py-3" type="submit">Join Allowlist</button>
         <p id="wlMsg" class="sm:col-span-2 text-xs hidden" style="color:var(--text-dim)"></p>
       </form>
@@ -485,46 +490,65 @@
     });
   });
 
-  // Notify success message
+  // Notify success message for non-JS (redirect flow)
   if(location.hash==='#notify-success'){
     const msg=$('notifyMsg'); if(msg) msg.classList.remove('hidden');
   }
 
-  // Wallet allowlist submission
-  const wlForm = document.getElementById('wlForm');
-  if (wlForm){
-    wlForm.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const fd = new FormData(wlForm);
-      const addr = (fd.get('wallet')||'').trim();
+  // ===== Formspree integration (AJAX) =====
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
+
+  async function submitFormspree(form, onSuccess){
+    const msgEl = form.id === 'notifyForm' ? document.getElementById('notifyMsg')
+                 : form.id === 'wlForm'    ? document.getElementById('wlMsg')
+                 : null;
+
+    if (form.id === 'wlForm') {
+      const fd = new FormData(form);
       const trap = (fd.get('company')||'').trim();
-      const msg = document.getElementById('wlMsg');
-      const isHexAddr = /^0x[a-fA-F0-9]{40}$/.test(addr);
+      const addr = (fd.get('wallet')||'').trim();
       if (trap) return; // honeypot
+      const isHexAddr = /^0x[a-fA-F0-9]{40}$/.test(addr);
       if (!isHexAddr){
-        msg.textContent = 'Enter a valid Ethereum address (0x…40 hex chars).';
-        msg.classList.remove('hidden');
+        if (msgEl){
+          msgEl.textContent = 'Enter a valid Ethereum address (0x…40 hex chars).';
+          msgEl.classList.remove('hidden');
+        }
         return;
       }
-      const list = JSON.parse(localStorage.getItem('etrx_wl')||'[]');
-      if (!list.includes(addr)) list.push(addr);
-      localStorage.setItem('etrx_wl', JSON.stringify(list));
+    }
 
-      // Forward to Formspree (your ID)
-      try{
-        await fetch('https://formspree.io/f/mandalyp', {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ wallet: addr, type: 'allowlist' })
-        });
-        msg.textContent = 'Wallet submitted! We’ll verify allowlist details before presale.';
-      }catch{
-        msg.textContent = 'Saved locally. Network submit failed — we’ll try again later.';
+    try{
+      const fd = new FormData(form);
+      const data = Object.fromEntries(fd.entries());
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) throw new Error('Bad response');
+
+      if (msgEl){
+        if (form.id === 'notifyForm') msgEl.textContent = 'Thanks! We’ll email you about $ETRX timing.';
+        if (form.id === 'wlForm')    msgEl.textContent = 'Wallet submitted! We’ll verify allowlist details before presale.';
+        msgEl.classList.remove('hidden');
       }
-      msg.classList.remove('hidden');
-      wlForm.reset();
-    });
+      form.reset();
+      if (onSuccess) onSuccess();
+    }catch(e){
+      if (msgEl){
+        msgEl.textContent = 'Submission failed. Please check your connection and try again.';
+        msgEl.classList.remove('hidden');
+      }
+    }
   }
+
+  document.querySelectorAll('form[data-formspree]').forEach(form=>{
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      submitFormspree(form);
+    });
+  });
 
   // Share button
   const shareBtn = document.getElementById('shareLaunch');
