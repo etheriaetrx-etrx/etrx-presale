@@ -19,9 +19,11 @@
 <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="720">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@ETRXDreamscapes">
 <meta name="twitter:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
+<meta name="twitter:image:alt" content="Etheria presale hero art">
 
 <!-- CSP: allow Tailwind CDN + inline for this single-file build -->
 <meta http-equiv="Content-Security-Policy"
@@ -34,9 +36,11 @@
            worker-src 'self';
            object-src 'none';
            base-uri 'self';
-           frame-ancestors 'none'">
+           frame-ancestors 'none';
+           upgrade-insecure-requests">
 
 <meta name="theme-color" content="#05070d">
+<meta name="robots" content="index,follow,max-image-preview:large"/>
 
 <!-- Performance -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,6 +48,7 @@
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
 <!-- Fonts & Libraries -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script>
   /* Tailwind CDN config */
@@ -55,8 +60,8 @@
     }}
   }
 </script>
-<script src="https://cdn.tailwindcss.com?v=3"></script>
-<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="https://cdn.tailwindcss.com?v=3" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" defer></script>
 
 <!-- Assets -->
 <link rel="preload" as="image" href="assets/Background.png">
@@ -66,7 +71,7 @@
 :root{
   color-scheme: dark;
   --bg:#05070d; --panel:rgba(255,255,255,.06); --ring:rgba(0,255,255,.18);
-  --dim:rgba(255,255,255,.66); --muted:rgba(255,255,255,.88);
+  --dim:rgba(255,255,255,.72); --muted:rgba(255,255,255,.9);
   --neon-cyan: 0 255 255; --neon-blue: 84 178 255; --neon-violet: 208 128 255; --neon-orange: 255 147 76;
 }
 *{box-sizing:border-box}
@@ -166,10 +171,29 @@ section{ contain: layout paint style }
 /* Toast */
 .toast{ z-index:60; }
 
+/* Hero image glow (around Background.png) */
+.hero-glow{
+  position:relative; border-radius:1.5rem; /* match rounded-3xl */
+}
+.hero-glow::before{
+  content:""; position:absolute; inset:-4px; border-radius:inherit; pointer-events:none;
+  background: conic-gradient(from 0deg at 50% 50%,
+    rgba(var(--neon-orange)/.75),
+    rgba(var(--neon-blue)/.75),
+    rgba(var(--neon-violet)/.75),
+    rgba(var(--neon-orange)/.75));
+  filter: blur(16px) saturate(1.25);
+  opacity:.7;
+}
+.hero-glow img{
+  position:relative; display:block; border-radius:inherit;
+  box-shadow: 0 0 0 1px rgba(0,255,255,.15) inset, 0 12px 40px rgba(84,178,255,.15);
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
-  .card-outline::before, .holo::after{ display:none }
+  .card-outline::before, .holo::after, .hero-glow::before{ display:none }
 }
 </style>
 </head>
@@ -243,7 +267,7 @@ section{ contain: layout paint style }
       <!-- Progress -->
       <div class="mt-4">
         <div class="flex items-center justify-between text-xs small-dim">
-          <span>Phase: Presale</span><span id="phaseEta"></span>
+          <span id="phaseName">Phase: Presale</span><span id="phaseEta"></span>
         </div>
         <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
           <div id="phaseBar" class="h-full" style="background:linear-gradient(90deg, rgba(var(--neon-orange),1), rgba(var(--neon-blue),1)); width:0%"></div>
@@ -272,15 +296,17 @@ section{ contain: layout paint style }
     </div>
   </div>
 
-  <!-- Hero image (single PNG; no srcset) -->
+  <!-- Hero image with glow (single PNG; no srcset) -->
   <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px] reveal" data-delay="0">
-    <img
-      src="assets/Background.png"
-      alt="Etheria Background"
-      width="1280" height="720"
-      class="h-full w-full rounded-3xl ring-1 ring-cyan-400/15 object-cover hero-reflect"
-      loading="eager" decoding="async"
-      onerror="this.outerHTML='<div class=&quot;h-full w-full rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-orange-500/10 flex items-center justify-center text-white/50&quot;>Background image missing</div>'"/>
+    <div class="hero-glow h-full w-full rounded-3xl">
+      <img
+        src="assets/Background.png"
+        alt="Etheria Background"
+        width="1280" height="720"
+        class="h-full w-full rounded-3xl ring-1 ring-cyan-400/15 object-cover"
+        loading="eager" decoding="async" fetchpriority="high"
+        onerror="this.outerHTML='<div class=&quot;h-full w-full rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-orange-500/10 flex items-center justify-center text-white/50&quot;>Background image missing</div>'"/>
+    </div>
   </div>
 </section>
 
@@ -344,12 +370,12 @@ section{ contain: layout paint style }
       <button class="btn-primary" type="submit">Notify Me</button>
     </form>
 
-    <div id="notifySuccess" class="hidden mt-4 glass card p-5" role="status" aria-live="polite">
+    <div id="notifySuccess" class="hidden mt-4 glass card p-5" role="status" aria-live="polite" aria-atomic="true">
       <div class="text-sm">✅ Thanks! Please check your inbox to confirm your email.</div>
       <div class="mt-1 text-xs small-dim">Tip: If you don’t see it, look in spam/promotions.</div>
     </div>
 
-    <p id="notifyMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite"></p>
+    <p id="notifyMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
     <p class="mt-1 text-xs small-dim">We only use your info for presale notifications. No spam.</p>
 
     <div class="mt-8">
@@ -357,7 +383,7 @@ section{ contain: layout paint style }
       <form id="wlForm" class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]"
             action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate>
         <label class="sr-only" for="wallet">Ethereum wallet or ENS</label>
-        <input id="wallet" name="wallet" inputmode="text" autocomplete="off" placeholder="0x… or yourname.eth"
+        <input id="wallet" name="wallet" inputmode="text" autocomplete="off" placeholder="0x… or yourname.eth" spellcheck="false"
                class="rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400" />
         <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
         <input type="hidden" name="type" value="allowlist" />
@@ -365,11 +391,11 @@ section{ contain: layout paint style }
       </form>
 
       <p id="wlHelp" class="mt-2 text-xs small-dim"></p>
-      <div id="wlSuccess" class="hidden mt-3 glass card p-5 sm:col-span-2" role="status" aria-live="polite">
+      <div id="wlSuccess" class="hidden mt-3 glass card p-5 sm:col-span-2" role="status" aria-live="polite" aria-atomic="true">
         <div class="text-sm">✅ Wallet submitted! We’ll verify allowlist details before presale.</div>
         <div class="mt-1 text-xs small-dim">You’ll be notified by email before the window opens.</div>
       </div>
-      <p id="wlMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite"></p>
+      <p id="wlMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
     </div>
   </div>
 </section>
@@ -440,7 +466,7 @@ const $ = (id)=> document.getElementById(id);
 const phaseLabel=$('phaseLabel'), countdown=$('countdown'), whenPrimary=$('whenPrimary'),
       whenSecondary=$('whenSecondary'), modeLabel=$('modeLabel');
 const connectBtn=$('connectBtn'), openConnect=$('openConnect'), modal=$('walletModal'), modalClose=$('modalClose');
-const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn');
+const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn'), phaseName=$('phaseName');
 
 /* Year */
 $('year').textContent = new Date().getFullYear();
@@ -495,7 +521,12 @@ function box(v,label){
 let lastSecond=-1;
 function loop(){
   const now = nowAccurate(); const ph=phase(now);
-  if (phaseLabel){ phaseLabel.innerHTML = `Presale ${ph==='upcoming'?'begins':'ends'} in — <span>${primaryUTC?'UTC':'Local'}</span>`; }
+  if (phaseLabel){
+    phaseLabel.innerHTML = `Presale ${ph==='upcoming'?'begins':ph==='live'?'ends':'ended'} in — <span>${primaryUTC?'UTC':'Local'}</span>`;
+  }
+  if (phaseName){
+    phaseName.textContent = `Phase: ${ph==='upcoming'?'Upcoming':ph==='live'?'Live':'Ended'}`;
+  }
   const target = ph==='upcoming'?PRESALE_START:ph==='live'?PRESALE_END:now;
   const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
   if(s!==lastSecond){ lastSecond=s; const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; countdown.replaceChildren(box(d,'d'),box(h,'h'),box(m,'m'),box(ss,'s')); }
@@ -579,8 +610,12 @@ document.querySelectorAll('.faq-item')?.forEach(item=>{
 /* ===== Formspree (AJAX) + validity hints ===== */
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
 async function postFormspree(data){
-  const res=await fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify(data) });
-  if(!res.ok) throw new Error('Bad response'); return res.json().catch(()=>({}));
+  const ctrl = new AbortController();
+  const t = setTimeout(()=>ctrl.abort(), 10000);
+  try{
+    const res=await fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify(data), signal: ctrl.signal });
+    if(!res.ok) throw new Error('Bad response'); return res.json().catch(()=>({}));
+  } finally { clearTimeout(t); }
 }
 const notifyForm=$('notifyForm'), notifyMsg=$('notifyMsg'), notifySuccess=$('notifySuccess');
 const email = document.getElementById('email');
@@ -622,7 +657,12 @@ let ensTimer=null;
 async function resolveIfEns(value){
   if(!value || !ensRe.test(value) || value.length>255) return null;
   if(!providerENS?.resolveName) return null;
-  try{ const resolved = await providerENS.resolveName(value); return resolved||null; }catch{ return null; }
+  try{
+    const ctrl=new AbortController(); const timeout=setTimeout(()=>ctrl.abort(),10000);
+    const resolved = await providerENS.resolveName(value); // ethers doesn't accept signal; timeout is soft
+    clearTimeout(timeout);
+    return resolved||null;
+  }catch{ return null; }
 }
 
 if (wlForm){
@@ -690,10 +730,11 @@ function openModal(){ discoverInjected(); showModal(true); }
 modalClose.addEventListener('click', ()=> showModal(false));
 modal.addEventListener('click', (e)=>{ if(e.target===modal) showModal(false); });
 
-// Focus trap + Esc close
+// Focus trap + Esc close (guard when no focusables)
 document.addEventListener('keydown', (e)=>{
   if(!modal.classList.contains('flex')) return;
   const nodes = modal.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])');
+  if (!nodes.length) return;
   const first = nodes[0], last = nodes[nodes.length-1];
   if(e.key === 'Tab'){
     if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
@@ -751,7 +792,18 @@ function discoverInjected(){
   }, 350);
 }
 
+function removeProviderListeners(){
+  if(!activeProvider?.removeListener) return;
+  activeProvider.removeListener('accountsChanged', onAccountsChanged);
+  activeProvider.removeListener('disconnect', onDisconnect);
+  activeProvider.removeListener('chainChanged', onChainChanged);
+}
+function onAccountsChanged(accs){ walletShort.textContent=shortAddr(accs?.[0]||''); safeSet('etrx_wallet', accs?.[0]||''); }
+function onDisconnect(){ doDisconnect(); }
+async function onChainChanged(){ await ensureMainnet(activeProvider); }
+
 async function onConnected(provider, account){
+  if(activeProvider && provider!==activeProvider){ removeProviderListeners(); }
   activeProvider = provider;
   await ensureMainnet(provider);
   safeSet('etrx_wallet', account||'');
@@ -759,13 +811,14 @@ async function onConnected(provider, account){
   walletPill.classList.remove('hidden');
   connectBtn.classList.add('hidden-important');
   openConnect?.classList.add('hidden-important');
-  provider.on?.('accountsChanged', (accs)=>{ walletShort.textContent=shortAddr(accs?.[0]||''); safeSet('etrx_wallet', accs?.[0]||''); });
-  provider.on?.('disconnect', ()=>{ doDisconnect(); });
-  provider.on?.('chainChanged', async ()=>{ await ensureMainnet(provider); });
+  provider.on?.('accountsChanged', onAccountsChanged);
+  provider.on?.('disconnect', onDisconnect);
+  provider.on?.('chainChanged', onChainChanged);
   toast('Wallet connected ✅');
 }
 function doDisconnect(){
   try{ activeProvider?.disconnect?.(); }catch{}
+  removeProviderListeners();
   activeProvider=null; safeSet('etrx_wallet','');
   walletPill.classList.add('hidden');
   connectBtn.classList.remove('hidden-important');
@@ -800,7 +853,7 @@ if (shareBtn && navigator.share){
 /* Toast helper (non-focus stealing) */
 function toast(msg, isWarn=false){
   const t=document.createElement('div');
-  t.setAttribute('role','status'); t.setAttribute('aria-live','polite');
+  t.setAttribute('role','status'); t.setAttribute('aria-live','polite'); t.setAttribute('aria-atomic','true');
   t.className='toast fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-2 rounded-lg glass card text-sm';
   t.style.borderColor = isWarn ? 'rgba(255,99,99,.35)' : 'var(--ring)';
   t.textContent=msg; document.body.appendChild(t);
@@ -812,6 +865,7 @@ function toast(msg, isWarn=false){
 <script>
 (function(){
   const canvas=document.getElementById('orbCanvas'); if(!canvas) return;
+  if (navigator?.connection?.saveData) return; // respect Save-Data
   const ctx=canvas.getContext('2d');
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   let w,h,dpr,stars=[],running=true;
@@ -835,7 +889,7 @@ function toast(msg, isWarn=false){
     const baseDensity=(innerWidth*innerHeight)/16000;
     const cores=(navigator.hardwareConcurrency||4);
     const isLowMem = (navigator.deviceMemory && navigator.deviceMemory <= 4);
-    const density=Math.round(baseDensity * Math.min(1, cores/8) * (isLowMem?0.6:1));
+    const density=Math.min(Math.round(baseDensity * Math.min(1, cores/8) * (isLowMem?0.6:1)), 450); // cap
     stars=[]; for(let i=0;i<density;i++) stars.push(makeStar(i%3+1));
   }
   function drawStar(s){
