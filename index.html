@@ -14,7 +14,7 @@
   <!-- SEO / Social -->
   <link rel="canonical" href="https://etheriaetrx-etrx.github.io/etrx-presale/">
   <meta property="og:title" content="$ETRX • Etheria Presale">
-  <meta property="og:description" content="The official utility token of Etheria. Presale runs Sep 24 → Nov 5, 2025 (UTC).">
+  <meta property="og:description" content="The official utility token of Etheria. Presale runs Sep 24 → Oct 1, 2025 (UTC).">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://etheriaetrx-etrx.github.io/etrx-presale/">
   <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
@@ -29,7 +29,7 @@
     "@type":"Event",
     "name":"$ETRX • Etheria Presale",
     "startDate":"2025-09-24T00:00:00Z",
-    "endDate":"2025-11-05T00:00:00Z",
+    "endDate":"2025-10-01T00:00:00Z",
     "eventAttendanceMode":"https://schema.org/OnlineEventAttendanceMode",
     "eventStatus":"https://schema.org/EventScheduled",
     "image":["https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png"],
@@ -45,7 +45,7 @@
     "@context":"https://schema.org",
     "@type":"FAQPage",
     "mainEntity":[
-      {"@type":"Question","name":"Is this a presale or the live coin?","acceptedAnswer":{"@type":"Answer","text":"This page is for the presale window (Sep 24 → Nov 5, 2025 UTC). After presale, we proceed to TGE (token generation & distribution) and initial listings/liquidity."}},
+      {"@type":"Question","name":"Is this a presale or the live coin?","acceptedAnswer":{"@type":"Answer","text":"This page is for the presale window (Sep 24 → Oct 1, 2025 UTC). After presale, we proceed to TGE (token generation & distribution) and initial listings/liquidity."}},
       {"@type":"Question","name":"How will buying work?","acceptedAnswer":{"@type":"Answer","text":"When live, you’ll connect MetaMask and participate directly in the presale contract. Post-TGE, $ETRX will be distributed and appear in your wallet."}}
     ]
   }
@@ -90,6 +90,11 @@
       --ring:rgba(255,255,255,.12);
       --text-muted:rgba(255,255,255,.86);
       --text-dim:rgba(255,255,255,.64);
+
+      /* Neon vibes */
+      --glow-cyan: 34 211 238;   /* rgb */
+      --glow-blue: 59 130 246;
+      --glow-orange: 249 115 22;
     }
     *{ box-sizing:border-box }
     body{
@@ -97,6 +102,17 @@
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       overflow-x:hidden;
     }
+
+    /* Ambient neon mist */
+    .ambient {
+      position: fixed; inset: -20vmax -20vmax auto auto; height: 60vmax; width: 60vmax; z-index: 0;
+      pointer-events: none; filter: blur(80px) saturate(1.2); opacity:.35;
+      background:
+        radial-gradient(40% 40% at 70% 30%, rgba(var(--glow-cyan)/.35), transparent 60%),
+        radial-gradient(40% 40% at 30% 70%, rgba(var(--glow-blue)/.30), transparent 60%),
+        radial-gradient(35% 35% at 80% 80%, rgba(var(--glow-orange)/.25), transparent 60%);
+    }
+
     .etherian-bg{
       background:
         radial-gradient(60% 40% at 50% 0%, color-mix(in oklab, var(--ether-cyan) 24%, transparent), transparent 60%),
@@ -106,16 +122,61 @@
     }
     .tabular{ font-variant-numeric: tabular-nums }
     .card{ backdrop-filter: blur(10px) }
-    .panel{ background:var(--panel); border:1px solid var(--ring) }
+
+    /* Neon panels + inputs */
+    .panel{ background:var(--panel); border:1px solid var(--ring);
+      box-shadow:
+        0 0 0 1px var(--ring) inset,
+        0 0 22px rgba(var(--glow-cyan)/.12),
+        0 0 46px rgba(var(--glow-blue)/.10);
+    }
     .ring-panel{ box-shadow:0 0 0 1px var(--ring) inset }
-    .btn-primary{ background: linear-gradient(90deg, var(--ether-orange), var(--ether-blue)); color:#0b0f18; font-weight:700; }
-    .btn-primary:hover{ filter:saturate(1.06) brightness(1.05) }
-    :focus-visible { outline: 2px solid var(--ether-cyan); outline-offset: 2px; }
+    input, textarea {
+      transition: box-shadow .2s ease, border-color .2s ease;
+      box-shadow: 0 0 0 0 rgba(var(--glow-cyan)/0);
+    }
+    input:focus, textarea:focus{
+      border-color: rgba(var(--glow-cyan)/.55) !important;
+      box-shadow:
+        0 0 0 1px rgba(var(--glow-cyan)/.55),
+        0 0 18px 2px rgba(var(--glow-blue)/.25),
+        0 0 36px 6px rgba(var(--glow-cyan)/.20);
+    }
+
+    .btn-primary{
+      position:relative;
+      background: linear-gradient(90deg, var(--ether-orange), var(--ether-blue));
+      color:#0b0f18; font-weight:700;
+      box-shadow:
+        0 0 14px rgba(var(--glow-orange)/.45),
+        0 0 24px rgba(var(--glow-blue)/.35);
+      transition: transform .08s ease, box-shadow .2s ease;
+    }
+    .btn-primary:hover{ transform: translateY(-1px) scale(1.01); filter:saturate(1.06) brightness(1.05) }
+    .btn-primary::after{
+      content:""; position:absolute; inset:-2px; border-radius:inherit; z-index:-1;
+      filter: blur(14px); opacity:.35;
+      background: radial-gradient(60% 60% at 50% 50%, rgba(var(--glow-cyan)/.8), transparent 70%);
+      animation: glowPulse 2.4s ease-in-out infinite alternate;
+    }
+    @keyframes glowPulse{
+      from{ opacity:.25; transform: scale(.98) }
+      to{   opacity:.45; transform: scale(1.02) }
+    }
+
+    /* Hero title subtle glow */
+    .title-glow{
+      text-shadow:
+        0 0 10px rgba(var(--glow-cyan)/.35),
+        0 0 22px rgba(var(--glow-blue)/.25);
+    }
+
+    :focus-visible { outline: 2px solid rgba(var(--glow-cyan)/.9); outline-offset: 2px; }
     #orbCanvas{ position:fixed; inset:0; z-index:0; pointer-events:none; filter:drop-shadow(0 0 24px rgba(34,211,238,.08)); }
     .z-10{ position:relative; z-index:10 }
     #launchBar{ position:sticky; bottom:0; z-index:50; backdrop-filter:blur(8px) }
 
-    /* Accordion (JS-controlled height; fully collapses) */
+    /* Accordion (fully collapses, smooth) */
     .faq-item { border-radius: 16px; border:1px solid var(--ring); background:var(--panel); overflow:hidden }
     .faq-header { width:100%; display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding:1rem 1.25rem; text-align:left }
     .faq-chevron { transition: transform .25s ease }
@@ -129,6 +190,9 @@
   </style>
 </head>
 <body class="etherian-bg">
+  <!-- Ambient neon mist -->
+  <div class="ambient" aria-hidden="true"></div>
+
   <!-- Skip link -->
   <a href="#about" class="sr-only focus:not-sr-only fixed left-3 top-3 z-50 rounded-lg bg-white/10 px-3 py-2 ring-1 ring-white/20">Skip to content</a>
 
@@ -153,7 +217,7 @@
   <!-- Hero -->
   <section class="z-10 mx-auto grid max-w-6xl grid-cols-1 items-stretch gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
     <div class="order-2 md:order-1">
-      <h1 class="text-4xl font-extrabold leading-tight md:text-6xl">
+      <h1 class="title-glow text-4xl font-extrabold leading-tight md:text-6xl">
         The Official Token of Etheria <br/>
         <span class="bg-gradient-to-r from-[var(--ether-orange)] to-[var(--ether-blue)] bg-clip-text text-transparent">
           $ETRX Presale
@@ -190,7 +254,7 @@
         </div>
 
         <noscript>
-          <p class="mt-2 text-xs" style="color:var(--text-dim)">Presale: Sep 24, 2025, 12:00 AM UTC → Nov 5, 2025, 12:00 AM UTC. TGE/listing follows after presale.</p>
+          <p class="mt-2 text-xs" style="color:var(--text-dim)">Presale: Sep 24, 2025, 12:00 AM UTC → Oct 1, 2025, 12:00 AM UTC. TGE/listing follows after presale.</p>
         </noscript>
       </div>
 
@@ -199,7 +263,7 @@
         <li class="rounded-2xl panel p-4 ring-panel">Supply: <b>10,000,000</b></li>
         <li class="rounded-2xl panel p-4 ring-panel">Network: <b>Ethereum</b></li>
         <li class="rounded-2xl panel p-4 ring-panel">Symbol: <b>ETRX</b></li>
-        <li class="rounded-2xl panel p-4 ring-panel">Presale: <b>Sep 24 → Nov 5</b></li>
+        <li class="rounded-2xl panel p-4 ring-panel">Presale: <b>Sep 24 → Oct 1</b></li>
       </ul>
 
       <!-- What happens after -->
@@ -216,7 +280,7 @@
 
       <!-- Share & connect teaser -->
       <div class="mt-4 flex flex-wrap items-center gap-3">
-        <button id="shareLaunch" class="rounded-2xl border border-white/15 bg-white/5 px-4 py-2 text-sm hover:bg-white/10">
+        <button id="shareLaunch" class="btn-primary rounded-2xl px-4 py-2 text-sm">
           Share this launch
         </button>
         <button disabled class="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-4 py-2 text-sm opacity-60 cursor-not-allowed">
@@ -343,7 +407,6 @@
   <section id="faq" class="z-10 mx-auto max-w-6xl px-6 pb-24">
     <h2 class="text-2xl font-bold">FAQ</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
-      <!-- Item -->
       <div class="faq-item">
         <button class="faq-header" aria-expanded="false">
           <b>Is this a presale or the live coin?</b>
@@ -351,12 +414,11 @@
         </button>
         <div class="faq-body" hidden>
           <div class="pt-2 pb-3" style="color:var(--text-dim)">
-            This page is for the <b>presale window</b> (Sep 24 → Nov 5, 2025 UTC). After presale, we proceed to
+            This page is for the <b>presale window</b> (Sep 24 → Oct 1, 2025 UTC). After presale, we proceed to
             <b>TGE</b> and <b>initial listings/liquidity</b>.
           </div>
         </div>
       </div>
-      <!-- Item -->
       <div class="faq-item">
         <button class="faq-header" aria-expanded="false">
           <b>How will buying work?</b>
@@ -369,7 +431,6 @@
           </div>
         </div>
       </div>
-      <!-- Item -->
       <div class="faq-item">
         <button class="faq-header" aria-expanded="false">
           <b>Do I need ETH now?</b>
@@ -381,7 +442,6 @@
           </div>
         </div>
       </div>
-      <!-- Item -->
       <div class="faq-item">
         <button class="faq-header" aria-expanded="false">
           <b>What chains are supported?</b>
@@ -421,9 +481,9 @@
   <script>
   // ==== FIXED PRESALE WINDOW (UTC) ====
   // Starts: 2025-09-24 00:00 UTC (midnight)
-  // Ends:   2025-11-05 00:00 UTC (midnight)
+  // Ends:   2025-10-01 00:00 UTC (midnight)
   const PRESALE_START = new Date('2025-09-24T00:00:00Z');
-  const PRESALE_END   = new Date('2025-11-05T00:00:00Z');
+  const PRESALE_END   = new Date('2025-10-01T00:00:00Z');
 
   const $ = (id)=> document.getElementById(id);
   const phaseLabel   = $('phaseLabel');
@@ -435,8 +495,8 @@
 
   // --- Formatting helpers ---
   const fmtOptsBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
-  const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZone:'UTC', timeZoneName:'short' }); // e.g., Sep 24, 2025, 12:00 AM UTC
-  const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZoneName:'short' });                 // e.g., Sep 23, 2025, 07:00 PM CDT/CST
+  const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZone:'UTC', timeZoneName:'short' }); // Sep 24, 2025, 12:00 AM UTC
+  const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZoneName:'short' });                 // local with DST
 
   let primaryUTC = true; // default to UTC
 
@@ -709,7 +769,7 @@
       try{
         await navigator.share({
           title: '$ETRX • Etheria Presale',
-          text: 'Presale runs Sep 24 → Nov 5 (UTC). Join the allowlist.',
+          text: 'Presale runs Sep 24 → Oct 1 (UTC). Join the allowlist.',
           url: location.href
         });
       }catch{}
