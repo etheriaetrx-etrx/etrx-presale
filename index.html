@@ -14,7 +14,7 @@
   <!-- SEO / Social -->
   <link rel="canonical" href="https://etheriaetrx-etrx.github.io/etrx-presale/">
   <meta property="og:title" content="$ETRX • Etheria Presale">
-  <meta property="og:description" content="The official utility token of Etheria. Presale runs Oct 31 → Nov 5, 2025 (UTC).">
+  <meta property="og:description" content="The official utility token of Etheria. Presale runs Sep 24 → Nov 5, 2025 (UTC).">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://etheriaetrx-etrx.github.io/etrx-presale/">
   <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
@@ -28,7 +28,7 @@
     "@context":"https://schema.org",
     "@type":"Event",
     "name":"$ETRX • Etheria Presale",
-    "startDate":"2025-10-31T00:00:00Z",
+    "startDate":"2025-09-24T00:00:00Z",
     "endDate":"2025-11-05T00:00:00Z",
     "eventAttendanceMode":"https://schema.org/OnlineEventAttendanceMode",
     "eventStatus":"https://schema.org/EventScheduled",
@@ -45,13 +45,13 @@
     "@context":"https://schema.org",
     "@type":"FAQPage",
     "mainEntity":[
-      {"@type":"Question","name":"Is this a presale or the live coin?","acceptedAnswer":{"@type":"Answer","text":"This page is for the presale window (Oct 31 → Nov 5, 2025 UTC). After presale, we proceed to TGE (token generation & distribution) and initial listings/liquidity."}},
+      {"@type":"Question","name":"Is this a presale or the live coin?","acceptedAnswer":{"@type":"Answer","text":"This page is for the presale window (Sep 24 → Nov 5, 2025 UTC). After presale, we proceed to TGE (token generation & distribution) and initial listings/liquidity."}},
       {"@type":"Question","name":"How will buying work?","acceptedAnswer":{"@type":"Answer","text":"When live, you’ll connect MetaMask and participate directly in the presale contract. Post-TGE, $ETRX will be distributed and appear in your wallet."}}
     ]
   }
   </script>
 
-  <!-- CSP: added jsdelivr (ethers.js) and Cloudflare ETH RPC for ENS -->
+  <!-- CSP: jsdelivr (ethers.js) + Cloudflare ETH RPC for ENS -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' https://etheriaetrx-etrx.github.io;
                  img-src 'self' data: https:;
@@ -88,11 +88,15 @@
       --ether-bg:#090e17;
       --panel:rgba(255,255,255,.06);
       --ring:rgba(255,255,255,.12);
-      --text-muted:rgba(255,255,255,.78);
-      --text-dim:rgba(255,255,255,.62);
+      --text-muted:rgba(255,255,255,.86);
+      --text-dim:rgba(255,255,255,.64);
     }
     *{ box-sizing:border-box }
-    body{ margin:0; background:var(--ether-bg); color:#fff; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; overflow-x:hidden; }
+    body{
+      margin:0; background:var(--ether-bg); color:#fff;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      overflow-x:hidden;
+    }
     .etherian-bg{
       background:
         radial-gradient(60% 40% at 50% 0%, color-mix(in oklab, var(--ether-cyan) 24%, transparent), transparent 60%),
@@ -101,18 +105,23 @@
         var(--ether-bg);
     }
     .tabular{ font-variant-numeric: tabular-nums }
-    .card{ backdrop-filter: blur(8px) }
+    .card{ backdrop-filter: blur(10px) }
     .panel{ background:var(--panel); border:1px solid var(--ring) }
     .ring-panel{ box-shadow:0 0 0 1px var(--ring) inset }
     .btn-primary{ background: linear-gradient(90deg, var(--ether-orange), var(--ether-blue)); color:#0b0f18; font-weight:700; }
-    .btn-primary:hover{ filter:saturate(1.05) brightness(1.05) }
+    .btn-primary:hover{ filter:saturate(1.06) brightness(1.05) }
     :focus-visible { outline: 2px solid var(--ether-cyan); outline-offset: 2px; }
     #orbCanvas{ position:fixed; inset:0; z-index:0; pointer-events:none; filter:drop-shadow(0 0 24px rgba(34,211,238,.08)); }
     .z-10{ position:relative; z-index:10 }
     #launchBar{ position:sticky; bottom:0; z-index:50; backdrop-filter:blur(8px) }
-    .accordion { transition: grid-template-rows .25s ease; display:grid; grid-template-rows:0fr; }
-    .accordion.open { grid-template-rows:1fr; }
-    .accordion > div { overflow:hidden; }
+
+    /* Accordion (JS-controlled height; fully collapses) */
+    .faq-item { border-radius: 16px; border:1px solid var(--ring); background:var(--panel); overflow:hidden }
+    .faq-header { width:100%; display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding:1rem 1.25rem; text-align:left }
+    .faq-chevron { transition: transform .25s ease }
+    .faq-body { padding: 0 1.25rem; max-height:0; transition:max-height .28s ease, padding .2s ease }
+    .faq-body.open { padding: .25rem 1.25rem 1rem; }
+
     @media (prefers-reduced-motion: reduce){
       #orbCanvas{ display:none }
       *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
@@ -160,9 +169,7 @@
         <div class="flex gap-3 text-center" id="countdown" aria-live="polite"></div>
 
         <div class="mt-3 text-xs flex flex-col gap-1" style="color:var(--text-dim)">
-          <!-- Primary line (larger) -->
           <div id="whenPrimary" class="text-sm text-white/90"></div>
-          <!-- Secondary line (always visible) -->
           <div id="whenSecondary"></div>
           <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100">
             Make Local primary
@@ -183,7 +190,7 @@
         </div>
 
         <noscript>
-          <p class="mt-2 text-xs" style="color:var(--text-dim)">Presale: Oct 31, 2025, 12:00 AM UTC → Nov 5, 2025, 12:00 AM UTC. TGE/listing follows after presale.</p>
+          <p class="mt-2 text-xs" style="color:var(--text-dim)">Presale: Sep 24, 2025, 12:00 AM UTC → Nov 5, 2025, 12:00 AM UTC. TGE/listing follows after presale.</p>
         </noscript>
       </div>
 
@@ -192,7 +199,7 @@
         <li class="rounded-2xl panel p-4 ring-panel">Supply: <b>10,000,000</b></li>
         <li class="rounded-2xl panel p-4 ring-panel">Network: <b>Ethereum</b></li>
         <li class="rounded-2xl panel p-4 ring-panel">Symbol: <b>ETRX</b></li>
-        <li class="rounded-2xl panel p-4 ring-panel">Presale: <b>Oct 31 → Nov 5</b></li>
+        <li class="rounded-2xl panel p-4 ring-panel">Presale: <b>Sep 24 → Nov 5</b></li>
       </ul>
 
       <!-- What happens after -->
@@ -294,7 +301,7 @@
       <p id="notifyMsg" class="mt-2 text-xs hidden" style="color:var(--text-dim)" aria-live="polite"></p>
       <p class="mt-1 text-xs" style="color:var(--text-dim)">We only use your info for presale notifications. No spam.</p>
 
-      <!-- Wallet allowlist form -->
+      <!-- Wallet allowlist -->
       <div class="mt-8">
         <h4 class="text-base font-semibold">Join the allowlist</h4>
         <form id="wlForm" class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]"
@@ -314,10 +321,20 @@
         <!-- Success card -->
         <div id="wlSuccess" class="hidden mt-3 rounded-2xl panel ring-panel p-5 sm:col-span-2">
           <div class="text-sm">✅ Wallet submitted! We’ll verify allowlist details before presale.</div>
-          <div class="mt-1 text-xs" style="color:var(--text-dim)"></div>
+          <div class="mt-1 text-xs" style="color:var(--text-dim)">You’ll be notified by email before the window opens.</div>
         </div>
 
         <p id="wlMsg" class="mt-2 text-xs hidden" style="color:var(--text-dim)" aria-live="polite"></p>
+
+        <!-- How it works -->
+        <div class="mt-5 rounded-2xl panel ring-panel p-4 text-sm" style="color:var(--text-dim)">
+          <b>How the allowlist works</b>
+          <ol class="mt-2 list-decimal pl-5 space-y-1">
+            <li>Enter your Ethereum address or a valid ENS (we’ll resolve it to a 0x address).</li>
+            <li>We record it (via Formspree) for presale access checks.</li>
+            <li>Before the window opens, we email instructions. If you change wallets, just submit again—latest wins.</li>
+          </ol>
+        </div>
       </div>
     </div>
   </section>
@@ -326,37 +343,55 @@
   <section id="faq" class="z-10 mx-auto max-w-6xl px-6 pb-24">
     <h2 class="text-2xl font-bold">FAQ</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
-      <div class="rounded-2xl panel ring-panel">
-        <button class="w-full flex items-center justify-between p-5 text-left faq-btn">
-          <b>Is this a presale or the live coin?</b><span aria-hidden="true">+</span>
+      <!-- Item -->
+      <div class="faq-item">
+        <button class="faq-header" aria-expanded="false">
+          <b>Is this a presale or the live coin?</b>
+          <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
         </button>
-        <div class="accordion"><div class="px-5 pb-5" style="color:var(--text-dim)">
-          This page is for the <b>presale window</b> (Oct 31 → Nov 5, 2025 UTC). After presale, we proceed to <b>TGE</b> and <b>initial listings/liquidity</b>.
-        </div></div>
+        <div class="faq-body" hidden>
+          <div class="pt-2 pb-3" style="color:var(--text-dim)">
+            This page is for the <b>presale window</b> (Sep 24 → Nov 5, 2025 UTC). After presale, we proceed to
+            <b>TGE</b> and <b>initial listings/liquidity</b>.
+          </div>
+        </div>
       </div>
-      <div class="rounded-2xl panel ring-panel">
-        <button class="w-full flex items-center justify-between p-5 text-left faq-btn">
-          <b>How will buying work?</b><span aria-hidden="true">+</span>
+      <!-- Item -->
+      <div class="faq-item">
+        <button class="faq-header" aria-expanded="false">
+          <b>How will buying work?</b>
+          <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
         </button>
-        <div class="accordion"><div class="px-5 pb-5" style="color:var(--text-dim)">
-          When live, you’ll connect MetaMask and participate directly in the presale contract. Post-TGE, $ETRX will appear in your wallet and on supported venues.
-        </div></div>
+        <div class="faq-body" hidden>
+          <div class="pt-2 pb-3" style="color:var(--text-dim)">
+            When live, you’ll connect MetaMask and participate directly in the presale contract. Post-TGE, $ETRX will
+            appear in your wallet and on supported venues.
+          </div>
+        </div>
       </div>
-      <div class="rounded-2xl panel ring-panel">
-        <button class="w-full flex items-center justify-between p-5 text-left faq-btn">
-          <b>Do I need ETH now?</b><span aria-hidden="true">+</span>
+      <!-- Item -->
+      <div class="faq-item">
+        <button class="faq-header" aria-expanded="false">
+          <b>Do I need ETH now?</b>
+          <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
         </button>
-        <div class="accordion"><div class="px-5 pb-5" style="color:var(--text-dim)">
-          Not yet. This site is for announcements and whitelisting until contracts are deployed.
-        </div></div>
+        <div class="faq-body" hidden>
+          <div class="pt-2 pb-3" style="color:var(--text-dim)">
+            Not yet. This site is for announcements and whitelisting until contracts are deployed.
+          </div>
+        </div>
       </div>
-      <div class="rounded-2xl panel ring-panel">
-        <button class="w-full flex items-center justify-between p-5 text-left faq-btn">
-          <b>What chains are supported?</b><span aria-hidden="true">+</span>
+      <!-- Item -->
+      <div class="faq-item">
+        <button class="faq-header" aria-expanded="false">
+          <b>What chains are supported?</b>
+          <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
         </button>
-        <div class="accordion"><div class="px-5 pb-5" style="color:var(--text-dim)">
-          Launching on Ethereum. Future bridge support is planned.
-        </div></div>
+        <div class="faq-body" hidden>
+          <div class="pt-2 pb-3" style="color:var(--text-dim)">
+            Launching on Ethereum. Future bridge support is planned.
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -385,9 +420,9 @@
 
   <script>
   // ==== FIXED PRESALE WINDOW (UTC) ====
-  // Starts: 2025-10-31 00:00 UTC (midnight)
+  // Starts: 2025-09-24 00:00 UTC (midnight)
   // Ends:   2025-11-05 00:00 UTC (midnight)
-  const PRESALE_START = new Date('2025-10-31T00:00:00Z');
+  const PRESALE_START = new Date('2025-09-24T00:00:00Z');
   const PRESALE_END   = new Date('2025-11-05T00:00:00Z');
 
   const $ = (id)=> document.getElementById(id);
@@ -399,15 +434,12 @@
   $('year').textContent = new Date().getFullYear();
 
   // --- Formatting helpers ---
-  // Concise format with explicit zone label
   const fmtOptsBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
-  const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZone:'UTC', timeZoneName:'short' });        // e.g., Oct 31, 2025, 12:00 AM UTC
-  const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZoneName:'short' });                        // e.g., Oct 30, 2025, 07:00 PM CDT/CST
+  const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZone:'UTC', timeZoneName:'short' }); // e.g., Sep 24, 2025, 12:00 AM UTC
+  const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZoneName:'short' });                 // e.g., Sep 23, 2025, 07:00 PM CDT/CST
 
-  // Primary mode (true = UTC first). We default to UTC to match the official window.
-  let primaryUTC = true;
+  let primaryUTC = true; // default to UTC
 
-  // Show both lines; swap which is primary
   function updateWhen(){
     if (primaryUTC){
       whenPrimary.textContent   = `Presale: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
@@ -452,13 +484,8 @@
     const now = nowAccurate();
     const ph=phase(now);
     if (phaseLabel) {
-      // Include current mode in the label
       phaseLabel.innerHTML = `Presale ${ph==='upcoming'?'begins':'ends'} in — <span id="modeLive">${primaryUTC?'UTC':'Local'}</span>`;
     }
-    // Keep the small mode label in sync too
-    const modeLive = document.getElementById('modeLive');
-    if (modeLive) modeLive.textContent = primaryUTC ? 'UTC' : 'Local';
-
     const target = ph==='upcoming'?PRESALE_START:ph==='live'?PRESALE_END:now;
     const diff = Math.max(0, target-now);
     const s=Math.floor(diff/1000);
@@ -494,14 +521,13 @@
   updateProgress();
   setInterval(updateProgress, 30_000);
 
-  // Sticky launch bar (show within last 14 days before start) + mobile CTA
+  // Sticky launch bar (show within last 14 days) + mobile CTA
   const SHOW_BAR_DAYS = 14;
   function toggleBar(){
     const days=(PRESALE_START - new Date())/86400000;
     $('launchBar').classList.toggle('hidden', !(days>0 && days<=SHOW_BAR_DAYS));
     const cta = document.getElementById('stickyCTA');
-    if (window.innerWidth < 768) cta.classList.remove('hidden');
-    else cta.classList.add('hidden');
+    if (window.innerWidth < 768) cta.classList.remove('hidden'); else cta.classList.add('hidden');
   }
   toggleBar();
   setInterval(toggleBar, 60_000);
@@ -532,17 +558,33 @@
   }, {rootMargin:'-30% 0px -60% 0px', threshold:0.01});
   sections.forEach(s=>io.observe(s));
 
-  // FAQ collapsible (animated)
-  document.querySelectorAll('.faq-btn').forEach(btn=>{
-    const acc = btn.parentElement.querySelector('.accordion');
-    btn.addEventListener('click',()=>{
-      acc.classList.toggle('open');
-      btn.querySelector('span').textContent = acc.classList.contains('open') ? '–' : '+';
+  // FAQ collapsible
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    const btn = item.querySelector('.faq-header');
+    const body = item.querySelector('.faq-body');
+    const chev = item.querySelector('.faq-chevron');
+    btn.addEventListener('click', ()=>{
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      if (!open){
+        body.hidden = false;
+        body.style.maxHeight = body.scrollHeight + 'px';
+        body.classList.add('open');
+        chev.style.transform = 'rotate(180deg)';
+      } else {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        requestAnimationFrame(()=>{
+          body.style.maxHeight = '0px';
+          body.classList.remove('open');
+          chev.style.transform = 'rotate(0deg)';
+        });
+        body.addEventListener('transitionend', ()=>{ if(body.style.maxHeight==='0px') body.hidden=true; }, {once:true});
+      }
     });
   });
 
   // ===== Formspree integration (AJAX) =====
-  // Double opt-in: enable "Email verification" for f/mandalyp in your Formspree dashboard.
+  // Enable "Email verification" (double opt-in) for f/mandalyp in Formspree dashboard.
   const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
   async function postFormspree(data){
     const res = await fetch(FORMSPREE_ENDPOINT, {
@@ -667,7 +709,7 @@
       try{
         await navigator.share({
           title: '$ETRX • Etheria Presale',
-          text: 'Presale runs Oct 31 → Nov 5 (UTC). Join the allowlist.',
+          text: 'Presale runs Sep 24 → Nov 5 (UTC). Join the allowlist.',
           url: location.href
         });
       }catch{}
