@@ -14,7 +14,7 @@
   <!-- SEO / Social -->
   <link rel="canonical" href="https://etheriaetrx-etrx.github.io/etrx-presale/">
   <meta property="og:title" content="$ETRX • Etheria Presale">
-  <meta property="og:description" content="The official utility token of Etheria. Presale runs Oct 31 → Nov 7, 2025 (UTC).">
+  <meta property="og:description" content="The official utility token of Etheria. Presale runs Oct 31 → Nov 5, 2025 (UTC).">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://etheriaetrx-etrx.github.io/etrx-presale/">
   <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
@@ -22,14 +22,14 @@
   <meta name="twitter:site" content="@ETRXDreamscapes">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
-  <!-- Event structured data -->
+  <!-- Event structured data (updated dates) -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"Event",
     "name":"$ETRX • Etheria Presale",
     "startDate":"2025-10-31T00:00:00Z",
-    "endDate":"2025-11-07T00:00:00Z",
+    "endDate":"2025-11-05T00:00:00Z",
     "eventAttendanceMode":"https://schema.org/OnlineEventAttendanceMode",
     "eventStatus":"https://schema.org/EventScheduled",
     "image":["https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png"],
@@ -39,32 +39,33 @@
   }
   </script>
 
-  <!-- FAQ structured data -->
+  <!-- FAQ structured data (updated dates) -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"FAQPage",
     "mainEntity":[
-      {"@type":"Question","name":"Is this a presale or the live coin?","acceptedAnswer":{"@type":"Answer","text":"This page is for the presale window (Oct 31 → Nov 7, 2025 UTC). After presale, we proceed to TGE (token generation & distribution) and initial listings/liquidity."}},
+      {"@type":"Question","name":"Is this a presale or the live coin?","acceptedAnswer":{"@type":"Answer","text":"This page is for the presale window (Oct 31 → Nov 5, 2025 UTC). After presale, we proceed to TGE (token generation & distribution) and initial listings/liquidity."}},
       {"@type":"Question","name":"How will buying work?","acceptedAnswer":{"@type":"Answer","text":"When live, you’ll connect MetaMask and participate directly in the presale contract. Post-TGE, $ETRX will be distributed and appear in your wallet."}}
     ]
   }
   </script>
 
-  <!-- Basic CSP (best-effort for GH Pages) -->
+  <!-- Basic CSP (best-effort for GH Pages).
+       Added jsdelivr (ethers.js) and Cloudflare ETH RPC for ENS resolution. -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' https://etheriaetrx-etrx.github.io;
                  img-src 'self' data: https:;
-                 script-src 'self' https://cdn.tailwindcss.com 'unsafe-inline';
+                 script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net 'unsafe-inline';
                  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
                  font-src https://fonts.gstatic.com;
-                 connect-src 'self' https://formspree.io;
+                 connect-src 'self' https://formspree.io https://cloudflare-eth.com;
                  worker-src 'self';
                  object-src 'none';
                  base-uri 'self';
                  frame-ancestors 'none'">
 
-  <!-- Theme (no PWA files referenced) -->
+  <!-- Theme -->
   <meta name="theme-color" content="#0b0f18">
 
   <!-- Fonts & Tailwind -->
@@ -73,7 +74,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com?v=3"></script>
 
-  <!-- Preload hero image (single file) -->
+  <!-- Ethers.js (for ENS resolution) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+  <!-- Preload hero image -->
   <link rel="preload" as="image" href="assets/Background.png">
 
   <!-- Favicon -->
@@ -117,6 +121,9 @@
     #orbCanvas{ position:fixed; inset:0; z-index:0; pointer-events:none; filter:drop-shadow(0 0 24px rgba(34,211,238,.08)); }
     .z-10{ position:relative; z-index:10 }
     #launchBar{ position:sticky; bottom:0; z-index:50; backdrop-filter:blur(8px) }
+    .accordion { transition: grid-template-rows .25s ease; display:grid; grid-template-rows:0fr; }
+    .accordion.open { grid-template-rows:1fr; }
+    .accordion > div { overflow:hidden; }
     @media (prefers-reduced-motion: reduce){
       #orbCanvas{ display:none }
       *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
@@ -182,7 +189,7 @@
         </div>
 
         <noscript>
-          <p class="mt-2 text-xs" style="color:var(--text-dim)">Presale: Oct 31 → Nov 7, 2025 (UTC). TGE/listing follows after presale.</p>
+          <p class="mt-2 text-xs" style="color:var(--text-dim)">Presale: Oct 31 → Nov 5, 2025 (UTC). TGE/listing follows after presale.</p>
         </noscript>
       </div>
 
@@ -191,7 +198,7 @@
         <li class="rounded-2xl panel p-4 ring-panel">Supply: <b>10,000,000</b></li>
         <li class="rounded-2xl panel p-4 ring-panel">Network: <b>Ethereum</b></li>
         <li class="rounded-2xl panel p-4 ring-panel">Symbol: <b>ETRX</b></li>
-        <li class="rounded-2xl panel p-4 ring-panel">Presale: <b>Oct 31 → Nov 7</b></li>
+        <li class="rounded-2xl panel p-4 ring-panel">Presale: <b>Oct 31 → Nov 5</b></li>
       </ul>
 
       <!-- What happens after -->
@@ -200,7 +207,7 @@
         distribution to participants, and initial listings/liquidity. Exact TGE timing will be announced on our socials.
       </div>
 
-      <!-- Socials row (Twitter only) -->
+      <!-- Socials row -->
       <div class="mt-6 flex flex-wrap items-center gap-3 text-sm" style="color:var(--text-dim)">
         <span>Follow updates:</span>
         <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="hover:text-white">Twitter</a>
@@ -218,7 +225,7 @@
       </div>
     </div>
 
-    <!-- Hero image column — single image -->
+    <!-- Hero image -->
     <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px]">
       <img
         src="assets/Background.png"
@@ -242,7 +249,7 @@
     </p>
   </section>
 
-  <!-- Tokenomics (No percentages) -->
+  <!-- Tokenomics -->
   <section id="token" class="z-10 mx-auto max-w-6xl px-6">
     <h2 class="text-2xl font-bold">Tokenomics (Overview)</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -269,37 +276,58 @@
   </section>
 
   <!-- Notify & Allowlist -->
-  <section id="notify" class="z-10 mx-auto max-w-6xl px-6 pb-20">
+  <section id="notify" class="z-10 mx-auto max-w-6xl px-6 pb-24">
     <div class="rounded-3xl panel p-6 card">
       <h3 class="text-xl font-semibold">Get notified when the presale opens</h3>
 
       <!-- Email notify -->
       <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row"
-            action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true">
+            action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate>
         <label class="sr-only" for="email">Email</label>
         <input required id="email" name="email" type="email" placeholder="you@example.com"
                class="flex-1 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-[var(--ether-blue)]"/>
-        <!-- Optional subject/helpful metadata -->
+        <!-- Helpful metadata -->
         <input type="hidden" name="form_name" value="notify"/>
+        <!-- Redirect used only if JS disabled -->
         <input type="hidden" name="_redirect" value="https://etheriaetrx-etrx.github.io/etrx-presale/#notify-success">
         <button class="btn-primary rounded-2xl px-5 py-3" type="submit">Notify Me</button>
       </form>
-      <p id="notifyMsg" class="mt-2 text-xs hidden" style="color:var(--text-dim)">Thanks! We’ll email you about $ETRX timing.</p>
+
+      <!-- Success card (hidden by default) -->
+      <div id="notifySuccess" class="hidden mt-4 rounded-2xl panel ring-panel p-5">
+        <div class="text-sm">✅ Thanks! Please check your inbox to confirm your email.</div>
+        <div class="mt-1 text-xs" style="color:var(--text-dim)">Tip: If you don’t see it, look in spam/promotions.</div>
+      </div>
+
+      <p id="notifyMsg" class="mt-2 text-xs hidden" style="color:var(--text-dim)" aria-live="polite"></p>
       <p class="mt-1 text-xs" style="color:var(--text-dim)">We only use your info for presale notifications. No spam.</p>
 
       <!-- Wallet allowlist form -->
-      <form id="wlForm" class="mt-6 grid gap-3 sm:grid-cols-[1fr_auto]"
-            action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate>
-        <label class="sr-only" for="wallet">Ethereum wallet</label>
-        <input id="wallet" name="wallet" inputmode="text" autocomplete="off" placeholder="0x… your Ethereum address"
-               class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-[var(--ether-blue)]" />
-        <!-- Honeypot (spam trap) -->
-        <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
-        <!-- Tag this submission in Formspree -->
-        <input type="hidden" name="type" value="allowlist" />
-        <button class="btn-primary rounded-2xl px-5 py-3" type="submit">Join Allowlist</button>
-        <p id="wlMsg" class="sm:col-span-2 text-xs hidden" style="color:var(--text-dim)"></p>
-      </form>
+      <div class="mt-8">
+        <h4 class="text-base font-semibold">Join the allowlist</h4>
+        <form id="wlForm" class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]"
+              action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate>
+          <label class="sr-only" for="wallet">Ethereum wallet or ENS</label>
+          <input id="wallet" name="wallet" inputmode="text" autocomplete="off" placeholder="0x… or yourname.eth"
+                 class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-[var(--ether-blue)]" />
+          <!-- Honeypot -->
+          <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
+          <!-- Tag -->
+          <input type="hidden" name="type" value="allowlist" />
+          <button class="btn-primary rounded-2xl px-5 py-3" type="submit">Join Allowlist</button>
+        </form>
+
+        <!-- ENS/validation helper line -->
+        <p id="wlHelp" class="mt-2 text-xs" style="color:var(--text-dim)"></p>
+
+        <!-- Success card (hidden by default) -->
+        <div id="wlSuccess" class="hidden mt-3 rounded-2xl panel ring-panel p-5 sm:col-span-2">
+          <div class="text-sm">✅ Wallet submitted! We’ll verify allowlist details before presale.</div>
+          <div class="mt-1 text-xs" style="color:var(--text-dim)"></div>
+        </div>
+
+        <p id="wlMsg" class="mt-2 text-xs hidden" style="color:var(--text-dim)" aria-live="polite"></p>
+      </div>
     </div>
   </section>
 
@@ -308,36 +336,36 @@
     <h2 class="text-2xl font-bold">FAQ</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
       <div class="rounded-2xl panel ring-panel">
-        <button class="w-full flex items-center justify-between p-5 text-left">
+        <button class="w-full flex items-center justify-between p-5 text-left faq-btn">
           <b>Is this a presale or the live coin?</b><span aria-hidden="true">+</span>
         </button>
-        <div class="px-5 pb-5 hidden" style="color:var(--text-dim)">
-          This page is for the <b>presale window</b> (Oct 31 → Nov 7, 2025 UTC). After presale, we proceed to <b>TGE</b> and <b>initial listings/liquidity</b>.
-        </div>
+        <div class="accordion"><div class="px-5 pb-5" style="color:var(--text-dim)">
+          This page is for the <b>presale window</b> (Oct 31 → Nov 5, 2025 UTC). After presale, we proceed to <b>TGE</b> and <b>initial listings/liquidity</b>.
+        </div></div>
       </div>
       <div class="rounded-2xl panel ring-panel">
-        <button class="w-full flex items-center justify-between p-5 text-left">
+        <button class="w-full flex items-center justify-between p-5 text-left faq-btn">
           <b>How will buying work?</b><span aria-hidden="true">+</span>
         </button>
-        <div class="px-5 pb-5 hidden" style="color:var(--text-dim)">
+        <div class="accordion"><div class="px-5 pb-5" style="color:var(--text-dim)">
           When live, you’ll connect MetaMask and participate directly in the presale contract. Post-TGE, $ETRX will appear in your wallet and on supported venues.
-        </div>
+        </div></div>
       </div>
       <div class="rounded-2xl panel ring-panel">
-        <button class="w-full flex items-center justify-between p-5 text-left">
+        <button class="w-full flex items-center justify-between p-5 text-left faq-btn">
           <b>Do I need ETH now?</b><span aria-hidden="true">+</span>
         </button>
-        <div class="px-5 pb-5 hidden" style="color:var(--text-dim)">
+        <div class="accordion"><div class="px-5 pb-5" style="color:var(--text-dim)">
           Not yet. This site is for announcements and whitelisting until contracts are deployed.
-        </div>
+        </div></div>
       </div>
       <div class="rounded-2xl panel ring-panel">
-        <button class="w-full flex items-center justify-between p-5 text-left">
+        <button class="w-full flex items-center justify-between p-5 text-left faq-btn">
           <b>What chains are supported?</b><span aria-hidden="true">+</span>
         </button>
-        <div class="px-5 pb-5 hidden" style="color:var(--text-dim)">
+        <div class="accordion"><div class="px-5 pb-5" style="color:var(--text-dim)">
           Launching on Ethereum. Future bridge support is planned.
-        </div>
+        </div></div>
       </div>
     </div>
   </section>
@@ -358,10 +386,18 @@
     <a href="#notify" class="btn-primary rounded-2xl px-4 py-2 text-sm">Get Notified</a>
   </div>
 
+  <!-- Sticky mobile CTA -->
+  <a href="#notify" id="stickyCTA"
+     class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">
+     Get notified for $ETRX
+  </a>
+
   <script>
   // ==== FIXED PRESALE WINDOW (UTC) ====
+  // Starts: 2025-10-31 00:00 UTC (midnight)
+  // Ends:   2025-11-05 00:00 UTC (midnight)
   const PRESALE_START = new Date('2025-10-31T00:00:00Z');
-  const PRESALE_END   = new Date('2025-11-07T00:00:00Z');
+  const PRESALE_END   = new Date('2025-11-05T00:00:00Z');
 
   const $ = (id)=> document.getElementById(id);
   const phaseLabel = $('phaseLabel');
@@ -451,6 +487,10 @@
   function toggleBar(){
     const days=(PRESALE_START - new Date())/86400000;
     $('launchBar').classList.toggle('hidden', !(days>0 && days<=SHOW_BAR_DAYS));
+    // Mobile sticky CTA: show outside of footer vicinity
+    const cta = document.getElementById('stickyCTA');
+    if (window.innerWidth < 768) cta.classList.remove('hidden');
+    else cta.classList.add('hidden');
   }
   toggleBar();
   setInterval(toggleBar, 60_000);
@@ -481,74 +521,154 @@
   }, {rootMargin:'-30% 0px -60% 0px', threshold:0.01});
   sections.forEach(s=>io.observe(s));
 
-  // FAQ collapsible
-  document.querySelectorAll('#faq .panel > button').forEach(btn=>{
+  // FAQ collapsible (animated)
+  document.querySelectorAll('.faq-btn').forEach(btn=>{
+    const acc = btn.parentElement.querySelector('.accordion');
     btn.addEventListener('click',()=>{
-      const ans=btn.nextElementSibling;
-      ans.classList.toggle('hidden');
-      btn.querySelector('span').textContent = ans.classList.contains('hidden') ? '+' : '–';
+      acc.classList.toggle('open');
+      btn.querySelector('span').textContent = acc.classList.contains('open') ? '–' : '+';
     });
   });
 
-  // Notify success message for non-JS (redirect flow)
-  if(location.hash==='#notify-success'){
-    const msg=$('notifyMsg'); if(msg) msg.classList.remove('hidden');
-  }
-
   // ===== Formspree integration (AJAX) =====
+  // NOTE on Double Opt-In:
+  // Turn on "Email verification / Double opt-in" for form f/mandalyp in your Formspree dashboard.
+  // This code shows an inline success card that tells users to confirm their email.
   const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
 
-  async function submitFormspree(form, onSuccess){
-    const msgEl = form.id === 'notifyForm' ? document.getElementById('notifyMsg')
-                 : form.id === 'wlForm'    ? document.getElementById('wlMsg')
-                 : null;
+  async function postFormspree(data){
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('Bad response');
+    return res.json().catch(()=> ({}));
+  }
 
-    if (form.id === 'wlForm') {
-      const fd = new FormData(form);
-      const trap = (fd.get('company')||'').trim();
-      const addr = (fd.get('wallet')||'').trim();
-      if (trap) return; // honeypot
-      const isHexAddr = /^0x[a-fA-F0-9]{40}$/.test(addr);
-      if (!isHexAddr){
-        if (msgEl){
-          msgEl.textContent = 'Enter a valid Ethereum address (0x…40 hex chars).';
-          msgEl.classList.remove('hidden');
+  // Email notify form
+  const notifyForm = document.getElementById('notifyForm');
+  const notifyMsg  = document.getElementById('notifyMsg');
+  const notifySuccess = document.getElementById('notifySuccess');
+  if (notifyForm){
+    notifyForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      notifyMsg.classList.add('hidden');
+      try{
+        const fd = new FormData(notifyForm);
+        const data = Object.fromEntries(fd.entries());
+        await postFormspree(data);
+        notifyForm.classList.add('hidden');
+        notifySuccess.classList.remove('hidden');
+      }catch(e){
+        notifyMsg.textContent = 'Submission failed. Please check your connection and try again.';
+        notifyMsg.classList.remove('hidden');
+      }
+    });
+  }
+  if(location.hash==='#notify-success'){ // non-JS fallback
+    notifyForm?.classList.add('hidden');
+    notifySuccess?.classList.remove('hidden');
+  }
+
+  // ===== ENS-aware allowlist form =====
+  const wlForm = document.getElementById('wlForm');
+  const wlMsg  = document.getElementById('wlMsg');
+  const wlHelp = document.getElementById('wlHelp');
+  const wlSuccess = document.getElementById('wlSuccess');
+
+  // Provide gentle, live hints about input
+  const addrRe = /^0x[a-fA-F0-9]{40}$/;
+  const ensRe  = /^[a-z0-9-]+(\.[a-z0-9-]+)*\.eth$/i;
+
+  function setHelp(text, ok=false){
+    wlHelp.textContent = text || '';
+    wlHelp.style.color = ok ? 'var(--text-muted)' : 'var(--text-dim)';
+  }
+
+  const provider = new (window.ethers?.providers.JsonRpcProvider || function(){})('https://cloudflare-eth.com');
+
+  async function resolveIfEns(value){
+    if (!value || !ensRe.test(value)) return null;
+    try{
+      if (!provider || !provider.resolveName) return null;
+      const resolved = await provider.resolveName(value);
+      return resolved || null;
+    }catch{ return null; }
+  }
+
+  if (wlForm){
+    const walletInput = document.getElementById('wallet');
+    walletInput.addEventListener('input', async ()=>{
+      wlMsg.classList.add('hidden');
+      const v = walletInput.value.trim();
+      if (!v){
+        setHelp('');
+        return;
+      }
+      if (addrRe.test(v)){
+        setHelp('Looks like a valid Ethereum address.', true);
+        return;
+      }
+      if (ensRe.test(v)){
+        setHelp('Checking ENS…');
+        const addr = await resolveIfEns(v);
+        if (addr){
+          setHelp(`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`, true);
+        }else{
+          setHelp('Could not resolve this ENS name.');
         }
         return;
       }
-    }
-
-    try{
-      const fd = new FormData(form);
-      const data = Object.fromEntries(fd.entries());
-      const res = await fetch(FORMSPREE_ENDPOINT, {
-        method:'POST',
-        headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
-        body: JSON.stringify(data)
-      });
-      if (!res.ok) throw new Error('Bad response');
-
-      if (msgEl){
-        if (form.id === 'notifyForm') msgEl.textContent = 'Thanks! We’ll email you about $ETRX timing.';
-        if (form.id === 'wlForm')    msgEl.textContent = 'Wallet submitted! We’ll verify allowlist details before presale.';
-        msgEl.classList.remove('hidden');
-      }
-      form.reset();
-      if (onSuccess) onSuccess();
-    }catch(e){
-      if (msgEl){
-        msgEl.textContent = 'Submission failed. Please check your connection and try again.';
-        msgEl.classList.remove('hidden');
-      }
-    }
-  }
-
-  document.querySelectorAll('form[data-formspree]').forEach(form=>{
-    form.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      submitFormspree(form);
+      setHelp('Enter a valid 0x… address or an ENS name like yourname.eth');
     });
-  });
+
+    wlForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      wlMsg.classList.add('hidden');
+      const fd = new FormData(wlForm);
+      const trap = (fd.get('company')||'').trim();
+      let wallet = (fd.get('wallet')||'').trim();
+
+      if (trap) return; // honeypot
+
+      let finalAddr = null;
+
+      if (addrRe.test(wallet)){
+        finalAddr = wallet;
+      }else if (ensRe.test(wallet)){
+        wlHelp.textContent = 'Resolving ENS…';
+        const resolved = await resolveIfEns(wallet);
+        if (resolved) {
+          finalAddr = resolved;
+        } else {
+          wlMsg.textContent = 'Enter a valid address, or a resolvable ENS name.';
+          wlMsg.classList.remove('hidden');
+          return;
+        }
+      }else{
+        wlMsg.textContent = 'Enter a valid 0x… address or ENS name (yourname.eth).';
+        wlMsg.classList.remove('hidden');
+        return;
+      }
+
+      try{
+        // Persist locally as a convenience
+        const list = JSON.parse(localStorage.getItem('etrx_wl')||'[]');
+        if (!list.includes(finalAddr)) list.push(finalAddr);
+        localStorage.setItem('etrx_wl', JSON.stringify(list));
+
+        // Send to Formspree
+        await postFormspree({ wallet: finalAddr, type: 'allowlist' });
+
+        wlForm.classList.add('hidden');
+        wlSuccess.classList.remove('hidden');
+      }catch(err){
+        wlMsg.textContent = 'Saved locally. Network submit failed — please try again later.';
+        wlMsg.classList.remove('hidden');
+      }
+    });
+  }
 
   // Share button
   const shareBtn = document.getElementById('shareLaunch');
@@ -557,7 +677,7 @@
       try{
         await navigator.share({
           title: '$ETRX • Etheria Presale',
-          text: 'Presale runs Oct 31 → Nov 7 (UTC). Join the allowlist.',
+          text: 'Presale runs Oct 31 → Nov 5 (UTC). Join the allowlist.',
           url: location.href
         });
       }catch{}
