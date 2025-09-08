@@ -5,18 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>$ETRX • Etheria Launch</title>
   <meta name="description" content="$ETRX — the official utility token of Etheria. Launch on Ethereum."/>
+
+  <!-- Prevent caching so countdown/phase is always current -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
   <meta http-equiv="Pragma" content="no-cache"/>
   <meta http-equiv="Expires" content="0"/>
 
+  <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com?v=3"></script>
+  <script src="https://cdn.tailwindcss.com?v=3" defer></script>
 
-  <!-- Social share preview -->
-  <meta property="og:title" content="$ETRX • Etheria Presale">
-  <meta property="og:description" content="The official utility token of Etheria. Presale begins Oct 31, 2025.">
+  <!-- Social (kept consistent with “Launch”) -->
+  <meta property="og:title" content="$ETRX • Etheria Launch">
+  <meta property="og:description" content="The official utility token of Etheria. Launch begins Oct 31, 2025.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Banner.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -25,7 +28,11 @@
   <link rel="icon" type="image/png" href="assets/logo.png">
 
   <style>
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#0a0f19;color:#fff}
+    :root { color-scheme: dark; }
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:#0a0f19;color:#fff
+    }
     .etherian-bg{
       background:
         radial-gradient(60% 40% at 50% 0%, rgba(56,189,248,.20), transparent 60%),
@@ -33,7 +40,14 @@
         radial-gradient(35% 25% at 20% 10%, rgba(59,130,246,.14), transparent 65%),
         #0a0f19;
     }
+    /* Prevent number “wiggle” in countdown */
+    .tabular { font-variant-numeric: tabular-nums; }
+    /* Small blur for frosted cards */
     .card{backdrop-filter: blur(6px)}
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+    }
   </style>
 </head>
 
@@ -42,11 +56,10 @@
   <!-- Nav -->
   <header class="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
     <div class="flex items-center gap-3">
-      <!-- Logo -->
       <img src="assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-cyan-300/40 object-contain bg-white/5" />
       <div class="text-sm sm:text-base tracking-wide opacity-90">Etheria</div>
     </div>
-    <nav class="hidden gap-6 text-sm opacity-80 md:flex">
+    <nav class="hidden gap-6 text-sm opacity-80 md:flex" aria-label="Primary">
       <a class="hover:opacity-100" href="#about">About</a>
       <a class="hover:opacity-100" href="#token">Tokenomics</a>
       <a class="hover:opacity-100" href="#road">Road</a>
@@ -69,8 +82,11 @@
       <!-- Countdown -->
       <div class="mt-8">
         <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-widest text-white/60">Launch begins in</div>
-        <div class="flex gap-3 text-center" id="countdown"></div>
+        <div class="flex gap-3 text-center" id="countdown" aria-live="polite"></div>
         <div class="mt-2 text-xs text-white/50" id="whenText"></div>
+        <noscript>
+          <p class="mt-2 text-xs text-white/60">Launch begins Oct 31, 2025 00:00 UTC • Ends Nov 07, 2025 00:00 UTC</p>
+        </noscript>
       </div>
 
       <!-- Stats -->
@@ -84,7 +100,7 @@
 
     <!-- Hero banner image -->
     <div class="order-1 md:order-2 flex items-center justify-center">
-      <img src="assets/Banner.png" alt="Etheria Banner" class="w-full rounded-3xl ring-1 ring-white/10" />
+      <img src="assets/Banner.png" alt="Etheria Banner" class="w-full rounded-3xl ring-1 ring-white/10" loading="eager" decoding="async"/>
     </div>
   </section>
 
@@ -92,7 +108,7 @@
   <section id="about" class="relative z-10 mx-auto max-w-6xl px-6 py-16">
     <h2 class="text-2xl font-bold">What is $ETRX?</h2>
     <p class="mt-3 max-w-3xl text-white/80">
-      $ETRX is the utility token of Etheria — used to unlock rare Realms & Artifacts, vote on lore and direction,
+      $ETRX is the utility token of Etheria — used to unlock rare Realms &amp; Artifacts, vote on lore and direction,
       access exclusive drops, and power the Etherian economy. Holders may receive airdrops and in-world benefits as
       the universe expands.
     </p>
@@ -103,11 +119,11 @@
     <h2 class="text-2xl font-bold">Tokenomics (Draft)</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
       <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Community</b><br/><span class="text-white/70">40% — rewards, airdrops, staking</span></div>
-      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Treasury</b><br/><span class="text-white/70">20% — growth & partnerships</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Treasury</b><br/><span class="text-white/70">20% — growth &amp; partnerships</span></div>
       <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Liquidity</b><br/><span class="text-white/70">15% — DEX/CEX listings</span></div>
-      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Team & Mods</b><br/><span class="text-white/70">15% — Caifu, Cheetah, contributors</span></div>
-      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Advisors</b><br/><span class="text-white/70">5% — ambassadors & marketing</span></div>
-      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Reserve</b><br/><span class="text-white/70">5% — burns & expansions</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Team &amp; Mods</b><br/><span class="text-white/70">15% — Caifu, Cheetah, contributors</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Advisors</b><br/><span class="text-white/70">5% — ambassadors &amp; marketing</span></div>
+      <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Reserve</b><br/><span class="text-white/70">5% — burns &amp; expansions</span></div>
     </div>
   </section>
 
@@ -115,7 +131,7 @@
   <section id="road" class="relative z-10 mx-auto max-w-6xl px-6 py-16">
     <h2 class="text-2xl font-bold">Road to Mainnet</h2>
     <ol class="mt-5 space-y-3 text-white/80">
-      <li>1) Launch site & whitelist open</li>
+      <li>1) Launch site &amp; whitelist open</li>
       <li>2) Community reveal + partnerships</li>
       <li>3) $ETRX token deploy on Ethereum</li>
       <li>4) Launch contract live + claim page</li>
@@ -125,10 +141,11 @@
 
   <!-- Notify -->
   <section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-20">
-    <div class="rounded-3xl border border-white/10 bg-white/5 p-6">
+    <div class="rounded-3xl border border-white/10 bg-white/5 p-6 card">
       <h3 class="text-xl font-semibold">Get notified when the launch opens</h3>
       <form class="mt-4 flex flex-col gap-3 sm:flex-row" action="https://formspree.io/f/your-id" method="POST">
-        <input required name="email" type="email" placeholder="you@example.com"
+        <label class="sr-only" for="email">Email</label>
+        <input required id="email" name="email" type="email" placeholder="you@example.com"
                class="flex-1 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"/>
         <button class="rounded-2xl bg-cyan-500/90 px-5 py-3 font-semibold text-black hover:bg-cyan-400" type="submit">Notify Me</button>
       </form>
@@ -152,41 +169,53 @@
     <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-sm text-white/60 md:flex-row">
       <div>© <span id="year"></span> Etheria • $ETRX</div>
       <div class="flex items-center gap-4">
-        <a href="https://twitter.com/enteretheria" target="_blank" class="hover:text-white">Twitter</a>
-        <a href="#" class="hover:text-white">Telegram</a>
-        <a href="#" class="hover:text-white">Mirror</a>
-        <a href="#" class="hover:text-white">OpenSea</a>
+        <a href="https://twitter.com/enteretheria" target="_blank" rel="noopener" class="hover:text-white">Twitter</a>
+        <a href="#" target="_blank" rel="noopener" class="hover:text-white">Telegram</a>
+        <a href="#" target="_blank" rel="noopener" class="hover:text-white">Mirror</a>
+        <a href="#" target="_blank" rel="noopener" class="hover:text-white">OpenSea</a>
       </div>
     </div>
   </footer>
 
   <script>
     // ==== FIXED LAUNCH WINDOW (UTC) ====
-    const PRESALE_START = new Date('2025-10-31T00:00:00Z');
-    const PRESALE_END   = new Date('2025-11-07T00:00:00Z');
+    const PRESALE_START = new Date('2025-10-31T00:00:00Z'); // Oct 31, 2025 00:00 UTC
+    const PRESALE_END   = new Date('2025-11-07T00:00:00Z'); // Nov 07, 2025 00:00 UTC
 
-    const phaseLabel = document.getElementById('phaseLabel');
-    const countdown  = document.getElementById('countdown');
-    const whenText   = document.getElementById('whenText');
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const $ = (id)=> document.getElementById(id);
+    const phaseLabel = $('phaseLabel');
+    const countdown  = $('countdown');
+    const whenText   = $('whenText');
+    $('year').textContent = new Date().getFullYear();
 
+    // Formatters
     const fmtUTC = (d)=> d.toUTCString().replace(' GMT',' UTC');
-    const fmtLoc = (d)=> d.toLocaleString([], {year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit'});
-    whenText.textContent = `Launch: ${fmtUTC(PRESALE_START)} • Local: ${fmtLoc(PRESALE_START)}`;
+    const fmtLoc = (d)=> d.toLocaleString([], {
+      year:'numeric', month:'short', day:'2-digit',
+      hour:'2-digit', minute:'2-digit', hour12:true
+    });
 
+    // Show both UTC and Local (with AM/PM)
+    whenText.textContent = `Launch: ${fmtUTC(PRESALE_START)} • Local: ${fmtLoc(PRESALE_START)} — Ends: ${fmtUTC(PRESALE_END)}`;
+
+    // Utility to build a time box
     function box(v,label){
       const d=document.createElement('div');
       d.className='w-20 rounded-2xl bg-white/5 p-3 ring-1 ring-white/10';
-      d.innerHTML=`<div class="text-3xl font-bold">${String(v).padStart(2,'0')}</div>
+      d.innerHTML=`<div class="text-3xl font-bold tabular">${String(v).padStart(2,'0')}</div>
                    <div class="text-xs uppercase text-white/60">${label}</div>`;
       return d;
     }
 
+    function calcPhase(now){
+      if (now < PRESALE_START) return 'upcoming';
+      if (now > PRESALE_END)   return 'ended';
+      return 'live';
+    }
+
     function tick(){
       const now = new Date();
-      let phase = 'live';
-      if (now < PRESALE_START) phase = 'upcoming';
-      if (now > PRESALE_END)   phase = 'ended';
+      const phase = calcPhase(now);
 
       phaseLabel.textContent =
         phase==='upcoming' ? 'Launch begins in' :
@@ -203,11 +232,16 @@
       const m  = Math.floor((s%3600)/60);
       const ss = s%60;
 
-      countdown.replaceChildren(box(d,'d'), box(h,'h'), box(m,'m'), box(ss,'s'));
+      // Replace children only if values changed to reduce layout churn
+      const boxes=[box(d,'d'), box(h,'h'), box(m,'m'), box(ss,'s')];
+      countdown.replaceChildren(...boxes);
     }
 
     tick();
-    setInterval(tick, 1000);
+    // Use a fixed 1s interval; performance.now() smoothing is overkill here
+    const interval = setInterval(tick, 1000);
+    // Clean up if page is unloaded (mostly for SPA navigations)
+    addEventListener('beforeunload', ()=> clearInterval(interval), { once:true });
   </script>
 </body>
 </html>
