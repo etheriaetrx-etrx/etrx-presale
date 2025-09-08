@@ -20,10 +20,20 @@
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="720">
 <meta property="og:locale" content="en_US">
+<meta property="og:updated_time" content="2025-09-08T00:00:00Z">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@ETRXDreamscapes">
+<meta name="twitter:title" content="$ETRX • Etheria Presale">
 <meta name="twitter:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
 <meta name="twitter:image:alt" content="Etheria presale hero art">
+
+<!-- Browser/Platform niceties -->
+<meta name="theme-color" content="#05070d">
+<meta name="robots" content="index,follow,max-image-preview:large"/>
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="assets/logo.png">
 
 <!-- CSP (single-file build) -->
 <meta http-equiv="Content-Security-Policy"
@@ -33,18 +43,22 @@
            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
            font-src https://fonts.gstatic.com;
            connect-src 'self' https://formspree.io https://cloudflare-eth.com;
+           form-action 'self' https://formspree.io;
            worker-src 'self';
            object-src 'none';
            base-uri 'self';
            frame-ancestors 'none';
+           navigate-to 'self';
            upgrade-insecure-requests">
-<meta name="theme-color" content="#05070d">
-<meta name="robots" content="index,follow,max-image-preview:large"/>
 
 <!-- Performance -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://formspree.io">
+<link rel="preconnect" href="https://cloudflare-eth.com">
+<link rel="dns-prefetch" href="https://formspree.io">
+<link rel="dns-prefetch" href="https://cloudflare-eth.com">
 
 <!-- Fonts & Libraries -->
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
@@ -67,7 +81,7 @@
 :root{
   color-scheme: dark;
   --bg:#05070d; --panel:rgba(255,255,255,.06); --ring:rgba(0,255,255,.18);
-  --dim:rgba(255,255,255,.72); --muted:rgba(255,255,255,.9);
+  --dim:rgba(255,255,255,.78); --muted:rgba(255,255,255,.92);
   --neon-cyan: 0 255 255; --neon-blue: 84 178 255; --neon-violet: 208 128 255; --neon-orange: 255 147 76;
 }
 *{box-sizing:border-box}
@@ -303,30 +317,33 @@ section{ contain: layout paint style }
     <!-- Countdown -->
     <div class="mt-8 glass card card-outline p-5 reveal" data-delay="0">
       <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-[.15em] small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
-      <div id="countdown" class="flex gap-3 text-center" aria-live="polite"></div>
+      <div id="countdown" class="flex gap-3 text-center" aria-live="polite" aria-label="Countdown to presale"></div>
 
       <div class="mt-3 text-xs flex flex-col gap-1 small-dim">
         <div id="whenPrimary" class="text-sm text-white/90"></div>
         <div id="whenSecondary"></div>
-        <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100" aria-pressed="false">Make Local primary</button>
+        <div class="flex items-center gap-3">
+          <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100" aria-pressed="false">Make Local primary</button>
+          <a id="addToCal" class="mt-2 laser hover:opacity-100" download="etrx-presale.ics">Add to calendar</a>
+        </div>
       </div>
 
       <!-- Progress -->
       <div class="mt-4">
         <div class="flex items-center justify-between text-xs small-dim">
-          <span id="phaseName">Phase: Presale</span><span id="phaseEta"></span>
+          <span id="phaseName">Phase: Presale</span><span id="phaseEta" aria-live="polite"></span>
         </div>
-        <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+        <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10" role="progressbar" aria-label="Presale progress">
           <div id="phaseBar" class="h-full" style="background:linear-gradient(90deg, rgba(var(--neon-orange),1), rgba(var(--neon-blue),1)); width:0%"></div>
         </div>
       </div>
     </div>
 
     <ul class="mt-6 grid grid-cols-2 gap-3 text-sm sm:text-base">
-      <li class="glass card holo p-4 reveal" data-delay="50"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Supply: <b>10,000,000</b></li>
-      <li class="glass card holo p-4 reveal" data-delay="100"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Network: <b>Ethereum</b></li>
-      <li class="glass card holo p-4 reveal" data-delay="150"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Symbol: <b>ETRX</b></li>
-      <li class="glass card holo p-4 reveal" data-delay="200"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Presale: <b>Sep 24 → Oct 1</b></li>
+      <li class="glass card holo p-4 reveal" data-delay="50"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2" aria-hidden="true"></span>Supply: <b>10,000,000</b></li>
+      <li class="glass card holo p-4 reveal" data-delay="100"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2" aria-hidden="true"></span>Network: <b>Ethereum</b></li>
+      <li class="glass card holo p-4 reveal" data-delay="150"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2" aria-hidden="true"></span>Symbol: <b>ETRX</b></li>
+      <li class="glass card holo p-4 reveal" data-delay="200"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2" aria-hidden="true"></span>Presale: <b>Sep 24 → Oct 1, 2025</b></li>
     </ul>
 
     <div class="mt-4 text-xs small-dim">
@@ -409,7 +426,7 @@ section{ contain: layout paint style }
           action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate autocomplete="on">
       <label class="sr-only" for="email">Email</label>
       <input required id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"
-             class="flex-1 rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"/>
+             class="flex-1 rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400" />
       <!-- Honeypot -->
       <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
       <input type="hidden" name="form_name" value="notify"/>
@@ -423,7 +440,7 @@ section{ contain: layout paint style }
     </div>
 
     <p id="notifyMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
-    <p class="mt-1 text-xs small-dim">We only use your info for presale notifications. No spam.</p>
+    <p class="mt-1 text-xs small-dim">We only use your info for presale notifications. No spam. <a href="#privacy" class="laser">Privacy</a></p>
 
     <div class="mt-8">
       <h4 class="text-base font-semibold neon-text">Join the allowlist</h4>
@@ -456,7 +473,7 @@ section{ contain: layout paint style }
         <span>When does the presale run?</span>
         <span class="faq-chevron" aria-hidden="true">⌄</span>
       </button>
-      <div class="faq-body" id="faq-when-body" role="region" aria-labelledby="faq-when-btn" hidden>
+      <div class="faq-body" id="faq-when-body" role="region" aria-labelledby="faq-when-btn" hidden aria-hidden="true">
         <p class="small-dim">Sep 24 → Oct 1, 2025 (UTC). Use the toggle to view local time.</p>
       </div>
     </div>
@@ -465,7 +482,7 @@ section{ contain: layout paint style }
         <span>Will there be a TGE?</span>
         <span class="faq-chevron" aria-hidden="true">⌄</span>
       </button>
-      <div class="faq-body" id="faq-tge-body" role="region" aria-labelledby="faq-tge-btn" hidden>
+      <div class="faq-body" id="faq-tge-body" role="region" aria-labelledby="faq-tge-btn" hidden aria-hidden="true">
         <p class="small-dim">Yes—after the presale window closes, we’ll distribute to presale wallets and seed initial listings/liquidity.</p>
       </div>
     </div>
@@ -484,6 +501,15 @@ section{ contain: layout paint style }
 
 <a href="#notify" id="stickyCTA" class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">Get notified for $ETRX</a>
 
+<!-- Privacy (simple anchor target) -->
+<section id="privacy" class="relative z-10 mx-auto max-w-6xl px-6 pb-10 small-dim">
+  <h2 class="text-lg font-semibold neon-text">Privacy</h2>
+  <p class="mt-2 text-xs max-w-measure">
+    We collect your email solely to send presale notifications and related Etheria updates. You can opt out anytime via the
+    link in our emails. We do not sell your data.
+  </p>
+</section>
+
 <!-- Schema.org event (SEO) -->
 <script type="application/ld+json">
 {
@@ -498,6 +524,29 @@ section{ contain: layout paint style }
   "image": "https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png",
   "organizer": { "@type": "Organization", "name": "Etheria" },
   "description": "Etheria’s official $ETRX presale on Ethereum."
+}
+</script>
+<!-- Schema.org site/org (SEO) -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"Etheria",
+  "url":"https://etheriaetrx-etrx.github.io/etrx-presale/",
+  "potentialAction":{
+    "@type":"SearchAction",
+    "target":"https://x.com/ETRXDreamscapes",
+    "query-input":"required name=query"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Organization",
+  "name":"Etheria",
+  "url":"https://etheriaetrx-etrx.github.io/etrx-presale/",
+  "sameAs":["https://x.com/ETRXDreamscapes"]
 }
 </script>
 
@@ -549,6 +598,34 @@ tzToggle?.addEventListener('click', ()=>{
   primaryUTC=!primaryUTC; safeSet('etrx_tz', primaryUTC ? 'utc' : 'local'); updateWhen();
 });
 
+/* Add to Calendar (ICS) */
+(function(){
+  const pad = n => String(n).padStart(2,'0');
+  const toICS = d => {
+    const z = new Date(d);
+    return z.getUTCFullYear()
+      + pad(z.getUTCMonth()+1) + pad(z.getUTCDate())
+      + 'T' + pad(z.getUTCHours()) + pad(z.getUTCMinutes()) + pad(z.getUTCSeconds()) + 'Z';
+  };
+  const ics =
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Etheria//ETRX Presale//EN
+BEGIN:VEVENT
+UID:${crypto.getRandomValues(new Uint32Array(1))[0]}@etheria
+DTSTAMP:${toICS(new Date())}
+DTSTART:${toICS(PRESALE_START)}
+DTEND:${toICS(PRESALE_END)}
+SUMMARY:ETRX Presale
+DESCRIPTION:Etheria’s official $ETRX presale on Ethereum.
+URL:https://etheriaetrx-etrx.github.io/etrx-presale/
+END:VEVENT
+END:VCALENDAR`;
+  const blob = new Blob([ics], {type:'text/calendar'});
+  const url = URL.createObjectURL(blob);
+  document.getElementById('addToCal')?.setAttribute('href', url);
+})();
+
 /* precision clock */
 const t0 = Date.now(), p0 = performance.now();
 const nowAccurate = ()=> new Date(t0 + (performance.now()-p0));
@@ -557,7 +634,7 @@ function phase(now){ if(now < PRESALE_START) return 'upcoming'; if(now > PRESALE
 function box(v,label){
   const d=document.createElement('div');
   d.className='w-[5.5rem] rounded-xl glass card p-3 text-center';
-  d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text">${String(v).padStart(2,'0')}</div><div class="text-[11px] uppercase small-dim">${label}</div>`;
+  d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text" aria-label="${label}">${String(v).padStart(2,'0')}</div><div class="text-[11px] uppercase small-dim">${label}</div>`;
   return d;
 }
 let lastSecond=-1;
@@ -571,7 +648,7 @@ function loop(){
   }
   const target = ph==='upcoming'?PRESALE_START:ph==='live'?PRESALE_END:now;
   const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
-  if(s!==lastSecond){ lastSecond=s; const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; countdown.replaceChildren(box(d,'d'),box(h,'h'),box(m,'m'),box(ss,'s')); }
+  if(s!==lastSecond){ lastSecond=s; const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; countdown.replaceChildren(box(d,'days'),box(h,'hours'),box(m,'minutes'),box(ss,'seconds')); }
   requestAnimationFrame(loop);
 }
 updateWhen(); loop();
@@ -587,13 +664,16 @@ function updateProgress(){
 }
 updateProgress(); setInterval(updateProgress, 30_000);
 
-/* sticky CTA timing */
+/* sticky CTA timing: also show on desktop after some scroll */
 const SHOW_BAR_DAYS = 14;
 function toggleBar(){
   const days=(PRESALE_START - new Date())/86400000;
-  document.getElementById('stickyCTA').classList.toggle('hidden', !(window.innerWidth < 768 && days>0 && days<=SHOW_BAR_DAYS));
+  const onMobile = window.innerWidth < 768;
+  const scrolled = window.scrollY > 600;
+  const show = days>0 && days<=SHOW_BAR_DAYS && (onMobile || scrolled);
+  document.getElementById('stickyCTA').classList.toggle('hidden', !show);
 }
-toggleBar(); setInterval(toggleBar, 60_000);
+toggleBar(); addEventListener('scroll', toggleBar, {passive:true}); addEventListener('resize', toggleBar, {passive:true}); setInterval(toggleBar, 60_000);
 
 /* smooth anchors */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
@@ -633,12 +713,13 @@ navMap.forEach(n=>{ const el=document.getElementById(n.id); el && secIO.observe(
   els.forEach(el=>io.observe(el));
 })();
 
-/* FAQ expand */
+/* FAQ expand (add aria-hidden toggling) */
 document.querySelectorAll('.faq-item')?.forEach(item=>{
   const btn=item.querySelector('.faq-header'); const body=item.querySelector('.faq-body'); const chev=item.querySelector('.faq-chevron');
   btn.addEventListener('click', ()=>{
     const open=btn.getAttribute('aria-expanded')==='true';
     btn.setAttribute('aria-expanded', String(!open));
+    body.setAttribute('aria-hidden', String(open));
     if(!open){
       item.classList.add('open'); body.hidden=false; body.style.maxHeight=body.scrollHeight+'px'; body.classList.add('open'); chev.style.transform='rotate(180deg)';
     } else {
@@ -711,7 +792,9 @@ if (wlForm){
     wlMsg.classList.add('hidden');
     const v=walletInput.value.trim();
     if(!v){ setHelp(''); return; }
-    if(addrRe.test(v)){ setHelp('Looks like a valid Ethereum address.', true); return; }
+    if(addrRe.test(v)){
+      setHelp('Looks like a valid Ethereum address.', true); return;
+    }
     if(ensRe.test(v)){
       setHelp('Checking ENS…');
       clearTimeout(ensTimer);
@@ -931,7 +1014,6 @@ function toast(msg, isWarn=false){
   }
 
   function col(u){
-    // cyan -> blue -> violet -> orange (subtle)
     if(u<0.5) return `rgba(84,178,255,${0.18 + u*0.25})`;
     if(u<0.75) return `rgba(208,128,255,${0.18 + (u-0.5)*0.2})`;
     return `rgba(255,147,76,${0.16 + (u-0.75)*0.18})`;
@@ -943,11 +1025,10 @@ function toast(msg, isWarn=false){
 
     for(const p of wisps){
       p.tw += p.tws;
-      const a = 0.5 + Math.sin(p.tw)*0.5; // twinkle 0..1
+      const a = 0.5 + Math.sin(p.tw)*0.5;
       p.x += p.vx + Math.sin(p.y*0.001)*0.12*dpr;
       p.y += p.vy;
 
-      // wrap
       if(p.y < -20) { p.y = h + 10; p.x = rand(0,w); }
       if(p.x < -10) p.x = w+10; if(p.x > w+10) p.x = -10;
 
