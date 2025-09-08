@@ -171,29 +171,48 @@ section{ contain: layout paint style }
 /* Toast */
 .toast{ z-index:60; }
 
-/* Hero image glow (around Background.png) */
+/* ===== Softer, animated hero image glow (around Background.png) ===== */
 .hero-glow{
   position:relative; border-radius:1.5rem; /* match rounded-3xl */
 }
+.hero-glow::before,
+.hero-glow::after{
+  content:""; position:absolute; inset:-10px; border-radius:inherit; pointer-events:none;
+}
 .hero-glow::before{
-  content:""; position:absolute; inset:-4px; border-radius:inherit; pointer-events:none;
+  /* very soft rotating halo */
   background: conic-gradient(from 0deg at 50% 50%,
-    rgba(var(--neon-orange)/.75),
-    rgba(var(--neon-blue)/.75),
-    rgba(var(--neon-violet)/.75),
-    rgba(var(--neon-orange)/.75));
-  filter: blur(16px) saturate(1.25);
-  opacity:.7;
+    rgba(var(--neon-blue)/.18),
+    rgba(var(--neon-violet)/.18),
+    rgba(var(--neon-orange)/.18),
+    rgba(var(--neon-blue)/.18));
+  filter: blur(34px) saturate(1.05);
+  opacity:.28;
+  animation: glowSpin 24s linear infinite;
+  transform-origin: 50% 50%;
+}
+.hero-glow::after{
+  /* gentle breathing glow */
+  background: radial-gradient(120% 120% at 50% 50%,
+    rgba(84,178,255,.16),
+    rgba(208,128,255,.10) 35%,
+    rgba(255,147,76,.08) 60%,
+    transparent 70%);
+  filter: blur(26px);
+  opacity:.22;
+  animation: glowPulse 7s ease-in-out infinite alternate;
 }
 .hero-glow img{
   position:relative; display:block; border-radius:inherit;
-  box-shadow: 0 0 0 1px rgba(0,255,255,.15) inset, 0 12px 40px rgba(84,178,255,.15);
+  box-shadow: 0 0 0 1px rgba(0,255,255,.12) inset, 0 10px 34px rgba(84,178,255,.14);
 }
+@keyframes glowSpin { to { transform: rotate(360deg); } }
+@keyframes glowPulse { from { opacity:.18; filter: blur(22px); } to { opacity:.32; filter: blur(32px); } }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
-  .card-outline::before, .holo::after, .hero-glow::before{ display:none }
+  .card-outline::before, .holo::after, .hero-glow::before, .hero-glow::after{ display:none }
 }
 </style>
 </head>
@@ -296,7 +315,7 @@ section{ contain: layout paint style }
     </div>
   </div>
 
-  <!-- Hero image with glow (single PNG; no srcset) -->
+  <!-- Hero image with softer, animated glow -->
   <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px] reveal" data-delay="0">
     <div class="hero-glow h-full w-full rounded-3xl">
       <img
@@ -337,7 +356,7 @@ section{ contain: layout paint style }
   <p class="mt-3 text-xs small-dim reveal" data-delay="300">Note: Detailed allocations/percentages will be shared closer to TGE.</p>
 </section>
 
-<div class="section-divider max-w-6xl mx-auto"></div>
+<div class="section-divider max-w-6xl mx_auto"></div>
 
 <!-- Road -->
 <section id="road" class="relative z-10 mx-auto max-w-6xl px-6 py-14">
@@ -659,7 +678,7 @@ async function resolveIfEns(value){
   if(!providerENS?.resolveName) return null;
   try{
     const ctrl=new AbortController(); const timeout=setTimeout(()=>ctrl.abort(),10000);
-    const resolved = await providerENS.resolveName(value); // ethers doesn't accept signal; timeout is soft
+    const resolved = await providerENS.resolveName(value); // soft timeout
     clearTimeout(timeout);
     return resolved||null;
   }catch{ return null; }
