@@ -51,7 +51,7 @@
   }
   </script>
 
-  <!-- CSP: allow Formspree + Cloudflare ETH RPC + WalletConnect (optional) + JSDelivr -->
+  <!-- CSP: allow Formspree + Cloudflare ETH RPC + WalletConnect (Reown) + JSDelivr -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' https://etheriaetrx-etrx.github.io;
                  img-src 'self' data: https:;
@@ -74,7 +74,7 @@
 
   <!-- Ethers.js (ENS & provider wrapper) -->
   <script defer src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-  <!-- WalletConnect v2 Provider + Modal (optional, needs your projectId to enable QR option) -->
+  <!-- WalletConnect v2 Provider + Modal -->
   <script defer src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.6.2/dist/index.umd.min.js"></script>
 
@@ -228,9 +228,7 @@
         <button id="modalClose" class="text-white/70 hover:text-white">✕</button>
       </div>
       <p class="mt-1 text-xs" style="color:var(--text-dim)">Use a browser wallet or scan a QR with WalletConnect.</p>
-      <div id="walletList" class="mt-4 grid gap-2">
-        <!-- injected providers will populate here -->
-      </div>
+      <div id="walletList" class="mt-4 grid gap-2"></div>
       <div id="wcBlock" class="mt-3">
         <button id="wcBtn" class="wallet-btn w-full">
           <span>🔗</span>
@@ -644,7 +642,6 @@
   });
 
   // ===== Formspree integration (AJAX) =====
-  // Enable "Email verification" (double opt-in) for f/mandalyp in Formspree dashboard.
   const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
   async function postFormspree(data){
     const res = await fetch(FORMSPREE_ENDPOINT, {
@@ -706,14 +703,40 @@
   }
 
   // ===== Wallet connection (Injected + WalletConnect) =====
-  // Replace 'YOUR_WC_PROJECT_ID' with your WalletConnect Cloud project id to enable the QR option.
-  const WC_PROJECT_ID = 'YOUR_WC_PROJECT_ID';
+  // Project ID from Reown (WalletConnect Cloud)
+  const WC_PROJECT_ID = '39c6a71100682cbde711e09f61abb5c9';
 
   let activeProvider = null;  // EIP-1193 provider
   let ethersWeb3 = null;
 
   function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
   function showModal(show){ modal.style.display = show ? 'flex' : 'none'; }
+
+  // --- Force/ensure Ethereum Mainnet (0x1) after connecting
+  async function ensureChain(provider, hexChain = '0x1') {
+    try {
+      const current = await provider.request({ method: 'eth_chainId' });
+      if (current?.toLowerCase() === hexChain.toLowerCase()) return true;
+      await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: hexChain }] });
+      return true;
+    } catch (err) {
+      if (err?.code === 4902) {
+        await provider.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: hexChain,
+            chainName: 'Ethereum Mainnet',
+            nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+            rpcUrls: ['https://cloudflare-eth.com'],
+            blockExplorerUrls: ['https://etherscan.io']
+          }]
+        });
+        return true;
+      }
+      console.warn('Chain switch failed', err);
+      return false;
+    }
+  }
 
   // Build injected wallet list (MetaMask, Rabby, Brave, Coinbase ext, Frame, etc.)
   function discoverInjected(){
@@ -732,7 +755,6 @@
         injected.push(window.ethereum);
       }
     }
-    // build UI from EIP-6963 (if any), else from legacy array
     const uniq = [];
     if (announced.length){
       announced.forEach(({info, provider})=>{
@@ -763,7 +785,7 @@
         showModal(false);
         try{
           const accounts = await provider.request({ method:'eth_requestAccounts' });
-          onConnected(provider, accounts?.[0]||null);
+          await onConnected(provider, accounts?.[0]||null);
         }catch(err){ console.warn('Injected connect error', err); }
       });
       walletList.appendChild(btn);
@@ -771,10 +793,6 @@
   }
 
   async function connectWalletConnect(){
-    if (!WC_PROJECT_ID || WC_PROJECT_ID === 'YOUR_WC_PROJECT_ID'){
-      wcNote.textContent = 'Add your WalletConnect projectId in the code to enable QR connect.';
-      return;
-    }
     try{
       const chains = [1]; // Ethereum mainnet
       const EthereumProvider = window.WalletConnectEthereumProvider?.default || window.WalletConnectEthereumProvider;
@@ -782,19 +800,29 @@
         projectId: WC_PROJECT_ID,
         showQrModal: true,
         chains,
-        methods:['eth_sendTransaction','personal_sign','eth_signTypedData','eth_signTypedData_v4','eth_requestAccounts']
+        methods:['eth_sendTransaction','personal_sign','eth_signTypedData','eth_signTypedData_v4','eth_requestAccounts'],
+        metadata: {
+          name: '$ETRX • Etheria Presale',
+          description: 'Official presale connection',
+          url: location.origin,
+          icons: ['https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png']
+        }
       });
       await wc.enable();
       const accounts = await wc.request({ method:'eth_accounts' });
-      onConnected(wc, accounts?.[0]||null);
-      // cleanup modal
+      await onConnected(wc, accounts?.[0]||null);
       showModal(false);
-    }catch(err){ console.warn('WC connect error', err); }
+    }catch(err){
+      console.warn('WC connect error', err);
+    }
   }
 
-  function onConnected(provider, account){
+  async function onConnected(provider, account){
     activeProvider = provider;
     ethersWeb3 = new ethers.providers.Web3Provider(provider, 'any');
+    // Ensure we are on Ethereum Mainnet
+    await ensureChain(provider, '0x1');
+
     localStorage.setItem('etrx_wallet', account||'');
     walletShort.textContent = shortAddr(account||'');
     walletPill.classList.remove('hidden');
@@ -802,9 +830,15 @@
     openConnect.classList.add('hidden-important');
 
     // listen for changes
-    provider.on?.('accountsChanged', (accs)=>{ walletShort.textContent = shortAddr(accs?.[0]||''); localStorage.setItem('etrx_wallet', accs?.[0]||''); });
+    provider.on?.('accountsChanged', (accs)=>{
+      walletShort.textContent = shortAddr(accs?.[0]||'');
+      localStorage.setItem('etrx_wallet', accs?.[0]||'');
+    });
     provider.on?.('disconnect', ()=>{ doDisconnect(); });
-    provider.on?.('chainChanged', ()=>{ /* could update UI / network checks here */ });
+    provider.on?.('chainChanged', async ()=>{
+      // Re-enforce mainnet if the user switches
+      await ensureChain(provider, '0x1');
+    });
   }
 
   function doDisconnect(){
@@ -825,10 +859,7 @@
 
   // WalletConnect button
   wcBtn.addEventListener('click', connectWalletConnect);
-  // Hide WC block if project id not set
-  if (!WC_PROJECT_ID || WC_PROJECT_ID === 'YOUR_WC_PROJECT_ID'){
-    wcNote.textContent = 'Tip: enable QR connect by adding your WalletConnect projectId in the code.';
-  }
+  if (!WC_PROJECT_ID){ wcNote.textContent = 'Add your WalletConnect projectId in the code to enable QR connect.'; }
 
   // restore previous session display (address only)
   const prev = localStorage.getItem('etrx_wallet');
