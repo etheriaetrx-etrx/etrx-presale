@@ -51,14 +51,17 @@
   }
   </script>
 
-  <!-- CSP (added api.walletconnect.com just in case) -->
+  <!-- CSP (added unpkg + *.reown.com to cover new infra/fallback CDN) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' https://etheriaetrx-etrx.github.io;
                  img-src 'self' data: https:;
-                 script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net 'unsafe-inline';
+                 script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://unpkg.com 'unsafe-inline';
                  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
                  font-src https://fonts.gstatic.com;
-                 connect-src 'self' https://formspree.io https://cloudflare-eth.com https://rpc.walletconnect.com https://api.walletconnect.com https://*.walletconnect.com wss://relay.walletconnect.com wss://*.walletconnect.com;
+                 connect-src 'self' https://formspree.io https://cloudflare-eth.com
+                               https://rpc.walletconnect.com https://api.walletconnect.com https://*.walletconnect.com
+                               https://*.reown.com
+                               wss://relay.walletconnect.com wss://*.walletconnect.com wss://*.reown.com;
                  worker-src 'self';
                  object-src 'none';
                  base-uri 'self';
@@ -73,10 +76,7 @@
   <script src="https://cdn.tailwindcss.com?v=3"></script>
 
   <!-- Ethers.js -->
-  <script defer src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-  <!-- WalletConnect v2 Provider + Modal (UMD) -->
-  <script defer src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.6.2/dist/index.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 
   <!-- Preload hero image -->
   <link rel="preload" as="image" href="assets/Background.png">
@@ -99,8 +99,15 @@
     }
     *{ box-sizing:border-box }
     body{ margin:0; background:var(--ether-bg); color:#fff; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; overflow-x:hidden; }
-    .ambient { position: fixed; inset: -20vmax -20vmax auto auto; height: 60vmax; width: 60vmax; z-index: 0; pointer-events: none; filter: blur(80px) saturate(1.2); opacity:.35; background: radial-gradient(40% 40% at 70% 30%, rgba(var(--glow-cyan)/.35), transparent 60%), radial-gradient(40% 40% at 30% 70%, rgba(var(--glow-blue)/.30), transparent 60%), radial-gradient(35% 35% at 80% 80%, rgba(var(--glow-orange)/.25), transparent 60%); }
-    .etherian-bg{ background: radial-gradient(60% 40% at 50% 0%, color-mix(in oklab, var(--ether-cyan) 24%, transparent), transparent 60%), radial-gradient(45% 35% at 82% 12%, color-mix(in oklab, var(--ether-orange) 20%, transparent), transparent 65%), radial-gradient(35% 25% at 18% 12%, color-mix(in oklab, var(--ether-blue) 18%, transparent), transparent 65%), var(--ether-bg); }
+    .ambient { position: fixed; inset: -20vmax -20vmax auto auto; height: 60vmax; width: 60vmax; z-index: 0; pointer-events: none; filter: blur(80px) saturate(1.2); opacity:.35; background:
+      radial-gradient(40% 40% at 70% 30%, rgba(var(--glow-cyan)/.35), transparent 60%),
+      radial-gradient(40% 40% at 30% 70%, rgba(var(--glow-blue)/.30), transparent 60%),
+      radial-gradient(35% 35% at 80% 80%, rgba(var(--glow-orange)/.25), transparent 60%); }
+    .etherian-bg{ background:
+      radial-gradient(60% 40% at 50% 0%, color-mix(in oklab, var(--ether-cyan) 24%, transparent), transparent 60%),
+      radial-gradient(45% 35% at 82% 12%, color-mix(in oklab, var(--ether-orange) 20%, transparent), transparent 65%),
+      radial-gradient(35% 25% at 18% 12%, color-mix(in oklab, var(--ether-blue) 18%, transparent), transparent 65%),
+      var(--ether-bg); }
     .tabular{ font-variant-numeric: tabular-nums }
     .card{ backdrop-filter: blur(10px) }
     .panel{ background:var(--panel); border:1px solid var(--ring); box-shadow: 0 0 0 1px var(--ring) inset, 0 0 22px rgba(var(--glow-cyan)/.12), 0 0 46px rgba(var(--glow-blue)/.10); }
@@ -497,7 +504,26 @@
   function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
   function showModal(show){ modal.style.display = show ? 'flex' : 'none'; }
 
-  async function ensureChain(provider, hexChain='0x1'){ try{ const current=await provider.request({ method:'eth_chainId' }); if(current?.toLowerCase()===hexChain.toLowerCase()) return true; await provider.request({ method:'wallet_switchEthereumChain', params:[{ chainId: hexChain }] }); return true; } catch(err){ if(err?.code===4902){ await provider.request({ method:'wallet_addEthereumChain', params:[{ chainId: hexChain, chainName:'Ethereum Mainnet', nativeCurrency:{ name:'Ether', symbol:'ETH', decimals:18 }, rpcUrls:['https://cloudflare-eth.com'], blockExplorerUrls:['https://etherscan.io'] }] }); return true; } console.warn('Chain switch failed', err); return false; } }
+  async function ensureChain(provider, hexChain='0x1'){
+    try{
+      const current=await provider.request({ method:'eth_chainId' });
+      if(current?.toLowerCase()===hexChain.toLowerCase()) return true;
+      await provider.request({ method:'wallet_switchEthereumChain', params:[{ chainId: hexChain }] });
+      return true;
+    } catch(err){
+      if(err?.code===4902){
+        await provider.request({
+          method:'wallet_addEthereumChain',
+          params:[{ chainId: hexChain, chainName:'Ethereum Mainnet',
+            nativeCurrency:{ name:'Ether', symbol:'ETH', decimals:18 },
+            rpcUrls:['https://cloudflare-eth.com'], blockExplorerUrls:['https://etherscan.io'] }]
+        });
+        return true;
+      }
+      console.warn('Chain switch failed', err);
+      return false;
+    }
+  }
 
   function discoverInjected(){
     walletList.innerHTML = '';
@@ -506,30 +532,74 @@
     function onAnnounce(e){ announced.push(e.detail); }
     window.addEventListener('eip6963:announceProvider', onAnnounce);
     window.dispatchEvent(new Event('eip6963:requestProvider'));
-    if (window.ethereum){ if(window.ethereum.providers?.length){ window.ethereum.providers.forEach(p=> injected.push(p)); } else { injected.push(window.ethereum); } }
+    if (window.ethereum){
+      if(window.ethereum.providers?.length){ window.ethereum.providers.forEach(p=> injected.push(p)); }
+      else { injected.push(window.ethereum); }
+    }
     const uniq=[];
     if(announced.length){ announced.forEach(({info,provider})=>{ uniq.push({ name: info?.name || 'Browser Wallet', provider }); }); }
-    else if(injected.length){ injected.forEach(p=>{ const name = p.isMetaMask ? 'MetaMask' : p.isCoinbaseWallet ? 'Coinbase Wallet (ext)' : p.isBraveWallet ? 'Brave Wallet' : p.isFrame ? 'Frame' : p.isRabby ? 'Rabby' : 'Browser Wallet'; uniq.push({ name, provider:p }); }); }
-    if(!uniq.length){ const btn=document.createElement('button'); btn.className='wallet-btn'; btn.disabled=true; btn.innerHTML='<span>🧩</span><div><div class="text-sm font-medium">No browser wallet detected</div><div class="text-xs" style="color:var(--text-dim)">Install MetaMask, Rabby, Brave, etc.</div></div>'; walletList.appendChild(btn); }
-    uniq.forEach(({name,provider})=>{ const btn=document.createElement('button'); btn.className='wallet-btn'; btn.innerHTML=`<span>🧩</span><div><div class="text-sm font-medium">${name}</div><div class="text-xs" style="color:var(--text-dim)">Use your browser extension</div></div>`; btn.addEventListener('click', async ()=>{ showModal(false); try{ const accounts=await provider.request({ method:'eth_requestAccounts' }); await onConnected(provider, accounts?.[0]||null); }catch(err){ console.warn('Injected connect error', err); } }); walletList.appendChild(btn); });
+    else if(injected.length){ injected.forEach(p=>{
+      const name = p.isMetaMask ? 'MetaMask' :
+                   p.isCoinbaseWallet ? 'Coinbase Wallet (ext)' :
+                   p.isBraveWallet ? 'Brave Wallet' :
+                   p.isFrame ? 'Frame' :
+                   p.isRabby ? 'Rabby' : 'Browser Wallet';
+      uniq.push({ name, provider:p });
+    }); }
+    if(!uniq.length){
+      const btn=document.createElement('button');
+      btn.className='wallet-btn'; btn.disabled=true;
+      btn.innerHTML='<span>🧩</span><div><div class="text-sm font-medium">No browser wallet detected</div><div class="text-xs" style="color:var(--text-dim)">Install MetaMask, Rabby, Brave, etc.</div></div>';
+      walletList.appendChild(btn);
+    }
+    uniq.forEach(({name,provider})=>{
+      const btn=document.createElement('button');
+      btn.className='wallet-btn';
+      btn.innerHTML=`<span>🧩</span><div><div class="text-sm font-medium">${name}</div><div class="text-xs" style="color:var(--text-dim)">Use your browser extension</div></div>`;
+      btn.addEventListener('click', async ()=>{
+        showModal(false);
+        try{ const accounts=await provider.request({ method:'eth_requestAccounts' }); await onConnected(provider, accounts?.[0]||null); }
+        catch(err){ console.warn('Injected connect error', err); }
+      });
+      walletList.appendChild(btn);
+    });
   }
 
+  // --- Dynamic loader for WalletConnect UMD with fallback ---
+  function loadScript(src){
+    return new Promise((resolve,reject)=>{
+      const s=document.createElement('script'); s.src=src; s.async=true; s.onload=resolve; s.onerror=reject; document.head.appendChild(s);
+    });
+  }
+  async function ensureWalletConnectLoaded(){
+    if (window.WalletConnectEthereumProvider) return true;
+    try{
+      await loadScript('https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js');
+    }catch{}
+    if (window.WalletConnectEthereumProvider) return true;
+    // fallback CDN
+    try{
+      await loadScript('https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js');
+    }catch{}
+    return !!window.WalletConnectEthereumProvider;
+  }
   function getEthereumProviderCtor(){
-    // UMD may export on .default or as the object itself
     return window.WalletConnectEthereumProvider?.default || window.WalletConnectEthereumProvider || null;
   }
 
   async function connectWalletConnect(){
     wcNote.textContent = 'Connecting… '; const spin=document.createElement('span'); spin.className='spinner'; wcNote.appendChild(spin);
     try{
+      const ok = await ensureWalletConnectLoaded();
+      if(!ok){ wcNote.textContent='WalletConnect library failed to load (check ad blockers / CSP).'; return; }
       const EthereumProvider = getEthereumProviderCtor();
-      if(!EthereumProvider){ wcNote.textContent='WalletConnect library failed to load (check ad blockers / CSP).'; return; }
+      if(!EthereumProvider){ wcNote.textContent='WalletConnect provider not available in window.'; return; }
       if(!WC_PROJECT_ID){ wcNote.textContent='Project ID missing. Add it in the code.'; return; }
 
       const wc = await EthereumProvider.init({
         projectId: WC_PROJECT_ID,
         showQrModal: true,
-        chains: [1], // mainnet
+        chains: [1],
         methods:['eth_sendTransaction','personal_sign','eth_signTypedData','eth_signTypedData_v4','eth_requestAccounts'],
         metadata: { name:'$ETRX • Etheria Presale', description:'Official presale connection', url: location.origin, icons: ['https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png'] }
       });
@@ -546,11 +616,7 @@
   }
 
   async function onConnected(provider, account){
-    try{
-      if (window.ethers?.providers?.Web3Provider){
-        ethersWeb3 = new ethers.providers.Web3Provider(provider, 'any');
-      }
-    }catch(e){ console.warn('Ethers unavailable, continuing without it'); }
+    try{ if (window.ethers?.providers?.Web3Provider){ ethersWeb3 = new ethers.providers.Web3Provider(provider, 'any'); } }catch(e){ console.warn('Ethers unavailable', e); }
     activeProvider = provider;
     await ensureChain(provider, '0x1');
     localStorage.setItem('etrx_wallet', account||'');
