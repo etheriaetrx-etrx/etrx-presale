@@ -46,12 +46,12 @@
     "@type":"FAQPage",
     "mainEntity":[
       {"@type":"Question","name":"Is this a presale or the live coin?","acceptedAnswer":{"@type":"Answer","text":"This page is for the presale window (Sep 24 → Oct 1, 2025 UTC). After presale, we proceed to TGE (token generation & distribution) and initial listings/liquidity."}},
-      {"@type":"Question","name":"How will buying work?","acceptedAnswer":{"@type":"Answer","text":"When live, you’ll connect a wallet (injected or WalletConnect) and participate directly in the presale contract. Post-TGE, $ETRX will be distributed and appear in your wallet."}}
+      {"@type":"Question","name":"How will buying work?","acceptedAnswer":{"@type":"Answer","text":"When live, you’ll connect a wallet (injected, Coinbase Wallet, or WalletConnect QR) and participate directly in the presale contract. Post-TGE, $ETRX will be distributed and appear in your wallet."}}
     ]
   }
   </script>
 
-  <!-- CSP (expanded for WalletConnect/Modal CDNs + APIs) -->
+  <!-- CSP (expanded for Coinbase + WalletConnect/CDNs) -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' https://etheriaetrx-etrx.github.io;
                  img-src 'self' data: https:;
@@ -61,9 +61,9 @@
                  connect-src 'self'
                               https://formspree.io
                               https://cloudflare-eth.com
-                              https://rpc.walletconnect.com https://api.walletconnect.com https://explorer-api.walletconnect.com https://*.walletconnect.com
-                              https://*.reown.com
-                              wss://relay.walletconnect.com wss://*.walletconnect.com wss://*.reown.com;
+                              https://api.walletconnect.com https://rpc.walletconnect.com https://explorer-api.walletconnect.com https://*.walletconnect.com https://*.reown.com
+                              wss://relay.walletconnect.com wss://*.walletconnect.com wss://*.reown.com
+                              https://wallet.coinbase.com https://*.coinbase.com;
                  worker-src 'self';
                  object-src 'none';
                  base-uri 'self';
@@ -80,7 +80,7 @@
   <!-- Ethers.js -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 
-  <!-- WalletConnect Modal CSS (load both; whichever is reachable will be used) -->
+  <!-- WalletConnect Modal CSS (optional; only used if WC QR is clicked) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.6.2/dist/style.css">
   <link rel="stylesheet" href="https://unpkg.com/@walletconnect/modal@2.6.2/dist/style.css">
 
@@ -179,17 +179,33 @@
         <h3 class="text-lg font-semibold">Choose a wallet</h3>
         <button id="modalClose" class="text-white/70 hover:text-white">✕</button>
       </div>
-      <p class="mt-1 text-xs" style="color:var(--text-dim)">Use a browser wallet or scan a QR with WalletConnect.</p>
-      <div id="walletList" class="mt-4 grid gap-2"></div>
-      <div id="wcBlock" class="mt-3">
-        <button id="wcBtn" class="wallet-btn w-full">
-          <span>🔗</span>
+      <p class="mt-1 text-xs" style="color:var(--text-dim)">Use a browser wallet or connect with Coinbase Wallet. WalletConnect QR is optional.</p>
+      <div class="mt-4 grid gap-2">
+        <div id="walletList" class="grid gap-2"></div>
+
+        <!-- Coinbase Wallet -->
+        <button id="cbBtn" class="wallet-btn">
+          <span>💙</span>
           <div>
-            <div class="text-sm font-medium">WalletConnect (QR)</div>
-            <div class="text-xs" style="color:var(--text-dim)">Connect Coinbase, Rainbow, Trust, etc.</div>
+            <div class="text-sm font-medium">Coinbase Wallet</div>
+            <div class="text-xs" style="color:var(--text-dim)">Connect without WalletConnect</div>
           </div>
         </button>
-        <p id="wcNote" class="mt-2 text-xs" style="color:var(--text-dim)"></p>
+
+        <!-- WalletConnect (optional) -->
+        <details class="mt-1">
+          <summary class="cursor-pointer text-xs opacity-80 hover:opacity-100">More options: WalletConnect (QR)</summary>
+          <div class="mt-2">
+            <button id="wcBtn" class="wallet-btn w-full">
+              <span>🔗</span>
+              <div>
+                <div class="text-sm font-medium">WalletConnect (QR)</div>
+                <div class="text-xs" style="color:var(--text-dim)">Connect Coinbase, Rainbow, Trust, etc. (may be blocked by ad blockers)</div>
+              </div>
+            </button>
+            <p id="wcNote" class="mt-2 text-xs" style="color:var(--text-dim)"></p>
+          </div>
+        </details>
       </div>
     </div>
   </div>
@@ -377,7 +393,7 @@
         </button>
         <div class="faq-body" hidden>
           <div class="pt-2 pb-3" style="color:var(--text-dim)">
-            When live, connect via injected wallet or WalletConnect and participate in the presale contract. Post-TGE, $ETRX appears in your wallet.
+            When live, connect via injected wallet, Coinbase Wallet, or (optionally) WalletConnect QR, and participate in the presale contract. Post-TGE, $ETRX appears in your wallet.
           </div>
         </div>
       </div>
@@ -430,7 +446,7 @@
         whenSecondary=$('whenSecondary'), modeLabel=$('modeLabel');
   const connectBtn=$('connectBtn'), openConnect=$('openConnect'), modal=$('walletModal'), modalClose=$('modalClose');
   const walletList=$('walletList'), wcBtn=$('wcBtn'), wcNote=$('wcNote'), walletPill=$('walletPill'),
-        walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn');
+        walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn'), cbBtn=$('cbBtn');
 
   $('year').textContent = new Date().getFullYear();
 
@@ -503,7 +519,7 @@
     walletInput.addEventListener('input', async ()=>{ wlMsg.classList.add('hidden'); const v=walletInput.value.trim(); if(!v){ setHelp(''); return; } if(addrRe.test(v)){ setHelp('Looks like a valid Ethereum address.', true); return; } if(ensRe.test(v)){ setHelp('Checking ENS…'); const addr=await resolveIfEns(v); setHelp(addr?`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`:'Could not resolve this ENS name.', !!addr); return; } setHelp('Enter a valid 0x… address or an ENS name like yourname.eth'); });
     wlForm.addEventListener('submit', async (e)=>{ e.preventDefault(); wlMsg.classList.add('hidden'); const fd=new FormData(wlForm); const trap=(fd.get('company')||'').trim(); let wallet=(fd.get('wallet')||'').trim(); if(trap) return; let finalAddr=null; if(addrRe.test(wallet)){ finalAddr=wallet; } else if(ensRe.test(wallet)){ wlHelp.textContent='Resolving ENS…'; const resolved=await resolveIfEns(wallet); if(resolved) finalAddr=resolved; else { wlMsg.textContent='Enter a valid address, or a resolvable ENS name.'; wlMsg.classList.remove('hidden'); return; } } else { wlMsg.textContent='Enter a valid 0x… address or ENS name (yourname.eth).'; wlMsg.classList.remove('hidden'); return; } try{ const list=JSON.parse(localStorage.getItem('etrx_wl')||'[]'); if(!list.includes(finalAddr)) list.push(finalAddr); localStorage.setItem('etrx_wl', JSON.stringify(list)); await postFormspree({ wallet: finalAddr, type: 'allowlist' }); wlForm.classList.add('hidden'); wlSuccess.classList.remove('hidden'); }catch(err){ wlMsg.textContent='Saved locally. Network submit failed — please try again later.'; wlMsg.classList.remove('hidden'); } }); }
 
-  // ===== Wallet connection (Injected + WalletConnect) =====
+  // ===== Wallet connection (Injected + Coinbase + optional WalletConnect) =====
   const WC_PROJECT_ID='39c6a71100682cbde711e09f61abb5c9';
   let activeProvider=null, ethersWeb3=null;
 
@@ -571,65 +587,88 @@
     });
   }
 
-  // --- Dynamic loader for WalletConnect UMD + Modal (with dual CDN fallback) ---
+  // ---- Coinbase Wallet (direct, no WalletConnect) ----
   function loadScript(src){
     return new Promise((resolve,reject)=>{
-      const s=document.createElement('script'); s.src=src; s.async=true; s.onload=()=>resolve(src); s.onerror=()=>reject(new Error('Script load failed: '+src)); document.head.appendChild(s);
+      const s=document.createElement('script'); s.src=src; s.async=true; s.onload=resolve; s.onerror=()=>reject(new Error('Script load failed: '+src)); document.head.appendChild(s);
     });
   }
-  async function ensureWalletConnectLoaded(){
-    // Provider
-    if (!window.WalletConnectEthereumProvider){
-      try{ await loadScript('https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js'); }
-      catch{}
-    }
-    if (!window.WalletConnectEthereumProvider){
-      try{ await loadScript('https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js'); }
-      catch{}
-    }
-    // Modal (for QR UI)
-    if (!window.WalletConnectModal){
-      try{ await loadScript('https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.6.2/dist/index.umd.min.js'); }
-      catch{}
-    }
-    if (!window.WalletConnectModal){
-      try{ await loadScript('https://unpkg.com/@walletconnect/modal@2.6.2/dist/index.umd.min.js'); }
-      catch{}
-    }
-    return !!(window.WalletConnectEthereumProvider);
+  async function ensureCoinbaseLoaded(){
+    if (window.CoinbaseWalletSDK) return true;
+    try{ await loadScript('https://cdn.jsdelivr.net/npm/@coinbase/wallet-sdk@3.9.3/dist/CoinbaseWalletSDK.umd.min.js'); }catch{}
+    if (window.CoinbaseWalletSDK) return true;
+    try{ await loadScript('https://unpkg.com/@coinbase/wallet-sdk@3.9.3/dist/CoinbaseWalletSDK.umd.min.js'); }catch{}
+    return !!window.CoinbaseWalletSDK;
   }
+  async function connectCoinbase(){
+    cbBtn.disabled=true; const old=cbBtn.innerHTML; cbBtn.innerHTML='💙 <span>Connecting…</span>';
+    try{
+      const ok = await ensureCoinbaseLoaded();
+      if(!ok){ cbBtn.innerHTML=old; cbBtn.disabled=false; alert('Coinbase Wallet SDK could not load (CDN blocked).'); return; }
+      const sdk = new window.CoinbaseWalletSDK({
+        appName: '$ETRX • Etheria Presale',
+        appLogoUrl: 'https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png',
+        darkMode: true
+      });
+      const cbProvider = sdk.makeWeb3Provider('https://cloudflare-eth.com', 1);
+      const accounts = await cbProvider.request({ method:'eth_requestAccounts' });
+      await onConnected(cbProvider, accounts?.[0]||null);
+      showModal(false);
+    }catch(e){
+      console.error('Coinbase connect error', e);
+      alert('Coinbase Wallet connection failed.');
+    }finally{
+      cbBtn.innerHTML=old; cbBtn.disabled=false;
+    }
+  }
+  cbBtn.addEventListener('click', connectCoinbase);
+
+  // ---- Optional WalletConnect (QR) with dual-CDN loader ----
   function getEthereumProviderCtor(){
     return window.WalletConnectEthereumProvider?.default || window.WalletConnectEthereumProvider || null;
   }
-
+  async function ensureWalletConnectLoaded(){
+    if (!window.WalletConnectEthereumProvider){
+      try{ await loadScript('https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js'); }catch{}
+    }
+    if (!window.WalletConnectEthereumProvider){
+      try{ await loadScript('https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js'); }catch{}
+    }
+    if (!window.WalletConnectModal){
+      try{ await loadScript('https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.6.2/dist/index.umd.min.js'); }catch{}
+    }
+    if (!window.WalletConnectModal){
+      try{ await loadScript('https://unpkg.com/@walletconnect/modal@2.6.2/dist/index.umd.min.js'); }catch{}
+    }
+    return !!window.WalletConnectEthereumProvider;
+  }
   async function connectWalletConnect(){
     wcNote.textContent = 'Connecting… '; const spin=document.createElement('span'); spin.className='spinner'; wcNote.appendChild(spin);
     try{
       const ok = await ensureWalletConnectLoaded();
-      if(!ok){ wcNote.textContent='WalletConnect scripts are blocked (try disabling ad/tracker blockers for *.walletconnect.com / *.reown.com or use another browser).'; return; }
+      if(!ok){ wcNote.textContent='WalletConnect scripts are blocked (disable ad/tracker blockers for *.walletconnect.com / *.reown.com).'; return; }
       const EthereumProvider = getEthereumProviderCtor();
-      if(!EthereumProvider){ wcNote.textContent='WalletConnect provider not available in window after load.'; return; }
-      if(!WC_PROJECT_ID){ wcNote.textContent='Project ID missing. Add it in the code.'; return; }
-
+      if(!EthereumProvider){ wcNote.textContent='WalletConnect provider not available after load.'; return; }
       const wc = await EthereumProvider.init({
-        projectId: WC_PROJECT_ID,
+        projectId: '39c6a71100682cbde711e09f61abb5c9',
         showQrModal: true,
         chains: [1],
         methods:['eth_sendTransaction','personal_sign','eth_signTypedData','eth_signTypedData_v4','eth_requestAccounts'],
         metadata: { name:'$ETRX • Etheria Presale', description:'Official presale connection', url: location.origin, icons: ['https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png'] }
       });
-
-      await wc.enable(); // opens QR modal
+      await wc.enable();
       const accounts = await wc.request({ method:'eth_accounts' });
       await onConnected(wc, accounts?.[0]||null);
       showModal(false);
       wcNote.textContent='';
     }catch(err){
       console.error('WalletConnect error', err);
-      wcNote.textContent = 'WalletConnect failed to start (network/CSP). Try a different browser or disable ad blockers.';
+      wcNote.textContent = 'WalletConnect failed to start (network/CSP). Try another browser or disable blockers.';
     }
   }
+  wcBtn?.addEventListener('click', connectWalletConnect);
 
+  // ---- Shared connect state ----
   async function onConnected(provider, account){
     try{ if (window.ethers?.providers?.Web3Provider){ ethersWeb3 = new ethers.providers.Web3Provider(provider, 'any'); } }catch(e){ console.warn('Ethers unavailable', e); }
     activeProvider = provider;
@@ -643,7 +682,6 @@
     provider.on?.('disconnect', ()=>{ doDisconnect(); });
     provider.on?.('chainChanged', async ()=>{ await ensureChain(provider, '0x1'); });
   }
-
   function doDisconnect(){
     try{ activeProvider?.disconnect?.(); }catch{}
     activeProvider=null; ethersWeb3=null;
@@ -659,11 +697,11 @@
   modalClose.addEventListener('click', ()=> showModal(false));
   modal.addEventListener('click', (e)=>{ if(e.target===modal) showModal(false); });
 
-  wcBtn.addEventListener('click', connectWalletConnect);
-
+  // Restore previous session
   const prev = localStorage.getItem('etrx_wallet');
   if (prev){ walletShort.textContent = shortAddr(prev); walletPill.classList.remove('hidden'); connectBtn.classList.add('hidden-important'); openConnect.classList.add('hidden-important'); }
 
+  // Share button
   const shareBtn=$('shareLaunch');
   if (shareBtn && navigator.share){ shareBtn.addEventListener('click', async ()=>{ try{ await navigator.share({ title:'$ETRX • Etheria Presale', text:'Presale runs Sep 24 → Oct 1 (UTC). Join the allowlist.', url: location.href }); }catch{} }); }
   else if(shareBtn){ shareBtn.addEventListener('click', ()=>{ navigator.clipboard.writeText(location.href); shareBtn.textContent='Link copied!'; setTimeout(()=>shareBtn.textContent='Share this launch', 1500); }); }
