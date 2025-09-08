@@ -17,11 +17,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com?v=3" defer></script>
 
-  <!-- Social (kept consistent with “Launch”) -->
+  <!-- Social -->
   <meta property="og:title" content="$ETRX • Etheria Launch">
   <meta property="og:description" content="The official utility token of Etheria. Launch begins Oct 31, 2025.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Banner.png">
+  <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- Favicon -->
@@ -29,32 +29,43 @@
 
   <style>
     :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
     body{
+      margin:0;
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      background:#0a0f19;color:#fff
+      background:#0a0f19;color:#fff;
+      overflow-x:hidden;
     }
+    /* Etherian glow underneath the canvas */
     .etherian-bg{
       background:
-        radial-gradient(60% 40% at 50% 0%, rgba(56,189,248,.20), transparent 60%),
-        radial-gradient(40% 30% at 85% 12%, rgba(249,115,22,.16), transparent 65%),
-        radial-gradient(35% 25% at 20% 10%, rgba(59,130,246,.14), transparent 65%),
+        radial-gradient(60% 40% at 50% 0%, rgba(56,189,248,.18), transparent 60%),
+        radial-gradient(40% 30% at 85% 12%, rgba(249,115,22,.14), transparent 65%),
+        radial-gradient(35% 25% at 20% 10%, rgba(59,130,246,.12), transparent 65%),
         #0a0f19;
     }
-    /* Prevent number “wiggle” in countdown */
     .tabular { font-variant-numeric: tabular-nums; }
-    /* Small blur for frosted cards */
     .card{backdrop-filter: blur(6px)}
-    /* Respect reduced motion */
+    /* Background canvas sits behind all content */
+    #crystalCanvas{
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      filter: drop-shadow(0 8px 30px rgba(59,130,246,.25));
+    }
+    /* Content wrapper sits above */
+    .z-10 { position: relative; z-index: 10; }
     @media (prefers-reduced-motion: reduce){
+      #crystalCanvas{ display:none; }
       * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition: none !important; }
     }
   </style>
 </head>
 
 <body class="etherian-bg">
+  <!-- Animated background -->
+  <canvas id="crystalCanvas" aria-hidden="true"></canvas>
 
   <!-- Nav -->
-  <header class="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+  <header class="z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
     <div class="flex items-center gap-3">
       <img src="assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-cyan-300/40 object-contain bg-white/5" />
       <div class="text-sm sm:text-base tracking-wide opacity-90">Etheria</div>
@@ -69,7 +80,7 @@
   </header>
 
   <!-- Hero -->
-  <section class="relative z-10 mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
+  <section class="z-10 mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
     <div class="order-2 md:order-1">
       <h1 class="text-4xl font-extrabold leading-tight md:text-6xl">
         The Official Token of Etheria
@@ -98,14 +109,21 @@
       </ul>
     </div>
 
-    <!-- Hero banner image -->
+    <!-- Hero banner image (now Background.png) -->
     <div class="order-1 md:order-2 flex items-center justify-center">
-      <img src="assets/Banner.png" alt="Etheria Banner" class="w-full rounded-3xl ring-1 ring-white/10" loading="eager" decoding="async"/>
+      <img
+        src="assets/Background.png"
+        alt="Etheria Background"
+        class="w-full rounded-3xl ring-1 ring-white/10"
+        loading="eager"
+        decoding="async"
+        onerror="this.outerHTML='<div class=&quot;w-full aspect-[16/9] rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-orange-500/10 flex items-center justify-center text-white/50&quot;>Background image missing</div>'"
+      />
     </div>
   </section>
 
   <!-- About -->
-  <section id="about" class="relative z-10 mx-auto max-w-6xl px-6 py-16">
+  <section id="about" class="z-10 mx-auto max-w-6xl px-6 py-16">
     <h2 class="text-2xl font-bold">What is $ETRX?</h2>
     <p class="mt-3 max-w-3xl text-white/80">
       $ETRX is the utility token of Etheria — used to unlock rare Realms &amp; Artifacts, vote on lore and direction,
@@ -115,7 +133,7 @@
   </section>
 
   <!-- Tokenomics -->
-  <section id="token" class="relative z-10 mx-auto max-w-6xl px-6">
+  <section id="token" class="z-10 mx-auto max-w-6xl px-6">
     <h2 class="text-2xl font-bold">Tokenomics (Draft)</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
       <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Community</b><br/><span class="text-white/70">40% — rewards, airdrops, staking</span></div>
@@ -128,7 +146,7 @@
   </section>
 
   <!-- Road -->
-  <section id="road" class="relative z-10 mx-auto max-w-6xl px-6 py-16">
+  <section id="road" class="z-10 mx-auto max-w-6xl px-6 py-16">
     <h2 class="text-2xl font-bold">Road to Mainnet</h2>
     <ol class="mt-5 space-y-3 text-white/80">
       <li>1) Launch site &amp; whitelist open</li>
@@ -140,7 +158,7 @@
   </section>
 
   <!-- Notify -->
-  <section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-20">
+  <section id="notify" class="z-10 mx-auto max-w-6xl px-6 pb-20">
     <div class="rounded-3xl border border-white/10 bg-white/5 p-6 card">
       <h3 class="text-xl font-semibold">Get notified when the launch opens</h3>
       <form class="mt-4 flex flex-col gap-3 sm:flex-row" action="https://formspree.io/f/your-id" method="POST">
@@ -154,7 +172,7 @@
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="relative z-10 mx-auto max-w-6xl px-6 pb-24">
+  <section id="faq" class="z-10 mx-auto max-w-6xl px-6 pb-24">
     <h2 class="text-2xl font-bold">FAQ</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
       <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10"><b>Do I need ETH now?</b><br/><span class="text-white/70">No. This site is for announcements and whitelisting until smart contracts are deployed.</span></div>
@@ -165,7 +183,7 @@
   </section>
 
   <!-- Footer -->
-  <footer class="relative z-10 border-t border-white/10 py-10">
+  <footer class="z-10 border-t border-white/10 py-10">
     <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-sm text-white/60 md:flex-row">
       <div>© <span id="year"></span> Etheria • $ETRX</div>
       <div class="flex items-center gap-4">
@@ -232,16 +250,106 @@
       const m  = Math.floor((s%3600)/60);
       const ss = s%60;
 
-      // Replace children only if values changed to reduce layout churn
-      const boxes=[box(d,'d'), box(h,'h'), box(m,'m'), box(ss,'s')];
-      countdown.replaceChildren(...boxes);
+      countdown.replaceChildren(box(d,'d'), box(h,'h'), box(m,'m'), box(ss,'s'));
     }
 
     tick();
-    // Use a fixed 1s interval; performance.now() smoothing is overkill here
     const interval = setInterval(tick, 1000);
-    // Clean up if page is unloaded (mostly for SPA navigations)
     addEventListener('beforeunload', ()=> clearInterval(interval), { once:true });
+
+    // ==== FLOATING CRYSTALS BACKGROUND ====
+    (function(){
+      const canvas = document.getElementById('crystalCanvas');
+      const ctx = canvas.getContext('2d');
+      let w, h, dpr, crystals = [], running = true;
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return;
+
+      function resize(){
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = canvas.width = Math.floor(innerWidth * dpr);
+        h = canvas.height = Math.floor(innerHeight * dpr);
+        canvas.style.width = innerWidth + 'px';
+        canvas.style.height = innerHeight + 'px';
+      }
+
+      function rand(a,b){ return a + Math.random()*(b-a); }
+
+      function makeCrystal(){
+        // “Crystal” is a skewed hex/pent shape with subtle gradient
+        const size = rand(20, 70) * dpr;
+        const speed = rand(0.08, 0.22) * dpr; // px per frame
+        const x = rand(-size, w + size);
+        const y = rand(-h*0.2, h*0.9);
+        const rot = rand(0, Math.PI*2);
+        const spin = rand(-0.002, 0.002);
+        const hueA = rand(190, 205); // cyan/blue
+        const hueB = rand(18,  28);  // orange
+        const alpha = rand(0.25, 0.55);
+        const verts = [];
+        const sides = Math.random() < 0.5 ? 5 : 6;
+        for (let i=0;i<sides;i++){
+          const ang = (i/sides)*Math.PI*2 + rand(-0.1,0.1);
+          const r = size * rand(0.65, 1);
+          verts.push([Math.cos(ang)*r, Math.sin(ang)*r*rand(0.7,1)]);
+        }
+        return { x, y, rot, spin, speed, verts, hueA, hueB, alpha, size };
+      }
+
+      function init(n = Math.round((innerWidth*innerHeight)/28000)){
+        crystals = [];
+        for(let i=0;i<n;i++) crystals.push(makeCrystal());
+      }
+
+      function drawCrystal(c){
+        ctx.save();
+        ctx.translate(c.x, c.y);
+        ctx.rotate(c.rot);
+        const grad = ctx.createLinearGradient(-c.size, -c.size, c.size, c.size);
+        grad.addColorStop(0, `hsla(${c.hueA} 100% 70% / ${c.alpha})`);
+        grad.addColorStop(1, `hsla(${c.hueB} 95% 60% / ${c.alpha*0.9})`);
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        c.verts.forEach(([vx,vy],i)=> i?ctx.lineTo(vx,vy):ctx.moveTo(vx,vy));
+        ctx.closePath();
+        ctx.fill();
+
+        // Inner shine
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.fillStyle = `hsla(200 100% 80% / ${c.alpha*0.5})`;
+        ctx.beginPath();
+        ctx.ellipse(0,0,c.size*0.25,c.size*0.12,0,0,Math.PI*2);
+        ctx.fill();
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.restore();
+      }
+
+      function step(){
+        if (!running) return;
+        ctx.clearRect(0,0,w,h);
+        for (const c of crystals){
+          c.y -= c.speed;           // float upward
+          c.x += Math.sin(c.y*0.002) * 0.3; // gentle drift
+          c.rot += c.spin;
+
+          // wrap around
+          if (c.y < -c.size - 10) {
+            c.y = h + c.size + 10;
+            c.x = rand(-c.size, w + c.size);
+          }
+          drawCrystal(c);
+        }
+        requestAnimationFrame(step);
+      }
+
+      resize(); init(); step();
+      addEventListener('resize', ()=>{ resize(); init(); }, { passive:true });
+      addEventListener('visibilitychange', ()=>{
+        running = document.visibilityState === 'visible';
+        if (running) requestAnimationFrame(step);
+      });
+    })();
   </script>
 </body>
 </html>
