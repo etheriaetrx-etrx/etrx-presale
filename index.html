@@ -21,8 +21,7 @@
   <meta property="og:title" content="$ETRX • Etheria Launch">
   <meta property="og:description" content="The official utility token of Etheria. Launch begins Oct 31, 2025.">
   <meta property="og:type" content="website">
-  <!-- Use absolute path + cache buster -->
-  <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png?v=4">
+  <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png?v=6">
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- Favicon -->
@@ -95,11 +94,14 @@
   </header>
 
   <!-- Hero -->
-  <section class="z-10 mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
+  <section class="z-10 mx-auto grid max-w-6xl grid-cols-1 items-stretch gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
     <div class="order-2 md:order-1">
       <h1 class="text-4xl font-extrabold leading-tight md:text-6xl">
         The Official Token of Etheria
-        <br/><span class="bg-gradient-to-r from-[var(--ether-orange)] to-[var(--ether-blue)] bg-clip-text text-transparent">$ETRX Launch</span>
+        <br/>
+        <span class="bg-gradient-to-r from-[var(--ether-orange)] to-[var(--ether-blue)] bg-clip-text text-transparent">
+          $ETRX Launch
+        </span>
       </h1>
       <p class="mt-4 max-w-prose" style="color:var(--text-muted)">
         Powering realms, artifacts, governance and community rewards. Built on Ethereum for permanence and reach.
@@ -124,19 +126,17 @@
       </ul>
     </div>
 
-    <!-- Hero image -->
-    <div class="order-1 md:order-2 flex items-center justify-center">
+    <!-- Hero image column — full height -->
+    <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px]">
       <img
-        id="heroImg"
-        src=""  <!-- set by script after probing paths -->
+        src="/etrx-presale/assets/Background.png?v=6"
         alt="Etheria Background"
         width="1280" height="720"
         fetchpriority="high"
-        class="w-full rounded-3xl ring-1 ring-white/10"
+        class="h-full w-full rounded-3xl ring-1 ring-white/10 object-cover"
         loading="eager"
         decoding="async"
       />
-      <div id="heroFallback" class="absolute inset-0 hidden w-full rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-[var(--ether-blue)]/10 via-cyan-400/10 to-[var(--ether-orange)]/10 md:static md:block md:relative md:hidden"></div>
     </div>
   </section>
 
@@ -278,38 +278,6 @@
         requestAnimationFrame(step);
       }
       resize(); step(); addEventListener('resize',resize,{passive:true}); addEventListener('visibilitychange',()=>{running=document.visibilityState==='visible'; if(running) requestAnimationFrame(step);});
-    })();
-
-    // ==== HERO IMAGE: Robust loader that tries multiple paths ====
-    (function(){
-      const el = document.getElementById('heroImg');
-      const fallback = document.getElementById('heroFallback');
-
-      const CANDIDATES = [
-        '/etrx-presale/assets/Background.png?v=4',
-        '/etrx-presale/assets/Background.png',
-        'assets/Background.png?v=4',
-        'assets/Background.png',
-        '/etrx-presale/assets/Banner.png',
-        'assets/Banner.png'
-      ];
-
-      function tryNext(i){
-        if (i >= CANDIDATES.length){
-          // show gradient placeholder
-          if (fallback) fallback.classList.remove('hidden');
-          return;
-        }
-        const url = CANDIDATES[i];
-        const probe = new Image();
-        probe.onload = () => { el.src = url; if (fallback) fallback.classList.add('hidden'); };
-        probe.onerror = () => tryNext(i+1);
-        probe.decoding = 'async';
-        probe.referrerPolicy = 'no-referrer-when-downgrade';
-        probe.src = url;
-      }
-
-      tryNext(0);
     })();
   </script>
 </body>
