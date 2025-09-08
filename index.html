@@ -63,7 +63,8 @@
                               https://cloudflare-eth.com
                               https://api.walletconnect.com https://rpc.walletconnect.com https://explorer-api.walletconnect.com https://*.walletconnect.com https://*.reown.com
                               wss://relay.walletconnect.com wss://*.walletconnect.com wss://*.reown.com
-                              https://wallet.coinbase.com https://*.coinbase.com;
+                              https://wallet.coinbase.com https://*.coinbase.com
+                              wss://*.coinbase.com;
                  worker-src 'self';
                  object-src 'none';
                  base-uri 'self';
@@ -80,7 +81,15 @@
   <!-- Ethers.js -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 
-  <!-- WalletConnect Modal CSS (optional; only used if WC QR is clicked) -->
+  <!-- WalletConnect Modal CSS (use local-first; ensure the file exists) -->
+  <!-- Place these files on disk:
+       /etrx-presale/assets/vendor/walletconnect-modal.css
+       /etrx-presale/assets/vendor/walletconnect-modal.umd.min.js
+       /etrx-presale/assets/vendor/walletconnect-ethereum-provider.umd.min.js
+       /etrx-presale/assets/vendor/CoinbaseWalletSDK.umd.min.js
+  -->
+  <link rel="stylesheet" href="/etrx-presale/assets/vendor/walletconnect-modal.css">
+  <!-- (Optional) CDN backup for CSS, harmless if local is present -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.6.2/dist/style.css">
   <link rel="stylesheet" href="https://unpkg.com/@walletconnect/modal@2.6.2/dist/style.css">
 
@@ -191,6 +200,7 @@
             <div class="text-xs" style="color:var(--text-dim)">Connect without WalletConnect</div>
           </div>
         </button>
+        <p id="cbNote" class="mt-1 text-xs" style="color:var(--text-dim)"></p>
 
         <!-- WalletConnect (optional) -->
         <details class="mt-1">
@@ -446,7 +456,7 @@
         whenSecondary=$('whenSecondary'), modeLabel=$('modeLabel');
   const connectBtn=$('connectBtn'), openConnect=$('openConnect'), modal=$('walletModal'), modalClose=$('modalClose');
   const walletList=$('walletList'), wcBtn=$('wcBtn'), wcNote=$('wcNote'), walletPill=$('walletPill'),
-        walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn'), cbBtn=$('cbBtn');
+        walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn'), cbBtn=$('cbBtn'), cbNote=$('cbNote');
 
   $('year').textContent = new Date().getFullYear();
 
@@ -547,6 +557,56 @@
     }
   }
 
+  // ---------- Local-first script loader helpers ----------
+  function loadScript(src){
+    return new Promise((resolve,reject)=>{
+      const s=document.createElement('script'); s.src=src; s.async=true;
+      s.onload=resolve; s.onerror=()=>reject(new Error('Script load failed: '+src));
+      document.head.appendChild(s);
+    });
+  }
+  async function loadFirstAvailable(urls=[]){
+    for(const url of urls){
+      try{ await loadScript(url); return true; }catch{}
+    }
+    return false;
+  }
+
+  function getEthereumProviderCtor(){
+    return window.WalletConnectEthereumProvider?.default || window.WalletConnectEthereumProvider || null;
+  }
+
+  async function ensureCoinbaseLoaded(){
+    if (window.CoinbaseWalletSDK) return true;
+    const ok = await loadFirstAvailable([
+      // self-hosted first
+      '/etrx-presale/assets/vendor/CoinbaseWalletSDK.umd.min.js',
+      // fall back to CDNs
+      'https://cdn.jsdelivr.net/npm/@coinbase/wallet-sdk@3.9.3/dist/CoinbaseWalletSDK.umd.min.js',
+      'https://unpkg.com/@coinbase/wallet-sdk@3.9.3/dist/CoinbaseWalletSDK.umd.min.js'
+    ]);
+    return !!window.CoinbaseWalletSDK && ok;
+  }
+
+  async function ensureWalletConnectLoaded(){
+    if (!window.WalletConnectEthereumProvider){
+      await loadFirstAvailable([
+        '/etrx-presale/assets/vendor/walletconnect-ethereum-provider.umd.min.js',
+        'https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js',
+        'https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js'
+      ]);
+    }
+    if (!window.WalletConnectModal){
+      await loadFirstAvailable([
+        '/etrx-presale/assets/vendor/walletconnect-modal.umd.min.js',
+        'https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.6.2/dist/index.umd.min.js',
+        'https://unpkg.com/@walletconnect/modal@2.6.2/dist/index.umd.min.js'
+      ]);
+    }
+    return !!window.WalletConnectEthereumProvider;
+  }
+
+  // ---- Discover injected wallets (EIP-6963 or legacy) ----
   function discoverInjected(){
     walletList.innerHTML = '';
     const injected = [];
@@ -588,23 +648,16 @@
   }
 
   // ---- Coinbase Wallet (direct, no WalletConnect) ----
-  function loadScript(src){
-    return new Promise((resolve,reject)=>{
-      const s=document.createElement('script'); s.src=src; s.async=true; s.onload=resolve; s.onerror=()=>reject(new Error('Script load failed: '+src)); document.head.appendChild(s);
-    });
-  }
-  async function ensureCoinbaseLoaded(){
-    if (window.CoinbaseWalletSDK) return true;
-    try{ await loadScript('https://cdn.jsdelivr.net/npm/@coinbase/wallet-sdk@3.9.3/dist/CoinbaseWalletSDK.umd.min.js'); }catch{}
-    if (window.CoinbaseWalletSDK) return true;
-    try{ await loadScript('https://unpkg.com/@coinbase/wallet-sdk@3.9.3/dist/CoinbaseWalletSDK.umd.min.js'); }catch{}
-    return !!window.CoinbaseWalletSDK;
-  }
   async function connectCoinbase(){
+    cbNote.textContent = '';
     cbBtn.disabled=true; const old=cbBtn.innerHTML; cbBtn.innerHTML='💙 <span>Connecting…</span>';
     try{
       const ok = await ensureCoinbaseLoaded();
-      if(!ok){ cbBtn.innerHTML=old; cbBtn.disabled=false; alert('Coinbase Wallet SDK could not load (CDN blocked).'); return; }
+      if(!ok){
+        cbBtn.innerHTML=old; cbBtn.disabled=false;
+        cbNote.textContent = 'Coinbase Wallet SDK couldn’t load. If you use an ad/tracker blocker or Pi-hole, allow jsdelivr.net/unpkg.com, or try an injected wallet.';
+        return;
+      }
       const sdk = new window.CoinbaseWalletSDK({
         appName: '$ETRX • Etheria Presale',
         appLogoUrl: 'https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png',
@@ -616,41 +669,23 @@
       showModal(false);
     }catch(e){
       console.error('Coinbase connect error', e);
-      alert('Coinbase Wallet connection failed.');
+      cbNote.textContent = 'Coinbase Wallet connection failed. Try another method or check blockers.';
     }finally{
       cbBtn.innerHTML=old; cbBtn.disabled=false;
     }
   }
   cbBtn.addEventListener('click', connectCoinbase);
 
-  // ---- Optional WalletConnect (QR) with dual-CDN loader ----
-  function getEthereumProviderCtor(){
-    return window.WalletConnectEthereumProvider?.default || window.WalletConnectEthereumProvider || null;
-  }
-  async function ensureWalletConnectLoaded(){
-    if (!window.WalletConnectEthereumProvider){
-      try{ await loadScript('https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js'); }catch{}
-    }
-    if (!window.WalletConnectEthereumProvider){
-      try{ await loadScript('https://unpkg.com/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js'); }catch{}
-    }
-    if (!window.WalletConnectModal){
-      try{ await loadScript('https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.6.2/dist/index.umd.min.js'); }catch{}
-    }
-    if (!window.WalletConnectModal){
-      try{ await loadScript('https://unpkg.com/@walletconnect/modal@2.6.2/dist/index.umd.min.js'); }catch{}
-    }
-    return !!window.WalletConnectEthereumProvider;
-  }
+  // ---- Optional WalletConnect (QR) with local-first loader ----
   async function connectWalletConnect(){
     wcNote.textContent = 'Connecting… '; const spin=document.createElement('span'); spin.className='spinner'; wcNote.appendChild(spin);
     try{
       const ok = await ensureWalletConnectLoaded();
-      if(!ok){ wcNote.textContent='WalletConnect scripts are blocked (disable ad/tracker blockers for *.walletconnect.com / *.reown.com).'; return; }
+      if(!ok){ wcNote.textContent='WalletConnect scripts are blocked (allow *.walletconnect.com / *.reown.com or use another method).'; return; }
       const EthereumProvider = getEthereumProviderCtor();
       if(!EthereumProvider){ wcNote.textContent='WalletConnect provider not available after load.'; return; }
       const wc = await EthereumProvider.init({
-        projectId: '39c6a71100682cbde711e09f61abb5c9',
+        projectId: WC_PROJECT_ID,
         showQrModal: true,
         chains: [1],
         methods:['eth_sendTransaction','personal_sign','eth_signTypedData','eth_signTypedData_v4','eth_requestAccounts'],
