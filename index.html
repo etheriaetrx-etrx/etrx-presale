@@ -21,7 +21,8 @@
   <meta property="og:title" content="$ETRX • Etheria Launch">
   <meta property="og:description" content="The official utility token of Etheria. Launch begins Oct 31, 2025.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png?v=3">
+  <!-- Use absolute path + cache buster -->
+  <meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png?v=4">
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- Favicon -->
@@ -30,63 +31,52 @@
   <style>
     :root{
       color-scheme: dark;
-      /* Etherian palette (orange + blue) */
-      --ether-blue:  #3b82f6; /* tailwind blue-500 */
-      --ether-cyan:  #22d3ee; /* cyan-400 accent for glow */
+      --ether-blue:#3b82f6;   /* blue-500 */
+      --ether-cyan:#22d3ee;   /* cyan-400 */
       --ether-orange:#f97316; /* orange-500 */
-      --ether-bg:    #090e17; /* deep cave */
-      --panel:       rgba(255,255,255,0.06);
-      --ring:        rgba(255,255,255,0.12);
-      --text-muted:  rgba(255,255,255,0.75);
-      --text-dim:    rgba(255,255,255,0.6);
+      --ether-bg:#090e17;
+      --panel:rgba(255,255,255,.06);
+      --ring:rgba(255,255,255,.12);
+      --text-muted:rgba(255,255,255,.78);
+      --text-dim:rgba(255,255,255,.62);
     }
     *{ box-sizing:border-box }
     body{
-      margin:0;
+      margin:0; background:var(--ether-bg); color:#fff;
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      background: var(--ether-bg);
-      color:#fff;
       overflow-x:hidden;
     }
-    /* Etherian cavern glow under the starfield */
+    /* Etherian cavern glow */
     .etherian-bg{
       background:
-        radial-gradient(60% 40% at 50% 0%, color-mix(in oklab, var(--ether-cyan) 25%, transparent), transparent 60%),
-        radial-gradient(45% 35% at 82% 12%, color-mix(in oklab, var(--ether-orange) 22%, transparent), transparent 65%),
+        radial-gradient(60% 40% at 50% 0%, color-mix(in oklab, var(--ether-cyan) 24%, transparent), transparent 60%),
+        radial-gradient(45% 35% at 82% 12%, color-mix(in oklab, var(--ether-orange) 20%, transparent), transparent 65%),
         radial-gradient(35% 25% at 18% 12%, color-mix(in oklab, var(--ether-blue) 18%, transparent), transparent 65%),
         var(--ether-bg);
     }
     .tabular{ font-variant-numeric: tabular-nums }
     .card{ backdrop-filter: blur(8px) }
-    /* Background canvas sits behind all content */
-    #orbCanvas{
-      position:fixed; inset:0; z-index:0; pointer-events:none;
-      /* very soft glow behind dots */
-      filter: drop-shadow(0 0 24px rgba(34,211,238,0.08));
-    }
-    /* Content wrapper sits above */
-    .z-10{ position:relative; z-index:10 }
-    /* Links/buttons aligned to palette */
+    .panel{ background:var(--panel); border:1px solid var(--ring) }
+    .ring-panel{ box-shadow:0 0 0 1px var(--ring) inset }
     .btn-primary{
       background: linear-gradient(90deg, var(--ether-orange), var(--ether-blue));
       color:#0b0f18; font-weight:700;
     }
-    .btn-primary:hover{ filter:saturate(1.1) brightness(1.05) }
-    .panel{
-      background: var(--panel);
-      border: 1px solid var(--ring);
-    }
-    .ring-panel{ box-shadow: 0 0 0 1px var(--ring) inset }
-    a{ color: color-mix(in oklab, var(--ether-cyan) 80%, white) }
+    .btn-primary:hover{ filter:saturate(1.05) brightness(1.05) }
+
+    /* Background canvas behind content */
+    #orbCanvas{ position:fixed; inset:0; z-index:0; pointer-events:none; filter:drop-shadow(0 0 24px rgba(34,211,238,.08)); }
+    .z-10{ position:relative; z-index:10 }
+
     @media (prefers-reduced-motion: reduce){
       #orbCanvas{ display:none }
-      *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition:none !important }
+      *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
     }
   </style>
 </head>
 
 <body class="etherian-bg">
-  <!-- Animated small orbs / stars -->
+  <!-- Floating orbs / starfield -->
   <canvas id="orbCanvas" aria-hidden="true"></canvas>
 
   <!-- Nav -->
@@ -109,10 +99,7 @@
     <div class="order-2 md:order-1">
       <h1 class="text-4xl font-extrabold leading-tight md:text-6xl">
         The Official Token of Etheria
-        <br/>
-        <span class="bg-gradient-to-r from-[var(--ether-orange)] to-[var(--ether-blue)] bg-clip-text text-transparent">
-          $ETRX Launch
-        </span>
+        <br/><span class="bg-gradient-to-r from-[var(--ether-orange)] to-[var(--ether-blue)] bg-clip-text text-transparent">$ETRX Launch</span>
       </h1>
       <p class="mt-4 max-w-prose" style="color:var(--text-muted)">
         Powering realms, artifacts, governance and community rewards. Built on Ethereum for permanence and reach.
@@ -137,18 +124,19 @@
       </ul>
     </div>
 
-    <!-- Hero image (Background.png) -->
+    <!-- Hero image -->
     <div class="order-1 md:order-2 flex items-center justify-center">
       <img
-        src="assets/Background.png?v=3"
+        id="heroImg"
+        src=""  <!-- set by script after probing paths -->
         alt="Etheria Background"
         width="1280" height="720"
         fetchpriority="high"
         class="w-full rounded-3xl ring-1 ring-white/10"
         loading="eager"
         decoding="async"
-        onerror="this.outerHTML='<div class=&quot;w-full aspect-[16/9] rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-[var(--ether-blue)]/10 via-cyan-400/10 to-[var(--ether-orange)]/10 flex items-center justify-center text-white/50&quot;>Background image missing</div>'"
       />
+      <div id="heroFallback" class="absolute inset-0 hidden w-full rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-[var(--ether-blue)]/10 via-cyan-400/10 to-[var(--ether-orange)]/10 md:static md:block md:relative md:hidden"></div>
     </div>
   </section>
 
@@ -205,22 +193,10 @@
   <section id="faq" class="z-10 mx-auto max-w-6xl px-6 pb-24">
     <h2 class="text-2xl font-bold">FAQ</h2>
     <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
-      <div class="rounded-2xl panel p-5 ring-panel">
-        <b>Do I need ETH now?</b><br/>
-        <span style="color:var(--text-dim)">No. This site is for announcements and whitelisting until smart contracts are deployed.</span>
-      </div>
-      <div class="rounded-2xl panel p-5 ring-panel">
-        <b>How will buying work?</b><br/>
-        <span style="color:var(--text-dim)">When live, you’ll connect MetaMask and buy directly from the launch contract. ETRX will be delivered to your wallet.</span>
-      </div>
-      <div class="rounded-2xl panel p-5 ring-panel">
-        <b>What chains are supported?</b><br/>
-        <span style="color:var(--text-dim)">Launching on Ethereum. Future bridge support is planned.</span>
-      </div>
-      <div class="rounded-2xl panel p-5 ring-panel">
-        <b>Is there a whitelist?</b><br/>
-        <span style="color:var(--text-dim)">Join the email list above. Early Etherian holders may receive priority.</span>
-      </div>
+      <div class="rounded-2xl panel p-5 ring-panel"><b>Do I need ETH now?</b><br/><span style="color:var(--text-dim)">No. This site is for announcements and whitelisting until smart contracts are deployed.</span></div>
+      <div class="rounded-2xl panel p-5 ring-panel"><b>How will buying work?</b><br/><span style="color:var(--text-dim)">When live, you’ll connect MetaMask and buy directly from the launch contract. ETRX will be delivered to your wallet.</span></div>
+      <div class="rounded-2xl panel p-5 ring-panel"><b>What chains are supported?</b><br/><span style="color:var(--text-dim)">Launching on Ethereum. Future bridge support is planned.</span></div>
+      <div class="rounded-2xl panel p-5 ring-panel"><b>Is there a whitelist?</b><br/><span style="color:var(--text-dim)">Join the email list above. Early Etherian holders may receive priority.</span></div>
     </div>
   </section>
 
@@ -239,8 +215,8 @@
 
   <script>
     // ==== FIXED LAUNCH WINDOW (UTC) ====
-    const PRESALE_START = new Date('2025-10-31T00:00:00Z'); // Oct 31, 2025 00:00 UTC
-    const PRESALE_END   = new Date('2025-11-07T00:00:00Z'); // Nov 07, 2025 00:00 UTC
+    const PRESALE_START = new Date('2025-10-31T00:00:00Z');
+    const PRESALE_END   = new Date('2025-11-07T00:00:00Z');
 
     const $ = (id)=> document.getElementById(id);
     const phaseLabel = $('phaseLabel');
@@ -248,17 +224,10 @@
     const whenText   = $('whenText');
     $('year').textContent = new Date().getFullYear();
 
-    // Formatters
     const fmtUTC = (d)=> d.toUTCString().replace(' GMT',' UTC');
-    const fmtLoc = (d)=> d.toLocaleString([], {
-      year:'numeric', month:'short', day:'2-digit',
-      hour:'2-digit', minute:'2-digit', hour12:true
-    });
-
-    // Show both UTC and Local (with AM/PM)
+    const fmtLoc = (d)=> d.toLocaleString([], {year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:true});
     whenText.textContent = `Launch: ${fmtUTC(PRESALE_START)} • Local: ${fmtLoc(PRESALE_START)} — Ends: ${fmtUTC(PRESALE_END)}`;
 
-    // Utility to build a time box
     function box(v,label){
       const d=document.createElement('div');
       d.className='w-20 rounded-2xl panel p-3 ring-panel';
@@ -266,136 +235,81 @@
                    <div class="text-xs uppercase" style="color:var(--text-dim)">${label}</div>`;
       return d;
     }
-
-    function calcPhase(now){
-      if (now < PRESALE_START) return 'upcoming';
-      if (now > PRESALE_END)   return 'ended';
-      return 'live';
-    }
-
+    function phase(now){ if(now<PRESALE_START) return 'upcoming'; if(now>PRESALE_END) return 'ended'; return 'live'; }
     function tick(){
-      const now = new Date();
-      const phase = calcPhase(now);
-
-      phaseLabel.textContent =
-        phase==='upcoming' ? 'Launch begins in' :
-        phase==='live'     ? 'Launch ends in'   :
-                             'Launch has ended';
-
-      const target = phase==='upcoming' ? PRESALE_START :
-                     phase==='live'     ? PRESALE_END   : now;
-
-      const diff = Math.max(0, target.getTime() - now.getTime());
-      const s  = Math.floor(diff/1000);
-      const d  = Math.floor(s/86400);
-      const h  = Math.floor((s%86400)/3600);
-      const m  = Math.floor((s%3600)/60);
-      const ss = s%60;
-
-      countdown.replaceChildren(box(d,'d'), box(h,'h'), box(m,'m'), box(ss,'s'));
+      const now=new Date(); const ph=phase(now);
+      phaseLabel.textContent = ph==='upcoming'?'Launch begins in':ph==='live'?'Launch ends in':'Launch has ended';
+      const target = ph==='upcoming'?PRESALE_START:ph==='live'?PRESALE_END:now;
+      const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
+      const d=Math.floor(s/86400), h=Math.floor((s%86400)/3600), m=Math.floor((s%3600)/60), ss=s%60;
+      countdown.replaceChildren(box(d,'d'),box(h,'h'),box(m,'m'),box(ss,'s'));
     }
+    tick(); const interval=setInterval(tick,1000); addEventListener('beforeunload',()=>clearInterval(interval),{once:true});
 
-    tick();
-    const interval = setInterval(tick, 1000);
-    addEventListener('beforeunload', ()=> clearInterval(interval), { once:true });
-
-    // ==== FLOATING ORBS / STARFIELD (small, subtle) ====
+    // ==== FLOATING ORBS / STARFIELD ====
     (function(){
-      const canvas = document.getElementById('orbCanvas');
-      const ctx = canvas.getContext('2d');
-      let w, h, dpr, stars = [], running = true;
-
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      function resize(){
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        w = canvas.width = Math.floor(innerWidth * dpr);
-        h = canvas.height = Math.floor(innerHeight * dpr);
-        canvas.style.width = innerWidth + 'px';
-        canvas.style.height = innerHeight + 'px';
-        // When resizing, repopulate to fit screen
-        init();
-      }
-
-      function rand(a,b){ return a + Math.random()*(b-a); }
-
+      const canvas=$('orbCanvas'), ctx=canvas.getContext('2d');
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let w,h,dpr,stars=[],running=true;
+      function resize(){ dpr=Math.min(devicePixelRatio||1,2); w=canvas.width=Math.floor(innerWidth*dpr); h=canvas.height=Math.floor(innerHeight*dpr); canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px'; init(); }
+      function rand(a,b){ return a+Math.random()*(b-a) }
       function makeStar(depth=1){
-        // depth: 1 (near) .. 3 (far) for subtle parallax and speed
-        const r = rand(0.6, 1.8) * (4-depth) * dpr * 0.4;
-        const speed = rand(0.03, 0.12) * (4-depth) * dpr; // slower for far stars
-        const x = rand(0, w);
-        const y = rand(0, h);
-        const hue = Math.random() < 0.55 ? 205 : 24; // blue or orange family
-        const sat = hue===205 ? 95 : 95;
-        const light = hue===205 ? 70 : 62;
-        const alphaBase = rand(0.35, 0.75);
-        const twinkleAmp = rand(0.2, 0.6);
-        const twinkleSpd = rand(0.002, 0.006);
-        const dir = Math.random() < 0.5 ? -1 : 1; // drift up or down
-        return { x,y,r,speed,depth,hue,sat,light,alphaBase,twinkleAmp,twinkleSpd,dir,t:rand(0,Math.PI*2) };
+        const r=rand(.6,1.8)*(4-depth)*dpr*.4, speed=rand(.03,.12)*(4-depth)*dpr, x=rand(0,w), y=rand(0,h);
+        const hue=Math.random()<.55?205:24, sat=95, light=hue===205?70:62, alphaBase=rand(.35,.75), twinkleAmp=rand(.2,.6), twinkleSpd=rand(.002,.006), dir=Math.random()<.5?-1:1;
+        return {x,y,r,speed,depth,hue,sat,light,alphaBase,twinkleAmp,twinkleSpd,dir,t:rand(0,Math.PI*2)};
       }
-
-      function init(){
-        const density = Math.round((innerWidth*innerHeight)/18000); // modest density
-        stars = [];
-        // balanced depths for parallax
-        for(let i=0;i<density;i++){
-          const d = i%3 + 1;
-          stars.push(makeStar(d));
-        }
+      function init(){ const density=Math.round((innerWidth*innerHeight)/18000); stars=[]; for(let i=0;i<density;i++) stars.push(makeStar(i%3+1)); }
+      function draw(s){
+        s.t+=s.twinkleSpd; const a=s.alphaBase+Math.sin(s.t)*s.twinkleAmp*.25;
+        const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4);
+        g.addColorStop(0,`hsla(${s.hue} ${s.sat}% ${s.light}% / ${a})`);
+        g.addColorStop(1,`hsla(${s.hue} ${s.sat}% 10% / 0)`);
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(s.x,s.y,s.r*4,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle=`hsla(${s.hue} ${s.sat}% ${s.light+10}% / ${a+.05})`; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
       }
-
-      function drawStar(s){
-        s.t += s.twinkleSpd;
-        const alpha = s.alphaBase + Math.sin(s.t) * s.twinkleAmp * 0.25;
-
-        const gx = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r*4);
-        if (s.hue === 205){
-          // blue glow
-          gx.addColorStop(0, `hsla(${s.hue} ${s.sat}% ${s.light}% / ${alpha})`);
-          gx.addColorStop(1, `hsla(${s.hue} ${s.sat}% 10% / 0)`);
-        } else {
-          // orange glow
-          gx.addColorStop(0, `hsla(${s.hue} ${s.sat}% ${s.light}% / ${alpha})`);
-          gx.addColorStop(1, `hsla(${s.hue} ${s.sat}% 10% / 0)`);
-        }
-        ctx.fillStyle = gx;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r*4, 0, Math.PI*2);
-        ctx.fill();
-
-        // bright core
-        ctx.fillStyle = `hsla(${s.hue} ${s.sat}% ${s.light+10}% / ${alpha+0.05})`;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-        ctx.fill();
-      }
-
       function step(){
-        if (!running) return;
+        if(!running) return;
         ctx.clearRect(0,0,w,h);
-        for (const s of stars){
-          // slow vertical drift + slight horizontal wander
-          s.y += s.speed * s.dir;
-          s.x += Math.sin((s.y + s.depth*50) * 0.001) * 0.2 * (4 - s.depth);
-
-          // wrap around edges
-          if (s.y < -10) s.y = h + 10;
-          if (s.y > h + 10) s.y = -10;
-          if (s.x < -10) s.x = w + 10;
-          if (s.x > w + 10) s.x = -10;
-
-          drawStar(s);
+        for(const s of stars){
+          s.y+=s.speed*s.dir; s.x+=Math.sin((s.y+s.depth*50)*.001)*.2*(4-s.depth);
+          if(s.y<-10) s.y=h+10; if(s.y>h+10) s.y=-10; if(s.x<-10) s.x=w+10; if(s.x>w+10) s.x=-10;
+          draw(s);
         }
         requestAnimationFrame(step);
       }
+      resize(); step(); addEventListener('resize',resize,{passive:true}); addEventListener('visibilitychange',()=>{running=document.visibilityState==='visible'; if(running) requestAnimationFrame(step);});
+    })();
 
-      resize(); step();
-      addEventListener('resize', resize, { passive:true });
-      addEventListener('visibilitychange', ()=>{
-        running = document.visibilityState === 'visible';
-        if (running) requestAnimationFrame(step);
-      });
+    // ==== HERO IMAGE: Robust loader that tries multiple paths ====
+    (function(){
+      const el = document.getElementById('heroImg');
+      const fallback = document.getElementById('heroFallback');
+
+      const CANDIDATES = [
+        '/etrx-presale/assets/Background.png?v=4',
+        '/etrx-presale/assets/Background.png',
+        'assets/Background.png?v=4',
+        'assets/Background.png',
+        '/etrx-presale/assets/Banner.png',
+        'assets/Banner.png'
+      ];
+
+      function tryNext(i){
+        if (i >= CANDIDATES.length){
+          // show gradient placeholder
+          if (fallback) fallback.classList.remove('hidden');
+          return;
+        }
+        const url = CANDIDATES[i];
+        const probe = new Image();
+        probe.onload = () => { el.src = url; if (fallback) fallback.classList.add('hidden'); };
+        probe.onerror = () => tryNext(i+1);
+        probe.decoding = 'async';
+        probe.referrerPolicy = 'no-referrer-when-downgrade';
+        probe.src = url;
+      }
+
+      tryNext(0);
     })();
   </script>
 </body>
