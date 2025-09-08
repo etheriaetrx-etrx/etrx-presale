@@ -19,7 +19,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@ETRXDreamscapes">
 
-<!-- CSP: keep permissive for Tailwind CDN / inline scripts (prevents broken layout) -->
+<!-- CSP: allow Tailwind CDN + inline for this single-file build -->
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self' https://etheriaetrx-etrx.github.io;
            img-src 'self' data: https:;
@@ -42,7 +42,7 @@
 <!-- Fonts & Libraries -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script>
-  /* Tiny Tailwind extension for nicer hero type & measure */
+  /* Tailwind extension for nicer hero type & measure */
   tailwind = {
     theme:{ extend:{
       fontSize:{ 'hero':'clamp(2.25rem, 4vw + 1rem, 3.75rem)' },
@@ -148,10 +148,6 @@ input:focus{ outline:none }
 input:is([type="email"],[type="text"]).is-valid{ box-shadow: 0 0 0 2px #10b98166 }
 input:is([type="email"],[type="text"]).is-invalid{ box-shadow: 0 0 0 2px #ef444466 }
 
-/* Skip link */
-.skip-link{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
-.skip-link:focus{ position:fixed; left:1rem; top:1rem; width:auto; height:auto; padding:.5rem .75rem; background:#06b6d4; color:#000; border-radius:.5rem; z-index:50 }
-
 /* Section divider / containment */
 .section-divider{ height:1px; background:linear-gradient(90deg, #00ffff33, transparent, #d080ff33) }
 section{ contain: layout paint style }
@@ -167,7 +163,7 @@ section{ contain: layout paint style }
 </style>
 </head>
 <body>
-<a href="#about" class="skip-link">Skip to content</a>
+<a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
 
 <canvas id="orbCanvas" aria-hidden="true"></canvas>
 <div class="scanlines" aria-hidden="true"></div>
@@ -259,12 +255,10 @@ section{ contain: layout paint style }
     </div>
   </div>
 
-  <!-- Hero image -->
+  <!-- Hero image (single PNG; no srcset) -->
   <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px] reveal" data-delay="0">
     <img
       src="assets/Background.png"
-      srcset="assets/Background-640.jpg 640w, assets/Background-960.jpg 960w, assets/Background.png 1280w"
-      sizes="(max-width: 768px) 100vw, 50vw"
       alt="Etheria Background"
       width="1280" height="720"
       class="h-full w-full rounded-3xl ring-1 ring-cyan-400/15 object-cover hero-reflect"
@@ -807,7 +801,7 @@ function toast(msg, isWarn=false){
   function makeStar(depth=1){
     const r=rand(.6,1.8)*(4-depth)*dpr*.45, speed=rand(.03,.12)*(4-depth)*dpr,
           x=rand(0,w), y=rand(0,h);
-    const tone = Math.random()<.5 ? `rgba(${'0,255,255'},` : `rgba(${'84,178,255'},`;
+    const tone = Math.random()<.5 ? 'rgba(0,255,255,' : 'rgba(84,178,255,';
     const alphaBase=rand(.45,.8), twinkleAmp=rand(.25,.6), twinkleSpd=rand(.002,.006), dir=Math.random()<.5?-1:1;
     return {x,y,r,speed,depth,tone,alphaBase,twinkleAmp,twinkleSpd,dir,t:rand(0,Math.PI*2)};
   }
@@ -821,9 +815,9 @@ function toast(msg, isWarn=false){
   function drawStar(s){
     s.t+=s.twinkleSpd; const a=s.alphaBase+Math.sin(s.t)*s.twinkleAmp*.25;
     const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4);
-    g.addColorStop(0, `${s.tone}${a})`); g.addColorStop(1, `${s.tone}0)`);
+    g.addColorStop(0, s.tone + a + ')'); g.addColorStop(1, s.tone + '0)');
     ctx.fillStyle=g; ctx.beginPath(); ctx.arc(s.x,s.y,s.r*4,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle=`${s.tone}${Math.min(1,a+.08)})`; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=s.tone + Math.min(1,a+.08) + ')'; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
   }
   function drawConstellations(){
     ctx.lineWidth=0.7*dpr;
