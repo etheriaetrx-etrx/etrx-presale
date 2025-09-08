@@ -46,19 +46,19 @@
     "@type":"FAQPage",
     "mainEntity":[
       {"@type":"Question","name":"Is this a presale or the live coin?","acceptedAnswer":{"@type":"Answer","text":"This page is for the presale window (Sep 24 → Oct 1, 2025 UTC). After presale, we proceed to TGE (token generation & distribution) and initial listings/liquidity."}},
-      {"@type":"Question","name":"How will buying work?","acceptedAnswer":{"@type":"Answer","text":"When live, you’ll connect MetaMask and participate directly in the presale contract. Post-TGE, $ETRX will be distributed and appear in your wallet."}}
+      {"@type":"Question","name":"How will buying work?","acceptedAnswer":{"@type":"Answer","text":"When live, you’ll connect a wallet (injected or WalletConnect) and participate directly in the presale contract. Post-TGE, $ETRX will be distributed and appear in your wallet."}}
     ]
   }
   </script>
 
-  <!-- CSP: jsdelivr (ethers.js) + Cloudflare ETH RPC for ENS -->
+  <!-- CSP: allow Formspree + Cloudflare ETH RPC + WalletConnect (optional) + JSDelivr -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'self' https://etheriaetrx-etrx.github.io;
                  img-src 'self' data: https:;
                  script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net 'unsafe-inline';
                  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
                  font-src https://fonts.gstatic.com;
-                 connect-src 'self' https://formspree.io https://cloudflare-eth.com;
+                 connect-src 'self' https://formspree.io https://cloudflare-eth.com https://rpc.walletconnect.com https://*.walletconnect.com wss://relay.walletconnect.com wss://*.walletconnect.com;
                  worker-src 'self';
                  object-src 'none';
                  base-uri 'self';
@@ -72,8 +72,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com?v=3"></script>
 
-  <!-- Ethers.js (ENS resolution) -->
+  <!-- Ethers.js (ENS & provider wrapper) -->
   <script defer src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <!-- WalletConnect v2 Provider + Modal (optional, needs your projectId to enable QR option) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.11.2/dist/index.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@walletconnect/modal@2.6.2/dist/index.umd.min.js"></script>
 
   <!-- Preload hero image -->
   <link rel="preload" as="image" href="assets/Background.png">
@@ -92,7 +95,7 @@
       --text-dim:rgba(255,255,255,.64);
 
       /* Neon vibes */
-      --glow-cyan: 34 211 238;   /* rgb */
+      --glow-cyan: 34 211 238;
       --glow-blue: 59 130 246;
       --glow-orange: 249 115 22;
     }
@@ -131,10 +134,7 @@
         0 0 46px rgba(var(--glow-blue)/.10);
     }
     .ring-panel{ box-shadow:0 0 0 1px var(--ring) inset }
-    input, textarea {
-      transition: box-shadow .2s ease, border-color .2s ease;
-      box-shadow: 0 0 0 0 rgba(var(--glow-cyan)/0);
-    }
+    input, textarea { transition: box-shadow .2s ease, border-color .2s ease; box-shadow: 0 0 0 0 rgba(var(--glow-cyan)/0) }
     input:focus, textarea:focus{
       border-color: rgba(var(--glow-cyan)/.55) !important;
       box-shadow:
@@ -147,9 +147,7 @@
       position:relative;
       background: linear-gradient(90deg, var(--ether-orange), var(--ether-blue));
       color:#0b0f18; font-weight:700;
-      box-shadow:
-        0 0 14px rgba(var(--glow-orange)/.45),
-        0 0 24px rgba(var(--glow-blue)/.35);
+      box-shadow: 0 0 14px rgba(var(--glow-orange)/.45), 0 0 24px rgba(var(--glow-blue)/.35);
       transition: transform .08s ease, box-shadow .2s ease;
     }
     .btn-primary:hover{ transform: translateY(-1px) scale(1.01); filter:saturate(1.06) brightness(1.05) }
@@ -159,16 +157,10 @@
       background: radial-gradient(60% 60% at 50% 50%, rgba(var(--glow-cyan)/.8), transparent 70%);
       animation: glowPulse 2.4s ease-in-out infinite alternate;
     }
-    @keyframes glowPulse{
-      from{ opacity:.25; transform: scale(.98) }
-      to{   opacity:.45; transform: scale(1.02) }
-    }
+    @keyframes glowPulse{ from{ opacity:.25; transform: scale(.98) } to{ opacity:.45; transform: scale(1.02) } }
 
-    /* Hero title subtle glow */
     .title-glow{
-      text-shadow:
-        0 0 10px rgba(var(--glow-cyan)/.35),
-        0 0 22px rgba(var(--glow-blue)/.25);
+      text-shadow: 0 0 10px rgba(var(--glow-cyan)/.35), 0 0 22px rgba(var(--glow-blue)/.25);
     }
 
     :focus-visible { outline: 2px solid rgba(var(--glow-cyan)/.9); outline-offset: 2px; }
@@ -183,6 +175,14 @@
     .faq-body { padding: 0 1.25rem; max-height:0; transition:max-height .28s ease, padding .2s ease }
     .faq-body.open { padding: .25rem 1.25rem 1rem; }
 
+    /* Wallet modal */
+    .modal-mask{position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:60}
+    .modal{ width:min(420px,90vw); border-radius:16px; background:rgba(9,14,23,.9); border:1px solid var(--ring); box-shadow: 0 0 24px rgba(var(--glow-blue)/.25); }
+    .wallet-btn{ display:flex; gap:.75rem; align-items:center; width:100%; padding:.9rem 1rem; border-radius:12px; border:1px solid var(--ring); background:rgba(255,255,255,.04); }
+    .wallet-btn:hover{ border-color: rgba(var(--glow-cyan)/.55); box-shadow: 0 0 18px rgba(var(--glow-cyan)/.25) }
+    .pill{ border:1px solid rgba(var(--glow-cyan)/.5); background:rgba(255,255,255,.05); padding:.4rem .7rem; border-radius:999px; box-shadow: inset 0 0 24px rgba(var(--glow-blue)/.2), 0 0 20px rgba(var(--glow-cyan)/.15) }
+    .addr{ font-feature-settings: "tnum"; letter-spacing:.2px }
+    .hidden-important{ display:none !important }
     @media (prefers-reduced-motion: reduce){
       #orbCanvas{ display:none }
       *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
@@ -211,8 +211,38 @@
       <a class="hover:opacity-100" href="#road">Road</a>
       <a class="hover:opacity-100" href="#faq">FAQ</a>
     </nav>
-    <a href="#notify" class="rounded-2xl border border-white/15 bg-white/5 px-4 py-2 text-sm hover:bg-white/10">Get Notified</a>
+    <div class="flex items-center gap-3">
+      <button id="connectBtn" class="rounded-2xl btn-primary px-4 py-2 text-sm">Connect Wallet</button>
+      <div id="walletPill" class="pill text-xs hidden">
+        <span id="walletShort" class="addr"></span>
+        <button id="disconnectBtn" class="ml-2 underline underline-offset-4">Disconnect</button>
+      </div>
+    </div>
   </header>
+
+  <!-- Wallet chooser modal -->
+  <div id="walletModal" class="modal-mask">
+    <div class="modal panel p-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-semibold">Choose a wallet</h3>
+        <button id="modalClose" class="text-white/70 hover:text-white">✕</button>
+      </div>
+      <p class="mt-1 text-xs" style="color:var(--text-dim)">Use a browser wallet or scan a QR with WalletConnect.</p>
+      <div id="walletList" class="mt-4 grid gap-2">
+        <!-- injected providers will populate here -->
+      </div>
+      <div id="wcBlock" class="mt-3">
+        <button id="wcBtn" class="wallet-btn w-full">
+          <span>🔗</span>
+          <div>
+            <div class="text-sm font-medium">WalletConnect (QR)</div>
+            <div class="text-xs" style="color:var(--text-dim)">Connect Coinbase, Rainbow, Trust, etc.</div>
+          </div>
+        </button>
+        <p id="wcNote" class="mt-2 text-xs" style="color:var(--text-dim)"></p>
+      </div>
+    </div>
+  </div>
 
   <!-- Hero -->
   <section class="z-10 mx-auto grid max-w-6xl grid-cols-1 items-stretch gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
@@ -283,9 +313,9 @@
         <button id="shareLaunch" class="btn-primary rounded-2xl px-4 py-2 text-sm">
           Share this launch
         </button>
-        <button disabled class="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-4 py-2 text-sm opacity-60 cursor-not-allowed">
+        <button id="openConnect" class="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/5 px-4 py-2 text-sm hover:bg-white/10">
           <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 7a2 2 0 0 1 2-2h12a4 4 0 0 1 4 4v1h-3.5a2.5 2.5 0 1 0 0 5H21v1a4 4 0 0 1-4 4H5a2 2 0 0 1-2-2zM21 12h-3.5a1.5 1.5 0 0 0 0 3H21z"/></svg>
-          Connect Wallet (coming soon)
+          Connect Wallet
         </button>
       </div>
     </div>
@@ -426,7 +456,7 @@
         </button>
         <div class="faq-body" hidden>
           <div class="pt-2 pb-3" style="color:var(--text-dim)">
-            When live, you’ll connect MetaMask and participate directly in the presale contract. Post-TGE, $ETRX will
+            When live, you’ll connect a wallet (injected or WalletConnect) and participate directly in the presale contract. Post-TGE, $ETRX will
             appear in your wallet and on supported venues.
           </div>
         </div>
@@ -491,15 +521,26 @@
   const whenPrimary  = $('whenPrimary');
   const whenSecondary= $('whenSecondary');
   const modeLabel    = $('modeLabel');
+  const connectBtn   = $('connectBtn');
+  const openConnect  = $('openConnect');
+  const modal        = $('walletModal');
+  const modalClose   = $('modalClose');
+  const walletList   = $('walletList');
+  const wcBtn        = $('wcBtn');
+  const wcBlock      = $('wcBlock');
+  const wcNote       = $('wcNote');
+  const walletPill   = $('walletPill');
+  const walletShort  = $('walletShort');
+  const disconnectBtn= $('disconnectBtn');
+
   $('year').textContent = new Date().getFullYear();
 
   // --- Formatting helpers ---
   const fmtOptsBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
-  const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZone:'UTC', timeZoneName:'short' }); // Sep 24, 2025, 12:00 AM UTC
-  const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZoneName:'short' });                 // local with DST
+  const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZone:'UTC', timeZoneName:'short' });
+  const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtOptsBase, timeZoneName:'short' });
 
   let primaryUTC = true; // default to UTC
-
   function updateWhen(){
     if (primaryUTC){
       whenPrimary.textContent   = `Presale: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
@@ -513,12 +554,8 @@
       tzToggle.textContent = 'Make UTC primary';
     }
   }
-
   const tzToggle = $('tzToggle');
-  tzToggle.addEventListener('click', ()=>{
-    primaryUTC = !primaryUTC;
-    updateWhen();
-  });
+  tzToggle.addEventListener('click', ()=>{ primaryUTC = !primaryUTC; updateWhen(); });
 
   // --- High-precision clock to avoid drift ---
   const t0 = Date.now();
@@ -526,17 +563,11 @@
   const nowAccurate = ()=> new Date(t0 + (performance.now()-p0));
 
   // --- Phase & countdown rendering ---
-  function phase(now){
-    if(now < PRESALE_START) return 'upcoming';
-    if(now > PRESALE_END)   return 'ended';
-    return 'live';
-  }
+  function phase(now){ if(now < PRESALE_START) return 'upcoming'; if(now > PRESALE_END) return 'ended'; return 'live'; }
   function box(v,label){
     const d=document.createElement('div');
     d.className='w-20 rounded-2xl panel p-3 ring-panel';
-    d.innerHTML=`
-      <div class="text-3xl font-bold tabular">${String(v).padStart(2,'0')}</div>
-      <div class="text-xs uppercase" style="color:var(--text-dim)">${label}</div>`;
+    d.innerHTML=`<div class="text-3xl font-bold tabular">${String(v).padStart(2,'0')}</div><div class="text-xs uppercase" style="color:var(--text-dim)">${label}</div>`;
     return d;
   }
   let lastSecond = -1;
@@ -549,37 +580,28 @@
     const target = ph==='upcoming'?PRESALE_START:ph==='live'?PRESALE_END:now;
     const diff = Math.max(0, target-now);
     const s=Math.floor(diff/1000);
-
     if(s !== lastSecond){
       lastSecond = s;
-      const d=Math.floor(s/86400),
-            h=Math.floor((s%86400)/3600),
-            m=Math.floor((s%3600)/60),
-            ss=s%60;
+      const d=Math.floor(s/86400), h=Math.floor((s%86400)/3600), m=Math.floor((s%3600)/60), ss=s%60;
       countdown.replaceChildren(box(d,'d'),box(h,'h'),box(m,'m'),box(ss,'s'));
     }
     requestAnimationFrame(loop);
   }
-  updateWhen();
-  loop();
+  updateWhen(); loop();
 
   // Presale progress bar (0–100% between start and end)
-  const phaseBar = $('phaseBar');
-  const phaseEta = $('phaseEta');
+  const phaseBar = $('phaseBar'), phaseEta = $('phaseEta');
   function updateProgress(){
     const now = new Date();
     let pct = 0;
-    if (now <= PRESALE_START) pct = 0;
-    else if (now >= PRESALE_END) pct = 100;
+    if (now <= PRESALE_START) pct = 0; else if (now >= PRESALE_END) pct = 100;
     else pct = ((now - PRESALE_START) / (PRESALE_END - PRESALE_START)) * 100;
-
     if (phaseBar) phaseBar.style.width = `${pct}%`;
     const endIn = Math.max(0, PRESALE_END - now);
     const hrs = Math.floor(endIn/36e5), mins = Math.floor((endIn%36e5)/6e4);
     if (phaseEta) phaseEta.textContent = (endIn===0) ? 'Ended' : `Ends in ${hrs}h ${String(mins).padStart(2,'0')}m`;
   }
-  updateProgress();
-  setInterval(updateProgress, 30_000);
+  updateProgress(); setInterval(updateProgress, 30_000);
 
   // Sticky launch bar (show within last 14 days) + mobile CTA
   const SHOW_BAR_DAYS = 14;
@@ -589,34 +611,20 @@
     const cta = document.getElementById('stickyCTA');
     if (window.innerWidth < 768) cta.classList.remove('hidden'); else cta.classList.add('hidden');
   }
-  toggleBar();
-  setInterval(toggleBar, 60_000);
+  toggleBar(); setInterval(toggleBar, 60_000);
 
   // Smooth scroll + active nav highlight
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     a.addEventListener('click', e=>{
       const id=a.getAttribute('href').slice(1);
-      const el=document.getElementById(id);
-      if(!el) return;
-      e.preventDefault();
-      el.scrollIntoView({behavior:'smooth', block:'start'});
-      history.replaceState(null,'','#'+id);
+      const el=document.getElementById(id); if(!el) return;
+      e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); history.replaceState(null,'','#'+id);
     });
   });
   const sections=[...document.querySelectorAll('section[id]')];
   const navLinks=[...document.querySelectorAll('header nav a[href^="#"]')];
   const map=new Map(navLinks.map(l=>[l.getAttribute('href').slice(1),l]));
-  const io=new IntersectionObserver((ents)=>{
-    ents.forEach(ent=>{
-      if(ent.isIntersecting){
-        const id=ent.target.id;
-        navLinks.forEach(l=>l.classList.remove('text-white','opacity-100'));
-        const link=map.get(id);
-        if(link) link.classList.add('text-white','opacity-100');
-      }
-    });
-  }, {rootMargin:'-30% 0px -60% 0px', threshold:0.01});
-  sections.forEach(s=>io.observe(s));
+  const io=new IntersectionObserver((ents)=>{ents.forEach(ent=>{ if(ent.isIntersecting){ const id=ent.target.id; navLinks.forEach(l=>l.classList.remove('text-white','opacity-100')); const link=map.get(id); if(link) link.classList.add('text-white','opacity-100'); } })},{rootMargin:'-30% 0px -60% 0px', threshold:0.01}); sections.forEach(s=>io.observe(s));
 
   // FAQ collapsible
   document.querySelectorAll('.faq-item').forEach(item=>{
@@ -626,18 +634,10 @@
     btn.addEventListener('click', ()=>{
       const open = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!open));
-      if (!open){
-        body.hidden = false;
+      if (!open){ body.hidden = false; body.style.maxHeight = body.scrollHeight + 'px'; body.classList.add('open'); chev.style.transform = 'rotate(180deg)'; }
+      else{
         body.style.maxHeight = body.scrollHeight + 'px';
-        body.classList.add('open');
-        chev.style.transform = 'rotate(180deg)';
-      } else {
-        body.style.maxHeight = body.scrollHeight + 'px';
-        requestAnimationFrame(()=>{
-          body.style.maxHeight = '0px';
-          body.classList.remove('open');
-          chev.style.transform = 'rotate(0deg)';
-        });
+        requestAnimationFrame(()=>{ body.style.maxHeight = '0px'; body.classList.remove('open'); chev.style.transform = 'rotate(0deg)'; });
         body.addEventListener('transitionend', ()=>{ if(body.style.maxHeight==='0px') body.hidden=true; }, {once:true});
       }
     });
@@ -655,131 +655,195 @@
     if (!res.ok) throw new Error('Bad response');
     return res.json().catch(()=> ({}));
   }
-
   // Email notify form
   const notifyForm = document.getElementById('notifyForm');
   const notifyMsg  = document.getElementById('notifyMsg');
   const notifySuccess = document.getElementById('notifySuccess');
   if (notifyForm){
     notifyForm.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      notifyMsg.classList.add('hidden');
-      try{
-        const fd = new FormData(notifyForm);
-        const data = Object.fromEntries(fd.entries());
-        await postFormspree(data);
-        notifyForm.classList.add('hidden');
-        notifySuccess.classList.remove('hidden');
-      }catch(e){
-        notifyMsg.textContent = 'Submission failed. Please check your connection and try again.';
-        notifyMsg.classList.remove('hidden');
-      }
+      e.preventDefault(); notifyMsg.classList.add('hidden');
+      try{ const fd = new FormData(notifyForm); const data = Object.fromEntries(fd.entries());
+        await postFormspree(data); notifyForm.classList.add('hidden'); notifySuccess.classList.remove('hidden');
+      }catch(e){ notifyMsg.textContent = 'Submission failed. Please check your connection and try again.'; notifyMsg.classList.remove('hidden'); }
     });
   }
-  if(location.hash==='#notify-success'){ // non-JS fallback
-    notifyForm?.classList.add('hidden');
-    notifySuccess?.classList.remove('hidden');
-  }
+  if(location.hash==='#notify-success'){ notifyForm?.classList.add('hidden'); notifySuccess?.classList.remove('hidden'); }
 
   // ===== ENS-aware allowlist form =====
   const wlForm = document.getElementById('wlForm');
   const wlMsg  = document.getElementById('wlMsg');
   const wlHelp = document.getElementById('wlHelp');
   const wlSuccess = document.getElementById('wlSuccess');
-
   const addrRe = /^0x[a-fA-F0-9]{40}$/;
   const ensRe  = /^[a-z0-9-]+(\.[a-z0-9-]+)*\.eth$/i;
-
-  function setHelp(text, ok=false){
-    wlHelp.textContent = text || '';
-    wlHelp.style.color = ok ? 'var(--text-muted)' : 'var(--text-dim)';
-  }
-
-  const provider = new (window.ethers?.providers.JsonRpcProvider || function(){})('https://cloudflare-eth.com');
-
+  function setHelp(text, ok=false){ wlHelp.textContent = text || ''; wlHelp.style.color = ok ? 'var(--text-muted)' : 'var(--text-dim)'; }
+  const providerENS = new (window.ethers?.providers.JsonRpcProvider || function(){})('https://cloudflare-eth.com');
   async function resolveIfEns(value){
     if (!value || !ensRe.test(value)) return null;
-    try{
-      if (!provider || !provider.resolveName) return null;
-      const resolved = await provider.resolveName(value);
-      return resolved || null;
-    }catch{ return null; }
+    try{ if (!providerENS || !providerENS.resolveName) return null; const resolved = await providerENS.resolveName(value); return resolved || null; }catch{ return null; }
   }
-
   if (wlForm){
     const walletInput = document.getElementById('wallet');
     walletInput.addEventListener('input', async ()=>{
-      wlMsg.classList.add('hidden');
-      const v = walletInput.value.trim();
-      if (!v){ setHelp(''); return; }
+      wlMsg.classList.add('hidden'); const v = walletInput.value.trim(); if (!v){ setHelp(''); return; }
       if (addrRe.test(v)){ setHelp('Looks like a valid Ethereum address.', true); return; }
-      if (ensRe.test(v)){
-        setHelp('Checking ENS…');
-        const addr = await resolveIfEns(v);
-        if (addr){ setHelp(`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`, true); }
-        else     { setHelp('Could not resolve this ENS name.'); }
-        return;
-      }
+      if (ensRe.test(v)){ setHelp('Checking ENS…'); const addr = await resolveIfEns(v); setHelp(addr?`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`:'Could not resolve this ENS name.', !!addr); return; }
       setHelp('Enter a valid 0x… address or an ENS name like yourname.eth');
     });
-
     wlForm.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      wlMsg.classList.add('hidden');
-      const fd = new FormData(wlForm);
-      const trap = (fd.get('company')||'').trim();
-      let wallet = (fd.get('wallet')||'').trim();
-
+      e.preventDefault(); wlMsg.classList.add('hidden');
+      const fd = new FormData(wlForm); const trap = (fd.get('company')||'').trim(); let wallet = (fd.get('wallet')||'').trim();
       if (trap) return; // honeypot
-
       let finalAddr = null;
-      if (addrRe.test(wallet)){
-        finalAddr = wallet;
-      }else if (ensRe.test(wallet)){
-        wlHelp.textContent = 'Resolving ENS…';
-        const resolved = await resolveIfEns(wallet);
-        if (resolved) finalAddr = resolved;
-        else { wlMsg.textContent = 'Enter a valid address, or a resolvable ENS name.'; wlMsg.classList.remove('hidden'); return; }
-      }else{
-        wlMsg.textContent = 'Enter a valid 0x… address or ENS name (yourname.eth).';
-        wlMsg.classList.remove('hidden');
-        return;
-      }
-
+      if (addrRe.test(wallet)){ finalAddr = wallet; }
+      else if (ensRe.test(wallet)){ wlHelp.textContent = 'Resolving ENS…'; const resolved = await resolveIfEns(wallet); if (resolved) finalAddr = resolved; else { wlMsg.textContent = 'Enter a valid address, or a resolvable ENS name.'; wlMsg.classList.remove('hidden'); return; } }
+      else{ wlMsg.textContent = 'Enter a valid 0x… address or ENS name (yourname.eth).'; wlMsg.classList.remove('hidden'); return; }
       try{
-        const list = JSON.parse(localStorage.getItem('etrx_wl')||'[]');
-        if (!list.includes(finalAddr)) list.push(finalAddr);
-        localStorage.setItem('etrx_wl', JSON.stringify(list));
-
-        await postFormspree({ wallet: finalAddr, type: 'allowlist' });
-
-        wlForm.classList.add('hidden');
-        wlSuccess.classList.remove('hidden');
-      }catch(err){
-        wlMsg.textContent = 'Saved locally. Network submit failed — please try again later.';
-        wlMsg.classList.remove('hidden');
-      }
+        const list = JSON.parse(localStorage.getItem('etrx_wl')||'[]'); if (!list.includes(finalAddr)) list.push(finalAddr); localStorage.setItem('etrx_wl', JSON.stringify(list));
+        await postFormspree({ wallet: finalAddr, type: 'allowlist' }); wlForm.classList.add('hidden'); wlSuccess.classList.remove('hidden');
+      }catch(err){ wlMsg.textContent = 'Saved locally. Network submit failed — please try again later.'; wlMsg.classList.remove('hidden'); }
     });
   }
+
+  // ===== Wallet connection (Injected + WalletConnect) =====
+  // Replace 'YOUR_WC_PROJECT_ID' with your WalletConnect Cloud project id to enable the QR option.
+  const WC_PROJECT_ID = 'YOUR_WC_PROJECT_ID';
+
+  let activeProvider = null;  // EIP-1193 provider
+  let ethersWeb3 = null;
+
+  function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
+  function showModal(show){ modal.style.display = show ? 'flex' : 'none'; }
+
+  // Build injected wallet list (MetaMask, Rabby, Brave, Coinbase ext, Frame, etc.)
+  function discoverInjected(){
+    walletList.innerHTML = '';
+    const injected = [];
+    // EIP-6963 discovery
+    const announced = [];
+    function onAnnounce(e){ announced.push(e.detail); }
+    window.addEventListener('eip6963:announceProvider', onAnnounce);
+    window.dispatchEvent(new Event('eip6963:requestProvider'));
+    // legacy
+    if (window.ethereum){
+      if (window.ethereum.providers?.length){
+        window.ethereum.providers.forEach(p=> injected.push(p));
+      }else{
+        injected.push(window.ethereum);
+      }
+    }
+    // build UI from EIP-6963 (if any), else from legacy array
+    const uniq = [];
+    if (announced.length){
+      announced.forEach(({info, provider})=>{
+        uniq.push({ name: info?.name || 'Browser Wallet', provider });
+      });
+    }else if (injected.length){
+      injected.forEach(p=>{
+        const name = p.isMetaMask ? 'MetaMask' :
+                     p.isCoinbaseWallet ? 'Coinbase Wallet (ext)' :
+                     p.isBraveWallet ? 'Brave Wallet' :
+                     p.isFrame ? 'Frame' :
+                     p.isRabby ? 'Rabby' : 'Browser Wallet';
+        uniq.push({ name, provider:p });
+      });
+    }
+    if (!uniq.length){
+      const btn = document.createElement('button');
+      btn.className='wallet-btn'; btn.disabled=true;
+      btn.innerHTML = '<span>🧩</span><div><div class="text-sm font-medium">No browser wallet detected</div><div class="text-xs" style="color:var(--text-dim)">Install MetaMask, Rabby, Brave, etc.</div></div>';
+      walletList.appendChild(btn);
+      return;
+    }
+    uniq.forEach(({name, provider})=>{
+      const btn = document.createElement('button');
+      btn.className='wallet-btn';
+      btn.innerHTML = `<span>🧩</span><div><div class="text-sm font-medium">${name}</div><div class="text-xs" style="color:var(--text-dim)">Use your browser extension</div></div>`;
+      btn.addEventListener('click', async ()=>{
+        showModal(false);
+        try{
+          const accounts = await provider.request({ method:'eth_requestAccounts' });
+          onConnected(provider, accounts?.[0]||null);
+        }catch(err){ console.warn('Injected connect error', err); }
+      });
+      walletList.appendChild(btn);
+    });
+  }
+
+  async function connectWalletConnect(){
+    if (!WC_PROJECT_ID || WC_PROJECT_ID === 'YOUR_WC_PROJECT_ID'){
+      wcNote.textContent = 'Add your WalletConnect projectId in the code to enable QR connect.';
+      return;
+    }
+    try{
+      const chains = [1]; // Ethereum mainnet
+      const EthereumProvider = window.WalletConnectEthereumProvider?.default || window.WalletConnectEthereumProvider;
+      const wc = await EthereumProvider.init({
+        projectId: WC_PROJECT_ID,
+        showQrModal: true,
+        chains,
+        methods:['eth_sendTransaction','personal_sign','eth_signTypedData','eth_signTypedData_v4','eth_requestAccounts']
+      });
+      await wc.enable();
+      const accounts = await wc.request({ method:'eth_accounts' });
+      onConnected(wc, accounts?.[0]||null);
+      // cleanup modal
+      showModal(false);
+    }catch(err){ console.warn('WC connect error', err); }
+  }
+
+  function onConnected(provider, account){
+    activeProvider = provider;
+    ethersWeb3 = new ethers.providers.Web3Provider(provider, 'any');
+    localStorage.setItem('etrx_wallet', account||'');
+    walletShort.textContent = shortAddr(account||'');
+    walletPill.classList.remove('hidden');
+    connectBtn.classList.add('hidden-important');
+    openConnect.classList.add('hidden-important');
+
+    // listen for changes
+    provider.on?.('accountsChanged', (accs)=>{ walletShort.textContent = shortAddr(accs?.[0]||''); localStorage.setItem('etrx_wallet', accs?.[0]||''); });
+    provider.on?.('disconnect', ()=>{ doDisconnect(); });
+    provider.on?.('chainChanged', ()=>{ /* could update UI / network checks here */ });
+  }
+
+  function doDisconnect(){
+    try{ activeProvider?.disconnect?.(); }catch{}
+    activeProvider = null; ethersWeb3 = null;
+    localStorage.removeItem('etrx_wallet');
+    walletPill.classList.add('hidden');
+    connectBtn.classList.remove('hidden-important');
+    openConnect.classList.remove('hidden-important');
+  }
+  disconnectBtn.addEventListener('click', doDisconnect);
+
+  // open/close modal hooks
+  function openModal(){ discoverInjected(); showModal(true); }
+  [connectBtn, openConnect].forEach(btn=> btn?.addEventListener('click', openModal));
+  modalClose.addEventListener('click', ()=> showModal(false));
+  modal.addEventListener('click', (e)=>{ if(e.target===modal) showModal(false); });
+
+  // WalletConnect button
+  wcBtn.addEventListener('click', connectWalletConnect);
+  // Hide WC block if project id not set
+  if (!WC_PROJECT_ID || WC_PROJECT_ID === 'YOUR_WC_PROJECT_ID'){
+    wcNote.textContent = 'Tip: enable QR connect by adding your WalletConnect projectId in the code.';
+  }
+
+  // restore previous session display (address only)
+  const prev = localStorage.getItem('etrx_wallet');
+  if (prev){ walletShort.textContent = shortAddr(prev); walletPill.classList.remove('hidden'); connectBtn.classList.add('hidden-important'); openConnect.classList.add('hidden-important'); }
 
   // Share button
   const shareBtn = document.getElementById('shareLaunch');
   if (shareBtn && navigator.share){
     shareBtn.addEventListener('click', async ()=>{
       try{
-        await navigator.share({
-          title: '$ETRX • Etheria Presale',
-          text: 'Presale runs Sep 24 → Oct 1 (UTC). Join the allowlist.',
-          url: location.href
-        });
+        await navigator.share({ title:'$ETRX • Etheria Presale', text:'Presale runs Sep 24 → Oct 1 (UTC). Join the allowlist.', url: location.href });
       }catch{}
     });
   }else if(shareBtn){
-    shareBtn.addEventListener('click', ()=>{
-      navigator.clipboard.writeText(location.href);
-      shareBtn.textContent = 'Link copied!';
-      setTimeout(()=>shareBtn.textContent='Share this launch', 1500);
-    });
+    shareBtn.addEventListener('click', ()=>{ navigator.clipboard.writeText(location.href); shareBtn.textContent = 'Link copied!'; setTimeout(()=>shareBtn.textContent='Share this launch', 1500); });
   }
 
   // (No service worker registration; manifest/sw removed)
@@ -814,8 +878,7 @@
       const baseDensity = (innerWidth*innerHeight)/18000;
       const cores = (navigator.hardwareConcurrency||4);
       const density = Math.round(baseDensity * Math.min(1, cores/8));
-      stars=[];
-      for(let i=0;i<density;i++) stars.push(makeStar(i%3+1));
+      stars=[]; for(let i=0;i<density;i++) stars.push(makeStar(i%3+1));
     }
     function draw(s){
       s.t+=s.twinkleSpd;
@@ -823,10 +886,8 @@
       const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4);
       g.addColorStop(0, `hsla(${s.hue} ${s.sat}% ${s.light}% / ${a})`);
       g.addColorStop(1, `hsla(${s.hue} ${s.sat}% 10% / 0)`);
-      ctx.fillStyle=g;
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.r*4,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle=`hsla(${s.hue} ${s.sat}% ${s.light+10}% / ${a+.05})`;
-      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(s.x,s.y,s.r*4,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=`hsla(${s.hue} ${s.sat}% ${s.light+10}% / ${a+.05})`; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
     }
     function step(){
       if(!running) return;
@@ -834,10 +895,7 @@
       for(const s of stars){
         s.y+=s.speed*s.dir;
         s.x+=Math.sin((s.y+s.depth*50)*.001)*.2*(4-s.depth);
-        if(s.y<-10) s.y=h+10;
-        if(s.y>h+10) s.y=-10;
-        if(s.x<-10) s.x=w+10;
-        if(s.x>w+10) s.x=-10;
+        if(s.y<-10) s.y=h+10; if(s.y>h+10) s.y=-10; if(s.x<-10) s.x=w+10; if(s.x>w+10) s.x=-10;
         draw(s);
       }
       requestAnimationFrame(step);
