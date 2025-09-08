@@ -58,7 +58,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
 
-/* --- Neon vibe --- */
+/* Neon look */
 .neon-text{
   text-shadow:
     0 0 6px rgba(var(--neon-cyan)/.8),
@@ -66,25 +66,23 @@ body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple
     0 0 48px rgba(var(--neon-violet)/.35);
 }
 .neon-grad{background:linear-gradient(90deg, rgb(var(--neon-orange)), rgb(var(--neon-blue))); -webkit-background-clip:text; background-clip:text; color:transparent}
+
 .glass{backdrop-filter: blur(12px); background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border:1px solid var(--ring)}
 .card{border-radius:18px; box-shadow:
   0 0 0 1px rgba(0,255,255,.08) inset,
   0 8px 30px rgba(0,255,255,.08),
   0 0 60px rgba(130, 200, 255, .06)}
-.card-outline{
-  position:relative;
-}
+.card-outline{position:relative}
 .card-outline::before{
   content:""; position:absolute; inset:-1px; border-radius:inherit; pointer-events:none;
-  background:
-    conic-gradient(from 180deg at 50% 50%, rgba(var(--neon-orange)/.7), rgba(var(--neon-blue)/.7), rgba(var(--neon-violet)/.7), rgba(var(--neon-orange)/.7));
+  background: conic-gradient(from 180deg at 50% 50%, rgba(var(--neon-orange)/.7), rgba(var(--neon-blue)/.7), rgba(var(--neon-violet)/.7), rgba(var(--neon-orange)/.7));
   -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude;
-  filter: blur(8px) saturate(1.4); opacity:.35;
-  animation: spinBorder 10s linear infinite;
+  filter: blur(8px) saturate(1.4); opacity:.35; animation: spinBorder 10s linear infinite;
 }
 @keyframes spinBorder { to { transform: rotate(360deg) } }
 
+/* BTN */
 .btn-primary{
   position:relative; display:inline-flex; align-items:center; gap:.55rem; padding:.75rem 1rem;
   border-radius:14px; font-weight:800; color:#02040a;
@@ -97,34 +95,64 @@ body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple
   background: rgba(255,255,255,.03);
   padding:.6rem .9rem; border-radius:12px;
 }
-a:hover{ text-shadow:0 0 12px rgba(var(--neon-cyan)/.6) }
-
-/* --- Starfield canvas stays; add scanlines + neon grid footer --- */
-#orbCanvas{ position:fixed; inset:0; z-index:0; pointer-events:none; filter:drop-shadow(0 0 24px rgba(0,255,255,.12)) }
-.scanlines{ position:fixed; inset:0; z-index:0; pointer-events:none;
-  background: repeating-linear-gradient( to bottom, rgba(255,255,255,.03), rgba(255,255,255,.03) 1px, transparent 2px, transparent 4px );
-  mix-blend-mode: soft-light; opacity:.25;
-}
-.neon-grid{ position:relative; isolation:isolate }
-.neon-grid::after{
-  content:""; position:absolute; inset:0; z-index:0; pointer-events:none; opacity:.25;
-  background:
-    linear-gradient(transparent 60%, rgba(0,255,255,.12)),
-    repeating-linear-gradient( to right, rgba(0,255,255,.09) 0 1px, transparent 1px 80px),
-    repeating-linear-gradient( to top,   rgba(0,255,255,.09) 0 1px, transparent 1px 80px);
-  mask-image: linear-gradient(to top, transparent, #000 35%, #000);
-  filter: drop-shadow(0 0 6px rgba(84,178,255,.6));
-}
-
-/* utility */
+.hidden-important{ display:none !important }
 .small-dim{ color:var(--dim) }
 .title-glow{ text-shadow:0 0 14px rgba(0,255,255,.3), 0 0 36px rgba(84,178,255,.25) }
 .tabular{ font-variant-numeric: tabular-nums }
-.hidden-important{ display:none !important }
+
+/* Starfield canvas */
+#orbCanvas{ position:fixed; inset:0; z-index:0; pointer-events:none; filter:drop-shadow(0 0 24px rgba(0,255,255,.12)) }
+.scanlines{ position:fixed; inset:0; z-index:0; pointer-events:none;
+  background: repeating-linear-gradient( to bottom, rgba(255,255,255,.03), rgba(255,255,255,.03) 1px, transparent 2px, transparent 4px );
+  mix-blend-mode: soft-light; opacity:.20;
+}
+
+/* (NEW) Holographic foil hover for cards */
+.holo{ position:relative; overflow:hidden; }
+.holo::after{
+  content:""; position:absolute; inset:-150% -150%;
+  background:
+    conic-gradient(from 0deg, #fff0, #fff3 10%, #fff0 20%),
+    linear-gradient(120deg, #ff934c55, #54b2ff55, #d080ff55);
+  mix-blend-mode:screen; filter:saturate(1.4) blur(10px); opacity:.25;
+  transform:translateX(-30%);
+  transition: transform .8s ease, opacity .3s ease;
+}
+.holo:hover::after{ transform:translateX(30%); opacity:.45 }
+
+/* (NEW) Animated underline links (neon laser) */
+a.laser{
+  background: linear-gradient(90deg, #00ffff 0 0) bottom left / 0 2px no-repeat;
+  transition: background-size .3s ease;
+}
+a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
+
+/* (NEW) FAQ neon separators */
+.faq-item{ border:1px solid #00ffff22; border-radius:14px; overflow:hidden }
+.faq-header{ position:relative; width:100%; display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding:1rem 1.25rem; text-align:left }
+.faq-header::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+  background: linear-gradient(90deg, #00ffff44, transparent);
+}
+.faq-body{ padding: 0 1.25rem; max-height:0; transition:max-height .28s ease, padding .2s ease }
+.faq-body.open { padding: .25rem 1.25rem 1rem; }
+.faq-chevron { transition: transform .25s ease }
+.faq-item.open{ box-shadow:0 0 24px #00ffff22 inset }
+
+/* (NEW) Hero image reflection */
+.hero-reflect{ position:relative; overflow:hidden }
+.hero-reflect::after{
+  content:""; position:absolute; top:-40%; left:-30%; width:60%; height:180%;
+  transform: rotate(25deg); pointer-events:none; opacity:.12;
+  background: linear-gradient( to right, transparent 0, #fff6 30%, transparent 60% );
+  filter: blur(12px);
+}
+.hero-reflect:hover::after{ opacity:.18 }
 
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
   .card-outline::before{ display:none }
+  .holo::after{ display:none }
 }
 </style>
 </head>
@@ -138,10 +166,10 @@ a:hover{ text-shadow:0 0 12px rgba(var(--neon-cyan)/.6) }
     <div class="text-sm tracking-wide small-dim">Etheria</div>
   </div>
   <nav class="hidden gap-6 text-sm opacity-80 md:flex" aria-label="Primary">
-    <a class="hover:opacity-100" href="#about">About</a>
-    <a class="hover:opacity-100" href="#token">Tokenomics</a>
-    <a class="hover:opacity-100" href="#road">Road</a>
-    <a class="hover:opacity-100" href="#faq">FAQ</a>
+    <a class="laser hover:opacity-100" href="#about">About</a>
+    <a class="laser hover:opacity-100" href="#token">Tokenomics</a>
+    <a class="laser hover:opacity-100" href="#road">Road</a>
+    <a class="laser hover:opacity-100" href="#faq">FAQ</a>
   </nav>
   <div class="flex items-center gap-3">
     <button id="connectBtn" class="btn-primary text-sm">Connect Wallet</button>
@@ -197,10 +225,10 @@ a:hover{ text-shadow:0 0 12px rgba(var(--neon-cyan)/.6) }
     </div>
 
     <ul class="mt-6 grid grid-cols-2 gap-3 text-sm sm:text-base">
-      <li class="glass card p-4"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Supply: <b>10,000,000</b></li>
-      <li class="glass card p-4"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Network: <b>Ethereum</b></li>
-      <li class="glass card p-4"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Symbol: <b>ETRX</b></li>
-      <li class="glass card p-4"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Presale: <b>Sep 24 → Oct 1</b></li>
+      <li class="glass card holo p-4"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Supply: <b>10,000,000</b></li>
+      <li class="glass card holo p-4"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Network: <b>Ethereum</b></li>
+      <li class="glass card holo p-4"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Symbol: <b>ETRX</b></li>
+      <li class="glass card holo p-4"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Presale: <b>Sep 24 → Oct 1</b></li>
     </ul>
 
     <div class="mt-4 text-xs small-dim">
@@ -209,7 +237,7 @@ a:hover{ text-shadow:0 0 12px rgba(var(--neon-cyan)/.6) }
 
     <div class="mt-6 flex flex-wrap items-center gap-3 text-sm small-dim">
       <span>Follow updates:</span>
-      <a class="hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer">Twitter</a>
+      <a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer">Twitter</a>
     </div>
     <div class="mt-4 flex flex-wrap items-center gap-3">
       <button id="shareLaunch" class="btn-primary text-sm"><span>Share this launch</span></button>
@@ -220,7 +248,7 @@ a:hover{ text-shadow:0 0 12px rgba(var(--neon-cyan)/.6) }
   <!-- Hero image -->
   <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px]">
     <img src="assets/Background.png" alt="Etheria Background" width="1280" height="720"
-      class="h-full w-full rounded-3xl ring-1 ring-cyan-400/15 object-cover" loading="eager" decoding="async"
+      class="h-full w-full rounded-3xl ring-1 ring-cyan-400/15 object-cover hero-reflect" loading="eager" decoding="async"
       onerror="this.outerHTML='<div class=&quot;h-full w-full rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-orange-500/10 flex items-center justify-center text-white/50&quot;>Background image missing</div>'"/>
   </div>
 </section>
@@ -238,12 +266,12 @@ a:hover{ text-shadow:0 0 12px rgba(var(--neon-cyan)/.6) }
 <section id="token" class="relative z-10 mx-auto max-w-6xl px-6">
   <h2 class="text-2xl font-bold neon-text">Tokenomics (Overview)</h2>
   <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
-    <div class="glass card card-outline p-5"><b>Utility</b><br/><span class="small-dim">Access to Realms &amp; Artifacts, governance votes, allowlists, and in-world boosts.</span></div>
-    <div class="glass card card-outline p-5"><b>Distribution Model</b><br/><span class="small-dim">Phased: presale participants, ecosystem growth, contributors, liquidity, reserves.</span></div>
-    <div class="glass card card-outline p-5"><b>Lockups &amp; Cliff</b><br/><span class="small-dim">Contributor and reserve tranches unlock gradually to align long-term incentives.</span></div>
-    <div class="glass card card-outline p-5"><b>Emissions</b><br/><span class="small-dim">No hard farming emissions at launch; rewards focus on quests and on-chain participation.</span></div>
-    <div class="glass card card-outline p-5"><b>Liquidity Approach</b><br/><span class="small-dim">Initial pools post-TGE with transparent on-chain adds; bridge exploration comes later.</span></div>
-    <div class="glass card card-outline p-5"><b>Governance</b><br/><span class="small-dim">Progressive decentralization — votes start with lore/world decisions.</span></div>
+    <div class="glass card card-outline holo p-5"><b>Utility</b><br/><span class="small-dim">Access to Realms &amp; Artifacts, governance votes, allowlists, and in-world boosts.</span></div>
+    <div class="glass card card-outline holo p-5"><b>Distribution Model</b><br/><span class="small-dim">Phased: presale participants, ecosystem growth, contributors, liquidity, reserves.</span></div>
+    <div class="glass card card-outline holo p-5"><b>Lockups &amp; Cliff</b><br/><span class="small-dim">Contributor and reserve tranches unlock gradually to align long-term incentives.</span></div>
+    <div class="glass card card-outline holo p-5"><b>Emissions</b><br/><span class="small-dim">No hard farming emissions at launch; rewards focus on quests and on-chain participation.</span></div>
+    <div class="glass card card-outline holo p-5"><b>Liquidity Approach</b><br/><span class="small-dim">Initial pools post-TGE with transparent on-chain adds; bridge exploration comes later.</span></div>
+    <div class="glass card card-outline holo p-5"><b>Governance</b><br/><span class="small-dim">Progressive decentralization — votes start with lore/world decisions.</span></div>
   </div>
   <p class="mt-3 text-xs small-dim">Note: Detailed allocations/percentages will be shared closer to TGE.</p>
 </section>
@@ -252,17 +280,17 @@ a:hover{ text-shadow:0 0 12px rgba(var(--neon-cyan)/.6) }
 <section id="road" class="relative z-10 mx-auto max-w-6xl px-6 py-14">
   <h2 class="text-2xl font-bold neon-text">Road to Mainnet</h2>
   <ol class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 small-dim">
-    <li class="glass card p-4">1) Launch site &amp; whitelist open</li>
-    <li class="glass card p-4">2) Community reveal + partnerships</li>
-    <li class="glass card p-4">3) Presale window opens (this page)</li>
-    <li class="glass card p-4">4) TGE: distribution to presale wallets</li>
-    <li class="glass card p-4 sm:col-span-2">5) Initial listings + liquidity + bridge planning</li>
+    <li class="glass card holo p-4">1) Launch site &amp; whitelist open</li>
+    <li class="glass card holo p-4">2) Community reveal + partnerships</li>
+    <li class="glass card holo p-4">3) Presale window opens (this page)</li>
+    <li class="glass card holo p-4">4) TGE: distribution to presale wallets</li>
+    <li class="glass card holo p-4 sm:col-span-2">5) Initial listings + liquidity + bridge planning</li>
   </ol>
 </section>
 
 <!-- Notify & Allowlist -->
-<section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-24 neon-grid">
-  <div class="glass card card-outline p-6">
+<section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-24">
+  <div class="glass card card-outline holo p-6">
     <h3 class="text-xl font-semibold neon-text">Get notified when the presale opens</h3>
 
     <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row"
@@ -308,7 +336,7 @@ a:hover{ text-shadow:0 0 12px rgba(var(--neon-cyan)/.6) }
 <footer class="relative z-10 border-t border-cyan-400/15 py-10 small-dim">
   <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-sm">
     <div>© <span id="year"></span> Etheria • $ETRX</div>
-    <div class="flex items-center gap-4"><a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="hover:text-white">Twitter</a></div>
+    <div class="flex items-center gap-4"><a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer">Twitter</a></div>
   </div>
 </footer>
 
@@ -346,7 +374,7 @@ function updateWhen(){
     tzToggle.textContent='Make UTC primary';
   }
 }
-const tzToggle = document.getElementById('tzToggle'); tzToggle.addEventListener('click', ()=>{ primaryUTC=!primaryUTC; updateWhen(); });
+const tzToggle = document.getElementById('tzToggle'); tzToggle?.addEventListener('click', ()=>{ primaryUTC=!primaryUTC; updateWhen(); });
 
 /* precision clock */
 const t0 = Date.now(), p0 = performance.now();
@@ -389,7 +417,7 @@ function toggleBar(){
 }
 toggleBar(); setInterval(toggleBar, 60_000);
 
-/* smooth anchors + active nav */
+/* smooth anchors */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click', e=>{
     const id=a.getAttribute('href').slice(1); const el=document.getElementById(id); if(!el) return;
@@ -397,16 +425,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-/* FAQ expand */
-document.querySelectorAll('.glass.card').forEach(()=>{});
-document.querySelectorAll('#faq .glass').forEach(()=>{});
+/* FAQ expand + neon open state */
 document.querySelectorAll('.faq-item')?.forEach(item=>{
   const btn=item.querySelector('.faq-header'); const body=item.querySelector('.faq-body'); const chev=item.querySelector('.faq-chevron');
   btn.addEventListener('click', ()=>{
-    const open=btn.getAttribute('aria-expanded')==='true'; btn.setAttribute('aria-expanded', String(!open));
-    if(!open){ body.hidden=false; body.style.maxHeight=body.scrollHeight+'px'; body.classList.add('open'); chev.style.transform='rotate(180deg)'; }
-    else { body.style.maxHeight=body.scrollHeight+'px'; requestAnimationFrame(()=>{ body.style.maxHeight='0px'; body.classList.remove('open'); chev.style.transform='rotate(0deg)' });
-           body.addEventListener('transitionend', ()=>{ if(body.style.maxHeight==='0px') body.hidden=true; }, {once:true}); }
+    const open=item.classList.contains('open');
+    if(!open){
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded','true');
+      body.hidden=false; body.style.maxHeight=body.scrollHeight+'px'; body.classList.add('open'); chev.style.transform='rotate(180deg)';
+    } else {
+      btn.setAttribute('aria-expanded','false');
+      body.style.maxHeight=body.scrollHeight+'px';
+      requestAnimationFrame(()=>{ body.style.maxHeight='0px'; body.classList.remove('open'); chev.style.transform='rotate(0deg)'; });
+      body.addEventListener('transitionend', ()=>{ if(body.style.maxHeight==='0px') body.hidden=true; item.classList.remove('open'); }, {once:true});
+    }
   });
 });
 
@@ -540,13 +573,20 @@ if (shareBtn && navigator.share){ shareBtn.addEventListener('click', async ()=>{
 else if(shareBtn){ shareBtn.addEventListener('click', ()=>{ navigator.clipboard.writeText(location.href); shareBtn.textContent='Link copied!'; setTimeout(()=>shareBtn.textContent='Share this launch', 1500); }); }
 </script>
 
-<!-- Starfield (unchanged) -->
+<!-- Starfield with CONSTELLATION lines -->
 <script>
 (function(){
   const canvas=document.getElementById('orbCanvas'), ctx=canvas.getContext('2d');
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   let w,h,dpr,stars=[],running=true;
-  function resize(){ dpr=Math.min(devicePixelRatio||1,2); w=canvas.width=Math.floor(innerWidth*dpr); h=canvas.height=Math.floor(innerHeight*dpr); canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px'; init(); }
+
+  function resize(){
+    dpr=Math.min(devicePixelRatio||1,2);
+    w=canvas.width=Math.floor(innerWidth*dpr);
+    h=canvas.height=Math.floor(innerHeight*dpr);
+    canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px';
+    init();
+  }
   function rand(a,b){ return a+Math.random()*(b-a) }
   function makeStar(depth=1){
     const r=rand(.6,1.8)*(4-depth)*dpr*.45, speed=rand(.03,.12)*(4-depth)*dpr,
@@ -555,16 +595,52 @@ else if(shareBtn){ shareBtn.addEventListener('click', ()=>{ navigator.clipboard.
     const alphaBase=rand(.45,.8), twinkleAmp=rand(.25,.6), twinkleSpd=rand(.002,.006), dir=Math.random()<.5?-1:1;
     return {x,y,r,speed,depth,tone,alphaBase,twinkleAmp,twinkleSpd,dir,t:rand(0,Math.PI*2)};
   }
-  function init(){ const baseDensity=(innerWidth*innerHeight)/16000; const cores=(navigator.hardwareConcurrency||4); const density=Math.round(baseDensity * Math.min(1, cores/8)); stars=[]; for(let i=0;i<density;i++) stars.push(makeStar(i%3+1)); }
-  function draw(s){
+  function init(){
+    const baseDensity=(innerWidth*innerHeight)/16000;
+    const cores=(navigator.hardwareConcurrency||4);
+    const density=Math.round(baseDensity * Math.min(1, cores/8));
+    stars=[]; for(let i=0;i<density;i++) stars.push(makeStar(i%3+1));
+  }
+  function drawStar(s){
     s.t+=s.twinkleSpd; const a=s.alphaBase+Math.sin(s.t)*s.twinkleAmp*.25;
     const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4);
     g.addColorStop(0, `${s.tone}${a})`); g.addColorStop(1, `${s.tone}0)`);
     ctx.fillStyle=g; ctx.beginPath(); ctx.arc(s.x,s.y,s.r*4,0,Math.PI*2); ctx.fill();
     ctx.fillStyle=`${s.tone}${Math.min(1,a+.08)})`; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
   }
-  function step(){ if(!running) return; ctx.clearRect(0,0,w,h); for(const s of stars){ s.y+=s.speed*s.dir; s.x+=Math.sin((s.y+s.depth*40)*.001)*.2*(4-s.depth); if(s.y<-10) s.y=h+10; if(s.y>h+10) s.y=-10; if(s.x<-10) s.x=w+10; if(s.x>w+10) s.x=-10; draw(s); } requestAnimationFrame(step); }
-  resize(); step(); addEventListener('resize',resize,{passive:true}); addEventListener('visibilitychange',()=>{running=document.visibilityState==='visible'; if(running) requestAnimationFrame(step);});
+  function drawConstellations(){
+    // connect near neighbors for a subtle constellation effect
+    // limit comparisons for perf: only check next few stars
+    ctx.lineWidth=0.7*dpr;
+    for (let i=0;i<stars.length;i++){
+      const a=stars[i];
+      for (let j=i+1;j<i+8 && j<stars.length;j++){
+        const b=stars[j];
+        const dx=a.x-b.x, dy=a.y-b.y;
+        const dist2=dx*dx+dy*dy;
+        if (dist2 < (60*dpr)*(60*dpr)){ // ~60px neighborhood
+          const near = 1 - Math.sqrt(dist2)/(60*dpr);
+          ctx.strokeStyle=`rgba(84,178,255,${0.04 + 0.08*near})`;
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        }
+      }
+    }
+  }
+  function step(){
+    if(!running) return;
+    ctx.clearRect(0,0,w,h);
+    for(const s of stars){
+      s.y+=s.speed*s.dir;
+      s.x+=Math.sin((s.y+s.depth*40)*.001)*.2*(4-s.depth);
+      if(s.y<-10) s.y=h+10; if(s.y>h+10) s.y=-10; if(s.x<-10) s.x=w+10; if(s.x>w+10) s.x=-10;
+      drawStar(s);
+    }
+    drawConstellations();
+    requestAnimationFrame(step);
+  }
+  resize(); step();
+  addEventListener('resize',resize,{passive:true});
+  addEventListener('visibilitychange',()=>{running=document.visibilityState==='visible'; if(running) requestAnimationFrame(step);});
 })();
 </script>
 </body>
