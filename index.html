@@ -411,7 +411,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <!-- Tokenomics -->
 <section id="token" class="relative z-10 mx-auto max-w-6xl px-6">
   <h2 class="text-2xl font-bold neon-text reveal">Tokenomics (Overview)</h2>
-  <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
+   <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
     <div class="glass card card-outline holo p-5 reveal" data-delay="0"><b>Utility</b><br/><span class="small-dim">Access to Realms &amp; Artifacts, governance votes, allowlists, and in-world boosts.</span></div>
     <div class="glass card card-outline holo p-5 reveal" data-delay="50"><b>Distribution Model</b><br/><span class="small-dim">Phased: presale participants, ecosystem growth, contributors, liquidity, reserves.</span></div>
     <div class="glass card card-outline holo p-5 reveal" data-delay="100"><b>Lockups &amp; Cliff</b><br/><span class="small-dim">Contributor and reserve tranches unlock gradually to align long-term incentives.</span></div>
@@ -419,7 +419,23 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     <div class="glass card card-outline holo p-5 reveal" data-delay="200"><b>Liquidity Approach</b><br/><span class="small-dim">Initial pools post-TGE with transparent on-chain adds; bridge exploration comes later.</span></div>
     <div class="glass card card-outline holo p-5 reveal" data-delay="250"><b>Governance</b><br/><span class="small-dim">Progressive decentralization — votes start with lore/world decisions.</span></div>
   </div>
-  <p class="mt-3 text-xs small-dim reveal" data-delay="300">Note: Detailed allocations/percentages will be shared closer to TGE.</p>
+
+  <!-- NEW: Raise & FDV quick stats -->
+  <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <div class="glass card card-outline holo p-4 reveal" data-delay="300" aria-live="polite">
+      <div class="text-xs uppercase small-dim">Projected Presale Raise</div>
+      <div class="mt-1 text-xl font-bold" id="projectedRaise">~$250k–$300k</div>
+      <div class="text-xs small-dim">Assumes weighted presale avg ≈ $0.094 across phases.</div>
+    </div>
+    <div class="glass card card-outline holo p-4 reveal" data-delay="350" aria-live="polite">
+      <div class="text-xs uppercase small-dim">Implied FDV at Listing</div>
+      <div class="mt-1 text-xl font-bold" id="impliedFDV">~$1.2M</div>
+      <div class="text-xs small-dim">At ref listing price $0.12 • Supply 10,000,000.</div>
+    </div>
+  </div>
+
+  <p class="mt-3 text-xs small-dim reveal" data-delay="400">Note: Detailed allocations/percentages will be shared closer to TGE.</p>
+
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
