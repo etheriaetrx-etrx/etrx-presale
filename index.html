@@ -20,20 +20,10 @@
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="720">
 <meta property="og:locale" content="en_US">
-<meta property="og:updated_time" content="2025-09-08T00:00:00Z">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@ETRXDreamscapes">
-<meta name="twitter:title" content="$ETRX • Etheria Presale">
 <meta name="twitter:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
 <meta name="twitter:image:alt" content="Etheria presale hero art">
-
-<!-- Browser/Platform niceties -->
-<meta name="theme-color" content="#05070d">
-<meta name="robots" content="index,follow,max-image-preview:large"/>
-<meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="assets/logo.png">
 
 <!-- CSP (single-file build) -->
 <meta http-equiv="Content-Security-Policy"
@@ -43,22 +33,18 @@
            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
            font-src https://fonts.gstatic.com;
            connect-src 'self' https://formspree.io https://cloudflare-eth.com;
-           form-action 'self' https://formspree.io;
            worker-src 'self';
            object-src 'none';
            base-uri 'self';
            frame-ancestors 'none';
-           navigate-to 'self';
            upgrade-insecure-requests">
+<meta name="theme-color" content="#05070d">
+<meta name="robots" content="index,follow,max-image-preview:large"/>
 
 <!-- Performance -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="preconnect" href="https://formspree.io">
-<link rel="preconnect" href="https://cloudflare-eth.com">
-<link rel="dns-prefetch" href="https://formspree.io">
-<link rel="dns-prefetch" href="https://cloudflare-eth.com">
 
 <!-- Fonts & Libraries -->
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
@@ -81,7 +67,7 @@
 :root{
   color-scheme: dark;
   --bg:#05070d; --panel:rgba(255,255,255,.06); --ring:rgba(0,255,255,.18);
-  --dim:rgba(255,255,255,.78); --muted:rgba(255,255,255,.92);
+  --dim:rgba(255,255,255,.72); --muted:rgba(255,255,255,.9);
   --neon-cyan: 0 255 255; --neon-blue: 84 178 255; --neon-violet: 208 128 255; --neon-orange: 255 147 76;
 }
 *{box-sizing:border-box}
@@ -91,7 +77,7 @@ body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple
 main, section, header, footer, .glass, .card { position:relative; z-index:2; isolation:isolate }
 .scanlines { position:fixed; inset:0; z-index:0; pointer-events:none; background: repeating-linear-gradient( to bottom, rgba(255,255,255,.03), rgba(255,255,255,.03) 1px, transparent 2px, transparent 4px ); mix-blend-mode: soft-light; opacity:.18; }
 
-/* ===== Etheria background: Aurora + Wisps ===== */
+/* Aurora background */
 #bgAurora{
   position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
   background:
@@ -123,7 +109,7 @@ main, section, header, footer, .glass, .card { position:relative; z-index:2; iso
 @keyframes auroraSweep { to { transform: rotate(360deg); } }
 @keyframes auroraDrift { from { transform: translateY(-3%) } to { transform: translateY(3%) } }
 
-/* Wisps canvas sits above aurora */
+/* Wisps canvas */
 #wispCanvas{ position:fixed; inset:0; z-index:1; pointer-events:none; }
 
 /* Neon text */
@@ -163,7 +149,6 @@ main, section, header, footer, .glass, .card { position:relative; z-index:2; iso
   background:linear-gradient(90deg, rgb(var(--neon-orange)), rgb(var(--neon-blue)));
   box-shadow: 0 0 16px rgba(255,147,76,.45), 0 0 24px rgba(84,178,255,.35);
 }
-.btn-primary:hover{ transform: translateY(-1px) scale(1.01) }
 .btn-ghost{ border:1px solid rgba(0,255,255,.25); background: rgba(255,255,255,.03); padding:.6rem .9rem; border-radius:12px; }
 .hidden-important{ display:none !important }
 .small-dim{ color:var(--dim) }
@@ -172,20 +157,6 @@ main, section, header, footer, .glass, .card { position:relative; z-index:2; iso
 
 /* Header elevation */
 .header-float{ backdrop-filter: blur(10px); background:rgba(4,7,12,.5); border-bottom:1px solid rgba(0,255,255,.12); transition: background .2s ease }
-
-/* Holo hover */
-.holo{ position:relative; overflow:hidden; }
-.holo::after{
-  content:""; position:absolute; inset:-150% -150%;
-  background: conic-gradient(from 0deg, #fff0, #fff3 10%, #fff0 20%), linear-gradient(120deg, #ff934c55, #54b2ff55, #d080ff55);
-  mix-blend-mode:screen; filter:saturate(1.4) blur(10px); opacity:.25; pointer-events:none;
-  transform:translateX(-30%); transition: transform .8s ease, opacity .3s ease;
-}
-.holo:hover::after{ transform:translateX(30%); opacity:.45 }
-
-/* Laser underline */
-a.laser{ background: linear-gradient(90deg, #00ffff 0 0) bottom left / 0 2px no-repeat; transition: background-size .3s ease; }
-a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 /* FAQ */
 .faq-item{ border:1px solid #00ffff22; border-radius:14px; overflow:hidden }
@@ -196,23 +167,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 .faq-chevron { transition: transform .25s ease }
 .faq-item.open{ box-shadow:0 0 24px #00ffff22 inset }
 
-/* Hero vignette */
+/* Hero glow */
 .hero-vignette{ position:absolute; inset:0; pointer-events:none; background: radial-gradient(80% 60% at 50% 10%, transparent 0 60%, rgba(0,0,0,.35) 100%); z-index:1 }
-
-/* Inputs */
-input:focus{ outline:none }
-input:is([type="email"],[type="text"]).is-valid{ box-shadow: 0 0 0 2px #10b98166 }
-input:is([type="email"],[type="text"]).is-invalid{ box-shadow: 0 0 0 2px #ef444466 }
-
-/* Section containment */
-section{ contain: layout paint style }
-/* Let the hero glow bleed freely */
-.hero{ contain: none; overflow: visible; }
-
-/* Toast */
-.toast{ z-index:60; }
-
-/* ===== Hero image: stronger neon, animated glow ===== */
 .hero-glow{ position:relative; border-radius:1.5rem; overflow:visible; }
 .hero-glow::before,
 .hero-glow::after{
@@ -252,7 +208,7 @@ section{ contain: layout paint style }
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
-  #bgAurora::before, #bgAurora::after, .card-outline::before, .holo::after, .hero-glow::before, .hero-glow::after{ display:none }
+  #bgAurora::before, #bgAurora::after, .card-outline::before, .hero-glow::before, .hero-glow::after{ display:none }
 }
 </style>
 </head>
@@ -263,7 +219,7 @@ section{ contain: layout paint style }
   </div>
 </noscript>
 
-<!-- Etheria background -->
+<!-- Background & layers -->
 <div id="bgAurora" aria-hidden="true"></div>
 <canvas id="wispCanvas" aria-hidden="true"></canvas>
 <div class="scanlines" aria-hidden="true"></div>
@@ -307,6 +263,8 @@ section{ contain: layout paint style }
 <!-- Hero -->
 <section class="hero relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-stretch gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
   <div class="hero-vignette" aria-hidden="true"></div>
+
+  <!-- Left: copy, countdown, pricing -->
   <div class="order-2 md:order-1">
     <h1 class="title-glow neon-text text-hero leading-tight md:text-6xl">
       The Official Token of Etheria<br/>
@@ -314,36 +272,58 @@ section{ contain: layout paint style }
     </h1>
     <p class="mt-4 max-w-measure small-dim">Powering realms, artifacts, governance and community rewards. Built on Ethereum for permanence and reach.</p>
 
-    <!-- Countdown -->
+    <!-- Countdown + phase + progress -->
     <div class="mt-8 glass card card-outline p-5 reveal" data-delay="0">
       <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-[.15em] small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
-      <div id="countdown" class="flex gap-3 text-center" aria-live="polite" aria-label="Countdown to presale"></div>
+      <div id="countdown" class="flex gap-3 text-center" aria-live="polite"></div>
 
       <div class="mt-3 text-xs flex flex-col gap-1 small-dim">
         <div id="whenPrimary" class="text-sm text-white/90"></div>
         <div id="whenSecondary"></div>
-        <div class="flex items-center gap-3">
-          <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100" aria-pressed="false">Make Local primary</button>
-          <a id="addToCal" class="mt-2 laser hover:opacity-100" download="etrx-presale.ics">Add to calendar</a>
-        </div>
+        <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100" aria-pressed="false">Make Local primary</button>
       </div>
 
-      <!-- Progress -->
+      <!-- Overall Progress -->
       <div class="mt-4">
         <div class="flex items-center justify-between text-xs small-dim">
-          <span id="phaseName">Phase: Presale</span><span id="phaseEta" aria-live="polite"></span>
+          <span id="phaseName" class="font-semibold">Phase: Presale</span><span id="phaseEta"></span>
         </div>
-        <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10" role="progressbar" aria-label="Presale progress">
+        <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
           <div id="phaseBar" class="h-full" style="background:linear-gradient(90deg, rgba(var(--neon-orange),1), rgba(var(--neon-blue),1)); width:0%"></div>
+        </div>
+        <div class="mt-1 text-xs small-dim" id="phaseDates"></div>
+      </div>
+
+      <!-- Tiered Pricing card -->
+      <div class="mt-5 grid gap-3 sm:grid-cols-2">
+        <div class="glass card p-4">
+          <div class="text-xs uppercase small-dim">Current Phase Price</div>
+          <div id="priceNow" class="mt-1 text-2xl font-extrabold text-green-400">$0.08</div>
+          <div id="pricePhaseName" class="text-xs small-dim mt-1">Phase 1</div>
+        </div>
+        <div class="glass card p-4">
+          <div class="text-xs uppercase small-dim">Planned Listing Price</div>
+          <div id="priceList" class="mt-1 text-xl font-bold text-white line-through">$0.12</div>
+          <div id="discountLine" class="text-xs small-dim mt-1">33% below listing</div>
+        </div>
+        <div class="sm:col-span-2 glass card p-4">
+          <div class="text-xs uppercase small-dim mb-2">Quick calculator</div>
+          <label class="text-xs small-dim" for="usdIn">Amount (USD)</label>
+          <input id="usdIn" type="number" min="0" step="0.01"
+                 class="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 outline-none placeholder:text-white/40"
+                 placeholder="100.00"/>
+          <div class="mt-2 text-sm">
+            ≈ <span id="tokensOut" class="font-semibold">0</span> ETRX @ <span id="calcPrice">$0.08</span>
+          </div>
         </div>
       </div>
     </div>
 
     <ul class="mt-6 grid grid-cols-2 gap-3 text-sm sm:text-base">
-      <li class="glass card holo p-4 reveal" data-delay="50"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2" aria-hidden="true"></span>Supply: <b>10,000,000</b></li>
-      <li class="glass card holo p-4 reveal" data-delay="100"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2" aria-hidden="true"></span>Network: <b>Ethereum</b></li>
-      <li class="glass card holo p-4 reveal" data-delay="150"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2" aria-hidden="true"></span>Symbol: <b>ETRX</b></li>
-      <li class="glass card holo p-4 reveal" data-delay="200"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2" aria-hidden="true"></span>Presale: <b>Sep 24 → Oct 1, 2025</b></li>
+      <li class="glass card holo p-4 reveal" data-delay="50"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Supply: <b>10,000,000</b></li>
+      <li class="glass card holo p-4 reveal" data-delay="100"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Network: <b>Ethereum</b></li>
+      <li class="glass card holo p-4 reveal" data-delay="150"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Symbol: <b>ETRX</b></li>
+      <li class="glass card holo p-4 reveal" data-delay="200"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Presale: <b>Sep 24 → Oct 1</b></li>
     </ul>
 
     <div class="mt-4 text-xs small-dim">
@@ -360,7 +340,7 @@ section{ contain: layout paint style }
     </div>
   </div>
 
-  <!-- Hero image -->
+  <!-- Right: hero image -->
   <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px] reveal" data-delay="0">
     <div class="hero-glow h-full w-full rounded-3xl">
       <img
@@ -426,7 +406,7 @@ section{ contain: layout paint style }
           action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate autocomplete="on">
       <label class="sr-only" for="email">Email</label>
       <input required id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"
-             class="flex-1 rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400" />
+             class="flex-1 rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"/>
       <!-- Honeypot -->
       <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
       <input type="hidden" name="form_name" value="notify"/>
@@ -440,7 +420,7 @@ section{ contain: layout paint style }
     </div>
 
     <p id="notifyMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
-    <p class="mt-1 text-xs small-dim">We only use your info for presale notifications. No spam. <a href="#privacy" class="laser">Privacy</a></p>
+    <p class="mt-1 text-xs small-dim">We only use your info for presale notifications. No spam.</p>
 
     <div class="mt-8">
       <h4 class="text-base font-semibold neon-text">Join the allowlist</h4>
@@ -473,7 +453,7 @@ section{ contain: layout paint style }
         <span>When does the presale run?</span>
         <span class="faq-chevron" aria-hidden="true">⌄</span>
       </button>
-      <div class="faq-body" id="faq-when-body" role="region" aria-labelledby="faq-when-btn" hidden aria-hidden="true">
+      <div class="faq-body" id="faq-when-body" role="region" aria-labelledby="faq-when-btn" hidden>
         <p class="small-dim">Sep 24 → Oct 1, 2025 (UTC). Use the toggle to view local time.</p>
       </div>
     </div>
@@ -482,7 +462,7 @@ section{ contain: layout paint style }
         <span>Will there be a TGE?</span>
         <span class="faq-chevron" aria-hidden="true">⌄</span>
       </button>
-      <div class="faq-body" id="faq-tge-body" role="region" aria-labelledby="faq-tge-btn" hidden aria-hidden="true">
+      <div class="faq-body" id="faq-tge-body" role="region" aria-labelledby="faq-tge-btn" hidden>
         <p class="small-dim">Yes—after the presale window closes, we’ll distribute to presale wallets and seed initial listings/liquidity.</p>
       </div>
     </div>
@@ -501,15 +481,6 @@ section{ contain: layout paint style }
 
 <a href="#notify" id="stickyCTA" class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">Get notified for $ETRX</a>
 
-<!-- Privacy (simple anchor target) -->
-<section id="privacy" class="relative z-10 mx-auto max-w-6xl px-6 pb-10 small-dim">
-  <h2 class="text-lg font-semibold neon-text">Privacy</h2>
-  <p class="mt-2 text-xs max-w-measure">
-    We collect your email solely to send presale notifications and related Etheria updates. You can opt out anytime via the
-    link in our emails. We do not sell your data.
-  </p>
-</section>
-
 <!-- Schema.org event (SEO) -->
 <script type="application/ld+json">
 {
@@ -526,41 +497,28 @@ section{ contain: layout paint style }
   "description": "Etheria’s official $ETRX presale on Ethereum."
 }
 </script>
-<!-- Schema.org site/org (SEO) -->
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"WebSite",
-  "name":"Etheria",
-  "url":"https://etheriaetrx-etrx.github.io/etrx-presale/",
-  "potentialAction":{
-    "@type":"SearchAction",
-    "target":"https://x.com/ETRXDreamscapes",
-    "query-input":"required name=query"
-  }
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"Organization",
-  "name":"Etheria",
-  "url":"https://etheriaetrx-etrx.github.io/etrx-presale/",
-  "sameAs":["https://x.com/ETRXDreamscapes"]
-}
-</script>
 
-<!-- App JS (countdown, forms, wallet, etc.) -->
+<!-- App JS (countdown, phases, forms, wallet, etc.) -->
 <script>
 'use strict'
+/* ================== CONFIG: DATES + TIERS ================== */
 const PRESALE_START = new Date('2025-09-24T00:00:00Z');
 const PRESALE_END   = new Date('2025-10-01T00:00:00Z');
+const LISTING_PRICE = 0.12; // USD
 
+/* Presale phases (edit these) */
+const PHASES = [
+  { name:'Phase 1', start:'2025-09-24T00:00:00Z', end:'2025-09-26T23:59:59Z', price:0.08 },
+  { name:'Phase 2', start:'2025-09-27T00:00:00Z', end:'2025-09-28T23:59:59Z', price:0.10 },
+  { name:'Phase 3', start:'2025-09-29T00:00:00Z', end:'2025-09-30T23:59:59Z', price:0.11 },
+];
+
+/* ================== DOM SHORTCUTS ================== */
 const $ = (id)=> document.getElementById(id);
 const phaseLabel=$('phaseLabel'), countdown=$('countdown'), whenPrimary=$('whenPrimary'),
       whenSecondary=$('whenSecondary'), modeLabel=$('modeLabel');
 const connectBtn=$('connectBtn'), openConnect=$('openConnect'), modal=$('walletModal'), modalClose=$('modalClose');
-const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn'), phaseName=$('phaseName');
+const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn'), phaseNameEl=$('phaseName');
 
 $('year').textContent = new Date().getFullYear();
 
@@ -577,6 +535,7 @@ const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtBase, timeZoneName:'short' })
 function safeGet(key, fallback=null){ try{ return localStorage.getItem(key) ?? fallback }catch{ return fallback } }
 function safeSet(key, val){ try{ localStorage.setItem(key, val) }catch{} }
 
+/* ================== UTC/LOCAL TOGGLE ================== */
 let primaryUTC = (safeGet('etrx_tz', 'utc') || 'utc') === 'utc';
 function updateWhen(){
   if (primaryUTC){
@@ -594,86 +553,101 @@ function updateWhen(){
   }
 }
 const tzToggle = document.getElementById('tzToggle');
-tzToggle?.addEventListener('click', ()=>{
-  primaryUTC=!primaryUTC; safeSet('etrx_tz', primaryUTC ? 'utc' : 'local'); updateWhen();
-});
-
-/* Add to Calendar (ICS) */
-(function(){
-  const pad = n => String(n).padStart(2,'0');
-  const toICS = d => {
-    const z = new Date(d);
-    return z.getUTCFullYear()
-      + pad(z.getUTCMonth()+1) + pad(z.getUTCDate())
-      + 'T' + pad(z.getUTCHours()) + pad(z.getUTCMinutes()) + pad(z.getUTCSeconds()) + 'Z';
-  };
-  const ics =
-`BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Etheria//ETRX Presale//EN
-BEGIN:VEVENT
-UID:${crypto.getRandomValues(new Uint32Array(1))[0]}@etheria
-DTSTAMP:${toICS(new Date())}
-DTSTART:${toICS(PRESALE_START)}
-DTEND:${toICS(PRESALE_END)}
-SUMMARY:ETRX Presale
-DESCRIPTION:Etheria’s official $ETRX presale on Ethereum.
-URL:https://etheriaetrx-etrx.github.io/etrx-presale/
-END:VEVENT
-END:VCALENDAR`;
-  const blob = new Blob([ics], {type:'text/calendar'});
-  const url = URL.createObjectURL(blob);
-  document.getElementById('addToCal')?.setAttribute('href', url);
-})();
+tzToggle?.addEventListener('click', ()=>{ primaryUTC=!primaryUTC; safeSet('etrx_tz', primaryUTC ? 'utc' : 'local'); updateWhen(); });
 
 /* precision clock */
 const t0 = Date.now(), p0 = performance.now();
 const nowAccurate = ()=> new Date(t0 + (performance.now()-p0));
 
-function phase(now){ if(now < PRESALE_START) return 'upcoming'; if(now > PRESALE_END) return 'ended'; return 'live'; }
+/* Phase helpers */
+function clamp01(x){ return Math.max(0, Math.min(1, x)); }
+function currentPhase(t=new Date()){
+  for(const p of PHASES){ const s=new Date(p.start), e=new Date(p.end); if(t>=s && t<=e) return p; }
+  if(t<PRESALE_START) return { pre:true };
+  if(t>PRESALE_END) return { post:true };
+  // Between phases (edge cases) -> show next
+  const nxt = PHASES.find(p=> t < new Date(p.start));
+  return nxt ? {...nxt, upcoming:true} : { post:true };
+}
+
+/* Countdown UI block builder */
 function box(v,label){
   const d=document.createElement('div');
   d.className='w-[5.5rem] rounded-xl glass card p-3 text-center';
-  d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text" aria-label="${label}">${String(v).padStart(2,'0')}</div><div class="text-[11px] uppercase small-dim">${label}</div>`;
+  d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text">${String(v).padStart(2,'0')}</div><div class="text-[11px] uppercase small-dim">${label}</div>`;
   return d;
 }
+
+/* Dynamic pricing helpers */
+function setPriceCard(price, label, listingActive=false, notStarted=false){
+  const pct = Math.max(0, (1 - price/LISTING_PRICE)*100);
+  $('priceNow').textContent = `$${price.toFixed(2)}`;
+  $('calcPrice').textContent = `$${price.toFixed(2)}`;
+  $('pricePhaseName').textContent = label + (listingActive ? ' (Active)' : notStarted ? ' (up next)' : '');
+  const lp = $('priceList');
+  if(listingActive){ lp.classList.remove('line-through'); lp.textContent = `$${LISTING_PRICE.toFixed(2)} (Active)`; $('discountLine').textContent = 'Listing live'; }
+  else { if(!lp.classList.contains('line-through')) lp.classList.add('line-through'); lp.textContent = `$${LISTING_PRICE.toFixed(2)}`; $('discountLine').textContent = `${pct.toFixed(0)}% below listing`; }
+  calcTokens(price);
+}
+
+function calcTokens(price){
+  const usd = parseFloat($('usdIn').value || '0');
+  const tokens = isFinite(usd/price) ? (usd/price) : 0;
+  $('tokensOut').textContent = tokens.toFixed(2);
+}
+$('usdIn').addEventListener('input', ()=> {
+  const p = parseFloat($('calcPrice').textContent.replace('$','')) || LISTING_PRICE;
+  calcTokens(p);
+});
+
+/* Main loop: countdown + progress + phase + pricing */
 let lastSecond=-1;
 function loop(){
-  const now = nowAccurate(); const ph=phase(now);
-  if (phaseLabel){
-    phaseLabel.innerHTML = `Presale ${ph==='upcoming'?'begins':ph==='live'?'ends':'ended'} in — <span>${primaryUTC?'UTC':'Local'}</span>`;
-  }
-  if (phaseName){
-    phaseName.textContent = `Phase: ${ph==='upcoming'?'Upcoming':ph==='live'?'Live':'Ended'}`;
-  }
-  const target = ph==='upcoming'?PRESALE_START:ph==='live'?PRESALE_END:now;
+  const now = nowAccurate();
+  const ph = currentPhase(now);
+
+  // Phase label + phase name
+  phaseLabel.innerHTML = `Presale ${ph.pre?'begins':ph.post?'ended':'ends'} in — <span>${primaryUTC?'UTC':'Local'}</span>`;
+  phaseNameEl.textContent = `Phase: ${ph.pre?'Upcoming':ph.post?'Ended':ph.name}`;
+
+  // Countdown target
+  const target = ph.pre ? new Date(PHASES[0].start)
+                : ph.post ? now
+                : new Date(ph.end);
+
+  // Countdown render
   const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
-  if(s!==lastSecond){ lastSecond=s; const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; countdown.replaceChildren(box(d,'days'),box(h,'hours'),box(m,'minutes'),box(ss,'seconds')); }
+  if(s!==lastSecond){ lastSecond=s; const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; countdown.replaceChildren(box(d,'d'),box(h,'h'),box(m,'m'),box(ss,'s')); }
+
+  // Progress within current phase + ETA
+  let pct=0, etaText='';
+  if(ph.pre){ pct=0; etaText = `Starts ${fmtUTC(new Date(PHASES[0].start))}`; $('phaseDates').textContent = `Next: ${fmtUTC(new Date(PHASES[0].start))} → ${fmtUTC(new Date(PHASES[0].end))}`; setPriceCard(PHASES[0].price, PHASES[0].name, false, true); }
+  else if(ph.post){ pct=100; etaText='Ended'; $('phaseDates').textContent = `TGE & listing from ${fmtUTC(PRESALE_END)}`; setPriceCard(LISTING_PRICE, 'Listing', true, false); }
+  else{
+    const sT=new Date(ph.start), eT=new Date(ph.end);
+    pct = clamp01((now - sT)/(eT - sT))*100;
+    const endIn=Math.max(0,eT-now); const hrs=Math.floor(endIn/36e5), mins=Math.floor((endIn%36e5)/6e4);
+    etaText=`Ends in ${hrs}h ${String(mins).padStart(2,'0')}m`;
+    $('phaseDates').textContent = `${ph.name}: ${fmtUTC(sT)} → ${fmtUTC(eT)}`;
+    setPriceCard(ph.price, ph.name, false, false);
+  }
+  $('phaseBar').style.width=`${pct}%`;
+  $('phaseEta').textContent = etaText;
+
   requestAnimationFrame(loop);
 }
-updateWhen(); loop();
 
-/* progress */
-const phaseBar=$('phaseBar'); const phaseEta=$('phaseEta');
-function updateProgress(){
-  const now=new Date();
-  let pct=0; if(now<=PRESALE_START) pct=0; else if(now>=PRESALE_END) pct=100; else pct=((now-PRESALE_START)/(PRESALE_END-PRESALE_START))*100;
-  if(phaseBar) phaseBar.style.width=`${pct}%`;
-  const endIn=Math.max(0,PRESALE_END-now); const hrs=Math.floor(endIn/36e5), mins=Math.floor((endIn%36e5)/6e4);
-  if(phaseEta) phaseEta.textContent=(endIn===0)?'Ended':`Ends in ${hrs}h ${String(mins).padStart(2,'0')}m`;
-}
-updateProgress(); setInterval(updateProgress, 30_000);
+/* Time window text */
+function updateWhenStatic(){ updateWhen(); }
+updateWhenStatic(); loop();
 
-/* sticky CTA timing: also show on desktop after some scroll */
+/* Sticky CTA timing */
 const SHOW_BAR_DAYS = 14;
 function toggleBar(){
   const days=(PRESALE_START - new Date())/86400000;
-  const onMobile = window.innerWidth < 768;
-  const scrolled = window.scrollY > 600;
-  const show = days>0 && days<=SHOW_BAR_DAYS && (onMobile || scrolled);
-  document.getElementById('stickyCTA').classList.toggle('hidden', !show);
+  document.getElementById('stickyCTA').classList.toggle('hidden', !(window.innerWidth < 768 && days>0 && days<=SHOW_BAR_DAYS));
 }
-toggleBar(); addEventListener('scroll', toggleBar, {passive:true}); addEventListener('resize', toggleBar, {passive:true}); setInterval(toggleBar, 60_000);
+toggleBar(); setInterval(toggleBar, 60_000);
 
 /* smooth anchors */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
@@ -712,23 +686,6 @@ navMap.forEach(n=>{ const el=document.getElementById(n.id); el && secIO.observe(
   }, {threshold:.12});
   els.forEach(el=>io.observe(el));
 })();
-
-/* FAQ expand (add aria-hidden toggling) */
-document.querySelectorAll('.faq-item')?.forEach(item=>{
-  const btn=item.querySelector('.faq-header'); const body=item.querySelector('.faq-body'); const chev=item.querySelector('.faq-chevron');
-  btn.addEventListener('click', ()=>{
-    const open=btn.getAttribute('aria-expanded')==='true';
-    btn.setAttribute('aria-expanded', String(!open));
-    body.setAttribute('aria-hidden', String(open));
-    if(!open){
-      item.classList.add('open'); body.hidden=false; body.style.maxHeight=body.scrollHeight+'px'; body.classList.add('open'); chev.style.transform='rotate(180deg)';
-    } else {
-      body.style.maxHeight=body.scrollHeight+'px';
-      requestAnimationFrame(()=>{ body.style.maxHeight='0px'; body.classList.remove('open'); chev.style.transform='rotate(0deg)'; });
-      body.addEventListener('transitionend', ()=>{ if(body.style.maxHeight==='0px') body.hidden=true; item.classList.remove('open'); }, {once:true});
-    }
-  });
-});
 
 /* ===== Formspree (AJAX) ===== */
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
@@ -792,9 +749,7 @@ if (wlForm){
     wlMsg.classList.add('hidden');
     const v=walletInput.value.trim();
     if(!v){ setHelp(''); return; }
-    if(addrRe.test(v)){
-      setHelp('Looks like a valid Ethereum address.', true); return;
-    }
+    if(addrRe.test(v)){ setHelp('Looks like a valid Ethereum address.', true); return; }
     if(ensRe.test(v)){
       setHelp('Checking ENS…');
       clearTimeout(ensTimer);
@@ -949,7 +904,7 @@ function doDisconnect(){
 }
 disconnectBtn.addEventListener('click', doDisconnect);
 
-/* Restore previous session */
+/* Restore previous wallet session */
 const prev = safeGet('etrx_wallet','');
 if (prev){
   walletShort.textContent = shortAddr(prev);
@@ -981,17 +936,15 @@ function toast(msg, isWarn=false){
   t.textContent=msg; document.body.appendChild(t);
   setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .25s'; t.addEventListener('transitionend', ()=>t.remove(), {once:true}); }, 2000);
 }
-</script>
 
-<!-- Etheria Wisps (perf-aware) -->
-<script>
+/* ===== Etheria Wisps ===== */
 (function(){
   const canvas=document.getElementById('wispCanvas'); if(!canvas) return;
   if (navigator?.connection?.saveData) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const ctx=canvas.getContext('2d');
-  let w=0,h=0,dpr=1,running=true, wisps=[];
+  let w=0,h=0,dpr=1, wisps=[];
 
   function resize(){
     dpr = Math.min(devicePixelRatio||1,2);
@@ -1000,7 +953,6 @@ function toast(msg, isWarn=false){
     canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px';
     makeWisps();
   }
-
   function rand(a,b){ return a + Math.random()*(b-a) }
   function makeWisps(){
     const base = Math.min(120, Math.round((innerWidth*innerHeight)/50000));
@@ -1012,26 +964,20 @@ function toast(msg, isWarn=false){
       tw: rand(0, Math.PI*2), tws: rand(0.005,0.012)
     }));
   }
-
   function col(u){
     if(u<0.5) return `rgba(84,178,255,${0.18 + u*0.25})`;
     if(u<0.75) return `rgba(208,128,255,${0.18 + (u-0.5)*0.2})`;
     return `rgba(255,147,76,${0.16 + (u-0.75)*0.18})`;
   }
-
   function draw(){
-    if(!running) return;
     ctx.clearRect(0,0,w,h);
-
     for(const p of wisps){
       p.tw += p.tws;
       const a = 0.5 + Math.sin(p.tw)*0.5;
       p.x += p.vx + Math.sin(p.y*0.001)*0.12*dpr;
       p.y += p.vy;
-
       if(p.y < -20) { p.y = h + 10; p.x = rand(0,w); }
       if(p.x < -10) p.x = w+10; if(p.x > w+10) p.x = -10;
-
       const grad = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
       grad.addColorStop(0, col(p.huePick));
       grad.addColorStop(1, 'rgba(0,0,0,0)');
@@ -1040,14 +986,14 @@ function toast(msg, isWarn=false){
       ctx.beginPath(); ctx.arc(p.x,p.y,p.r*(2.5+a*1.2),0,Math.PI*2); ctx.fill();
       ctx.globalCompositeOperation = 'source-over';
     }
-
     requestAnimationFrame(draw);
   }
-
   resize(); draw();
   addEventListener('resize', resize, {passive:true});
-  addEventListener('visibilitychange', ()=>{ running = document.visibilityState==='visible'; if(running) requestAnimationFrame(draw); });
 })();
+
+/* Initialize static text and start */
+updateWhen();
 </script>
 </body>
 </html>
