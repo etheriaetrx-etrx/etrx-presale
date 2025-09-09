@@ -506,7 +506,7 @@ const PRESALE_START = new Date('2025-09-24T00:00:00Z');
 const PRESALE_END   = new Date('2025-10-01T00:00:00Z');
 const LISTING_PRICE = 0.12; // USD
 
-/* Presale phases (edit these) */
+/* Phases (edit these) */
 const PHASES = [
   { name:'Phase 1', start:'2025-09-24T00:00:00Z', end:'2025-09-26T23:59:59Z', price:0.08 },
   { name:'Phase 2', start:'2025-09-27T00:00:00Z', end:'2025-09-28T23:59:59Z', price:0.10 },
@@ -804,7 +804,7 @@ function showModal(show){
   }
 }
 function openModal(){ discoverInjected(); showModal(true); }
-[connectBtn, openConnect].forEach(btn=> btn?.addEventListener('click', openModal));
+;[connectBtn, openConnect].forEach(btn=> btn?.addEventListener('click', openModal));
 modalClose.addEventListener('click', ()=> showModal(false));
 modal.addEventListener('click', (e)=>{ if(e.target===modal) showModal(false); });
 
