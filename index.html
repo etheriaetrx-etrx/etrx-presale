@@ -9,7 +9,6 @@
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 
-<!-- Canonical & Social -->
 <link rel="canonical" href="https://etheriaetrx-etrx.github.io/etrx-presale/">
 <meta property="og:site_name" content="Etheria">
 <meta property="og:title" content="$ETRX • Etheria Presale">
@@ -25,7 +24,6 @@
 <meta name="twitter:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
 <meta name="twitter:image:alt" content="Etheria presale hero art">
 
-<!-- CSP (single-file build) -->
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self' https://etheriaetrx-etrx.github.io;
            img-src 'self' data: https:;
@@ -41,12 +39,10 @@
 <meta name="theme-color" content="#05070d">
 <meta name="robots" content="index,follow,max-image-preview:large"/>
 
-<!-- Performance -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
-<!-- Fonts & Libraries -->
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script>
@@ -59,7 +55,6 @@
 <script src="https://cdn.tailwindcss.com?v=3" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" defer></script>
 
-<!-- Assets -->
 <link rel="preload" as="image" href="assets/Background.png">
 <link rel="icon" type="image/png" href="assets/logo.png">
 
@@ -250,34 +245,37 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   </div>
 </noscript>
 
-<!-- Background & layers -->
 <div id="bgAurora" aria-hidden="true"></div>
 <canvas id="wispCanvas" aria-hidden="true"></canvas>
 <div class="scanlines" aria-hidden="true"></div>
 
 <a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
 
-<header id="siteHeader" class="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-  <div class="flex items-center gap-3">
-    <img src="assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-cyan-400/20 object-contain bg-white/5"/>
-    <div class="text-sm tracking-wide small-dim">Etheria</div>
-  </div>
-  <nav class="hidden gap-6 text-sm opacity-80 md:flex" aria-label="Primary">
-    <a class="laser hover:opacity-100" href="#about">About</a>
-    <a class="laser hover:opacity-100" href="#token">Tokenomics</a>
-    <a class="laser hover:opacity-100" href="#road">Road</a>
-    <a class="laser hover:opacity-100" href="#faq">FAQ</a>
-  </nav>
-  <div class="flex items-center gap-3">
-    <button id="connectBtn" class="btn-primary text-sm" aria-haspopup="dialog" aria-controls="walletModal">Connect Wallet</button>
-    <div id="walletPill" class="btn-ghost text-xs hidden" aria-live="polite">
-      <span id="walletShort" class="addr"></span>
-      <button id="disconnectBtn" class="ml-2 underline underline-offset-4">Disconnect</button>
+<header id="siteHeader" class="sticky top-0 z-40">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <div class="flex items-center gap-3">
+      <img src="assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-cyan-400/20 object-contain bg-white/5"/>
+      <div class="text-sm tracking-wide small-dim">Etheria</div>
+    </div>
+    <nav class="hidden gap-6 text-sm opacity-80 md:flex" aria-label="Primary">
+      <a class="laser hover:opacity-100" href="#about">About</a>
+      <a class="laser hover:opacity-100" href="#token">Tokenomics</a>
+      <a class="laser hover:opacity-100" href="#team">Team</a>
+      <a class="laser hover:opacity-100" href="#road">Roadmap</a>
+      <a class="laser hover:opacity-100" href="#faq">FAQ</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="[Link to Whitepaper PDF]" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm hidden sm:inline-flex">Whitepaper</a>
+      <button id="connectBtn" class="btn-primary text-sm" aria-haspopup="dialog" aria-controls="walletModal">Connect Wallet</button>
+      <div id="walletPill" class="btn-ghost text-xs hidden" aria-live="polite">
+        <span id="walletShort" class="addr"></span>
+        <button id="disconnectBtn" class="ml-2 underline underline-offset-4">Disconnect</button>
+      </div>
     </div>
   </div>
 </header>
 
-<!-- Wallet modal -->
+
 <div id="walletModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
      role="dialog" aria-modal="true" aria-labelledby="walletModalTitle" inert>
   <div class="glass card card-outline w-[min(420px,92vw)] p-4" data-modal-surface>
@@ -291,11 +289,10 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   </div>
 </div>
 
-<!-- Hero -->
+<main>
 <section class="hero relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-stretch gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
   <div class="hero-vignette" aria-hidden="true"></div>
 
-  <!-- Left: copy, countdown, pricing -->
   <div class="order-2 md:order-1">
     <h1 class="title-glow neon-text text-hero leading-tight md:text-6xl">
       The Official Token of Etheria<br/>
@@ -303,7 +300,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     </h1>
     <p class="mt-4 max-w-measure small-dim">Powering realms, artifacts, governance and community rewards. Built on Ethereum for permanence and reach.</p>
 
-    <!-- Countdown + phase + progress -->
     <div class="mt-8 glass card card-outline p-5 reveal holo" data-delay="0">
       <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-[.15em] small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
       <div id="countdown" class="flex gap-3 text-center" aria-live="polite"></div>
@@ -314,7 +310,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100" aria-pressed="false">Make Local primary</button>
       </div>
 
-      <!-- Overall Progress -->
       <div class="mt-4">
         <div class="flex items-center justify-between text-xs small-dim">
           <span id="phaseName" class="font-semibold">Phase: Presale</span><span id="phaseEta"></span>
@@ -325,7 +320,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <div class="mt-1 text-xs small-dim" id="phaseDates"></div>
       </div>
 
-      <!-- Tiered Pricing cards -->
       <div class="mt-5 grid gap-3 sm:grid-cols-2">
         <div class="glass card card-outline p-4 holo">
           <div class="text-xs uppercase small-dim">Current Phase Price</div>
@@ -340,16 +334,21 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
         <div class="sm:col-span-2 glass card card-outline p-4 holo">
           <div class="text-xs uppercase small-dim mb-2">Quick calculator</div>
-          <label class="text-xs small-dim" for="usdIn">Amount (USD)</label>
-          <input id="usdIn" type="number" min="0" step="0.01"
-                 class="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 outline-none placeholder:text-white/40"
-                 placeholder="100.00"/>
-          <div class="mt-2 text-sm">
-            ≈ <span id="tokensOut" class="font-semibold">0</span> ETRX @ <span id="calcPrice">$0.08</span>
+          <div class="grid grid-cols-2 gap-3">
+              <div>
+                  <label class="text-xs small-dim" for="usdIn">You pay (USD)</label>
+                  <input id="usdIn" type="number" min="0" step="0.01" class="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 outline-none placeholder:text-white/40" placeholder="100.00"/>
+              </div>
+              <div>
+                  <label class="text-xs small-dim" for="tokensOut">You receive (ETRX)</label>
+                  <input id="tokensOut" type="number" min="0" class="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 outline-none placeholder:text-white/40" placeholder="1250.00"/>
+              </div>
+          </div>
+          <div class="mt-2 text-xs small-dim">
+            Current price: <span id="calcPrice" class="font-semibold text-white/90">$0.08</span> / ETRX
           </div>
         </div>
 
-        <!-- Phase schedule table -->
         <div class="sm:col-span-2 glass card card-outline p-4 holo">
           <div class="flex items-center justify-between">
             <div class="text-xs uppercase small-dim">Phase schedule</div>
@@ -359,10 +358,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         </div>
       </div>
     </div>
-   
-    <!-- NEW: Presale Address banner -->
+    
     <div class="mt-4 glass card card-outline p-4 holo" role="region" aria-label="Presale Address">
-      <div class="text-xs uppercase small-dim mb-2">Presale Address (read-only)</div>
+      <div class="text-xs uppercase small-dim mb-2">Official Presale Address</div>
       <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
         <input id="presaleAddr" type="text" readonly
                value="TBA — announced here only"
@@ -370,7 +368,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
                aria-readonly="true"/>
         <button id="copyAddr" class="btn-ghost text-sm">Copy</button>
       </div>
-      <p class="mt-2 text-xs small-dim">Only this address will be announced on this page and our pinned tweet.</p>
+      <p class="mt-2 text-xs small-dim">
+        <b class="text-orange-400">WARNING:</b> The address will be revealed here and on our official, pinned X/Twitter post. The team will NEVER DM you the address. Triple-check it before sending funds.
+      </p>
     </div>
 
     <ul class="mt-6 grid grid-cols-2 gap-3 text-sm sm:text-base">
@@ -381,20 +381,10 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     </ul>
 
     <div class="mt-4 text-xs small-dim">
-      <b>What happens next?</b> After the presale window closes, we proceed to Token Generation Event (TGE), distribution, and initial listings/liquidity.
-    </div>
-
-    <div class="mt-6 flex flex-wrap items-center gap-3 text-sm small-dim">
-      <span>Follow updates:</span>
-      <a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer">Twitter</a>
-    </div>
-    <div class="mt-4 flex flex-wrap items-center gap-3">
-      <button id="shareLaunch" class="btn-primary text-sm"><span>Share this launch</span></button>
-      <button id="openConnect" class="btn-ghost text-sm" aria-haspopup="dialog" aria-controls="walletModal">Connect Wallet</button>
+      <b>What happens next?</b> After the presale window closes, we proceed to the Token Generation Event (TGE), airdrop distribution to presale wallets, and initial DEX listings/liquidity.
     </div>
   </div>
 
-  <!-- Right: hero image -->
   <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px] reveal" data-delay="0">
     <div class="hero-glow h-full w-full rounded-3xl">
       <img
@@ -410,64 +400,97 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- About -->
 <section id="about" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
   <h2 class="text-2xl font-bold neon-text reveal">What is $ETRX?</h2>
   <p class="mt-3 max-w-3xl small-dim reveal" data-delay="50">
-    $ETRX is the utility token of Etheria — used to unlock rare Realms &amp; Artifacts, vote on lore and direction,
-    access exclusive drops, and power the Etherian economy. Holders may receive airdrops and in-world benefits.
+    $ETRX is the utility token of Etheria — the key to unlocking rare Realms & Artifacts, voting on lore and project direction, and accessing exclusive holder-only drops. For example, staking $ETRX could grant a 10% crafting speed boost or access to the Aetherforged character skin. Holders are the core of our community and may receive future airdrops and in-world benefits.
   </p>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Tokenomics -->
-<section id="token" class="relative z-10 mx-auto max-w-6xl px-6">
-  <h2 class="text-2xl font-bold neon-text reveal">Tokenomics (Overview)</h2>
-   <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-3">
-    <div class="glass card card-outline holo p-5 reveal" data-delay="0"><b>Utility</b><br/><span class="small-dim">Access to Realms &amp; Artifacts, governance votes, allowlists, and in-world boosts.</span></div>
-    <div class="glass card card-outline holo p-5 reveal" data-delay="50"><b>Distribution Model</b><br/><span class="small-dim">Phased: presale participants, ecosystem growth, contributors, liquidity, reserves.</span></div>
-    <div class="glass card card-outline holo p-5 reveal" data-delay="100"><b>Lockups &amp; Cliff</b><br/><span class="small-dim">Contributor and reserve tranches unlock gradually to align long-term incentives.</span></div>
-    <div class="glass card card-outline holo p-5 reveal" data-delay="150"><b>Emissions</b><br/><span class="small-dim">No hard farming emissions at launch; rewards focus on quests and on-chain participation.</span></div>
-    <div class="glass card card-outline holo p-5 reveal" data-delay="200"><b>Liquidity Approach</b><br/><span class="small-dim">Initial pools post-TGE with transparent on-chain adds; bridge exploration comes later.</span></div>
-    <div class="glass card card-outline holo p-5 reveal" data-delay="250"><b>Governance</b><br/><span class="small-dim">Progressive decentralization — votes start with lore/world decisions.</span></div>
-  </div>
-
-  <!-- NEW: Raise & FDV quick stats -->
-  <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-    <div class="glass card card-outline holo p-4 reveal" data-delay="300" aria-live="polite">
-      <div class="text-xs uppercase small-dim">Projected Presale Raise</div>
-      <div class="mt-1 text-xl font-bold" id="projectedRaise">~$250k–$300k</div>
-      <div class="text-xs small-dim">Assumes weighted presale avg ≈ $0.094 across phases.</div>
+<section id="token" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
+    <h2 class="text-2xl font-bold neon-text reveal">Tokenomics</h2>
+    <p class="mt-2 max-w-3xl small-dim reveal">Total Supply: 10,000,000 $ETRX</p>
+    
+    <div class="mt-5 grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div class="reveal" data-delay="50">
+            <h3 class="font-semibold text-lg neon-text">Distribution</h3>
+            <ul class="mt-3 space-y-3 small-dim">
+                <li class="flex items-center gap-3"><span class="inline-block w-3 h-3 rounded-full bg-cyan-400"></span><div><b>Presale (30%):</b> 3,000,000 ETRX. Available to early supporters.</div></li>
+                <li class="flex items-center gap-3"><span class="inline-block w-3 h-3 rounded-full bg-blue-400"></span><div><b>Liquidity (25%):</b> 2,500,000 ETRX. For DEX listings and stable trading.</div></li>
+                <li class="flex items-center gap-3"><span class="inline-block w-3 h-3 rounded-full bg-violet-400"></span><div><b>Ecosystem & Rewards (20%):</b> 2,000,000 ETRX. To fund community grants and in-world rewards.</div></li>
+                <li class="flex items-center gap-3"><span class="inline-block w-3 h-3 rounded-full bg-orange-400"></span><div><b>Team (15%):</b> 1,500,000 ETRX. Vested over 24 months with a 6-month cliff.</div></li>
+                <li class="flex items-center gap-3"><span class="inline-block w-3 h-3 rounded-full bg-gray-400"></span><div><b>Treasury & Advisors (10%):</b> 1,000,000 ETRX. For strategic partnerships and operational costs.</div></li>
+            </ul>
+        </div>
+        <div class="flex items-center justify-center reveal" data-delay="100">
+            <div class="w-full h-64 glass card card-outline flex items-center justify-center text-center p-4">
+                
+            </div>
+        </div>
     </div>
-    <div class="glass card card-outline holo p-4 reveal" data-delay="350" aria-live="polite">
-      <div class="text-xs uppercase small-dim">Implied FDV at Listing</div>
-      <div class="mt-1 text-xl font-bold" id="impliedFDV">~$1.2M</div>
-      <div class="text-xs small-dim">At ref listing price $0.12 • Supply 10,000,000.</div>
-    </div>
-  </div>
-
-  <p class="mt-3 text-xs small-dim reveal" data-delay="400">Note: Detailed allocations/percentages will be shared closer to TGE.</p>
-
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Road -->
+<section id="trust" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div class="glass card card-outline holo p-5 reveal">
+            <h3 class="text-lg font-bold neon-text">Smart Contract Audit</h3>
+            <p class="small-dim mt-2">Our token and presale contracts have been audited by [Reputable Audit Firm Name]. Security and transparency are our top priorities.</p>
+            <a href="[Link to Audit Report]" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Report</a>
+        </div>
+        <div class="glass card card-outline holo p-5 reveal" data-delay="50">
+            <h3 class="text-lg font-bold neon-text">Verified on Etherscan</h3>
+            <p class="small-dim mt-2">The $ETRX token contract will be verified on Etherscan post-TGE for full transparency. You can review the code and holder distribution at any time.</p>
+            <a href="#" class="btn-ghost text-sm mt-3 inline-block opacity-50 cursor-not-allowed">View on Etherscan (Post-TGE)</a>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider max-w-6xl mx-auto"></div>
+
+<section id="team" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
+    <h2 class="text-2xl font-bold neon-text reveal">Core Contributors</h2>
+    <p class="mt-2 max-w-3xl small-dim reveal">The pseudonymous team behind Etheria, dedicated to building a lasting world.</p>
+    <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="0">
+            <img src="assets/avatar1.png" alt="Avatar of Aethel" class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 object-cover bg-white/10">
+            <h4 class="mt-3 font-bold text-lg">Aethel</h4>
+            <p class="text-sm small-dim">Project Lead & Lore Master</p>
+            <a href="https://x.com/username" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@username</a>
+        </div>
+        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="50">
+            <img src="assets/avatar2.png" alt="Avatar of Cygnus" class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 object-cover bg-white/10">
+            <h4 class="mt-3 font-bold text-lg">Cygnus</h4>
+            <p class="text-sm small-dim">Lead Smart Contract Dev</p>
+            <a href="https://x.com/username" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@username</a>
+        </div>
+        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="100">
+            <img src="assets/avatar3.png" alt="Avatar of Lyra" class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 object-cover bg-white/10">
+            <h4 class="mt-3 font-bold text-lg">Lyra</h4>
+            <p class="text-sm small-dim">Community & Marketing</p>
+            <a href="https://x.com/username" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@username</a>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider max-w-6xl mx-auto"></div>
+
 <section id="road" class="relative z-10 mx-auto max-w-6xl px-6 py-14">
-  <h2 class="text-2xl font-bold neon-text reveal">Road to Mainnet</h2>
+  <h2 class="text-2xl font-bold neon-text reveal">Roadmap: The Path Forward</h2>
+  <div class="mt-2 max-w-3xl small-dim reveal"></div>
   <ol class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 small-dim">
-    <li class="glass card card-outline holo p-4 reveal" data-delay="0">1) Launch site &amp; whitelist open</li>
-    <li class="glass card card-outline holo p-4 reveal" data-delay="50">2) Community reveal + partnerships</li>
-    <li class="glass card card-outline holo p-4 reveal" data-delay="100">3) Presale window opens (this page)</li>
-    <li class="glass card card-outline holo p-4 reveal" data-delay="150">4) TGE: distribution to presale wallets</li>
-    <li class="glass card card-outline holo p-4 sm:col-span-2 reveal" data-delay="200">5) Initial listings + liquidity + bridge planning</li>
+    <li class="glass card card-outline holo p-4 reveal" data-delay="0"><b>Phase 1: Foundation (Q3 2025)</b><br/>Launch site, open allowlist, publish whitepaper, and complete smart contract audit.</li>
+    <li class="glass card card-outline holo p-4 reveal" data-delay="50"><b>Phase 2: Launch (Q4 2025)</b><br/>Presale event, Token Generation Event (TGE), DEX listing & initial liquidity pools.</li>
+    <li class="glass card card-outline holo p-4 reveal" data-delay="100"><b>Phase 3: Utility (Q1 2026)</b><br/>Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on lore decisions.</li>
+    <li class="glass card card-outline holo p-4 reveal" data-delay="150"><b>Phase 4: Expansion (Q2 2026 & Beyond)</b><br/>First Realm drop for holders, development of the Etheria marketplace, and exploration of cross-chain bridges.</li>
   </ol>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Notify & Allowlist -->
 <section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-24">
   <div class="glass card card-outline holo p-6 reveal">
     <h3 class="text-xl font-semibold neon-text">Get notified when the presale opens</h3>
@@ -477,7 +500,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
       <label class="sr-only" for="email">Email</label>
       <input required id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"
              class="flex-1 rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"/>
-      <!-- Honeypot -->
       <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
       <input type="hidden" name="form_name" value="notify"/>
       <input type="hidden" name="_redirect" value="https://etheriaetrx-etrx.github.io/etrx-presale/#notify-success">
@@ -514,7 +536,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   </div>
 </section>
 
-<!-- FAQ -->
 <section id="faq" class="relative z-10 mx-auto max-w-6xl px-6 pb-8">
   <h2 class="text-2xl font-bold neon-text reveal">FAQ</h2>
   <div class="mt-4 grid gap-3">
@@ -524,7 +545,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <span class="faq-chevron" aria-hidden="true">⌄</span>
       </button>
       <div class="faq-body" id="faq-when-body" role="region" aria-labelledby="faq-when-btn" hidden>
-        <p class="small-dim">Sep 24 → Oct 1, 2025 (UTC). Use the toggle to view local time.</p>
+        <p class="small-dim">Sep 24 → Oct 1, 2025 (UTC). Use the toggle above to view local time.</p>
       </div>
     </div>
     <div class="faq-item reveal">
@@ -533,25 +554,38 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <span class="faq-chevron" aria-hidden="true">⌄</span>
       </button>
       <div class="faq-body" id="faq-tge-body" role="region" aria-labelledby="faq-tge-btn" hidden>
-        <p class="small-dim">Yes—after the presale window closes, we’ll distribute to presale wallets and seed initial listings/liquidity.</p>
+        <p class="small-dim">Yes—after the presale window closes, we’ll proceed with the Token Generation Event (TGE), which includes distributing tokens to presale wallets and seeding initial DEX listings/liquidity.</p>
       </div>
     </div>
+    <div class="faq-item reveal">
+        <button class="faq-header" aria-expanded="false" aria-controls="faq-how-body" id="faq-how-btn">
+          <span>How can I participate?</span>
+          <span class="faq-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="faq-body" id="faq-how-body" role="region" aria-labelledby="faq-how-btn" hidden>
+          <p class="small-dim">During the presale window, connect an Ethereum wallet, ensure you have ETH for the purchase and gas fees, and send ETH to the official presale address that will be revealed on this page. Always double-check the address.</p>
+        </div>
+      </div>
   </div>
 </section>
+</main>
 
 <footer class="relative z-10 border-t border-cyan-400/15 py-10 small-dim">
-  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-sm">
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm">
     <div>© <span id="year"></span> Etheria • $ETRX</div>
-    <div class="flex items-center gap-4"><a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer">Twitter</a></div>
+    <div class="flex items-center gap-4">
+        <a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer">X/Twitter</a>
+        <a class="laser hover:text-white" href="[Link to Discord]" target="_blank" rel="noopener noreferrer">Discord</a>
+        <a class="laser hover:text-white" href="[Link to Telegram]" target="_blank" rel="noopener noreferrer">Telegram</a>
+    </div>
     <p class="mt-2 max-w-3xl text-center text-xs opacity-80">
-      Disclaimer: This site and presale information are for community use only and do not constitute an offer to sell or a solicitation to buy any financial instrument. Participation may be restricted by local laws. Crypto assets are volatile and carry risk.
+      Disclaimer: This site and presale information are for community use only and do not constitute an offer to sell or a solicitation to buy any financial instrument. Participation may be restricted by local laws. Crypto assets are volatile and carry significant risk. DYOR.
     </p>
   </div>
 </footer>
 
 <a href="#notify" id="stickyCTA" class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">Get notified for $ETRX</a>
 
-<!-- Schema.org event (SEO) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -568,7 +602,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 }
 </script>
 
-<!-- App JS (countdown, phases, forms, wallet, etc.) -->
 <script>
 'use strict'
 /* ================== CONFIG: DATES + TIERS ================== */
@@ -651,25 +684,44 @@ function box(v,label){
 }
 
 /* Dynamic pricing helpers */
+const usdInEl = $('usdIn');
+const tokensOutEl = $('tokensOut');
+let currentCalcPrice = PHASES[0].price;
+
 function setPriceCard(price, label, listingActive=false, notStarted=false){
   const pct = Math.max(0, (1 - price/LISTING_PRICE)*100);
   $('priceNow').textContent = `$${price.toFixed(2)}`;
   $('calcPrice').textContent = `$${price.toFixed(2)}`;
+  currentCalcPrice = price; // Update global price for calculator
   $('pricePhaseName').textContent = label + (listingActive ? ' (Active)' : notStarted ? ' (up next)' : '');
   const lp = $('priceList');
   if(listingActive){ lp.classList.remove('line-through'); lp.textContent = `$${LISTING_PRICE.toFixed(2)} (Active)`; $('discountLine').textContent = 'Listing live'; }
   else { if(!lp.classList.contains('line-through')) lp.classList.add('line-through'); lp.textContent = `$${LISTING_PRICE.toFixed(2)}`; $('discountLine').textContent = `${pct.toFixed(0)}% below listing`; }
-  calcTokens(price);
+  calculateFromUSD();
 }
-function calcTokens(price){
-  const usd = parseFloat($('usdIn').value || '0');
-  const tokens = isFinite(usd/price) ? (usd/price) : 0;
-  $('tokensOut').textContent = tokens.toFixed(2);
+
+function calculateFromUSD() {
+    const usd = parseFloat(usdInEl.value);
+    if (!isNaN(usd) && usd > 0) {
+        const tokens = usd / currentCalcPrice;
+        tokensOutEl.value = tokens.toFixed(2);
+    } else if (usdInEl.value === '') {
+        tokensOutEl.value = '';
+    }
 }
-$('usdIn').addEventListener('input', ()=> {
-  const p = parseFloat($('calcPrice').textContent.replace('$','')) || LISTING_PRICE;
-  calcTokens(p);
-});
+
+function calculateFromTokens() {
+    const tokens = parseFloat(tokensOutEl.value);
+    if (!isNaN(tokens) && tokens > 0) {
+        const usd = tokens * currentCalcPrice;
+        usdInEl.value = usd.toFixed(2);
+    } else if (tokensOutEl.value === '') {
+        usdInEl.value = '';
+    }
+}
+usdInEl.addEventListener('input', calculateFromUSD);
+tokensOutEl.addEventListener('input', calculateFromTokens);
+
 
 /* Render Phase schedule table */
 function shortRange(start, end){
@@ -707,8 +759,8 @@ function loop(){
 
   // Countdown target
   const target = ph.pre ? new Date(PHASES[0].start)
-                : ph.post ? now
-                : new Date(ph.end);
+                 : ph.post ? now
+                 : new Date(ph.end);
 
   // Countdown render
   const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
@@ -1017,14 +1069,24 @@ if (shareBtn && navigator.share){
   });
 }
 
+/* Copy presale address */
+const copyAddrBtn = $('copyAddr');
+const presaleAddrInput = $('presaleAddr');
+copyAddrBtn.addEventListener('click', () => {
+    presaleAddrInput.select();
+    navigator.clipboard.writeText(presaleAddrInput.value);
+    toast('Address copied to clipboard!');
+});
+
+
 /* Toast */
 function toast(msg, isWarn=false){
   const t=document.createElement('div');
   t.setAttribute('role','status'); t.setAttribute('aria-live','polite'); t.setAttribute('aria-atomic','true');
-  t.className='toast fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-2 rounded-lg glass card text-sm';
+  t.className='toast fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-2 rounded-lg glass card text-sm z-50';
   t.style.borderColor = isWarn ? 'rgba(255,99,99,.35)' : 'var(--ring)';
   t.textContent=msg; document.body.appendChild(t);
-  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .25s'; t.addEventListener('transitionend', ()=>t.remove(), {once:true}); }, 2000);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .25s'; t.addEventListener('transitionend', ()=>t.remove(), {once:true}); }, 2500);
 }
 
 /* ===== Etheria Wisps ===== */
