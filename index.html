@@ -1641,7 +1641,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             this.provider = new ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
-            this.simulateData();
+            // Set initial state to 0, removing the simulation
+            this.updateUI({ totalRaised: '0', contributors: '0' });
+
+            // TODO: UNCOMMENT THE FOLLOWING LINES WHEN YOU HAVE A DEPLOYED CONTRACT
+            // this.contract = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
+            // this.updateLoop();
         },
         
         updateUI(data) {
@@ -1651,18 +1656,6 @@ document.addEventListener('DOMContentLoaded', () => {
             $('live-progress-bar').style.width = `${Math.min(100, progress)}%`;
             $('progress-percentage').textContent = `${Math.min(100, progress).toFixed(1)}%`;
         },
-
-        simulateData() {
-            let simulatedRaised = 34.56;
-            let simulatedContributors = 82;
-            this.updateUI({ totalRaised: String(simulatedRaised), contributors: String(simulatedContributors) });
-            setInterval(() => {
-                simulatedRaised += Math.random() * 2.5;
-                simulatedContributors += Math.floor(Math.random() * 5);
-                if (simulatedRaised > this.hardCap) simulatedRaised = this.hardCap;
-                this.updateUI({ totalRaised: String(simulatedRaised), contributors: String(simulatedContributors) });
-            }, 5000);
-        }
     };
     onChain.init();
 
@@ -1807,45 +1800,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     })();
-
-    /* ===== Whitepaper SVG Interactivity ===== */
-    (function() {
-        // Pie Chart
-        const wpPieSlices = document.querySelectorAll('#wp-pie-chart .pie-slice');
-        const wpPieTextPercent = $('wp-pie-text-percent');
-        const wpPieTextName = $('wp-pie-text-name');
-        
-        wpPieSlices.forEach(slice => {
-            slice.addEventListener('mouseover', () => {
-                wpPieTextPercent.textContent = slice.dataset.percent;
-                wpPieTextName.textContent = slice.dataset.name;
-            });
-        });
-
-        // Ecosystem Diagram
-        const infoPopup = $('wp-info-popup');
-        document.querySelectorAll('#wp-ecosystem-diagram .node').forEach(node => {
-            node.addEventListener('click', (e) => {
-                e.stopPropagation();
-                infoPopup.textContent = node.dataset.info;
-                const rect = node.getBoundingClientRect();
-                const modalRect = whitepaperModal.getBoundingClientRect();
-                const top = rect.top - modalRect.top - 10;
-                const left = rect.left - modalRect.left + rect.width / 2;
-                
-                infoPopup.style.left = `${left}px`;
-                infoPopup.style.top = `${top}px`;
-                infoPopup.style.opacity = '1';
-                infoPopup.style.transform = 'translate(-50%, -100%) scale(1)';
-            });
-        });
-        document.addEventListener('click', () => {
-            infoPopup.style.opacity = '0';
-            infoPopup.style.transform = 'translate(-50%, -100%) scale(0.95)';
-        });
-
-    })();
-
+    
     /* Initialize UI */
     renderPhaseTable();
     updateWhen();
