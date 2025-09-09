@@ -293,6 +293,13 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 .vesting-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, var(--c-team), var(--c-eco)); }
 .vesting-marker { position: absolute; top: -4px; bottom: -4px; width: 2px; background-color: rgba(255,255,255,0.5); }
 
+/* Whitepaper Modal */
+#whitepaper-content h2 { font-size: 1.5rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+#whitepaper-content h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+#whitepaper-content h4 { font-size: 1.1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.25rem; }
+#whitepaper-content p { margin-bottom: 1rem; line-height: 1.6; }
+#whitepaper-content ul { list-style-position: inside; margin-left: 0.5rem; margin-bottom: 1rem; }
+#whitepaper-content li { margin-bottom: 0.5rem; }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
@@ -344,7 +351,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
       </div>
     </nav>
     <div class="flex items-center gap-3">
-      <a href="[Link to Whitepaper PDF]" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm hidden sm:inline-flex">Whitepaper</a>
+      <button id="wp-btn-header" class="btn-ghost text-sm hidden sm:inline-flex">Whitepaper</button>
       <button id="connectBtn" class="btn-primary text-sm" aria-haspopup="dialog" aria-controls="walletModal">Connect Wallet</button>
       <div id="walletPill" class="btn-ghost text-xs hidden" aria-live="polite">
         <span id="walletShort" class="addr"></span>
@@ -369,7 +376,102 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   </div>
 </div>
 
-<!-- Hero -->
+<!-- Whitepaper Modal -->
+<div id="whitepaperModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
+     role="dialog" aria-modal="true" aria-labelledby="whitepaperModalTitle" inert>
+  <div class="glass card card-outline w-full max-w-3xl max-h-[90vh] flex flex-col" data-modal-surface>
+    <div class="flex items-center justify-between p-4 border-b border-white/10 flex-shrink-0">
+      <h3 id="whitepaperModalTitle" class="text-lg font-semibold neon-text">Etheria Whitepaper v1.0</h3>
+      <button id="wpModalClose" class="text-white/70 hover:text-white" aria-label="Close Whitepaper">✕</button>
+    </div>
+    <div id="whitepaper-content" class="p-6 overflow-y-auto small-dim">
+        <h2>Abstract</h2>
+        <p>Etheria is a decentralized, community-driven world-building project on the Ethereum blockchain. It combines the narrative depth of a fantasy universe with the tangible ownership of Non-Fungible Tokens (NFTs) and the governance power of a utility token, $ETRX. The project's mission is to create an evolving ecosystem where the community is not just an audience, but an integral part of its creation and governance. Through a series of foundational NFT collections and the upcoming $ETRX token, Etheria provides a framework for collective storytelling, on-chain utility, and long-term value creation.</p>
+        
+        <h2>1. Introduction</h2>
+        <p>The current digital landscape is saturated with projects that promise utility but often fail to deliver, leaving communities with speculative assets that lack intrinsic value. Many NFT projects exist as static pieces of art with no deeper function, and many utility tokens are created without a pre-existing ecosystem to support them.</p>
+        <p>Etheria is being built to challenge this paradigm. Our approach is <strong>build first, market second</strong>. Before launching a single token, we have already designed, developed, and deployed our foundational NFT collections on the Ethereum mainnet. The $ETRX token is not a promise to build an ecosystem; it is the key to unlocking and governing an ecosystem that already exists.</p>
+        
+        <h2>2. The Etheria Vision</h2>
+        <p>Our vision is to create a persistent, decentralized world that grows and evolves based on the collective decisions of its community. We are not just building a collection of JPEGs; we are laying the foundation for a new form of interactive lore.</p>
+        <p>The world of Etheria is a fantasy realm filled with ancient magic, powerful artifacts, and mysterious keepers. Holders of our NFTs and the $ETRX token will have the power to:</p>
+        <ul>
+            <li><strong>Influence the Narrative:</strong> Vote on key lore decisions, character arcs, and the future direction of the world's story.</li>
+            <li><strong>Own a Piece of the World:</strong> NFTs in Etheria are not just art; they are titles, keys, and functional items within the ecosystem.</li>
+            <li><strong>Participate in a Sustainable Economy:</strong> The $ETRX token will serve as the economic backbone for minting new assets, accessing exclusive content, and rewarding community participation.</li>
+        </ul>
+        
+        <h2>3. The Etheria Ecosystem</h2>
+        <p>The ecosystem is composed of two core components: the NFT Collections and the $ETRX Token.</p>
+        <h3>3.1. NFT Collections</h3>
+        <ul>
+            <li><strong>Arc Genesis:</strong> The foundational art collection that represents the visual and thematic cornerstone of Etheria. These are the genesis pieces that prove our artistic vision and technical capability.</li>
+            <li><strong>Etherian Keepers:</strong> The first generation of characters within the Etherian realm. These NFTs establish the first inhabitants and will play a role in the future lore and governance of the world.</li>
+            <li><strong>Artifacts (Coming Soon):</strong> The next evolution of on-chain utility. Artifacts will be powerful, functional NFTs that can be equipped, combined, or staked to provide tangible benefits within the Etheria ecosystem, such as boosting rewards or granting access to exclusive mints.</li>
+        </ul>
+        <h3>3.2. The $ETRX Token</h3>
+        <p>$ETRX is an ERC-20 token on the Ethereum blockchain with a fixed supply of <strong>10,000,000</strong>. It is designed to be the primary medium of exchange and governance within Etheria.</p>
+        
+        <h2>4. Tokenomics ($ETRX)</h2>
+        <p>The tokenomics of $ETRX are designed for long-term sustainability, community empowerment, and team commitment.</p>
+        <ul>
+            <li><strong>Total Supply:</strong> 10,000,000 $ETRX</li>
+            <li><strong>Token Standard:</strong> ERC-20 on Ethereum</li>
+        </ul>
+        <p><strong>Distribution:</strong></p>
+        <ul>
+            <li><strong>Presale (30%):</strong> 3,000,000 ETRX for early supporters.</li>
+            <li><strong>Liquidity (25%):</strong> 2,500,000 ETRX for DEX listings and stable trading.</li>
+            <li><strong>Ecosystem & Rewards (20%):</strong> 2,000,000 ETRX to fund community grants and in-world rewards.</li>
+            <li><strong>Team (15%):</strong> 1,500,000 ETRX.</li>
+            <li><strong>Treasury & Advisors (10%):</strong> 1,000,000 ETRX for strategic partnerships and operational costs.</li>
+        </ul>
+        
+        <h2>5. Governance Mechanics</h2>
+        <p>The Etheria DAO will be the cornerstone of community-led development. The process is designed to be transparent and straightforward.</p>
+        <ul>
+            <li><strong>Proposal Process:</strong> Any community member holding a minimum of [e.g., 10,000 $ETRX] can submit a proposal for community review.</li>
+            <li><strong>Voting Power:</strong> Voting power will be based on a snapshot of $ETRX holdings. The standard will be 1 token = 1 vote.</li>
+            <li><strong>Quorum:</strong> For a vote to be considered valid, a minimum of [e.g., 5%] of the circulating supply must participate.</li>
+        </ul>
+        
+        <h2>6. Roadmap</h2>
+        <p>Our roadmap is divided into clear, deliverable phases.</p>
+        <ul>
+            <li><strong>Phase 1: Foundation (Q3 2025):</strong> Launch presale site, publish whitepaper, and complete smart contract audit.</li>
+            <li><strong>Phase 2: Launch (Q4 2025):</strong> Conduct the $ETRX presale event, execute the Token Generation Event (TGE), and establish initial liquidity on a decentralized exchange.</li>
+            <li><strong>Phase 3: Utility (Late Sep 2025):</strong> Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on initial lore decisions.</li>
+            <li><strong>Phase 4: Expansion (Q2 2026 & Beyond):</strong> Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges to expand our ecosystem.</li>
+        </ul>
+        
+        <h2>7. Competitive Landscape</h2>
+        <p>While many projects exist in the NFT and DeFi space, Etheria's unique advantage lies in our **"build-first"** philosophy. Unlike projects that launch a token based on promises, we have already delivered on-chain assets. Our focus is on deep, community-driven lore and tangible utility, creating an ecosystem with intrinsic value rather than purely speculative hype.</p>
+        
+        <h2>8. Risk Factors</h2>
+        <p>All investments in the cryptocurrency space carry inherent risks. We believe in transparency and want our community to be fully informed.</p>
+        <ul>
+            <li><strong>Market Volatility:</strong> The value of $ETRX can fluctuate significantly.</li>
+            <li><strong>Smart Contract Risk:</strong> Although our contracts will be audited, there is always a risk of vulnerabilities.</li>
+            <li><strong>Regulatory Uncertainty:</strong> The global regulatory landscape for crypto is still evolving.</li>
+        </ul>
+        <p>Our team is committed to mitigating these risks through rigorous security practices, sustainable tokenomics, and transparent communication.</p>
+
+        <h2>9. Team</h2>
+        <p>The Etheria project is led by a public-facing team of dedicated builders with experience in software development and community management.</p>
+        <ul>
+            <li>ETRXDreamscapes: The Developer</li>
+            <li>HeisCaifu: Telegram Page Owner</li>
+            <li>DxCheetah: Telegram Page Mod</li>
+        </ul>
+        
+        <h2>10. Disclaimer</h2>
+        <p>This whitepaper is for informational purposes only and does not constitute an offer to sell or a solicitation to buy any financial instrument in any jurisdiction. The $ETRX token is a utility token designed for use within the Etheria ecosystem. It is not a security.</p>
+        <p>Participation in the presale and the purchase of crypto assets are subject to significant risks, including the risk of complete loss. All participants should conduct their own due diligence (DYOR) and consult with a financial advisor before making any decisions. The project roadmap is subject to change based on development progress and community feedback.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
 <main>
 <section class="hero relative z-10 mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:items-center md:pt-10">
   <div class="hero-vignette" aria-hidden="true"></div>
@@ -533,6 +635,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
       <p class="text-sm small-dim mt-1">Earn airdrops, participate in holder-only events, and be rewarded for on-chain participation.</p>
     </div>
   </div>
+   <div class="text-center mt-6 reveal">
+        <button id="wp-btn-about" class="btn-ghost text-sm">Read the Whitepaper</button>
+    </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
@@ -755,19 +860,19 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   <div class="mt-5 timeline space-y-6 small-dim">
     <div class="timeline-item reveal" data-delay="0">
       <h4 class="font-bold text-white/90">Phase 1: Foundation (Q3 2025)</h4>
-      <p>Launch site, open allowlist, publish whitepaper, and complete smart contract audit.</p>
+      <p>Launch presale site, publish whitepaper, and complete smart contract audit.</p>
     </div>
     <div class="timeline-item reveal" data-delay="50">
       <h4 class="font-bold text-white/90">Phase 2: Launch (Q4 2025)</h4>
-      <p>Presale event, Token Generation Event (TGE), DEX listing & initial liquidity pools.</p>
+      <p>Conduct the $ETRX presale event, execute the Token Generation Event (TGE), and establish initial liquidity on a decentralized exchange.</p>
     </div>
     <div class="timeline-item reveal" data-delay="100">
       <h4 class="font-bold text-white/90">Phase 3: Utility (Late Sep 2025)</h4>
-      <p>Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on lore decisions.</p>
+      <p>Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on initial lore decisions.</p>
     </div>
     <div class="timeline-item reveal" data-delay="150">
       <h4 class="font-bold text-white/90">Phase 4: Expansion (Q2 2026 & Beyond)</h4>
-      <p>Development of the Etheria marketplace, introduction of advanced staking mechanisms, and exploration of cross-chain bridges.</p>
+      <p>Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges to expand our ecosystem.</p>
     </div>
   </div>
 </section>
@@ -908,833 +1013,863 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 -->
 <script>
 'use strict'
-/* ================== CONFIG: DATES + TIERS ================== */
-const PRESALE_START = new Date('2025-09-24T00:00:00Z');
-const PRESALE_END   = new Date('2025-10-01T00:00:00Z');
-const LISTING_PRICE = 0.12; // USD
+document.addEventListener('DOMContentLoaded', () => {
 
-/* Phases (edit these) */
-const PHASES = [
-  { name:'Phase 1', start:'2025-09-24T00:00:00Z', end:'2025-09-26T23:59:59Z', price:0.08 },
-  { name:'Phase 2', start:'2025-09-27T00:00:00Z', end:'2025-09-28T23:59:59Z', price:0.10 },
-  { name:'Phase 3', start:'2025-09-29T00:00:00Z', end:'2025-09-30T23:59:59Z', price:0.11 },
-];
+    /* ================== CONFIG: DATES + TIERS ================== */
+    const PRESALE_START = new Date('2025-09-24T00:00:00Z');
+    const PRESALE_END   = new Date('2025-10-01T00:00:00Z');
+    const LISTING_PRICE = 0.12; // USD
 
-/* ================== DOM SHORTCUTS ================== */
-const $ = (id)=> document.getElementById(id);
-const phaseLabel=$('phaseLabel'), countdown=$('countdown'), whenPrimary=$('whenPrimary'),
-      whenSecondary=$('whenSecondary'), modeLabel=$('modeLabel');
-const connectBtn=$('connectBtn'), openConnect=$('openConnect'), modal=$('walletModal'), modalClose=$('modalClose');
-const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn'), phaseNameEl=$('phaseName');
-$('year').textContent = new Date().getFullYear();
+    /* Phases (edit these) */
+    const PHASES = [
+      { name:'Phase 1', start:'2025-09-24T00:00:00Z', end:'2025-09-26T23:59:59Z', price:0.08 },
+      { name:'Phase 2', start:'2025-09-27T00:00:00Z', end:'2025-09-28T23:59:59Z', price:0.10 },
+      { name:'Phase 3', start:'2025-09-29T00:00:00Z', end:'2025-09-30T23:59:59Z', price:0.11 },
+    ];
 
-/* Preloader */
-window.addEventListener('load', () => {
+    /* ================== DOM SHORTCUTS ================== */
+    const $ = (id)=> document.getElementById(id);
+    const phaseLabel=$('phaseLabel'), countdown=$('countdown'), whenPrimary=$('whenPrimary'),
+          whenSecondary=$('whenSecondary'), modeLabel=$('modeLabel');
+    const connectBtn=$('connectBtn'), openConnect=$('openConnect'), modal=$('walletModal'), modalClose=$('modalClose');
+    const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn'), phaseNameEl=$('phaseName');
+    $('year').textContent = new Date().getFullYear();
+
+    /* Preloader */
     $('preloader')?.classList.add('loaded');
-});
 
-/* Sound Manager */
-const soundManager = {
-    isMuted: true,
-    synth: null,
-    init() {
-        if (typeof Tone === 'undefined') {
-            console.log("Tone.js not loaded, sounds disabled.");
-            $('mute-button').style.display = 'none';
-            return;
-        }
-        this.synth = new Tone.PolySynth(Tone.Synth, {
-            oscillator: { type: 'sine' },
-            envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 },
-            volume: -20
-        }).toDestination();
-        
-        const muteButton = $('mute-button');
-        muteButton.addEventListener('click', () => this.toggleMute());
-        this.updateButton();
-    },
-    play(note, duration = '16n') {
-        if (!this.isMuted && this.synth) {
-            this.synth.triggerAttackRelease(note, duration);
-        }
-    },
-    toggleMute() {
-        this.isMuted = !this.isMuted;
-        this.updateButton();
-        this.play('C5');
-    },
-    updateButton() {
-        $('sound-on-icon').classList.toggle('hidden', this.isMuted);
-        $('sound-off-icon').classList.toggle('hidden', !this.isMuted);
-    }
-};
-soundManager.init();
-
-// Attach sounds to interactive elements
-document.querySelectorAll('button, a.laser').forEach(el => {
-    el.addEventListener('mouseenter', () => soundManager.play('C6', '32n'));
-    el.addEventListener('click', () => soundManager.play('E6', '16n'));
-});
-
-
-/* Header elevation on scroll */
-const header = document.getElementById('siteHeader');
-addEventListener('scroll', ()=> header.classList.toggle('header-float', scrollY>12), {passive:true});
-
-/* Time formatting */
-const fmtBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
-const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtBase, timeZone:'UTC', timeZoneName:'short' });
-const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtBase, timeZoneName:'short' });
-
-/* localStorage helpers */
-function safeGet(key, fallback=null){ try{ return localStorage.getItem(key) ?? fallback }catch{ return fallback } }
-function safeSet(key, val){ try{ localStorage.setItem(key, val) }catch{} }
-
-/* ================== UTC/LOCAL TOGGLE ================== */
-let primaryUTC = (safeGet('etrx_tz', 'utc') || 'utc') === 'utc';
-function updateWhen(){
-  const s0 = new Date(PHASES[0].start), e0 = new Date(PHASES[0].end);
-  if (primaryUTC){
-    whenPrimary.textContent   = `Presale: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
-    whenSecondary.textContent = `Local time: ${fmtLoc(PRESALE_START)} → ${fmtLoc(PRESALE_END)}`;
-    modeLabel.textContent='UTC';
-    tzToggle.textContent='Make Local primary';
-    tzToggle.setAttribute('aria-pressed','false');
-    $('phaseScheduleTz').textContent = 'Times in UTC';
-  } else {
-    whenPrimary.textContent   = `Presale: ${fmtLoc(PRESALE_START)} → ${fmtLoc(PRESALE_END)}`;
-    whenSecondary.textContent = `UTC time: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
-    modeLabel.textContent='Local';
-    tzToggle.textContent='Make UTC primary';
-    tzToggle.setAttribute('aria-pressed','true');
-    $('phaseScheduleTz').textContent = 'Times in Local';
-  }
-  renderPhaseTable(); // keep table in sync with timezone change
-}
-const tzToggle = document.getElementById('tzToggle');
-tzToggle?.addEventListener('click', ()=>{ primaryUTC=!primaryUTC; safeSet('etrx_tz', primaryUTC ? 'utc' : 'local'); updateWhen(); });
-
-/* precision clock */
-const t0 = Date.now(), p0 = performance.now();
-const nowAccurate = ()=> new Date(t0 + (performance.now()-p0));
-
-/* ===== Nav Dropdown ===== */
-const moreMenuContainer = document.getElementById('more-menu');
-if (moreMenuContainer) {
-    const btn = moreMenuContainer.querySelector('button');
-    const dropdown = moreMenuContainer.querySelector('div');
-    
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isHidden = dropdown.classList.contains('hidden');
-        if(isHidden) {
-            dropdown.classList.remove('hidden');
-            btn.setAttribute('aria-expanded', 'true');
-        } else {
-            dropdown.classList.add('hidden');
-            btn.setAttribute('aria-expanded', 'false');
-        }
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!moreMenuContainer.contains(e.target)) {
-            dropdown.classList.add('hidden');
-            btn.setAttribute('aria-expanded', 'false');
-        }
-    });
-}
-
-/* Phase helpers */
-function clamp01(x){ return Math.max(0, Math.min(1, x)); }
-function currentPhase(t=new Date()){
-  for(const p of PHASES){ const s=new Date(p.start), e=new Date(p.end); if(t>=s && t<=e) return p; }
-  if(t<PRESALE_START) return { pre:true };
-  if(t>PRESALE_END) return { post:true };
-  const nxt = PHASES.find(p=> t < new Date(p.start));
-  return nxt ? {...nxt, upcoming:true} : { post:true };
-}
-
-/* Countdown UI block builder */
-function box(v,label){
-  const d=document.createElement('div');
-  d.className='w-[5.5rem] rounded-xl glass card p-3 text-center';
-  d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text">${String(v).padStart(2,'0')}</div><div class="text-[11px] uppercase small-dim">${label}</div>`;
-  return d;
-}
-
-/* Dynamic pricing helpers */
-const usdInEl = $('usdIn');
-const tokensOutEl = $('tokensOut');
-let currentCalcPrice = PHASES[0].price;
-
-function setPriceCard(price, label, listingActive=false, notStarted=false){
-  const pct = Math.max(0, (1 - price/LISTING_PRICE)*100);
-  $('priceNow').textContent = `$${price.toFixed(2)}`;
-  $('calcPrice').textContent = `$${price.toFixed(2)}`;
-  currentCalcPrice = price; // Update global price for calculator
-  $('pricePhaseName').textContent = label + (listingActive ? ' (Active)' : notStarted ? ' (up next)' : '');
-  const lp = $('priceList');
-  if(listingActive){ lp.classList.remove('line-through'); lp.textContent = `$${LISTING_PRICE.toFixed(2)} (Active)`; $('discountLine').textContent = 'Listing live'; }
-  else { if(!lp.classList.contains('line-through')) lp.classList.add('line-through'); lp.textContent = `$${LISTING_PRICE.toFixed(2)}`; $('discountLine').textContent = `${pct.toFixed(0)}% below listing`; }
-  calculateFromUSD();
-}
-
-function calculateFromUSD() {
-    const usd = parseFloat(usdInEl.value);
-    if (!isNaN(usd) && usd > 0) {
-        const tokens = usd / currentCalcPrice;
-        tokensOutEl.value = tokens.toFixed(2);
-    } else if (usdInEl.value === '') {
-        tokensOutEl.value = '';
-    }
-}
-
-function calculateFromTokens() {
-    const tokens = parseFloat(tokensOutEl.value);
-    if (!isNaN(tokens) && tokens > 0) {
-        const usd = tokens * currentCalcPrice;
-        usdInEl.value = usd.toFixed(2);
-    } else if (tokensOutEl.value === '') {
-        usdInEl.value = '';
-    }
-}
-usdInEl.addEventListener('input', calculateFromUSD);
-tokensOutEl.addEventListener('input', calculateFromTokens);
-
-
-/* Render Phase schedule table */
-function shortRange(start, end){
-  const s = new Date(start), e = new Date(end);
-  const fmtS = primaryUTC ? s.toLocaleString([], { month:'short', day:'2-digit', timeZone:'UTC'}) : s.toLocaleString([], { month:'short', day:'2-digit'});
-  const fmtE = primaryUTC ? e.toLocaleString([], { month:'short', day:'2-digit', timeZone:'UTC'}) : e.toLocaleString([], { month:'short', day:'2-digit'});
-  return `${fmtS} → ${fmtE}`;
-}
-function renderPhaseTable(){
-  const now = nowAccurate();
-  const wrap = $('phaseTable');
-  wrap.innerHTML = '';
-  PHASES.forEach(p=>{
-    const row = document.createElement('div');
-    row.className = 'row text-sm';
-    const isNow = now >= new Date(p.start) && now <= new Date(p.end);
-    row.innerHTML = `
-      <div class="font-semibold">${p.name} ${isNow?'<span class="badge badge-now">Now</span>':''}</div>
-      <div class="opacity-90">$${p.price.toFixed(2)}</div>
-      <div class="small-dim">${shortRange(p.start, p.end)}</div>
-    `;
-    wrap.appendChild(row);
-  });
-}
-
-/* Main loop: countdown + progress + phase + pricing */
-let lastSecond=-1;
-function loop(){
-  const now = nowAccurate();
-  const ph = currentPhase(now);
-
-  // Phase label + phase name
-  phaseLabel.innerHTML = `Presale ${ph.pre?'begins':ph.post?'ended':'ends'} in — <span>${primaryUTC?'UTC':'Local'}</span>`;
-  phaseNameEl.textContent = `Phase: ${ph.pre?'Upcoming':ph.post?'Ended':ph.name}`;
-
-  // Countdown target
-  const target = ph.pre ? new Date(PHASES[0].start)
-                 : ph.post ? now
-                 : new Date(ph.end);
-
-  // Countdown render
-  const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
-  if(s!==lastSecond){ lastSecond=s; const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; countdown.replaceChildren(box(d,'d'),box(h,'h'),box(m,'m'),box(ss,'s')); }
-
-  // Progress within current phase + ETA
-  let pct=0, etaText='';
-  if(ph.pre){ pct=0; etaText = `Starts ${fmtUTC(new Date(PHASES[0].start))}`; $('phaseDates').textContent = `Next: ${fmtUTC(new Date(PHASES[0].start))} → ${fmtUTC(new Date(PHASES[0].end))}`; setPriceCard(PHASES[0].price, PHASES[0].name, false, true); }
-  else if(ph.post){ pct=100; etaText='Ended'; $('phaseDates').textContent = `TGE & listing from ${fmtUTC(PRESALE_END)}`; setPriceCard(LISTING_PRICE, 'Listing', true, false); }
-  else{
-    const sT=new Date(ph.start), eT=new Date(ph.end);
-    pct = clamp01((now - sT)/(eT - sT))*100;
-    const endIn=Math.max(0,eT-now); const hrs=Math.floor(endIn/36e5), mins=Math.floor((endIn%36e5)/6e4);
-    etaText=`Ends in ${hrs}h ${String(mins).padStart(2,'0')}m`;
-    $('phaseDates').textContent = `${ph.name}: ${fmtUTC(sT)} → ${fmtUTC(eT)}`;
-    setPriceCard(ph.price, ph.name, false, false);
-  }
-  $('phaseBar').style.width=`${pct}%`;
-  $('phaseEta').textContent = etaText;
-
-  requestAnimationFrame(loop);
-}
-
-/* Sticky CTA timing */
-const SHOW_BAR_DAYS = 14;
-function toggleBar(){
-  const days=(PRESALE_START - new Date())/86400000;
-  document.getElementById('stickyCTA').classList.toggle('hidden', !(window.innerWidth < 768 && days>0 && days<=SHOW_BAR_DAYS));
-}
-
-/* Active nav highlight */
-const allNavLinks = [...document.querySelectorAll('header nav a')];
-const moreMenuBtn = document.getElementById('more-menu-btn');
-const navSections = allNavLinks.map(link => document.getElementById(link.getAttribute('href').substring(1))).filter(Boolean);
-
-const navObserver = new IntersectionObserver(entries => {
-    let activeEntry = null;
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            if (!activeEntry || entry.intersectionRatio > activeEntry.intersectionRatio) {
-                activeEntry = entry;
+    /* Sound Manager */
+    const soundManager = {
+        isMuted: true,
+        synth: null,
+        init() {
+            if (typeof Tone === 'undefined') {
+                console.log("Tone.js not loaded, sounds disabled.");
+                $('mute-button').style.display = 'none';
+                return;
             }
+            this.synth = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: 'sine' },
+                envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 },
+                volume: -20
+            }).toDestination();
+            
+            const muteButton = $('mute-button');
+            muteButton.addEventListener('click', () => this.toggleMute());
+            this.updateButton();
+        },
+        play(note, duration = '16n') {
+            if (!this.isMuted && this.synth) {
+                this.synth.triggerAttackRelease(note, duration);
+            }
+        },
+        toggleMute() {
+            this.isMuted = !this.isMuted;
+            this.updateButton();
+            this.play('C5');
+        },
+        updateButton() {
+            $('sound-on-icon').classList.toggle('hidden', this.isMuted);
+            $('sound-off-icon').classList.toggle('hidden', !this.isMuted);
         }
+    };
+    soundManager.init();
+
+    // Attach sounds to interactive elements
+    document.querySelectorAll('button, a.laser').forEach(el => {
+        el.addEventListener('mouseenter', () => soundManager.play('C6', '32n'));
+        el.addEventListener('click', () => soundManager.play('E6', '16n'));
     });
 
-    if (activeEntry) {
-        const activeId = activeEntry.target.id;
-        let dropdownIsActive = false;
-        
-        allNavLinks.forEach(link => {
-            const linkId = link.getAttribute('href').substring(1);
-            const isActive = linkId === activeId;
-            link.classList.toggle('text-white', isActive);
-            if (isActive && link.closest('#more-menu-dropdown')) {
-                dropdownIsActive = true;
-            }
-        });
-        
-        moreMenuBtn.classList.toggle('text-white', dropdownIsActive);
-    }
-}, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
 
-navSections.forEach(section => navObserver.observe(section));
+    /* Header elevation on scroll */
+    const header = document.getElementById('siteHeader');
+    addEventListener('scroll', ()=> header.classList.toggle('header-float', scrollY>12), {passive:true});
 
+    /* Time formatting */
+    const fmtBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
+    const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtBase, timeZone:'UTC', timeZoneName:'short' });
+    const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtBase, timeZoneName:'short' });
 
-/* Reveal-on-scroll */
-(function(){
-  const els = document.querySelectorAll('.reveal');
-  els.forEach(el => { el.style.opacity=0; el.style.transform='translateY(12px)'; el.style.transition='opacity .5s ease, transform .5s ease'; });
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach((e)=>{
-      if(e.isIntersecting){
-        e.target.style.opacity=1; e.target.style.transform='translateY(0)';
-        e.target.style.transitionDelay = (Number(e.target.dataset.delay)||0)+'ms';
-        io.unobserve(e.target);
+    /* localStorage helpers */
+    function safeGet(key, fallback=null){ try{ return localStorage.getItem(key) ?? fallback }catch{ return fallback } }
+    function safeSet(key, val){ try{ localStorage.setItem(key, val) }catch{} }
+
+    /* ================== UTC/LOCAL TOGGLE ================== */
+    let primaryUTC = (safeGet('etrx_tz', 'utc') || 'utc') === 'utc';
+    function updateWhen(){
+      const s0 = new Date(PHASES[0].start), e0 = new Date(PHASES[0].end);
+      if (primaryUTC){
+        whenPrimary.textContent   = `Presale: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
+        whenSecondary.textContent = `Local time: ${fmtLoc(PRESALE_START)} → ${fmtLoc(PRESALE_END)}`;
+        modeLabel.textContent='UTC';
+        tzToggle.textContent='Make Local primary';
+        tzToggle.setAttribute('aria-pressed','false');
+        $('phaseScheduleTz').textContent = 'Times in UTC';
+      } else {
+        whenPrimary.textContent   = `Presale: ${fmtLoc(PRESALE_START)} → ${fmtLoc(PRESALE_END)}`;
+        whenSecondary.textContent = `UTC time: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
+        modeLabel.textContent='Local';
+        tzToggle.textContent='Make UTC primary';
+        tzToggle.setAttribute('aria-pressed','true');
+        $('phaseScheduleTz').textContent = 'Times in Local';
       }
-    });
-  }, {threshold:.12});
-  els.forEach(el=>io.observe(el));
-})();
-
-/* ===== Formspree (AJAX) ===== */
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
-async function postFormspree(data){
-  const ctrl = new AbortController();
-  const t = setTimeout(()=>ctrl.abort(), 10000);
-  try{
-    const res=await fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify(data), signal: ctrl.signal });
-    if(!res.ok) throw new Error('Bad response'); return res.json().catch(()=>({}));
-  } finally { clearTimeout(t); }
-}
-const notifyForm=$('notifyForm'), notifyMsg=$('notifyMsg'), notifySuccess=$('notifySuccess');
-const email = document.getElementById('email');
-email?.addEventListener('input', ()=>{
-  const ok = email.checkValidity();
-  email.classList.toggle('is-valid', ok);
-  email.classList.toggle('is-invalid', !ok && email.value.length>0);
-});
-if (notifyForm){
-  notifyForm.addEventListener('submit', async (e)=>{
-    e.preventDefault(); notifyMsg.classList.add('hidden');
-    const fd=new FormData(notifyForm); const trap=(fd.get('company')||'').trim(); if(trap) return;
-    try{
-      notifyForm.setAttribute('aria-busy','true');
-      await postFormspree(Object.fromEntries(fd.entries()));
-      notifyForm.classList.add('hidden'); notifySuccess.classList.remove('hidden');
-      toast('Check your email to confirm ✉️');
-      soundManager.play('G5', '8n');
-    } catch(err){
-      notifyMsg.textContent='Submission failed. Please check your connection and try again.'; notifyMsg.classList.remove('hidden');
-      toast('Submission failed. Try again.', true);
-    } finally {
-      notifyForm.removeAttribute('aria-busy');
+      renderPhaseTable(); // keep table in sync with timezone change
     }
-  });
-}
-if(location.hash==='#notify-success'){ notifyForm?.classList.add('hidden'); notifySuccess?.classList.remove('hidden'); }
+    const tzToggle = document.getElementById('tzToggle');
+    tzToggle?.addEventListener('click', ()=>{ primaryUTC=!primaryUTC; safeSet('etrx_tz', primaryUTC ? 'utc' : 'local'); updateWhen(); });
 
-/* ===== ENS-aware allowlist ===== */
-const wlForm=$('wlForm'), wlMsg=$('wlMsg'), wlHelp=$('wlHelp'), wlSuccess=$('wlSuccess');
-const addrRe=/^0x[a-fA-F0-9]{40}$/; const ensRe=/^[a-z0-9-]+(\.[a-z0-9-]+)*\.eth$/i;
-function setHelp(text, ok=false){ wlHelp.textContent=text||''; wlHelp.style.color= ok ? 'var(--muted)' : 'var(--dim)'; }
+    /* precision clock */
+    const t0 = Date.now(), p0 = performance.now();
+    const nowAccurate = ()=> new Date(t0 + (performance.now()-p0));
 
-let providerENS = null;
-if (window.ethers?.providers?.JsonRpcProvider) {
-  providerENS = new window.ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
-}
-let ensTimer=null;
-async function resolveIfEns(value){
-  if(!value || !ensRe.test(value) || value.length>255) return null;
-  if(!providerENS?.resolveName) return null;
-  try{
-    const ctrl=new AbortController(); const timeout=setTimeout(()=>ctrl.abort(),10000);
-    const resolved = await providerENS.resolveName(value); clearTimeout(timeout);
-    return resolved||null;
-  }catch{ return null; }
-}
+    /* ===== Nav Dropdown ===== */
+    const moreMenuContainer = document.getElementById('more-menu');
+    if (moreMenuContainer) {
+        const btn = moreMenuContainer.querySelector('button');
+        const dropdown = moreMenuContainer.querySelector('div');
+        
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isHidden = dropdown.classList.contains('hidden');
+            if(isHidden) {
+                dropdown.classList.remove('hidden');
+                btn.setAttribute('aria-expanded', 'true');
+            } else {
+                dropdown.classList.add('hidden');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
 
-if (wlForm){
-  const walletInput=$('wallet');
-  walletInput.addEventListener('input', ()=>{
-    wlMsg.classList.add('hidden');
-    const v=walletInput.value.trim();
-    if(!v){ setHelp(''); return; }
-    if(addrRe.test(v)){ setHelp('Looks like a valid Ethereum address.', true); return; }
-    if(ensRe.test(v)){
-      setHelp('Checking ENS…');
-      clearTimeout(ensTimer);
-      ensTimer = setTimeout(async ()=>{
-        const addr=await resolveIfEns(v);
-        setHelp(addr?`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`:'Could not resolve this ENS name.', !!addr);
-      }, 200);
-      return;
+        document.addEventListener('click', (e) => {
+            if (!moreMenuContainer.contains(e.target)) {
+                dropdown.classList.add('hidden');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
     }
-    setHelp('Enter a valid 0x… address or an ENS name like yourname.eth');
-  });
 
-  wlForm.addEventListener('submit', async (e)=>{
-    e.preventDefault(); wlMsg.classList.add('hidden');
-    const fd=new FormData(wlForm); const trap=(fd.get('company')||'').trim(); let wallet=(fd.get('wallet')||'').trim(); if(trap) return;
-    let finalAddr=null;
-    if(addrRe.test(wallet)){ finalAddr=wallet; }
-    else if(ensRe.test(wallet)){
-      wlHelp.textContent='Resolving ENS…';
-      const resolved=await resolveIfEns(wallet);
-      if(resolved) finalAddr=resolved; else { wlMsg.textContent='Enter a valid address, or a resolvable ENS name.'; wlMsg.classList.remove('hidden'); return; }
-    } else { wlMsg.textContent='Enter a valid 0x… address or ENS name (yourname.eth).'; wlMsg.classList.remove('hidden'); return; }
-    try{
-      const list=JSON.parse(safeGet('etrx_wl','[]')||'[]'); if(!list.includes(finalAddr)) list.push(finalAddr);
-      safeSet('etrx_wl', JSON.stringify(list));
-      await postFormspree({ wallet: finalAddr, type: 'allowlist' });
-      wlForm.classList.add('hidden'); wlSuccess.classList.remove('hidden');
-      toast('Wallet submitted ✅');
-      soundManager.play('G5', '8n');
-    }catch(err){
-      wlMsg.textContent='Saved locally. Network submit failed — please try again later.'; wlMsg.classList.remove('hidden');
-      toast('Saved locally. Network error.', true);
+    /* Phase helpers */
+    function clamp01(x){ return Math.max(0, Math.min(1, x)); }
+    function currentPhase(t=new Date()){
+      for(const p of PHASES){ const s=new Date(p.start), e=new Date(p.end); if(t>=s && t<=e) return p; }
+      if(t<PRESALE_START) return { pre:true };
+      if(t>PRESALE_END) return { post:true };
+      const nxt = PHASES.find(p=> t < new Date(p.start));
+      return nxt ? {...nxt, upcoming:true} : { post:true };
     }
-  });
-}
 
-/* ===== Injected wallet (EIP-6963 aware) ===== */
-let activeProvider=null;
-let connectedAccount = null;
-function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
-
-/* Modal open/close + focus trap */
-let lastFocus=null;
-function setModalInert(on){ if(on){ modal.removeAttribute('inert'); } else { modal.setAttribute('inert',''); } }
-function showModal(show){
-  if(show){
-    lastFocus = document.activeElement;
-    modal.classList.remove('hidden'); modal.classList.add('flex'); setModalInert(true);
-    const f = modal.querySelector('button, [href], input, [tabindex]:not([tabindex="-1"])');
-    f?.focus();
-  } else {
-    modal.classList.add('hidden'); modal.classList.remove('flex'); setModalInert(false);
-    lastFocus?.focus();
-  }
-}
-function openModal(){ discoverInjected(); showModal(true); }
-;[connectBtn, openConnect].forEach(btn=> btn?.addEventListener('click', openModal));
-modalClose.addEventListener('click', ()=> showModal(false));
-modal.addEventListener('click', (e)=>{ if(e.target===modal) showModal(false); });
-
-document.addEventListener('keydown', (e)=>{
-  if(!modal.classList.contains('flex')) return;
-  const nodes = modal.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])');
-  if (!nodes.length) return;
-  const first = nodes[0], last = nodes[nodes.length-1];
-  if(e.key === 'Tab'){
-    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
-    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
-  } else if(e.key === 'Escape'){ showModal(false); }
-});
-
-async function ensureMainnet(provider, hexChain='0x1'){
-  try{
-    const current=await provider.request({ method:'eth_chainId' });
-    if(current?.toLowerCase()===hexChain.toLowerCase()) return true;
-    await provider.request({ method:'wallet_switchEthereumChain', params:[{ chainId: hexChain }] });
-    return true;
-  } catch(err){ console.warn('Chain switch failed', err); toast('Please switch to Ethereum Mainnet in your wallet.', true); return false; }
-}
-
-function discoverInjected(){
-  walletList.innerHTML = '';
-  const entries = [];
-  const announced = [];
-  function onAnnounce(e){ announced.push(e.detail); }
-  window.addEventListener('eip6963:announceProvider', onAnnounce, { once:false });
-  window.dispatchEvent(new Event('eip6963:requestProvider'));
-
-  if (window.ethereum){
-    const providers = window.ethereum.providers?.length ? window.ethereum.providers : [window.ethereum];
-    providers.forEach(p=>{
-      const name = p.isMetaMask ? 'MetaMask' : p.isBraveWallet ? 'Brave Wallet' : p.isRabby ? 'Rabby' : p.isFrame ? 'Frame' : 'Browser Wallet';
-      entries.push({ name, provider:p });
-    });
-  }
-  setTimeout(()=>{
-    const merged = announced.length ? announced.map(({info,provider})=>({name:info?.name||'Browser Wallet', provider})) : entries;
-    if(!merged.length){
-      const el = document.createElement('div');
-      el.className = 'small-dim';
-      el.textContent = 'No browser wallet detected.';
-      walletList.appendChild(el);
-      return;
+    /* Countdown UI block builder */
+    function box(v,label){
+      const d=document.createElement('div');
+      d.className='w-[5.5rem] rounded-xl glass card p-3 text-center';
+      d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text">${String(v).padStart(2,'0')}</div><div class="text-[11px] uppercase small-dim">${label}</div>`;
+      return d;
     }
-    merged.forEach(({name,provider})=>{
-      const btn=document.createElement('button');
-      btn.className='btn-ghost text-left flex items-center justify-between';
-      btn.setAttribute('role','listitem');
-      btn.innerHTML=`<span>🧩 ${name}</span><span class="small-dim">Use extension</span>`;
-      btn.addEventListener('click', async ()=>{
-        showModal(false);
-        try{
-          const accounts=await provider.request({ method:'eth_requestAccounts' });
-          await onConnected(provider, accounts?.[0]||null);
-        }catch(err){ console.warn('Injected connect error', err); toast('Could not connect to wallet.', true); }
+
+    /* Dynamic pricing helpers */
+    const usdInEl = $('usdIn');
+    const tokensOutEl = $('tokensOut');
+    let currentCalcPrice = PHASES[0].price;
+
+    function setPriceCard(price, label, listingActive=false, notStarted=false){
+      const pct = Math.max(0, (1 - price/LISTING_PRICE)*100);
+      $('priceNow').textContent = `$${price.toFixed(2)}`;
+      $('calcPrice').textContent = `$${price.toFixed(2)}`;
+      currentCalcPrice = price; // Update global price for calculator
+      $('pricePhaseName').textContent = label + (listingActive ? ' (Active)' : notStarted ? ' (up next)' : '');
+      const lp = $('priceList');
+      if(listingActive){ lp.classList.remove('line-through'); lp.textContent = `$${LISTING_PRICE.toFixed(2)} (Active)`; $('discountLine').textContent = 'Listing live'; }
+      else { if(!lp.classList.contains('line-through')) lp.classList.add('line-through'); lp.textContent = `$${LISTING_PRICE.toFixed(2)}`; $('discountLine').textContent = `${pct.toFixed(0)}% below listing`; }
+      calculateFromUSD();
+    }
+
+    function calculateFromUSD() {
+        const usd = parseFloat(usdInEl.value);
+        if (!isNaN(usd) && usd > 0) {
+            const tokens = usd / currentCalcPrice;
+            tokensOutEl.value = tokens.toFixed(2);
+        } else if (usdInEl.value === '') {
+            tokensOutEl.value = '';
+        }
+    }
+
+    function calculateFromTokens() {
+        const tokens = parseFloat(tokensOutEl.value);
+        if (!isNaN(tokens) && tokens > 0) {
+            const usd = tokens * currentCalcPrice;
+            usdInEl.value = usd.toFixed(2);
+        } else if (tokensOutEl.value === '') {
+            usdInEl.value = '';
+        }
+    }
+    usdInEl.addEventListener('input', calculateFromUSD);
+    tokensOutEl.addEventListener('input', calculateFromTokens);
+
+
+    /* Render Phase schedule table */
+    function shortRange(start, end){
+      const s = new Date(start), e = new Date(end);
+      const fmtS = primaryUTC ? s.toLocaleString([], { month:'short', day:'2-digit', timeZone:'UTC'}) : s.toLocaleString([], { month:'short', day:'2-digit'});
+      const fmtE = primaryUTC ? e.toLocaleString([], { month:'short', day:'2-digit', timeZone:'UTC'}) : e.toLocaleString([], { month:'short', day:'2-digit'});
+      return `${fmtS} → ${fmtE}`;
+    }
+    function renderPhaseTable(){
+      const now = nowAccurate();
+      const wrap = $('phaseTable');
+      wrap.innerHTML = '';
+      PHASES.forEach(p=>{
+        const row = document.createElement('div');
+        row.className = 'row text-sm';
+        const isNow = now >= new Date(p.start) && now <= new Date(p.end);
+        row.innerHTML = `
+          <div class="font-semibold">${p.name} ${isNow?'<span class="badge badge-now">Now</span>':''}</div>
+          <div class="opacity-90">$${p.price.toFixed(2)}</div>
+          <div class="small-dim">${shortRange(p.start, p.end)}</div>
+        `;
+        wrap.appendChild(row);
       });
-      walletList.appendChild(btn);
-    });
-  }, 350);
-}
-
-function removeProviderListeners(){
-  if(!activeProvider?.removeListener) return;
-  activeProvider.removeListener('accountsChanged', onAccountsChanged);
-  activeProvider.removeListener('disconnect', onDisconnect);
-  activeProvider.removeListener('chainChanged', onChainChanged);
-}
-function onAccountsChanged(accs){ 
-  connectedAccount = accs?.[0] || null;
-  walletShort.textContent=shortAddr(connectedAccount); 
-  safeSet('etrx_wallet', connectedAccount); 
-  updateReferralUI();
-}
-function onDisconnect(){ doDisconnect(); }
-async function onChainChanged(){ await ensureMainnet(activeProvider); }
-
-async function onConnected(provider, account){
-  if(activeProvider && provider!==activeProvider){ removeProviderListeners(); }
-  activeProvider = provider;
-  await ensureMainnet(provider);
-  connectedAccount = account || null;
-  safeSet('etrx_wallet', connectedAccount);
-  walletShort.textContent = shortAddr(connectedAccount);
-  walletPill.classList.remove('hidden');
-  connectBtn.classList.add('hidden-important');
-  openConnect?.classList.add('hidden-important');
-  provider.on?.('accountsChanged', onAccountsChanged);
-  provider.on?.('disconnect', onDisconnect);
-  provider.on?.('chainChanged', onChainChanged);
-  toast('Wallet connected ✅');
-  soundManager.play('A5', '8n');
-  updateReferralUI();
-}
-function doDisconnect(){
-  try{ activeProvider?.disconnect?.(); }catch{}
-  removeProviderListeners();
-  activeProvider=null; 
-  connectedAccount = null;
-  safeSet('etrx_wallet','');
-  walletPill.classList.add('hidden');
-  connectBtn.classList.remove('hidden-important');
-  openConnect?.classList.remove('hidden-important');
-  toast('Disconnected', true);
-  updateReferralUI();
-}
-disconnectBtn.addEventListener('click', doDisconnect);
-
-/* Restore previous wallet session */
-const prev = safeGet('etrx_wallet','');
-if (prev){
-  connectedAccount = prev;
-  walletShort.textContent = shortAddr(prev);
-  walletPill.classList.remove('hidden');
-  connectBtn.classList.add('hidden-important');
-  openConnect?.classList.add('hidden-important');
-  updateReferralUI();
-}
-
-/* Referral System */
-function updateReferralUI(){
-    const referralSection = $('referral-section');
-    if (connectedAccount) {
-        const link = `${window.location.origin}${window.location.pathname}?ref=${connectedAccount}`;
-        $('referral-link').value = link;
-        referralSection.classList.remove('hidden');
-    } else {
-        referralSection.classList.add('hidden');
     }
-}
-$('copy-referral').addEventListener('click', () => {
-    const linkInput = $('referral-link');
-    linkInput.select();
-    navigator.clipboard.writeText(linkInput.value);
-    toast('Referral link copied!');
-    soundManager.play('C6', '8n');
-});
 
-/* Share & Copy Buttons */
-const copyAddrBtn = $('copyAddr');
-const presaleAddrInput = $('presaleAddr');
-copyAddrBtn.addEventListener('click', () => {
-    presaleAddrInput.select();
-    navigator.clipboard.writeText(presaleAddrInput.value);
-    toast('Address copied to clipboard!');
-    soundManager.play('C6', '8n');
-});
+    /* Main loop: countdown + progress + phase + pricing */
+    let lastSecond=-1;
+    function loop(){
+      const now = nowAccurate();
+      const ph = currentPhase(now);
+
+      // Phase label + phase name
+      phaseLabel.innerHTML = `Presale ${ph.pre?'begins':ph.post?'ended':'ends'} in — <span>${primaryUTC?'UTC':'Local'}</span>`;
+      phaseNameEl.textContent = `Phase: ${ph.pre?'Upcoming':ph.post?'Ended':ph.name}`;
+
+      // Countdown target
+      const target = ph.pre ? new Date(PHASES[0].start)
+                     : ph.post ? now
+                     : new Date(ph.end);
+
+      // Countdown render
+      const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
+      if(s!==lastSecond){ lastSecond=s; const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; countdown.replaceChildren(box(d,'d'),box(h,'h'),box(m,'m'),box(ss,'s')); }
+
+      // Progress within current phase + ETA
+      let pct=0, etaText='';
+      if(ph.pre){ pct=0; etaText = `Starts ${fmtUTC(new Date(PHASES[0].start))}`; $('phaseDates').textContent = `Next: ${fmtUTC(new Date(PHASES[0].start))} → ${fmtUTC(new Date(PHASES[0].end))}`; setPriceCard(PHASES[0].price, PHASES[0].name, false, true); }
+      else if(ph.post){ pct=100; etaText='Ended'; $('phaseDates').textContent = `TGE & listing from ${fmtUTC(PRESALE_END)}`; setPriceCard(LISTING_PRICE, 'Listing', true, false); }
+      else{
+        const sT=new Date(ph.start), eT=new Date(ph.end);
+        pct = clamp01((now - sT)/(eT - sT))*100;
+        const endIn=Math.max(0,eT-now); const hrs=Math.floor(endIn/36e5), mins=Math.floor((endIn%36e5)/6e4);
+        etaText=`Ends in ${hrs}h ${String(mins).padStart(2,'0')}m`;
+        $('phaseDates').textContent = `${ph.name}: ${fmtUTC(sT)} → ${fmtUTC(eT)}`;
+        setPriceCard(ph.price, ph.name, false, false);
+      }
+      $('phaseBar').style.width=`${pct}%`;
+      $('phaseEta').textContent = etaText;
+
+      requestAnimationFrame(loop);
+    }
+
+    /* Sticky CTA timing */
+    const SHOW_BAR_DAYS = 14;
+    function toggleBar(){
+      const days=(PRESALE_START - new Date())/86400000;
+      document.getElementById('stickyCTA').classList.toggle('hidden', !(window.innerWidth < 768 && days>0 && days<=SHOW_BAR_DAYS));
+    }
+
+    /* Active nav highlight */
+    const allNavLinks = [...document.querySelectorAll('header nav a')];
+    const moreMenuBtn = document.getElementById('more-menu-btn');
+    const navSections = allNavLinks.map(link => document.getElementById(link.getAttribute('href').substring(1))).filter(Boolean);
+
+    const navObserver = new IntersectionObserver(entries => {
+        let activeEntry = null;
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if (!activeEntry || entry.intersectionRatio > activeEntry.intersectionRatio) {
+                    activeEntry = entry;
+                }
+            }
+        });
+
+        if (activeEntry) {
+            const activeId = activeEntry.target.id;
+            let dropdownIsActive = false;
+            
+            allNavLinks.forEach(link => {
+                const linkId = link.getAttribute('href').substring(1);
+                const isActive = linkId === activeId;
+                link.classList.toggle('text-white', isActive);
+                if (isActive && link.closest('#more-menu-dropdown')) {
+                    dropdownIsActive = true;
+                }
+            });
+            
+            moreMenuBtn.classList.toggle('text-white', dropdownIsActive);
+        }
+    }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+
+    navSections.forEach(section => navObserver.observe(section));
 
 
-/* Toast */
-function toast(msg, isWarn=false){
-  const t=document.createElement('div');
-  t.setAttribute('role','status'); t.setAttribute('aria-live','polite'); t.setAttribute('aria-atomic','true');
-  t.className='toast fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-2 rounded-lg glass card text-sm z-50';
-  t.style.borderColor = isWarn ? 'rgba(255,99,99,.35)' : 'var(--ring)';
-  t.textContent=msg; document.body.appendChild(t);
-  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .25s'; t.addEventListener('transitionend', ()=>t.remove(), {once:true}); }, 2500);
-}
+    /* Reveal-on-scroll */
+    (function(){
+      const els = document.querySelectorAll('.reveal');
+      els.forEach(el => { el.style.opacity=0; el.style.transform='translateY(12px)'; el.style.transition='opacity .5s ease, transform .5s ease'; });
+      const io = new IntersectionObserver(entries=>{
+        entries.forEach((e)=>{
+          if(e.isIntersecting){
+            e.target.style.opacity=1; e.target.style.transform='translateY(0)';
+            e.target.style.transitionDelay = (Number(e.target.dataset.delay)||0)+'ms';
+            io.unobserve(e.target);
+          }
+        });
+      }, {threshold:.12});
+      els.forEach(el=>io.observe(el));
+    })();
 
-/* ===== Live On-Chain Data ===== */
-const onChain = {
-    contractAddress: "0xYourPresaleContractAddressHere", // <-- TODO: REPLACE THIS
-    contractABI: [], // <-- TODO: REPLACE THIS with your presale contract's ABI
-    provider: null,
-    contract: null,
-    hardCap: 150, // ETH
-    
-    init() {
-        if (typeof ethers === 'undefined') {
-            console.log("Ethers.js not loaded, on-chain data disabled.");
+    /* ===== Formspree (AJAX) ===== */
+    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
+    async function postFormspree(data){
+      const ctrl = new AbortController();
+      const t = setTimeout(()=>ctrl.abort(), 10000);
+      try{
+        const res=await fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify(data), signal: ctrl.signal });
+        if(!res.ok) throw new Error('Bad response'); return res.json().catch(()=>({}));
+      } finally { clearTimeout(t); }
+    }
+    const notifyForm=$('notifyForm'), notifyMsg=$('notifyMsg'), notifySuccess=$('notifySuccess');
+    const email = document.getElementById('email');
+    email?.addEventListener('input', ()=>{
+      const ok = email.checkValidity();
+      email.classList.toggle('is-valid', ok);
+      email.classList.toggle('is-invalid', !ok && email.value.length>0);
+    });
+    if (notifyForm){
+      notifyForm.addEventListener('submit', async (e)=>{
+        e.preventDefault(); notifyMsg.classList.add('hidden');
+        const fd=new FormData(notifyForm); const trap=(fd.get('company')||'').trim(); if(trap) return;
+        try{
+          notifyForm.setAttribute('aria-busy','true');
+          await postFormspree(Object.fromEntries(fd.entries()));
+          notifyForm.classList.add('hidden'); notifySuccess.classList.remove('hidden');
+          toast('Check your email to confirm ✉️');
+          soundManager.play('G5', '8n');
+        } catch(err){
+          notifyMsg.textContent='Submission failed. Please check your connection and try again.'; notifyMsg.classList.remove('hidden');
+          toast('Submission failed. Try again.', true);
+        } finally {
+          notifyForm.removeAttribute('aria-busy');
+        }
+      });
+    }
+    if(location.hash==='#notify-success'){ notifyForm?.classList.add('hidden'); notifySuccess?.classList.remove('hidden'); }
+
+    /* ===== ENS-aware allowlist ===== */
+    const wlForm=$('wlForm'), wlMsg=$('wlMsg'), wlHelp=$('wlHelp'), wlSuccess=$('wlSuccess');
+    const addrRe=/^0x[a-fA-F0-9]{40}$/; const ensRe=/^[a-z0-9-]+(\.[a-z0-9-]+)*\.eth$/i;
+    function setHelp(text, ok=false){ wlHelp.textContent=text||''; wlHelp.style.color= ok ? 'var(--muted)' : 'var(--dim)'; }
+
+    let providerENS = null;
+    if (window.ethers?.providers?.JsonRpcProvider) {
+      providerENS = new window.ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
+    }
+    let ensTimer=null;
+    async function resolveIfEns(value){
+      if(!value || !ensRe.test(value) || value.length>255) return null;
+      if(!providerENS?.resolveName) return null;
+      try{
+        const ctrl=new AbortController(); const timeout=setTimeout(()=>ctrl.abort(),10000);
+        const resolved = await providerENS.resolveName(value); clearTimeout(timeout);
+        return resolved||null;
+      }catch{ return null; }
+    }
+
+    if (wlForm){
+      const walletInput=$('wallet');
+      walletInput.addEventListener('input', ()=>{
+        wlMsg.classList.add('hidden');
+        const v=walletInput.value.trim();
+        if(!v){ setHelp(''); return; }
+        if(addrRe.test(v)){ setHelp('Looks like a valid Ethereum address.', true); return; }
+        if(ensRe.test(v)){
+          setHelp('Checking ENS…');
+          clearTimeout(ensTimer);
+          ensTimer = setTimeout(async ()=>{
+            const addr=await resolveIfEns(v);
+            setHelp(addr?`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`:'Could not resolve this ENS name.', !!addr);
+          }, 200);
+          return;
+        }
+        setHelp('Enter a valid 0x… address or an ENS name like yourname.eth');
+      });
+
+      wlForm.addEventListener('submit', async (e)=>{
+        e.preventDefault(); wlMsg.classList.add('hidden');
+        const fd=new FormData(wlForm); const trap=(fd.get('company')||'').trim(); let wallet=(fd.get('wallet')||'').trim(); if(trap) return;
+        let finalAddr=null;
+        if(addrRe.test(wallet)){ finalAddr=wallet; }
+        else if(ensRe.test(wallet)){
+          wlHelp.textContent='Resolving ENS…';
+          const resolved=await resolveIfEns(wallet);
+          if(resolved) finalAddr=resolved; else { wlMsg.textContent='Enter a valid address, or a resolvable ENS name.'; wlMsg.classList.remove('hidden'); return; }
+        } else { wlMsg.textContent='Enter a valid 0x… address or ENS name (yourname.eth).'; wlMsg.classList.remove('hidden'); return; }
+        try{
+          const list=JSON.parse(safeGet('etrx_wl','[]')||'[]'); if(!list.includes(finalAddr)) list.push(finalAddr);
+          safeSet('etrx_wl', JSON.stringify(list));
+          await postFormspree({ wallet: finalAddr, type: 'allowlist' });
+          wlForm.classList.add('hidden'); wlSuccess.classList.remove('hidden');
+          toast('Wallet submitted ✅');
+          soundManager.play('G5', '8n');
+        }catch(err){
+          wlMsg.textContent='Saved locally. Network submit failed — please try again later.'; wlMsg.classList.remove('hidden');
+          toast('Saved locally. Network error.', true);
+        }
+      });
+    }
+
+    /* ===== Injected wallet (EIP-6963 aware) ===== */
+    let activeProvider=null;
+    let connectedAccount = null;
+    function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
+
+    /* Modal open/close + focus trap */
+    let lastFocus=null;
+    function setModalInert(on, modalId){ 
+        const modal = $(modalId);
+        if(on){ modal.removeAttribute('inert'); } else { modal.setAttribute('inert',''); } 
+    }
+
+    function showModal(modalId, show){
+      const modal = $(modalId);
+      if(show){
+        lastFocus = document.activeElement;
+        modal.classList.remove('hidden'); modal.classList.add('flex'); setModalInert(true, modalId);
+        const f = modal.querySelector('button, [href], input, [tabindex]:not([tabindex="-1"])');
+        f?.focus();
+      } else {
+        modal.classList.add('hidden'); modal.classList.remove('flex'); setModalInert(false, modalId);
+        lastFocus?.focus();
+      }
+    }
+
+    // Wallet Modal listeners
+    connectBtn?.addEventListener('click', () => { discoverInjected(); showModal('walletModal', true); });
+    modalClose?.addEventListener('click', () => showModal('walletModal', false));
+    modal?.addEventListener('click', (e)=>{ if(e.target===modal) showModal('walletModal', false); });
+
+    // Whitepaper Modal Listeners
+    const wpBtnHeader = $('wp-btn-header');
+    const wpBtnAbout = $('wp-btn-about');
+    const wpModalClose = $('wpModalClose');
+    const whitepaperModal = $('whitepaperModal');
+
+    wpBtnHeader?.addEventListener('click', () => showModal('whitepaperModal', true));
+    wpBtnAbout?.addEventListener('click', () => showModal('whitepaperModal', true));
+    wpModalClose?.addEventListener('click', () => showModal('whitepaperModal', false));
+    whitepaperModal?.addEventListener('click', (e) => { if (e.target === whitepaperModal) showModal('whitepaperModal', false); });
+
+    document.addEventListener('keydown', (e)=>{
+      if (e.key !== 'Escape') return;
+      if(!walletModal.classList.contains('hidden')) showModal('walletModal', false);
+      if(!whitepaperModal.classList.contains('hidden')) showModal('whitepaperModal', false);
+    });
+
+    async function ensureMainnet(provider, hexChain='0x1'){
+      try{
+        const current=await provider.request({ method:'eth_chainId' });
+        if(current?.toLowerCase()===hexChain.toLowerCase()) return true;
+        await provider.request({ method:'wallet_switchEthereumChain', params:[{ chainId: hexChain }] });
+        return true;
+      } catch(err){ console.warn('Chain switch failed', err); toast('Please switch to Ethereum Mainnet in your wallet.', true); return false; }
+    }
+
+    function discoverInjected(){
+      walletList.innerHTML = '';
+      const entries = [];
+      const announced = [];
+      function onAnnounce(e){ announced.push(e.detail); }
+      window.addEventListener('eip6963:announceProvider', onAnnounce, { once:false });
+      window.dispatchEvent(new Event('eip6963:requestProvider'));
+
+      if (window.ethereum){
+        const providers = window.ethereum.providers?.length ? window.ethereum.providers : [window.ethereum];
+        providers.forEach(p=>{
+          const name = p.isMetaMask ? 'MetaMask' : p.isBraveWallet ? 'Brave Wallet' : p.isRabby ? 'Rabby' : p.isFrame ? 'Frame' : 'Browser Wallet';
+          entries.push({ name, provider:p });
+        });
+      }
+      setTimeout(()=>{
+        const merged = announced.length ? announced.map(({info,provider})=>({name:info?.name||'Browser Wallet', provider})) : entries;
+        if(!merged.length){
+          const el = document.createElement('div');
+          el.className = 'small-dim';
+          el.textContent = 'No browser wallet detected.';
+          walletList.appendChild(el);
+          return;
+        }
+        merged.forEach(({name,provider})=>{
+          const btn=document.createElement('button');
+          btn.className='btn-ghost text-left flex items-center justify-between';
+          btn.setAttribute('role','listitem');
+          btn.innerHTML=`<span>🧩 ${name}</span><span class="small-dim">Use extension</span>`;
+          btn.addEventListener('click', async ()=>{
+            showModal('walletModal', false);
+            try{
+              const accounts=await provider.request({ method:'eth_requestAccounts' });
+              await onConnected(provider, accounts?.[0]||null);
+            }catch(err){ console.warn('Injected connect error', err); toast('Could not connect to wallet.', true); }
+          });
+          walletList.appendChild(btn);
+        });
+      }, 350);
+    }
+
+    function removeProviderListeners(){
+      if(!activeProvider?.removeListener) return;
+      activeProvider.removeListener('accountsChanged', onAccountsChanged);
+      activeProvider.removeListener('disconnect', onDisconnect);
+      activeProvider.removeListener('chainChanged', onChainChanged);
+    }
+    function onAccountsChanged(accs){ 
+      connectedAccount = accs?.[0] || null;
+      walletShort.textContent=shortAddr(connectedAccount); 
+      safeSet('etrx_wallet', connectedAccount); 
+      updateReferralUI();
+    }
+    function onDisconnect(){ doDisconnect(); }
+    async function onChainChanged(){ await ensureMainnet(activeProvider); }
+
+    async function onConnected(provider, account){
+      if(activeProvider && provider!==activeProvider){ removeProviderListeners(); }
+      activeProvider = provider;
+      await ensureMainnet(provider);
+      connectedAccount = account || null;
+      safeSet('etrx_wallet', connectedAccount);
+      walletShort.textContent = shortAddr(connectedAccount);
+      walletPill.classList.remove('hidden');
+      connectBtn.classList.add('hidden-important');
+      //openConnect?.classList.add('hidden-important');
+      provider.on?.('accountsChanged', onAccountsChanged);
+      provider.on?.('disconnect', onDisconnect);
+      provider.on?.('chainChanged', onChainChanged);
+      toast('Wallet connected ✅');
+      soundManager.play('A5', '8n');
+      updateReferralUI();
+    }
+    function doDisconnect(){
+      try{ activeProvider?.disconnect?.(); }catch{}
+      removeProviderListeners();
+      activeProvider=null; 
+      connectedAccount = null;
+      safeSet('etrx_wallet','');
+      walletPill.classList.add('hidden');
+      connectBtn.classList.remove('hidden-important');
+      //openConnect?.classList.remove('hidden-important');
+      toast('Disconnected', true);
+      updateReferralUI();
+    }
+    disconnectBtn.addEventListener('click', doDisconnect);
+
+    /* Restore previous wallet session */
+    const prev = safeGet('etrx_wallet','');
+    if (prev){
+      connectedAccount = prev;
+      walletShort.textContent = shortAddr(prev);
+      walletPill.classList.remove('hidden');
+      connectBtn.classList.add('hidden-important');
+      //openConnect?.classList.add('hidden-important');
+      updateReferralUI();
+    }
+
+    /* Referral System */
+    function updateReferralUI(){
+        const referralSection = $('referral-section');
+        if (connectedAccount) {
+            const link = `${window.location.origin}${window.location.pathname}?ref=${connectedAccount}`;
+            $('referral-link').value = link;
+            referralSection.classList.remove('hidden');
+        } else {
+            referralSection.classList.add('hidden');
+        }
+    }
+    $('copy-referral').addEventListener('click', () => {
+        const linkInput = $('referral-link');
+        linkInput.select();
+        navigator.clipboard.writeText(linkInput.value);
+        toast('Referral link copied!');
+        soundManager.play('C6', '8n');
+    });
+
+    /* Share & Copy Buttons */
+    const copyAddrBtn = $('copyAddr');
+    const presaleAddrInput = $('presaleAddr');
+    copyAddrBtn.addEventListener('click', () => {
+        presaleAddrInput.select();
+        navigator.clipboard.writeText(presaleAddrInput.value);
+        toast('Address copied to clipboard!');
+        soundManager.play('C6', '8n');
+    });
+
+
+    /* Toast */
+    function toast(msg, isWarn=false){
+      const t=document.createElement('div');
+      t.setAttribute('role','status');
+      t.setAttribute('aria-live','polite');
+      t.setAttribute('aria-atomic','true');
+      t.className='toast fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-2 rounded-lg glass card text-sm z-50';
+      t.style.borderColor = isWarn ? 'rgba(255,99,99,.35)' : 'var(--ring)';
+      t.textContent=msg;
+      document.body.appendChild(t);
+      setTimeout(()=>{
+        t.style.opacity='0';
+        t.style.transition='opacity .25s';
+        t.addEventListener('transitionend', ()=>t.remove(), {once:true});
+      }, 2500);
+    }
+
+    /* ===== Live On-Chain Data ===== */
+    const onChain = {
+        contractAddress: "0xYourPresaleContractAddressHere", // <-- TODO: REPLACE THIS
+        contractABI: [], // <-- TODO: REPLACE THIS with your presale contract's ABI
+        provider: null,
+        contract: null,
+        hardCap: 150, // ETH
+        
+        init() {
+            if (typeof ethers === 'undefined') {
+                console.log("Ethers.js not loaded, on-chain data disabled.");
+                return;
+            }
+            this.provider = new ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
+            this.simulateData();
+        },
+        
+        updateUI(data) {
+            $('total-raised').textContent = `${parseFloat(data.totalRaised).toFixed(2)} ETH`;
+            $('total-contributors').textContent = data.contributors;
+            const progress = (parseFloat(data.totalRaised) / this.hardCap) * 100;
+            $('live-progress-bar').style.width = `${Math.min(100, progress)}%`;
+            $('progress-percentage').textContent = `${Math.min(100, progress).toFixed(1)}%`;
+        },
+
+        simulateData() {
+            let simulatedRaised = 34.56;
+            let simulatedContributors = 82;
+            this.updateUI({ totalRaised: String(simulatedRaised), contributors: String(simulatedContributors) });
+            setInterval(() => {
+                simulatedRaised += Math.random() * 2.5;
+                simulatedContributors += Math.floor(Math.random() * 5);
+                if (simulatedRaised > this.hardCap) simulatedRaised = this.hardCap;
+                this.updateUI({ totalRaised: String(simulatedRaised), contributors: String(simulatedContributors) });
+            }, 5000);
+        }
+    };
+    onChain.init();
+
+
+    /* ===== Pie Chart interactivity ===== */
+    const PIE_DATA = {
+        presale: { name: 'Presale', percent: '30%' },
+        liquidity: { name: 'Liquidity', percent: '25%' },
+        eco: { name: 'Ecosystem', percent: '20%' },
+        team: { name: 'Team', percent: '15%' },
+        treasury: { name: 'Treasury', percent: '10%' }
+    };
+    const pieSlices = document.querySelectorAll('.pie-slice');
+    const legendItems = document.querySelectorAll('.legend-item');
+    const pieTextPercent = $('pie-text-percent');
+    const pieTextName = $('pie-text-name');
+
+    function handlePieHover(id) {
+        if (!id) {
+            pieTextPercent.textContent = 'ETRX';
+            pieTextName.textContent = 'Tokenomics';
+            pieSlices.forEach(s => { 
+                s.classList.remove('highlight');
+                s.style.removeProperty('--highlight-color');
+            });
+            legendItems.forEach(l => l.classList.remove('highlight'));
             return;
         }
-        // Use a public read-only provider
-        this.provider = new ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
+        const data = PIE_DATA[id];
+        pieTextPercent.textContent = data.percent;
+        pieTextName.textContent = data.name;
         
-        // TODO: UNCOMMENT THE FOLLOWING LINES WHEN YOU HAVE A DEPLOYED CONTRACT
-        // this.contract = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
-        // this.updateLoop();
-        
-        // For demonstration, use simulated data
-        this.simulateData();
-    },
-    
-    async fetchData() {
-        if (!this.contract) return { totalRaised: '0', contributors: '0' };
-        try {
-            const totalRaisedWei = await this.contract.totalRaised();
-            const contributors = await this.contract.contributorCount();
-            return {
-                totalRaised: ethers.utils.formatEther(totalRaisedWei),
-                contributors: contributors.toString()
-            };
-        } catch (error) {
-            console.error("Error fetching on-chain data:", error);
-            return { totalRaised: 'N/A', contributors: 'N/A' };
-        }
-    },
-    
-    updateUI(data) {
-        $('total-raised').textContent = `${parseFloat(data.totalRaised).toFixed(2)} ETH`;
-        $('total-contributors').textContent = data.contributors;
-        const progress = (parseFloat(data.totalRaised) / this.hardCap) * 100;
-        $('live-progress-bar').style.width = `${Math.min(100, progress)}%`;
-        $('progress-percentage').textContent = `${Math.min(100, progress).toFixed(1)}%`;
-    },
-    
-    async updateLoop() {
-        const data = await this.fetchData();
-        this.updateUI(data);
-        setTimeout(() => this.updateLoop(), 15000); // Update every 15 seconds
-    },
-
-    simulateData() {
-        let simulatedRaised = 34.56;
-        let simulatedContributors = 82;
-        this.updateUI({ totalRaised: String(simulatedRaised), contributors: String(simulatedContributors) });
-        setInterval(() => {
-            simulatedRaised += Math.random() * 2.5;
-            simulatedContributors += Math.floor(Math.random() * 5);
-            if (simulatedRaised > this.hardCap) simulatedRaised = this.hardCap;
-            this.updateUI({ totalRaised: String(simulatedRaised), contributors: String(simulatedContributors) });
-        }, 5000);
-    }
-};
-onChain.init();
-
-
-/* ===== Pie Chart interactivity ===== */
-const PIE_DATA = {
-    presale: { name: 'Presale', percent: '30%' },
-    liquidity: { name: 'Liquidity', percent: '25%' },
-    eco: { name: 'Ecosystem', percent: '20%' },
-    team: { name: 'Team', percent: '15%' },
-    treasury: { name: 'Treasury', percent: '10%' }
-};
-const pieSlices = document.querySelectorAll('.pie-slice');
-const legendItems = document.querySelectorAll('.legend-item');
-const pieTextPercent = $('pie-text-percent');
-const pieTextName = $('pie-text-name');
-
-function handlePieHover(id) {
-    if (!id) {
-        pieTextPercent.textContent = 'ETRX';
-        pieTextName.textContent = 'Tokenomics';
-        pieSlices.forEach(s => { 
-            s.classList.remove('highlight');
-            s.style.removeProperty('--highlight-color');
+        pieSlices.forEach(s => {
+            const sliceId = s.dataset.sliceId;
+            if (sliceId === id) {
+                const color = getComputedStyle(s).stroke;
+                s.classList.add('highlight');
+                s.style.setProperty('--highlight-color', color);
+            } else {
+                s.classList.remove('highlight');
+            }
         });
-        legendItems.forEach(l => l.classList.remove('highlight'));
-        return;
+        legendItems.forEach(l => {
+            l.classList.toggle('highlight', l.dataset.sliceId === id);
+        });
     }
-    const data = PIE_DATA[id];
-    pieTextPercent.textContent = data.percent;
-    pieTextName.textContent = data.name;
-    
-    pieSlices.forEach(s => {
-        const sliceId = s.dataset.sliceId;
-        if (sliceId === id) {
-            const color = getComputedStyle(s).stroke;
-            s.classList.add('highlight');
-            s.style.setProperty('--highlight-color', color);
+
+    pieSlices.forEach(slice => {
+        slice.addEventListener('mouseover', () => handlePieHover(slice.dataset.sliceId));
+        slice.addEventListener('mouseout', () => handlePieHover(null));
+    });
+    legendItems.forEach(item => {
+        item.addEventListener('mouseover', () => handlePieHover(item.dataset.sliceId));
+        item.addEventListener('mouseout', () => handlePieHover(null));
+    });
+
+
+    /* ===== Etheria Wisps ===== */
+    (function(){
+      const canvas=document.getElementById('wispCanvas'); if(!canvas) return;
+      if (navigator?.connection?.saveData) return;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const ctx=canvas.getContext('2d');
+      let w=0,h=0,dpr=1, wisps=[];
+
+      function resize(){
+        dpr = Math.min(devicePixelRatio||1,2);
+        w = canvas.width = Math.floor(innerWidth*dpr);
+        h = canvas.height= Math.floor(innerHeight*dpr);
+        canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px';
+        makeWisps();
+      }
+      function rand(a,b){ return a + Math.random()*(b-a) }
+      function makeWisps(){
+        const base = Math.min(120, Math.round((innerWidth*innerHeight)/50000));
+        wisps = new Array(base).fill(0).map(()=>({
+          x: rand(0,w), y: rand(h*0.55, h*1.05),
+          r: rand(2*dpr, 5*dpr),
+          vx: rand(-0.05,0.05)*dpr, vy: rand(-0.15,-0.05)*dpr,
+          huePick: Math.random(),
+          tw: rand(0, Math.PI*2), tws: rand(0.005,0.012)
+        }));
+      }
+      function col(u){
+        if(u<0.5) return `rgba(84,178,255,${0.18 + u*0.25})`;
+        if(u<0.75) return `rgba(208,128,255,${0.18 + (u-0.5)*0.2})`;
+        return `rgba(255,147,76,${0.16 + (u-0.75)*0.18})`;
+      }
+      function draw(){
+        ctx.clearRect(0,0,w,h);
+        for(const p of wisps){
+          p.tw += p.tws;
+          const a = 0.5 + Math.sin(p.tw)*0.5;
+          p.x += p.vx + Math.sin(p.y*0.001)*0.12*dpr;
+          p.y += p.vy;
+          if(p.y < -20) { p.y = h + 10; p.x = rand(0,w); }
+          if(p.x < -10) p.x = w+10; if(p.x > w+10) p.x = -10;
+          const grad = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
+          grad.addColorStop(0, col(p.huePick));
+          grad.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.fillStyle = grad;
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.r*(2.5+a*1.2),0,Math.PI*2); ctx.fill();
+          ctx.globalCompositeOperation = 'source-over';
+        }
+        requestAnimationFrame(draw);
+      }
+      resize(); draw();
+      addEventListener('resize', resize, {passive:true});
+    })();
+
+    /* ===== Pointer-follow glow for .holo ===== */
+    (function(){
+      const cards = document.querySelectorAll('.holo');
+      cards.forEach(el=>{
+        el.addEventListener('pointermove', e=>{
+          const r = el.getBoundingClientRect();
+          el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+          el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        });
+      });
+    })();
+
+    /* ===== 3D Tilt Effect ===== */
+    (function() {
+        const cards = document.querySelectorAll('.card-3d-tilt');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const { width, height } = rect;
+                const rotateX = (y / height - 0.5) * -14; // rotation degree
+                const rotateY = (x / width - 0.5) * 14;
+                card.style.transition = 'transform 0.1s ease-out';
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transition = 'transform 0.4s ease-out';
+                card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+            });
+        });
+    })();
+
+    /* ===== Whitepaper SVG Interactivity ===== */
+    (function() {
+        // Pie Chart
+        const wpPieSlices = document.querySelectorAll('#wp-pie-chart .pie-slice');
+        const wpPieTextPercent = $('wp-pie-text-percent');
+        const wpPieTextName = $('wp-pie-text-name');
+        
+        wpPieSlices.forEach(slice => {
+            slice.addEventListener('mouseover', () => {
+                wpPieTextPercent.textContent = slice.dataset.percent;
+                wpPieTextName.textContent = slice.dataset.name;
+            });
+        });
+
+        // Ecosystem Diagram
+        const infoPopup = $('wp-info-popup');
+        document.querySelectorAll('#wp-ecosystem-diagram .node').forEach(node => {
+            node.addEventListener('click', (e) => {
+                e.stopPropagation();
+                infoPopup.textContent = node.dataset.info;
+                const rect = node.getBoundingClientRect();
+                const modalRect = whitepaperModal.getBoundingClientRect();
+                const top = rect.top - modalRect.top - 10;
+                const left = rect.left - modalRect.left + rect.width / 2;
+                
+                infoPopup.style.left = `${left}px`;
+                infoPopup.style.top = `${top}px`;
+                infoPopup.style.opacity = '1';
+                infoPopup.style.transform = 'translate(-50%, -100%) scale(1)';
+            });
+        });
+        document.addEventListener('click', () => {
+            infoPopup.style.opacity = '0';
+            infoPopup.style.transform = 'translate(-50%, -100%) scale(0.95)';
+        });
+
+    })();
+
+    /* Initialize UI */
+    renderPhaseTable();
+    updateWhen();
+    toggleBar();
+    setInterval(toggleBar, 60_000);
+
+    /* Main loop start */
+    loop();
+
+    /* ===== FAQ expand ===== */
+    document.querySelectorAll('.faq-item')?.forEach(item=>{
+      const btn=item.querySelector('.faq-header'); const body=item.querySelector('.faq-body'); const chev=item.querySelector('.faq-chevron');
+      btn.addEventListener('click', ()=>{
+        const open=btn.getAttribute('aria-expanded')==='true';
+        btn.setAttribute('aria-expanded', String(!open));
+        if(!open){
+          item.classList.add('open'); body.hidden=false; body.style.maxHeight=body.scrollHeight+'px'; body.classList.add('open'); chev.style.transform='rotate(180deg)';
         } else {
-            s.classList.remove('highlight');
+          body.style.maxHeight=body.scrollHeight+'px';
+          requestAnimationFrame(()=>{ body.style.maxHeight='0px'; body.classList.remove('open'); chev.style.transform='rotate(0deg)'; });
+          body.addEventListener('transitionend', ()=>{ if(body.style.maxHeight==='0px') body.hidden=true; item.classList.remove('open'); }, {once:true});
         }
+      });
     });
-    legendItems.forEach(l => {
-        l.classList.toggle('highlight', l.dataset.sliceId === id);
-    });
-}
-
-pieSlices.forEach(slice => {
-    slice.addEventListener('mouseover', () => handlePieHover(slice.dataset.sliceId));
-    slice.addEventListener('mouseout', () => handlePieHover(null));
-});
-legendItems.forEach(item => {
-    item.addEventListener('mouseover', () => handlePieHover(item.dataset.sliceId));
-    item.addEventListener('mouseout', () => handlePieHover(null));
-});
-
-
-/* ===== Etheria Wisps ===== */
-(function(){
-  const canvas=document.getElementById('wispCanvas'); if(!canvas) return;
-  if (navigator?.connection?.saveData) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const ctx=canvas.getContext('2d');
-  let w=0,h=0,dpr=1, wisps=[];
-
-  function resize(){
-    dpr = Math.min(devicePixelRatio||1,2);
-    w = canvas.width = Math.floor(innerWidth*dpr);
-    h = canvas.height= Math.floor(innerHeight*dpr);
-    canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px';
-    makeWisps();
-  }
-  function rand(a,b){ return a + Math.random()*(b-a) }
-  function makeWisps(){
-    const base = Math.min(120, Math.round((innerWidth*innerHeight)/50000));
-    wisps = new Array(base).fill(0).map(()=>({
-      x: rand(0,w), y: rand(h*0.55, h*1.05),
-      r: rand(2*dpr, 5*dpr),
-      vx: rand(-0.05,0.05)*dpr, vy: rand(-0.15,-0.05)*dpr,
-      huePick: Math.random(),
-      tw: rand(0, Math.PI*2), tws: rand(0.005,0.012)
-    }));
-  }
-  function col(u){
-    if(u<0.5) return `rgba(84,178,255,${0.18 + u*0.25})`;
-    if(u<0.75) return `rgba(208,128,255,${0.18 + (u-0.5)*0.2})`;
-    return `rgba(255,147,76,${0.16 + (u-0.75)*0.18})`;
-  }
-  function draw(){
-    ctx.clearRect(0,0,w,h);
-    for(const p of wisps){
-      p.tw += p.tws;
-      const a = 0.5 + Math.sin(p.tw)*0.5;
-      p.x += p.vx + Math.sin(p.y*0.001)*0.12*dpr;
-      p.y += p.vy;
-      if(p.y < -20) { p.y = h + 10; p.x = rand(0,w); }
-      if(p.x < -10) p.x = w+10; if(p.x > w+10) p.x = -10;
-      const grad = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
-      grad.addColorStop(0, col(p.huePick));
-      grad.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.fillStyle = grad;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r*(2.5+a*1.2),0,Math.PI*2); ctx.fill();
-      ctx.globalCompositeOperation = 'source-over';
-    }
-    requestAnimationFrame(draw);
-  }
-  resize(); draw();
-  addEventListener('resize', resize, {passive:true});
-})();
-
-/* ===== Pointer-follow glow for .holo ===== */
-(function(){
-  const cards = document.querySelectorAll('.holo');
-  cards.forEach(el=>{
-    el.addEventListener('pointermove', e=>{
-      const r = el.getBoundingClientRect();
-      el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-      el.style.setProperty('--my', (e.clientY - r.top) + 'px');
-    });
-  });
-})();
-
-/* ===== 3D Tilt Effect ===== */
-(function() {
-    const cards = document.querySelectorAll('.card-3d-tilt');
-    cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const { width, height } = rect;
-            const rotateX = (y / height - 0.5) * -14; // rotation degree
-            const rotateY = (x / width - 0.5) * 14;
-            card.style.transition = 'transform 0.1s ease-out';
-            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.transition = 'transform 0.4s ease-out';
-            card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-        });
-    });
-})();
-
-/* Initialize UI */
-renderPhaseTable();
-updateWhen();
-toggleBar();
-setInterval(toggleBar, 60_000);
-
-/* Main loop start */
-loop();
-
-/* ===== FAQ expand ===== */
-document.querySelectorAll('.faq-item')?.forEach(item=>{
-  const btn=item.querySelector('.faq-header'); const body=item.querySelector('.faq-body'); const chev=item.querySelector('.faq-chevron');
-  btn.addEventListener('click', ()=>{
-    const open=btn.getAttribute('aria-expanded')==='true';
-    btn.setAttribute('aria-expanded', String(!open));
-    if(!open){
-      item.classList.add('open'); body.hidden=false; body.style.maxHeight=body.scrollHeight+'px'; body.classList.add('open'); chev.style.transform='rotate(180deg)';
-    } else {
-      body.style.maxHeight=body.scrollHeight+'px';
-      requestAnimationFrame(()=>{ body.style.maxHeight='0px'; body.classList.remove('open'); chev.style.transform='rotate(0deg)'; });
-      body.addEventListener('transitionend', ()=>{ if(body.style.maxHeight==='0px') body.hidden=true; item.classList.remove('open'); }, {once:true});
-    }
-  });
 });
 </script>
 </body>
