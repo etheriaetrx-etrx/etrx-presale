@@ -9,6 +9,7 @@
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 
+<!-- Canonical & Social -->
 <link rel="canonical" href="https://etheriaetrx-etrx.github.io/etrx-presale/">
 <meta property="og:site_name" content="Etheria">
 <meta property="og:title" content="$ETRX • Etheria Presale">
@@ -24,6 +25,7 @@
 <meta name="twitter:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
 <meta name="twitter:image:alt" content="Etheria presale hero art">
 
+<!-- CSP (single-file build) -->
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self' https://etheriaetrx-etrx.github.io;
            img-src 'self' data: https:;
@@ -39,10 +41,12 @@
 <meta name="theme-color" content="#05070d">
 <meta name="robots" content="index,follow,max-image-preview:large"/>
 
+<!-- Performance -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
+<!-- Fonts & Libraries -->
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script>
@@ -55,16 +59,23 @@
 <script src="https://cdn.tailwindcss.com?v=3" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" defer></script>
 
-<link rel="preload" as="image" href="assets/Background.png">
-<link rel="icon" type="image/png" href="assets/logo.png">
+<!-- Assets -->
+<link rel="preload" as="image" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
+<link rel="icon" type="image/png" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png">
 
+<!--
+  NOTE: In a production build, this CSS would be moved to an external file (e.g., style.css)
+  and linked here: <link rel="stylesheet" href="style.css">
+-->
 <style>
 :root{
   color-scheme: dark;
   --bg:#05070d; --panel:rgba(255,255,255,.06); --ring:rgba(0,255,255,.18);
   --dim:rgba(255,255,255,.72); --muted:rgba(255,255,255,.9);
   --neon-cyan: 0 255 255; --neon-blue: 84 178 255; --neon-violet: 208 128 255; --neon-orange: 255 147 76;
+  --c-presale: #00ffff; --c-liquidity: #54b2ff; --c-eco: #d080ff; --c-team: #ff934c; --c-treasury: #9ca3af;
 }
+html{scroll-behavior:smooth;scroll-padding-top:80px}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
 
@@ -217,6 +228,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 }
 .hero-glow img{
   position:relative; display:block; border-radius:inherit;
+  object-position: center; /* Vertically centers the image */
   box-shadow:
     0 0 0 1px rgba(0,255,255,.22) inset,
     0 22px 60px rgba(84,178,255,.18),
@@ -230,6 +242,38 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 .badge-now{ background:rgba(16,185,129,.18); border:1px solid rgba(16,185,129,.35); color:#a7f3d0 }
 .row{ display:grid; grid-template-columns: 1fr auto auto; gap:.75rem; align-items:center }
 .row + .row{ border-top:1px solid rgba(255,255,255,.08); padding-top:.5rem; margin-top:.5rem }
+
+/* Pie Chart */
+.pie-slice { 
+  transition: transform .2s ease, opacity .2s ease;
+  transform-origin: center;
+}
+.pie-slice.highlight {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 8px var(--highlight-color));
+}
+#pie-legend-list .legend-item {
+  cursor: pointer;
+  transition: background-color .2s ease;
+  border-radius: 8px;
+}
+#pie-legend-list .legend-item.highlight {
+  background-color: rgba(255,255,255,0.08);
+}
+#pie-text-group { transition: opacity .2s ease; }
+
+/* Roadmap Timeline */
+.timeline { position: relative; }
+.timeline::before {
+  content: ''; position: absolute; left: 1rem; top: .5rem; bottom: .5rem; width: 2px;
+  background: linear-gradient(to bottom, var(--c-presale), var(--c-eco)); border-radius: 2px;
+}
+.timeline-item { position: relative; padding-left: 3rem; }
+.timeline-item::before {
+  content: ''; position: absolute; left: calc(1rem - 6px); top: 6px; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--bg); border: 2px solid var(--c-presale);
+}
+.timeline-item:hover::before { border-color: white; }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
@@ -245,6 +289,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   </div>
 </noscript>
 
+<!-- Background & layers -->
 <div id="bgAurora" aria-hidden="true"></div>
 <canvas id="wispCanvas" aria-hidden="true"></canvas>
 <div class="scanlines" aria-hidden="true"></div>
@@ -254,7 +299,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <header id="siteHeader" class="sticky top-0 z-40">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
     <div class="flex items-center gap-3">
-      <img src="assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-cyan-400/20 object-contain bg-white/5"/>
+      <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-cyan-400/20 object-contain bg-white/5"/>
       <div class="text-sm tracking-wide small-dim">Etheria</div>
     </div>
     <nav class="hidden gap-6 text-sm opacity-80 md:flex" aria-label="Primary">
@@ -276,6 +321,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 </header>
 
 
+<!-- Wallet modal -->
 <div id="walletModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
      role="dialog" aria-modal="true" aria-labelledby="walletModalTitle" inert>
   <div class="glass card card-outline w-[min(420px,92vw)] p-4" data-modal-surface>
@@ -289,10 +335,12 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   </div>
 </div>
 
+<!-- Hero -->
 <main>
-<section class="hero relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-stretch gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:pt-10">
+<section class="hero relative z-10 mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:items-center md:pt-10">
   <div class="hero-vignette" aria-hidden="true"></div>
 
+  <!-- Left: copy, countdown, pricing -->
   <div class="order-2 md:order-1">
     <h1 class="title-glow neon-text text-hero leading-tight md:text-6xl">
       The Official Token of Etheria<br/>
@@ -300,6 +348,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     </h1>
     <p class="mt-4 max-w-measure small-dim">Powering realms, artifacts, governance and community rewards. Built on Ethereum for permanence and reach.</p>
 
+    <!-- Countdown + phase + progress -->
     <div class="mt-8 glass card card-outline p-5 reveal holo" data-delay="0">
       <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-[.15em] small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
       <div id="countdown" class="flex gap-3 text-center" aria-live="polite"></div>
@@ -310,6 +359,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100" aria-pressed="false">Make Local primary</button>
       </div>
 
+      <!-- Overall Progress -->
       <div class="mt-4">
         <div class="flex items-center justify-between text-xs small-dim">
           <span id="phaseName" class="font-semibold">Phase: Presale</span><span id="phaseEta"></span>
@@ -320,6 +370,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <div class="mt-1 text-xs small-dim" id="phaseDates"></div>
       </div>
 
+      <!-- Tiered Pricing cards -->
       <div class="mt-5 grid gap-3 sm:grid-cols-2">
         <div class="glass card card-outline p-4 holo">
           <div class="text-xs uppercase small-dim">Current Phase Price</div>
@@ -349,6 +400,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
           </div>
         </div>
 
+        <!-- Phase schedule table -->
         <div class="sm:col-span-2 glass card card-outline p-4 holo">
           <div class="flex items-center justify-between">
             <div class="text-xs uppercase small-dim">Phase schedule</div>
@@ -359,7 +411,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
       </div>
     </div>
     
-    <div class="mt-4 glass card card-outline p-4 holo" role="region" aria-label="Presale Address">
+    <!-- Presale Address banner -->
+    <div class="mt-4 glass card p-4 holo" role="region" aria-label="Presale Address" style="border-color: rgba(255, 147, 76, .35)">
       <div class="text-xs uppercase small-dim mb-2">Official Presale Address</div>
       <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
         <input id="presaleAddr" type="text" readonly
@@ -368,9 +421,12 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
                aria-readonly="true"/>
         <button id="copyAddr" class="btn-ghost text-sm">Copy</button>
       </div>
-      <p class="mt-2 text-xs small-dim">
-        <b class="text-orange-400">WARNING:</b> The address will be revealed here and on our official, pinned X/Twitter post. The team will NEVER DM you the address. Triple-check it before sending funds.
-      </p>
+      <div class="mt-2 text-xs small-dim flex items-start gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 text-orange-400 mt-0.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        <span>
+          <b class="text-orange-400">WARNING:</b> The address will be revealed here and on our official, pinned X/Twitter post. The team will NEVER DM you the address. Triple-check it before sending funds.
+        </span>
+      </div>
     </div>
 
     <ul class="mt-6 grid grid-cols-2 gap-3 text-sm sm:text-base">
@@ -385,10 +441,11 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     </div>
   </div>
 
-  <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px] reveal" data-delay="0">
+  <!-- Right: hero image -->
+  <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px] reveal flex items-center justify-center" data-delay="0">
     <div class="hero-glow h-full w-full rounded-3xl">
       <img
-        src="assets/Background.png"
+        src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png"
         alt="Etheria Background"
         width="1280" height="720"
         class="h-full w-full rounded-3xl ring-1 ring-cyan-400/15 object-cover"
@@ -400,6 +457,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
+<!-- About -->
 <section id="about" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
   <h2 class="text-2xl font-bold neon-text reveal">What is $ETRX?</h2>
   <p class="mt-3 max-w-3xl small-dim reveal" data-delay="50">
@@ -409,31 +467,62 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
+<!-- Tokenomics -->
 <section id="token" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <h2 class="text-2xl font-bold neon-text reveal">Tokenomics</h2>
     <p class="mt-2 max-w-3xl small-dim reveal">Total Supply: 10,000,000 $ETRX</p>
     
     <div class="mt-5 grid grid-cols-1 gap-8 md:grid-cols-2">
-        <div class="reveal" data-delay="50">
+        <!-- Left: Allocation List -->
+        <div id="pie-legend" class="reveal" data-delay="50">
             <h3 class="font-semibold text-lg neon-text">Distribution</h3>
-            <ul class="mt-3 space-y-3 small-dim">
-                <li class="flex items-center gap-3"><span class="inline-block w-3 h-3 rounded-full bg-cyan-400"></span><div><b>Presale (30%):</b> 3,000,000 ETRX. Available to early supporters.</div></li>
-                <li class="flex items-center gap-3"><span class="inline-block w-3 h-3 rounded-full bg-blue-400"></span><div><b>Liquidity (25%):</b> 2,500,000 ETRX. For DEX listings and stable trading.</div></li>
-                <li class="flex items-center gap-3"><span class="inline-block w-3 h-3 rounded-full bg-violet-400"></span><div><b>Ecosystem & Rewards (20%):</b> 2,000,000 ETRX. To fund community grants and in-world rewards.</div></li>
-                <li class="flex items-center gap-3"><span class="inline-block w-3 h-3 rounded-full bg-orange-400"></span><div><b>Team (15%):</b> 1,500,000 ETRX. Vested over 24 months with a 6-month cliff.</div></li>
-                <li class="flex items-center gap-3"><span class="inline-block w-3 h-3 rounded-full bg-gray-400"></span><div><b>Treasury & Advisors (10%):</b> 1,000,000 ETRX. For strategic partnerships and operational costs.</div></li>
+            <ul id="pie-legend-list" class="mt-3 space-y-2 small-dim">
+                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="presale">
+                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-presale)"></span>
+                    <div><b>Presale (30%):</b> 3,000,000 ETRX for early supporters.</div>
+                </li>
+                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="liquidity">
+                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-liquidity)"></span>
+                    <div><b>Liquidity (25%):</b> 2,500,000 ETRX for DEX listings.</div>
+                </li>
+                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="eco">
+                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-eco)"></span>
+                    <div><b>Ecosystem & Rewards (20%):</b> 2,000,000 ETRX for community grants.</div>
+                </li>
+                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="team">
+                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-team)"></span>
+                    <div><b>Team (15%):</b> 1,500,000 ETRX vested over 24 months (6-month cliff).</div>
+                </li>
+                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="treasury">
+                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-treasury)"></span>
+                    <div><b>Treasury & Advisors (10%):</b> 1,000,000 ETRX for strategic costs.</div>
+                </li>
             </ul>
         </div>
+        <!-- Right: Pie Chart SVG -->
         <div class="flex items-center justify-center reveal" data-delay="100">
-            <div class="w-full h-64 glass card card-outline flex items-center justify-center text-center p-4">
-                
-            </div>
+            <svg id="pieChart" viewBox="0 0 100 100" class="w-full max-w-[280px] h-auto" aria-labelledby="pie-title">
+                <title id="pie-title">Tokenomics Distribution Chart</title>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="20" />
+                <g id="pie-slices">
+                    <circle class="pie-slice" data-slice-id="presale" cx="50" cy="50" r="35" fill="none" stroke="var(--c-presale)" stroke-width="20" stroke-dasharray="108 219.9" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="liquidity" cx="50" cy="50" r="35" fill="none" stroke="var(--c-liquidity)" stroke-width="20" stroke-dasharray="91.6 219.9" stroke-dashoffset="-108" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="eco" cx="50" cy="50" r="35" fill="none" stroke="var(--c-eco)" stroke-width="20" stroke-dasharray="73.3 219.9" stroke-dashoffset="-199.6" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="team" cx="50" cy="50" r="35" fill="none" stroke="var(--c-team)" stroke-width="20" stroke-dasharray="55 219.9" stroke-dashoffset="-272.9" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="treasury" cx="50" cy="50" r="35" fill="none" stroke="var(--c-treasury)" stroke-width="20" stroke-dasharray="36.6 219.9" stroke-dashoffset="-327.9" transform="rotate(-90 50 50)" />
+                </g>
+                <g id="pie-text-group" class="text-center" pointer-events="none">
+                    <text id="pie-text-percent" x="50" y="48" text-anchor="middle" class="text-4xl font-bold fill-white">ETRX</text>
+                    <text id="pie-text-name" x="50" y="62" text-anchor="middle" class="text-sm font-semibold fill-white/80">Tokenomics</text>
+                </g>
+            </svg>
         </div>
     </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
+<!-- Audit & Trust Section -->
 <section id="trust" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div class="glass card card-outline holo p-5 reveal">
@@ -451,46 +540,69 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
+<!-- Team -->
 <section id="team" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <h2 class="text-2xl font-bold neon-text reveal">Core Contributors</h2>
     <p class="mt-2 max-w-3xl small-dim reveal">The pseudonymous team behind Etheria, dedicated to building a lasting world.</p>
     <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+        <!-- Team Member 1 -->
         <div class="glass card card-outline holo p-5 text-center reveal" data-delay="0">
-            <img src="assets/avatar1.png" alt="Avatar of Aethel" class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 object-cover bg-white/10">
-            <h4 class="mt-3 font-bold text-lg">Aethel</h4>
-            <p class="text-sm small-dim">Project Lead & Lore Master</p>
-            <a href="https://x.com/username" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@username</a>
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 bg-white/5 flex items-center justify-center">
+                <span class="text-3xl font-bold text-cyan-300">ED</span>
+            </div>
+            <h4 class="mt-3 font-bold text-lg">ETRXDreamscapes</h4>
+            <p class="text-sm small-dim">The Developer</p>
+            <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@ETRXDreamscapes</a>
         </div>
+        <!-- Team Member 2 -->
         <div class="glass card card-outline holo p-5 text-center reveal" data-delay="50">
-            <img src="assets/avatar2.png" alt="Avatar of Cygnus" class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 object-cover bg-white/10">
-            <h4 class="mt-3 font-bold text-lg">Cygnus</h4>
-            <p class="text-sm small-dim">Lead Smart Contract Dev</p>
-            <a href="https://x.com/username" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@username</a>
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-blue-400/30 bg-white/5 flex items-center justify-center">
+                <span class="text-3xl font-bold text-blue-300">H</span>
+            </div>
+            <h4 class="mt-3 font-bold text-lg">HeisCaifu</h4>
+            <p class="text-sm small-dim">Telegram Page Owner</p>
+            <a href="https://t.me/HeisCaifu" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@HeisCaifu</a>
         </div>
+        <!-- Team Member 3 -->
         <div class="glass card card-outline holo p-5 text-center reveal" data-delay="100">
-            <img src="assets/avatar3.png" alt="Avatar of Lyra" class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 object-cover bg-white/10">
-            <h4 class="mt-3 font-bold text-lg">Lyra</h4>
-            <p class="text-sm small-dim">Community & Marketing</p>
-            <a href="https://x.com/username" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@username</a>
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-violet-400/30 bg-white/5 flex items-center justify-center">
+                <span class="text-3xl font-bold text-violet-300">D</span>
+            </div>
+            <h4 class="mt-3 font-bold text-lg">DxCheetah</h4>
+            <p class="text-sm small-dim">Telegram Page Mod</p>
+            <a href="https://t.me/DxCheetah" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@DxCheetah</a>
         </div>
     </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
+<!-- Road -->
 <section id="road" class="relative z-10 mx-auto max-w-6xl px-6 py-14">
   <h2 class="text-2xl font-bold neon-text reveal">Roadmap: The Path Forward</h2>
-  <div class="mt-2 max-w-3xl small-dim reveal"></div>
-  <ol class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 small-dim">
-    <li class="glass card card-outline holo p-4 reveal" data-delay="0"><b>Phase 1: Foundation (Q3 2025)</b><br/>Launch site, open allowlist, publish whitepaper, and complete smart contract audit.</li>
-    <li class="glass card card-outline holo p-4 reveal" data-delay="50"><b>Phase 2: Launch (Q4 2025)</b><br/>Presale event, Token Generation Event (TGE), DEX listing & initial liquidity pools.</li>
-    <li class="glass card card-outline holo p-4 reveal" data-delay="100"><b>Phase 3: Utility (Q1 2026)</b><br/>Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on lore decisions.</li>
-    <li class="glass card card-outline holo p-4 reveal" data-delay="150"><b>Phase 4: Expansion (Q2 2026 & Beyond)</b><br/>First Realm drop for holders, development of the Etheria marketplace, and exploration of cross-chain bridges.</li>
-  </ol>
+  <div class="mt-5 timeline space-y-6 small-dim">
+    <div class="timeline-item reveal" data-delay="0">
+      <h4 class="font-bold text-white/90">Phase 1: Foundation (Q3 2025)</h4>
+      <p>Launch site, open allowlist, publish whitepaper, and complete smart contract audit.</p>
+    </div>
+    <div class="timeline-item reveal" data-delay="50">
+      <h4 class="font-bold text-white/90">Phase 2: Launch (Q4 2025)</h4>
+      <p>Presale event, Token Generation Event (TGE), DEX listing & initial liquidity pools.</p>
+    </div>
+    <div class="timeline-item reveal" data-delay="100">
+      <h4 class="font-bold text-white/90">Phase 3: Utility (Q1 2026)</h4>
+      <p>Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on lore decisions.</p>
+    </div>
+    <div class="timeline-item reveal" data-delay="150">
+      <h4 class="font-bold text-white/90">Phase 4: Expansion (Q2 2026 & Beyond)</h4>
+      <p>First Realm drop for holders, development of the Etheria marketplace, and exploration of cross-chain bridges.</p>
+    </div>
+  </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
+<!-- Notify & Allowlist -->
 <section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-24">
   <div class="glass card card-outline holo p-6 reveal">
     <h3 class="text-xl font-semibold neon-text">Get notified when the presale opens</h3>
@@ -500,6 +612,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
       <label class="sr-only" for="email">Email</label>
       <input required id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"
              class="flex-1 rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"/>
+      <!-- Honeypot -->
       <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
       <input type="hidden" name="form_name" value="notify"/>
       <input type="hidden" name="_redirect" value="https://etheriaetrx-etrx.github.io/etrx-presale/#notify-success">
@@ -536,6 +649,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   </div>
 </section>
 
+<!-- FAQ -->
 <section id="faq" class="relative z-10 mx-auto max-w-6xl px-6 pb-8">
   <h2 class="text-2xl font-bold neon-text reveal">FAQ</h2>
   <div class="mt-4 grid gap-3">
@@ -575,8 +689,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     <div>© <span id="year"></span> Etheria • $ETRX</div>
     <div class="flex items-center gap-4">
         <a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer">X/Twitter</a>
-        <a class="laser hover:text-white" href="[Link to Discord]" target="_blank" rel="noopener noreferrer">Discord</a>
-        <a class="laser hover:text-white" href="[Link to Telegram]" target="_blank" rel="noopener noreferrer">Telegram</a>
+        <a class="laser hover:text-white" href="https://t.me/Etheria_official" target="_blank" rel="noopener noreferrer">Telegram</a>
     </div>
     <p class="mt-2 max-w-3xl text-center text-xs opacity-80">
       Disclaimer: This site and presale information are for community use only and do not constitute an offer to sell or a solicitation to buy any financial instrument. Participation may be restricted by local laws. Crypto assets are volatile and carry significant risk. DYOR.
@@ -586,6 +699,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 <a href="#notify" id="stickyCTA" class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">Get notified for $ETRX</a>
 
+<!-- Schema.org event (SEO) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -602,6 +716,10 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 }
 </script>
 
+<!--
+  NOTE: In a production build, this JavaScript would be moved to an external file (e.g., app.js)
+  and linked here: <script src="app.js" defer></script>
+-->
 <script>
 'use strict'
 /* ================== CONFIG: DATES + TIERS ================== */
@@ -790,14 +908,6 @@ function toggleBar(){
   const days=(PRESALE_START - new Date())/86400000;
   document.getElementById('stickyCTA').classList.toggle('hidden', !(window.innerWidth < 768 && days>0 && days<=SHOW_BAR_DAYS));
 }
-
-/* smooth anchors */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click', e=>{
-    const id=a.getAttribute('href').slice(1); const el=document.getElementById(id); if(!el) return;
-    e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); history.replaceState(null,'','#'+id);
-  });
-});
 
 /* Active nav highlight */
 const navLinks = [...document.querySelectorAll('nav a[href^="#"]')];
@@ -1055,21 +1165,7 @@ if (prev){
   openConnect?.classList.add('hidden-important');
 }
 
-/* Share */
-const shareBtn=$('shareLaunch');
-if (shareBtn && navigator.share){
-  shareBtn.addEventListener('click', async ()=>{
-    try{ await navigator.share({ title:'$ETRX • Etheria Presale', text:'Presale runs Sep 24 → Oct 1 (UTC). Join the allowlist.', url: location.href }); }catch{}
-  });
-}else if(shareBtn){
-  shareBtn.addEventListener('click', ()=>{
-    navigator.clipboard.writeText(location.href);
-    shareBtn.textContent='Link copied!';
-    setTimeout(()=>shareBtn.textContent='Share this launch', 1500);
-  });
-}
-
-/* Copy presale address */
+/* Share & Copy Buttons */
 const copyAddrBtn = $('copyAddr');
 const presaleAddrInput = $('presaleAddr');
 copyAddrBtn.addEventListener('click', () => {
@@ -1088,6 +1184,59 @@ function toast(msg, isWarn=false){
   t.textContent=msg; document.body.appendChild(t);
   setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .25s'; t.addEventListener('transitionend', ()=>t.remove(), {once:true}); }, 2500);
 }
+
+/* ===== Pie Chart interactivity ===== */
+const PIE_DATA = {
+    presale: { name: 'Presale', percent: '30%' },
+    liquidity: { name: 'Liquidity', percent: '25%' },
+    eco: { name: 'Ecosystem', percent: '20%' },
+    team: { name: 'Team', percent: '15%' },
+    treasury: { name: 'Treasury', percent: '10%' }
+};
+const pieSlices = document.querySelectorAll('.pie-slice');
+const legendItems = document.querySelectorAll('.legend-item');
+const pieTextPercent = $('pie-text-percent');
+const pieTextName = $('pie-text-name');
+
+function handlePieHover(id) {
+    if (!id) {
+        pieTextPercent.textContent = 'ETRX';
+        pieTextName.textContent = 'Tokenomics';
+        pieSlices.forEach(s => { 
+            s.classList.remove('highlight');
+            s.style.removeProperty('--highlight-color');
+        });
+        legendItems.forEach(l => l.classList.remove('highlight'));
+        return;
+    }
+    const data = PIE_DATA[id];
+    pieTextPercent.textContent = data.percent;
+    pieTextName.textContent = data.name;
+    
+    pieSlices.forEach(s => {
+        const sliceId = s.dataset.sliceId;
+        if (sliceId === id) {
+            const color = getComputedStyle(s).stroke;
+            s.classList.add('highlight');
+            s.style.setProperty('--highlight-color', color);
+        } else {
+            s.classList.remove('highlight');
+        }
+    });
+    legendItems.forEach(l => {
+        l.classList.toggle('highlight', l.dataset.sliceId === id);
+    });
+}
+
+pieSlices.forEach(slice => {
+    slice.addEventListener('mouseover', () => handlePieHover(slice.dataset.sliceId));
+    slice.addEventListener('mouseout', () => handlePieHover(null));
+});
+legendItems.forEach(item => {
+    item.addEventListener('mouseover', () => handlePieHover(item.dataset.sliceId));
+    item.addEventListener('mouseout', () => handlePieHover(null));
+});
+
 
 /* ===== Etheria Wisps ===== */
 (function(){
@@ -1183,3 +1332,7 @@ document.querySelectorAll('.faq-item')?.forEach(item=>{
 </script>
 </body>
 </html>
+
+
+
+
