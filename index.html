@@ -29,7 +29,7 @@
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self' https://etheriaetrx-etrx.github.io;
            img-src 'self' data: https:;
-           script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net 'unsafe-inline';
+           script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline';
            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
            font-src https://fonts.gstatic.com;
            connect-src 'self' https://formspree.io https://cloudflare-eth.com;
@@ -45,6 +45,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
 <!-- Fonts & Libraries -->
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
@@ -58,6 +59,8 @@
 </script>
 <script src="https://cdn.tailwindcss.com?v=3" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js" defer></script>
+
 
 <!-- Assets -->
 <link rel="preload" as="image" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
@@ -78,6 +81,21 @@
 html{scroll-behavior:smooth;scroll-padding-top:80px}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,.2); }
+::-webkit-scrollbar-thumb { background: linear-gradient(var(--c-presale), var(--c-eco)); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(var(--c-eco), var(--c-presale)); }
+
+/* Accessibility Focus States */
+:focus-visible { outline: 2px solid var(--c-presale); outline-offset: 2px; border-radius: 4px; }
+
+/* Preloader */
+#preloader{ position:fixed; inset:0; z-index:100; background:var(--bg); transition: opacity .4s ease; display:flex; align-items:center; justify-content:center; }
+#preloader.loaded{ opacity:0; pointer-events:none; }
+#preloader img{ animation: pulse 1.5s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity:.7; transform: scale(0.95); } 50% { opacity:1; transform: scale(1.05); } }
 
 /* Layers */
 main, section, header, footer, .glass, .card { position:relative; z-index:2; isolation:isolate }
@@ -152,6 +170,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 }
 @keyframes spinBorder { to { transform: rotate(360deg) } }
 
+/* 3D Tilt Card */
+.card-3d-tilt { transform-style: preserve-3d; }
+
 /* Holo hover (pointer-follow glow) */
 .holo{ position:relative; overflow:hidden }
 .holo::before{
@@ -213,8 +234,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     rgba(208,128,255,.34),
     rgba(255,147,76,.30),
     rgba(0,255,255,.32));
-  filter: blur(46px) saturate(1.35) brightness(1.05);
-  opacity:.55; animation: glowSpin 18s linear infinite;
+  filter: blur(50px) saturate(1.35) brightness(1.05);
+  opacity:.75; animation: glowSpin 18s linear infinite;
 }
 .hero-glow::after{
   background: radial-gradient(120% 120% at 50% 50%,
@@ -223,19 +244,11 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     rgba(208,128,255,.14) 60%,
     rgba(255,147,76,.12) 75%,
     transparent 85%);
-  filter: blur(36px) saturate(1.15);
-  opacity:.42; animation: glowPulse 7.5s ease-in-out infinite alternate;
-}
-.hero-glow img{
-  position:relative; display:block; border-radius:inherit;
-  object-position: center; /* Vertically centers the image */
-  box-shadow:
-    0 0 0 1px rgba(0,255,255,.22) inset,
-    0 22px 60px rgba(84,178,255,.18),
-    0 0 80px rgba(0,255,255,.18);
+  filter: blur(40px) saturate(1.15);
+  opacity:.6; animation: glowPulse 7.5s ease-in-out infinite alternate;
 }
 @keyframes glowSpin { to { transform: rotate(360deg); } }
-@keyframes glowPulse { from { opacity:.32; filter: blur(28px); } to { opacity:.48; filter: blur(40px); } }
+@keyframes glowPulse { from { opacity:.5; filter: blur(32px); } to { opacity:.65; filter: blur(44px); } }
 
 /* Badges + table */
 .badge{ display:inline-flex; align-items:center; gap:.4rem; padding:.15rem .5rem; border-radius:.5rem; font-size:.7rem; font-weight:700; letter-spacing:.02em }
@@ -262,7 +275,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 }
 #pie-text-group { transition: opacity .2s ease; }
 
-/* Roadmap Timeline */
+/* Roadmap & How-to-Buy Timeline */
 .timeline { position: relative; }
 .timeline::before {
   content: ''; position: absolute; left: 1rem; top: .5rem; bottom: .5rem; width: 2px;
@@ -275,6 +288,12 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 }
 .timeline-item:hover::before { border-color: white; }
 
+/* Vesting Schedule */
+.vesting-bar { position: relative; height: 1rem; background-color: rgba(255,255,255,0.1); border-radius: .5rem; overflow: hidden; }
+.vesting-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, var(--c-team), var(--c-eco)); }
+.vesting-marker { position: absolute; top: -4px; bottom: -4px; width: 2px; background-color: rgba(255,255,255,0.5); }
+
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
@@ -283,6 +302,10 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 </style>
 </head>
 <body>
+<div id="preloader">
+    <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-16 w-16"/>
+</div>
+
 <noscript>
   <div style="position:relative;z-index:3;margin:1rem auto;max-width:60rem;padding:.75rem 1rem;border:1px solid #0ff3;border-radius:10px;background:#06121a;color:#bfefff;font:14px/1.3 Inter,system-ui">
     JavaScript is disabled — countdown and forms require it.
@@ -302,19 +325,30 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
       <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-cyan-400/20 object-contain bg-white/5"/>
       <div class="text-sm tracking-wide small-dim">Etheria</div>
     </div>
-    <nav class="hidden gap-6 text-sm opacity-80 md:flex" aria-label="Primary">
+    <nav class="hidden gap-6 text-sm opacity-80 md:flex items-center" aria-label="Primary">
       <a class="laser hover:opacity-100" href="#about">About</a>
+      <a class="laser hover:opacity-100" href="#how-to-buy">How to Buy</a>
       <a class="laser hover:opacity-100" href="#token">Tokenomics</a>
-      <a class="laser hover:opacity-100" href="#team">Team</a>
-      <a class="laser hover:opacity-100" href="#road">Roadmap</a>
-      <a class="laser hover:opacity-100" href="#faq">FAQ</a>
+      
+      <div class="relative group" id="more-menu">
+        <button id="more-menu-btn" class="flex items-center gap-1 laser hover:opacity-100" aria-haspopup="true" aria-expanded="false" aria-label="More sections">
+          More
+          <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+        <div id="more-menu-dropdown" class="absolute top-full right-0 mt-2 w-48 p-2 glass card hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+          <a href="#milestones" class="block px-3 py-2 rounded-md hover:bg-white/10">Milestones</a>
+          <a href="#team" class="block px-3 py-2 rounded-md hover:bg-white/10">Team</a>
+          <a href="#road" class="block px-3 py-2 rounded-md hover:bg-white/10">Roadmap</a>
+          <a href="#faq" class="block px-3 py-2 rounded-md hover:bg-white/10">FAQ</a>
+        </div>
+      </div>
     </nav>
     <div class="flex items-center gap-3">
       <a href="[Link to Whitepaper PDF]" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm hidden sm:inline-flex">Whitepaper</a>
       <button id="connectBtn" class="btn-primary text-sm" aria-haspopup="dialog" aria-controls="walletModal">Connect Wallet</button>
       <div id="walletPill" class="btn-ghost text-xs hidden" aria-live="polite">
         <span id="walletShort" class="addr"></span>
-        <button id="disconnectBtn" class="ml-2 underline underline-offset-4">Disconnect</button>
+        <button id="disconnectBtn" class="ml-2 underline underline-offset-4" aria-label="Disconnect Wallet">Disconnect</button>
       </div>
     </div>
   </div>
@@ -340,16 +374,54 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <section class="hero relative z-10 mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:items-center md:pt-10">
   <div class="hero-vignette" aria-hidden="true"></div>
 
-  <!-- Left: copy, countdown, pricing -->
+  <!-- Left: copy -->
   <div class="order-2 md:order-1">
     <h1 class="title-glow neon-text text-hero leading-tight md:text-6xl">
-      The Official Token of Etheria<br/>
-      <span class="neon-grad">$ETRX Presale</span>
+        The Official Token of Etheria<br/>
+        <span class="neon-grad">$ETRX Presale</span>
     </h1>
     <p class="mt-4 max-w-measure small-dim">Powering realms, artifacts, governance and community rewards. Built on Ethereum for permanence and reach.</p>
+  </div>
 
+  <!-- Right: Hero Image -->
+  <div class="order-1 md:order-2 reveal" data-delay="0">
+    <div class="hero-glow relative rounded-3xl">
+        <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png" alt="An ethereal, glowing cavern representing the world of Etheria" class="w-full h-auto object-cover rounded-3xl ring-1 ring-cyan-400/20"/>
+    </div>
+  </div>
+</section>
+
+<!-- Live On-Chain Data -->
+<section id="live-data" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
+    <div class="glass card card-outline p-5 reveal holo">
+        <h3 class="text-center text-lg font-semibold neon-text mb-4">Live Presale Status</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+            <div>
+                <div class="text-xs uppercase small-dim">Total Raised</div>
+                <div id="total-raised" class="text-3xl font-bold text-cyan-300 mt-1">0.00 ETH</div>
+            </div>
+            <div>
+                <div class="text-xs uppercase small-dim">Contributors</div>
+                <div id="total-contributors" class="text-3xl font-bold text-blue-300 mt-1">0</div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <div class="flex justify-between text-xs small-dim mb-1">
+                <span>Progress</span>
+                <span id="progress-percentage">0%</span>
+            </div>
+            <div class="w-full bg-white/10 rounded-full h-2.5">
+                <div id="live-progress-bar" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Presale Details Section -->
+<section id="presale-details" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
     <!-- Countdown + phase + progress -->
-    <div class="mt-8 glass card card-outline p-5 reveal holo" data-delay="0">
+    <div class="glass card card-outline p-5 reveal holo" data-delay="0">
       <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-[.15em] small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
       <div id="countdown" class="flex gap-3 text-center" aria-live="polite"></div>
 
@@ -428,41 +500,93 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         </span>
       </div>
     </div>
-
-    <ul class="mt-6 grid grid-cols-2 gap-3 text-sm sm:text-base">
-      <li class="glass card card-outline holo p-4 reveal" data-delay="50"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Supply: <b>10,000,000</b></li>
-      <li class="glass card card-outline holo p-4 reveal" data-delay="100"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Network: <b>Ethereum</b></li>
-      <li class="glass card card-outline holo p-4 reveal" data-delay="150"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Symbol: <b>ETRX</b></li>
-      <li class="glass card card-outline holo p-4 reveal" data-delay="200"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Presale: <b>Sep 24 → Oct 1</b></li>
-    </ul>
-
-    <div class="mt-4 text-xs small-dim">
-      <b>What happens next?</b> After the presale window closes, we proceed to the Token Generation Event (TGE), airdrop distribution to presale wallets, and initial DEX listings/liquidity.
-    </div>
-  </div>
-
-  <!-- Right: hero image -->
-  <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px] reveal flex items-center justify-center" data-delay="0">
-    <div class="hero-glow h-full w-full rounded-3xl">
-      <img
-        src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png"
-        alt="Etheria Background"
-        width="1280" height="720"
-        class="h-full w-full rounded-3xl ring-1 ring-cyan-400/15 object-cover"
-        loading="eager" decoding="async" fetchpriority="high"
-        onerror="this.outerHTML='<div class=&quot;h-full w-full rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-orange-500/10 flex items-center justify-center text-white/50&quot;>Background image missing</div>'"/>
-    </div>
-  </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
 <!-- About -->
 <section id="about" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-  <h2 class="text-2xl font-bold neon-text reveal">What is $ETRX?</h2>
-  <p class="mt-3 max-w-3xl small-dim reveal" data-delay="50">
-    $ETRX is the utility token of Etheria — the key to unlocking rare Realms & Artifacts, voting on lore and project direction, and accessing exclusive holder-only drops. For example, staking $ETRX could grant a 10% crafting speed boost or access to the Aetherforged character skin. Holders are the core of our community and may receive future airdrops and in-world benefits.
-  </p>
+  <h2 class="text-2xl font-bold neon-text reveal text-center">What is $ETRX?</h2>
+  <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+    <!-- Utility Card -->
+    <div class="glass card card-outline holo p-5 text-center reveal" data-delay="0">
+      <div class="mx-auto h-16 w-16 rounded-2xl bg-cyan-500/10 flex items-center justify-center ring-1 ring-cyan-500/20">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-300"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+      </div>
+      <h4 class="mt-3 font-bold text-lg">Utility</h4>
+      <p class="text-sm small-dim mt-1">Unlock rare Realms & Artifacts, access exclusive drops, and get in-world boosts.</p>
+    </div>
+    <!-- Governance Card -->
+    <div class="glass card card-outline holo p-5 text-center reveal" data-delay="100">
+      <div class="mx-auto h-16 w-16 rounded-2xl bg-blue-500/10 flex items-center justify-center ring-1 ring-blue-500/20">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-300"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+      </div>
+      <h4 class="mt-3 font-bold text-lg">Governance</h4>
+      <p class="text-sm small-dim mt-1">Vote on community proposals, project direction, and the evolution of Etheria's lore.</p>
+    </div>
+    <!-- Rewards Card -->
+    <div class="glass card card-outline holo p-5 text-center reveal" data-delay="200">
+      <div class="mx-auto h-16 w-16 rounded-2xl bg-violet-500/10 flex items-center justify-center ring-1 ring-violet-500/20">
+         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-violet-300"><path d="M20.2 6.2c.4-.5.4-1.2 0-1.7l-2.8-2.8c-.5-.4-1.2-.4-1.7 0L14 3.4 12 5.1l-1.7-2.3L8.6 1c-.5-.4-1.2-.4-1.7 0L4 3.8c-.4.5-.4 1.2 0 1.7L6.2 8 3.4 9.7c-.4.5-.4 1.2 0 1.7l2.8 2.8c.5.4 1.2.4 1.7 0L10 12.6l2 1.7 1.7 2.3 1.7 1.7c.5.4 1.2.4 1.7 0l2.8-2.8c.4-.5.4-1.2 0-1.7L17.8 16l2.4-1.7 2.8-2.8c.4-.5.4-1.2 0-1.7L20.2 6.2z"></path></svg>
+      </div>
+      <h4 class="mt-3 font-bold text-lg">Rewards</h4>
+      <p class="text-sm small-dim mt-1">Earn airdrops, participate in holder-only events, and be rewarded for on-chain participation.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider max-w-6xl mx-auto"></div>
+
+<!-- How to Buy -->
+<section id="how-to-buy" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
+    <h2 class="text-2xl font-bold neon-text reveal text-center">How to Participate</h2>
+    <div class="mt-8 timeline space-y-8">
+        <!-- Step 1 -->
+        <div class="timeline-item reveal" data-delay="0">
+            <h4 class="font-bold text-white/90">1. Get a Wallet</h4>
+            <p class="small-dim">Download and set up a self-custody wallet like MetaMask, Rabby, or Trust Wallet. This is where your $ETRX tokens will be sent.</p>
+        </div>
+        <!-- Step 2 -->
+        <div class="timeline-item reveal" data-delay="50">
+            <h4 class="font-bold text-white/90">2. Fund with ETH</h4>
+            <p class="small-dim">Purchase Ethereum (ETH) from an exchange and send it to your wallet. Make sure you have enough for your desired contribution plus a little extra for gas fees.</p>
+        </div>
+        <!-- Step 3 -->
+        <div class="timeline-item reveal" data-delay="100">
+            <h4 class="font-bold text-white/90">3. Connect to Etheria</h4>
+            <p class="small-dim">Return to this page when the presale is live, and click the "Connect Wallet" button at the top of the page.</p>
+        </div>
+        <!-- Step 4 -->
+        <div class="timeline-item reveal" data-delay="150">
+            <h4 class="font-bold text-white/90">4. Contribute</h4>
+            <p class="small-dim">Once the official address is revealed on this page, send your ETH to that address to participate. Always triple-check the address!</p>
+        </div>
+    </div>
+</section>
+
+
+<div class="section-divider max-w-6xl mx-auto"></div>
+
+<!-- Milestones -->
+<section id="milestones" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
+  <h2 class="text-2xl font-bold neon-text reveal text-center">NFT Milestones & The Future</h2>
+  <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+    <div class="glass card card-outline holo p-5 reveal" data-delay="0">
+      <h4 class="font-bold text-lg text-cyan-300">Arc Genesis (NFT)</h4>
+      <p class="text-sm small-dim mt-1">Successfully launched the foundational Arc Genesis collection on Foundation, marking our first step into the NFT space.</p>
+      <a href="https://foundation.app/collection/etheriagenesis" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on Foundation</a>
+    </div>
+    <div class="glass card card-outline holo p-5 reveal" data-delay="100">
+      <h4 class="font-bold text-lg text-blue-300">Etherian Keepers (NFT)</h4>
+      <p class="text-sm small-dim mt-1">Introduced the Etherian Keepers, establishing the first generation of guardians within the Etheria ecosystem.</p>
+       <a href="https://foundation.app/collection/etrx-k" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on Foundation</a>
+    </div>
+     <div class="glass card card-outline holo p-5 reveal" data-delay="200">
+      <h4 class="font-bold text-lg text-violet-300">Artifacts (Coming Soon)</h4>
+      <p class="text-sm small-dim mt-1">The next evolution of on-chain utility items is in development. These powerful artifacts will play a key role in the Etherian world.</p>
+       <a href="#" class="laser text-sm mt-2 inline-block opacity-50 cursor-not-allowed">Stay Tuned</a>
+    </div>
+  </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
@@ -505,11 +629,11 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
                 <title id="pie-title">Tokenomics Distribution Chart</title>
                 <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="20" />
                 <g id="pie-slices">
-                    <circle class="pie-slice" data-slice-id="presale" cx="50" cy="50" r="35" fill="none" stroke="var(--c-presale)" stroke-width="20" stroke-dasharray="108 219.9" transform="rotate(-90 50 50)" />
-                    <circle class="pie-slice" data-slice-id="liquidity" cx="50" cy="50" r="35" fill="none" stroke="var(--c-liquidity)" stroke-width="20" stroke-dasharray="91.6 219.9" stroke-dashoffset="-108" transform="rotate(-90 50 50)" />
-                    <circle class="pie-slice" data-slice-id="eco" cx="50" cy="50" r="35" fill="none" stroke="var(--c-eco)" stroke-width="20" stroke-dasharray="73.3 219.9" stroke-dashoffset="-199.6" transform="rotate(-90 50 50)" />
-                    <circle class="pie-slice" data-slice-id="team" cx="50" cy="50" r="35" fill="none" stroke="var(--c-team)" stroke-width="20" stroke-dasharray="55 219.9" stroke-dashoffset="-272.9" transform="rotate(-90 50 50)" />
-                    <circle class="pie-slice" data-slice-id="treasury" cx="50" cy="50" r="35" fill="none" stroke="var(--c-treasury)" stroke-width="20" stroke-dasharray="36.6 219.9" stroke-dashoffset="-327.9" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="presale" cx="50" cy="50" r="35" fill="none" stroke="var(--c-presale)" stroke-width="20" stroke-dasharray="94.2 219.9" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="liquidity" cx="50" cy="50" r="35" fill="none" stroke="var(--c-liquidity)" stroke-width="20" stroke-dasharray="78.5 219.9" stroke-dashoffset="-94.2" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="eco" cx="50" cy="50" r="35" fill="none" stroke="var(--c-eco)" stroke-width="20" stroke-dasharray="62.8 219.9" stroke-dashoffset="-172.7" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="team" cx="50" cy="50" r="35" fill="none" stroke="var(--c-team)" stroke-width="20" stroke-dasharray="47.1 219.9" stroke-dashoffset="-235.5" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="treasury" cx="50" cy="50" r="35" fill="none" stroke="var(--c-treasury)" stroke-width="20" stroke-dasharray="31.4 219.9" stroke-dashoffset="-282.6" transform="rotate(-90 50 50)" />
                 </g>
                 <g id="pie-text-group" class="text-center" pointer-events="none">
                     <text id="pie-text-percent" x="50" y="48" text-anchor="middle" class="text-4xl font-bold fill-white">ETRX</text>
@@ -518,9 +642,57 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
             </svg>
         </div>
     </div>
+    <!-- Vesting Schedule Section -->
+    <div class="mt-8 glass card card-outline p-5 reveal holo" data-delay="150">
+        <h3 class="font-semibold text-lg neon-text">Team Vesting Schedule</h3>
+        <p class="text-sm small-dim mt-1 mb-4">To ensure long-term commitment, team tokens are subject to a 24-month linear vesting schedule with a 6-month cliff.</p>
+        <div class="space-y-2 text-xs small-dim">
+            <div class="vesting-bar">
+                <div class="vesting-fill" style="width: 100%;"></div>
+                <div class="vesting-marker" style="left: 25%;"></div> <!-- 6 months / 24 months -->
+            </div>
+            <div class="flex justify-between">
+                <span>Launch</span>
+                <span>6mo Cliff</span>
+                <span>24mo Complete</span>
+            </div>
+        </div>
+    </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
+
+<!-- Social Feed Section -->
+<section id="social-feed" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
+    <h2 class="text-2xl font-bold neon-text reveal text-center">Join the Conversation</h2>
+    <div class="mt-6 max-w-xl mx-auto">
+        <!-- 
+            NOTE: This is a placeholder for a real Twitter feed. 
+            For a live version, you would use Twitter's official embed generator and paste the code here.
+            The required script is often blocked by strict CSPs, so this placeholder is a safe fallback.
+        -->
+        <div class="glass card card-outline holo p-5 reveal">
+            <div class="flex items-start gap-4">
+                <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-full flex-shrink-0"/>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h4 class="font-bold">Etheria</h4>
+                        <span class="small-dim">@ETRXDreamscapes</span>
+                    </div>
+                    <p class="mt-1 text-sm small-dim">
+                        The $ETRX presale is approaching! We're building a world, not just a token. Join our Telegram and get ready for the journey ahead.
+                        <a href="https://t.me/Etheria_official" class="text-cyan-400 laser">#Etheria</a> <a href="#" class="text-cyan-400 laser">$ETRX</a>
+                    </p>
+                    <div class="mt-3 text-xs small-dim">9:00 AM · Sep 9, 2025</div>
+                </div>
+            </div>
+             <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-4 w-full text-center block">View on X/Twitter</a>
+        </div>
+    </div>
+</section>
+
+<div class="section-divider max-w-6xl mx-auto"></div>
+
 
 <!-- Audit & Trust Section -->
 <section id="trust" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
@@ -544,9 +716,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <section id="team" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <h2 class="text-2xl font-bold neon-text reveal">Core Contributors</h2>
     <p class="mt-2 max-w-3xl small-dim reveal">The pseudonymous team behind Etheria, dedicated to building a lasting world.</p>
-    <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+    <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3" style="perspective: 1000px;">
         <!-- Team Member 1 -->
-        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="0">
+        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="0">
             <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 bg-white/5 flex items-center justify-center">
                 <span class="text-3xl font-bold text-cyan-300">ED</span>
             </div>
@@ -555,7 +727,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
             <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@ETRXDreamscapes</a>
         </div>
         <!-- Team Member 2 -->
-        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="50">
+        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="50">
             <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-blue-400/30 bg-white/5 flex items-center justify-center">
                 <span class="text-3xl font-bold text-blue-300">H</span>
             </div>
@@ -564,7 +736,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
             <a href="https://t.me/HeisCaifu" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@HeisCaifu</a>
         </div>
         <!-- Team Member 3 -->
-        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="100">
+        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="100">
             <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-violet-400/30 bg-white/5 flex items-center justify-center">
                 <span class="text-3xl font-bold text-violet-300">D</span>
             </div>
@@ -590,12 +762,12 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
       <p>Presale event, Token Generation Event (TGE), DEX listing & initial liquidity pools.</p>
     </div>
     <div class="timeline-item reveal" data-delay="100">
-      <h4 class="font-bold text-white/90">Phase 3: Utility (Q1 2026)</h4>
+      <h4 class="font-bold text-white/90">Phase 3: Utility (Late Sep 2025)</h4>
       <p>Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on lore decisions.</p>
     </div>
     <div class="timeline-item reveal" data-delay="150">
       <h4 class="font-bold text-white/90">Phase 4: Expansion (Q2 2026 & Beyond)</h4>
-      <p>First Realm drop for holders, development of the Etheria marketplace, and exploration of cross-chain bridges.</p>
+      <p>Development of the Etheria marketplace, introduction of advanced staking mechanisms, and exploration of cross-chain bridges.</p>
     </div>
   </div>
 </section>
@@ -628,7 +800,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     <p class="mt-1 text-xs small-dim">We only use your info for presale notifications. No spam.</p>
 
     <div class="mt-8">
-      <h4 class="text-base font-semibold neon-text">Join the allowlist</h4>
+      <h4 class="text-base font-semibold neon-text">Allowlist & Referrals</h4>
       <form id="wlForm" class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]"
             action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate>
         <label class="sr-only" for="wallet">Ethereum wallet or ENS</label>
@@ -638,13 +810,23 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <input type="hidden" name="type" value="allowlist" />
         <button class="btn-primary" type="submit">Join Allowlist</button>
       </form>
-
+      
       <p id="wlHelp" class="mt-2 text-xs small-dim"></p>
       <div id="wlSuccess" class="hidden mt-3 glass card p-5 sm:col-span-2" role="status" aria-live="polite" aria-atomic="true">
         <div class="text-sm">✅ Wallet submitted! We’ll verify allowlist details before presale.</div>
         <div class="mt-1 text-xs small-dim">You’ll be notified by email before the window opens.</div>
       </div>
       <p id="wlMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
+
+      <!-- Referral Section -->
+      <div id="referral-section" class="mt-4 hidden">
+          <p class="text-xs small-dim">Generate your unique referral link to earn an $ETRX bonus for every contributor you bring!</p>
+          <div class="mt-2 flex flex-col sm:flex-row gap-2">
+              <input id="referral-link" type="text" readonly class="flex-1 rounded-lg bg-white/5 border border-white/10 px-3 py-2 font-mono text-sm outline-none select-all" aria-label="Your referral link"/>
+              <button id="copy-referral" class="btn-ghost text-sm">Copy Link</button>
+          </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -688,8 +870,12 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm">
     <div>© <span id="year"></span> Etheria • $ETRX</div>
     <div class="flex items-center gap-4">
-        <a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer">X/Twitter</a>
-        <a class="laser hover:text-white" href="https://t.me/Etheria_official" target="_blank" rel="noopener noreferrer">Telegram</a>
+        <a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" aria-label="Follow Etheria on X/Twitter">X/Twitter</a>
+        <a class="laser hover:text-white" href="https://t.me/Etheria_official" target="_blank" rel="noopener noreferrer" aria-label="Join Etheria on Telegram">Telegram</a>
+        <button id="mute-button" class="text-white/70 hover:text-white" aria-label="Toggle Sound">
+            <svg id="sound-on-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            <svg id="sound-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+        </button>
     </div>
     <p class="mt-2 max-w-3xl text-center text-xs opacity-80">
       Disclaimer: This site and presale information are for community use only and do not constitute an offer to sell or a solicitation to buy any financial instrument. Participation may be restricted by local laws. Crypto assets are volatile and carry significant risk. DYOR.
@@ -742,6 +928,55 @@ const connectBtn=$('connectBtn'), openConnect=$('openConnect'), modal=$('walletM
 const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn'), phaseNameEl=$('phaseName');
 $('year').textContent = new Date().getFullYear();
 
+/* Preloader */
+window.addEventListener('load', () => {
+    $('preloader')?.classList.add('loaded');
+});
+
+/* Sound Manager */
+const soundManager = {
+    isMuted: true,
+    synth: null,
+    init() {
+        if (typeof Tone === 'undefined') {
+            console.log("Tone.js not loaded, sounds disabled.");
+            $('mute-button').style.display = 'none';
+            return;
+        }
+        this.synth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: 'sine' },
+            envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 },
+            volume: -20
+        }).toDestination();
+        
+        const muteButton = $('mute-button');
+        muteButton.addEventListener('click', () => this.toggleMute());
+        this.updateButton();
+    },
+    play(note, duration = '16n') {
+        if (!this.isMuted && this.synth) {
+            this.synth.triggerAttackRelease(note, duration);
+        }
+    },
+    toggleMute() {
+        this.isMuted = !this.isMuted;
+        this.updateButton();
+        this.play('C5');
+    },
+    updateButton() {
+        $('sound-on-icon').classList.toggle('hidden', this.isMuted);
+        $('sound-off-icon').classList.toggle('hidden', !this.isMuted);
+    }
+};
+soundManager.init();
+
+// Attach sounds to interactive elements
+document.querySelectorAll('button, a.laser').forEach(el => {
+    el.addEventListener('mouseenter', () => soundManager.play('C6', '32n'));
+    el.addEventListener('click', () => soundManager.play('E6', '16n'));
+});
+
+
 /* Header elevation on scroll */
 const header = document.getElementById('siteHeader');
 addEventListener('scroll', ()=> header.classList.toggle('header-float', scrollY>12), {passive:true});
@@ -782,6 +1017,32 @@ tzToggle?.addEventListener('click', ()=>{ primaryUTC=!primaryUTC; safeSet('etrx_
 /* precision clock */
 const t0 = Date.now(), p0 = performance.now();
 const nowAccurate = ()=> new Date(t0 + (performance.now()-p0));
+
+/* ===== Nav Dropdown ===== */
+const moreMenuContainer = document.getElementById('more-menu');
+if (moreMenuContainer) {
+    const btn = moreMenuContainer.querySelector('button');
+    const dropdown = moreMenuContainer.querySelector('div');
+    
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = dropdown.classList.contains('hidden');
+        if(isHidden) {
+            dropdown.classList.remove('hidden');
+            btn.setAttribute('aria-expanded', 'true');
+        } else {
+            dropdown.classList.add('hidden');
+            btn.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!moreMenuContainer.contains(e.target)) {
+            dropdown.classList.add('hidden');
+            btn.setAttribute('aria-expanded', 'false');
+        }
+    });
+}
 
 /* Phase helpers */
 function clamp01(x){ return Math.max(0, Math.min(1, x)); }
@@ -910,18 +1171,39 @@ function toggleBar(){
 }
 
 /* Active nav highlight */
-const navLinks = [...document.querySelectorAll('nav a[href^="#"]')];
-const navMap = navLinks.map(a=>({a, id:a.getAttribute('href').slice(1)}));
-const secIO = new IntersectionObserver(es=>{
-  es.forEach(e=>{
-    const hit = navMap.find(n=>n.id===e.target.id);
-    if(hit && e.isIntersecting){
-      navMap.forEach(n=>n.a.classList.remove('text-white'));
-      hit.a.classList.add('text-white');
+const allNavLinks = [...document.querySelectorAll('header nav a')];
+const moreMenuBtn = document.getElementById('more-menu-btn');
+const navSections = allNavLinks.map(link => document.getElementById(link.getAttribute('href').substring(1))).filter(Boolean);
+
+const navObserver = new IntersectionObserver(entries => {
+    let activeEntry = null;
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            if (!activeEntry || entry.intersectionRatio > activeEntry.intersectionRatio) {
+                activeEntry = entry;
+            }
+        }
+    });
+
+    if (activeEntry) {
+        const activeId = activeEntry.target.id;
+        let dropdownIsActive = false;
+        
+        allNavLinks.forEach(link => {
+            const linkId = link.getAttribute('href').substring(1);
+            const isActive = linkId === activeId;
+            link.classList.toggle('text-white', isActive);
+            if (isActive && link.closest('#more-menu-dropdown')) {
+                dropdownIsActive = true;
+            }
+        });
+        
+        moreMenuBtn.classList.toggle('text-white', dropdownIsActive);
     }
-  });
-},{ rootMargin:'-45% 0px -45% 0px', threshold:0.01 });
-navMap.forEach(n=>{ const el=document.getElementById(n.id); el && secIO.observe(el); });
+}, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+
+navSections.forEach(section => navObserver.observe(section));
+
 
 /* Reveal-on-scroll */
 (function(){
@@ -965,6 +1247,7 @@ if (notifyForm){
       await postFormspree(Object.fromEntries(fd.entries()));
       notifyForm.classList.add('hidden'); notifySuccess.classList.remove('hidden');
       toast('Check your email to confirm ✉️');
+      soundManager.play('G5', '8n');
     } catch(err){
       notifyMsg.textContent='Submission failed. Please check your connection and try again.'; notifyMsg.classList.remove('hidden');
       toast('Submission failed. Try again.', true);
@@ -1030,6 +1313,7 @@ if (wlForm){
       await postFormspree({ wallet: finalAddr, type: 'allowlist' });
       wlForm.classList.add('hidden'); wlSuccess.classList.remove('hidden');
       toast('Wallet submitted ✅');
+      soundManager.play('G5', '8n');
     }catch(err){
       wlMsg.textContent='Saved locally. Network submit failed — please try again later.'; wlMsg.classList.remove('hidden');
       toast('Saved locally. Network error.', true);
@@ -1039,6 +1323,7 @@ if (wlForm){
 
 /* ===== Injected wallet (EIP-6963 aware) ===== */
 let activeProvider=null;
+let connectedAccount = null;
 function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
 
 /* Modal open/close + focus trap */
@@ -1127,7 +1412,12 @@ function removeProviderListeners(){
   activeProvider.removeListener('disconnect', onDisconnect);
   activeProvider.removeListener('chainChanged', onChainChanged);
 }
-function onAccountsChanged(accs){ walletShort.textContent=shortAddr(accs?.[0]||''); safeSet('etrx_wallet', accs?.[0]||''); }
+function onAccountsChanged(accs){ 
+  connectedAccount = accs?.[0] || null;
+  walletShort.textContent=shortAddr(connectedAccount); 
+  safeSet('etrx_wallet', connectedAccount); 
+  updateReferralUI();
+}
 function onDisconnect(){ doDisconnect(); }
 async function onChainChanged(){ await ensureMainnet(activeProvider); }
 
@@ -1135,8 +1425,9 @@ async function onConnected(provider, account){
   if(activeProvider && provider!==activeProvider){ removeProviderListeners(); }
   activeProvider = provider;
   await ensureMainnet(provider);
-  safeSet('etrx_wallet', account||'');
-  walletShort.textContent = shortAddr(account||'');
+  connectedAccount = account || null;
+  safeSet('etrx_wallet', connectedAccount);
+  walletShort.textContent = shortAddr(connectedAccount);
   walletPill.classList.remove('hidden');
   connectBtn.classList.add('hidden-important');
   openConnect?.classList.add('hidden-important');
@@ -1144,26 +1435,52 @@ async function onConnected(provider, account){
   provider.on?.('disconnect', onDisconnect);
   provider.on?.('chainChanged', onChainChanged);
   toast('Wallet connected ✅');
+  soundManager.play('A5', '8n');
+  updateReferralUI();
 }
 function doDisconnect(){
   try{ activeProvider?.disconnect?.(); }catch{}
   removeProviderListeners();
-  activeProvider=null; safeSet('etrx_wallet','');
+  activeProvider=null; 
+  connectedAccount = null;
+  safeSet('etrx_wallet','');
   walletPill.classList.add('hidden');
   connectBtn.classList.remove('hidden-important');
   openConnect?.classList.remove('hidden-important');
   toast('Disconnected', true);
+  updateReferralUI();
 }
 disconnectBtn.addEventListener('click', doDisconnect);
 
 /* Restore previous wallet session */
 const prev = safeGet('etrx_wallet','');
 if (prev){
+  connectedAccount = prev;
   walletShort.textContent = shortAddr(prev);
   walletPill.classList.remove('hidden');
   connectBtn.classList.add('hidden-important');
   openConnect?.classList.add('hidden-important');
+  updateReferralUI();
 }
+
+/* Referral System */
+function updateReferralUI(){
+    const referralSection = $('referral-section');
+    if (connectedAccount) {
+        const link = `${window.location.origin}${window.location.pathname}?ref=${connectedAccount}`;
+        $('referral-link').value = link;
+        referralSection.classList.remove('hidden');
+    } else {
+        referralSection.classList.add('hidden');
+    }
+}
+$('copy-referral').addEventListener('click', () => {
+    const linkInput = $('referral-link');
+    linkInput.select();
+    navigator.clipboard.writeText(linkInput.value);
+    toast('Referral link copied!');
+    soundManager.play('C6', '8n');
+});
 
 /* Share & Copy Buttons */
 const copyAddrBtn = $('copyAddr');
@@ -1172,6 +1489,7 @@ copyAddrBtn.addEventListener('click', () => {
     presaleAddrInput.select();
     navigator.clipboard.writeText(presaleAddrInput.value);
     toast('Address copied to clipboard!');
+    soundManager.play('C6', '8n');
 });
 
 
@@ -1184,6 +1502,74 @@ function toast(msg, isWarn=false){
   t.textContent=msg; document.body.appendChild(t);
   setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .25s'; t.addEventListener('transitionend', ()=>t.remove(), {once:true}); }, 2500);
 }
+
+/* ===== Live On-Chain Data ===== */
+const onChain = {
+    contractAddress: "0xYourPresaleContractAddressHere", // <-- TODO: REPLACE THIS
+    contractABI: [], // <-- TODO: REPLACE THIS with your presale contract's ABI
+    provider: null,
+    contract: null,
+    hardCap: 150, // ETH
+    
+    init() {
+        if (typeof ethers === 'undefined') {
+            console.log("Ethers.js not loaded, on-chain data disabled.");
+            return;
+        }
+        // Use a public read-only provider
+        this.provider = new ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
+        
+        // TODO: UNCOMMENT THE FOLLOWING LINES WHEN YOU HAVE A DEPLOYED CONTRACT
+        // this.contract = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
+        // this.updateLoop();
+        
+        // For demonstration, use simulated data
+        this.simulateData();
+    },
+    
+    async fetchData() {
+        if (!this.contract) return { totalRaised: '0', contributors: '0' };
+        try {
+            const totalRaisedWei = await this.contract.totalRaised();
+            const contributors = await this.contract.contributorCount();
+            return {
+                totalRaised: ethers.utils.formatEther(totalRaisedWei),
+                contributors: contributors.toString()
+            };
+        } catch (error) {
+            console.error("Error fetching on-chain data:", error);
+            return { totalRaised: 'N/A', contributors: 'N/A' };
+        }
+    },
+    
+    updateUI(data) {
+        $('total-raised').textContent = `${parseFloat(data.totalRaised).toFixed(2)} ETH`;
+        $('total-contributors').textContent = data.contributors;
+        const progress = (parseFloat(data.totalRaised) / this.hardCap) * 100;
+        $('live-progress-bar').style.width = `${Math.min(100, progress)}%`;
+        $('progress-percentage').textContent = `${Math.min(100, progress).toFixed(1)}%`;
+    },
+    
+    async updateLoop() {
+        const data = await this.fetchData();
+        this.updateUI(data);
+        setTimeout(() => this.updateLoop(), 15000); // Update every 15 seconds
+    },
+
+    simulateData() {
+        let simulatedRaised = 34.56;
+        let simulatedContributors = 82;
+        this.updateUI({ totalRaised: String(simulatedRaised), contributors: String(simulatedContributors) });
+        setInterval(() => {
+            simulatedRaised += Math.random() * 2.5;
+            simulatedContributors += Math.floor(Math.random() * 5);
+            if (simulatedRaised > this.hardCap) simulatedRaised = this.hardCap;
+            this.updateUI({ totalRaised: String(simulatedRaised), contributors: String(simulatedContributors) });
+        }, 5000);
+    }
+};
+onChain.init();
+
 
 /* ===== Pie Chart interactivity ===== */
 const PIE_DATA = {
@@ -1305,6 +1691,27 @@ legendItems.forEach(item => {
   });
 })();
 
+/* ===== 3D Tilt Effect ===== */
+(function() {
+    const cards = document.querySelectorAll('.card-3d-tilt');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const { width, height } = rect;
+            const rotateX = (y / height - 0.5) * -14; // rotation degree
+            const rotateY = (x / width - 0.5) * 14;
+            card.style.transition = 'transform 0.1s ease-out';
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transition = 'transform 0.4s ease-out';
+            card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+        });
+    });
+})();
+
 /* Initialize UI */
 renderPhaseTable();
 updateWhen();
@@ -1332,7 +1739,4 @@ document.querySelectorAll('.faq-item')?.forEach(item=>{
 </script>
 </body>
 </html>
-
-
-
 
