@@ -359,6 +359,19 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         </div>
       </div>
     </div>
+   
+    <!-- NEW: Presale Address banner -->
+    <div class="mt-4 glass card card-outline p-4 holo" role="region" aria-label="Presale Address">
+      <div class="text-xs uppercase small-dim mb-2">Presale Address (read-only)</div>
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+        <input id="presaleAddr" type="text" readonly
+               value="TBA — announced here only"
+               class="flex-1 rounded-lg bg-white/5 border border-white/10 px-3 py-2 font-mono text-sm outline-none select-all"
+               aria-readonly="true"/>
+        <button id="copyAddr" class="btn-ghost text-sm">Copy</button>
+      </div>
+      <p class="mt-2 text-xs small-dim">Only this address will be announced on this page and our pinned tweet.</p>
+    </div>
 
     <ul class="mt-6 grid grid-cols-2 gap-3 text-sm sm:text-base">
       <li class="glass card card-outline holo p-4 reveal" data-delay="50"><span class="inline-block w-2 h-2 rounded-full bg-cyan-400 mr-2"></span>Supply: <b>10,000,000</b></li>
