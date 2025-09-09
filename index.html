@@ -394,19 +394,21 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     </div>
   </div>
 
-  <!-- Right: hero image -->
-  <div class="order-1 md:order-2 h-[360px] md:h-[560px] lg:h-[620px] reveal" data-delay="0">
-    <div class="hero-glow h-full w-full rounded-3xl">
-      <img
-        src="assets/Background.png"
-        alt="Etheria Background"
-        width="1280" height="720"
-        class="h-full w-full rounded-3xl ring-1 ring-cyan-400/15 object-cover"
-        loading="eager" decoding="async" fetchpriority="high"
-        onerror="this.outerHTML='<div class=&quot;h-full w-full rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-orange-500/10 flex items-center justify-center text-white/50&quot;>Background image missing</div>'"/>
-    </div>
+ <!-- Right: hero image -->
+<div class="order-1 md:order-2 reveal" data-delay="0">
+  <!-- Use a stable aspect ratio instead of fixed heights -->
+  <div class="hero-glow relative w-full overflow-hidden rounded-3xl aspect-[16/9] md:aspect-[5/4] lg:aspect-[16/9]">
+    <img
+      src="assets/Background.png"
+      alt="Etheria Background"
+      width="1280" height="720"
+      class="absolute inset-0 h-full w-full rounded-3xl ring-1 ring-cyan-400/15 object-cover
+             object-center md:object-[50%_40%] lg:object-[50%_45%]"
+      loading="eager" decoding="async" fetchpriority="high"
+      onerror="this.outerHTML='<div class=&quot;absolute inset-0 rounded-3xl ring-1 ring-white/10 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-orange-500/10 flex items-center justify-center text-white/50&quot;>Background image missing</div>'"/>
   </div>
-</section>
+</div>
+
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
