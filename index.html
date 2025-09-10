@@ -32,7 +32,7 @@
            script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline';
            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
            font-src https://fonts.gstatic.com;
-           connect-src 'self' https://formspree.io https://cloudflare-eth.com;
+           connect-src 'self' https://formspree.io https://cloudflare-eth.com https://api.etherscan.io;
            worker-src 'self';
            object-src 'none';
            base-uri 'self';
@@ -195,12 +195,13 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 /* Buttons */
 .btn-primary{
-  position:relative; display:inline-flex; align-items:center; gap:.55rem; padding:.75rem 1rem;
+  position:relative; display:inline-flex; align-items:center; justify-content:center; gap:.55rem; padding:.75rem 1rem;
   border-radius:14px; font-weight:800; color:#02040a;
   background:linear-gradient(90deg, rgb(var(--neon-orange)), rgb(var(--neon-blue)));
   box-shadow: 0 0 16px rgba(255,147,76,.45), 0 0 24px rgba(84,178,255,.35);
 }
-.btn-primary:hover{ transform: translateY(-1px) scale(1.01) }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-primary:hover:not(:disabled){ transform: translateY(-1px) scale(1.01) }
 .btn-ghost{ border:1px solid rgba(0,255,255,.25); background: rgba(255,255,255,.03); padding:.6rem .9rem; border-radius:12px; }
 .hidden-important{ display:none !important }
 .small-dim{ color:var(--dim) }
@@ -301,6 +302,70 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 #whitepaper-content ul { list-style-position: inside; margin-left: 0.5rem; margin-bottom: 1rem; }
 #whitepaper-content li { margin-bottom: 0.5rem; }
 
+/* Contribution Card */
+.contribution-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.contribution-input {
+  background-color: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  padding-right: 6rem; /* space for the currency symbol and MAX button */
+  width: 100%;
+  outline: none;
+  transition: border-color .2s ease;
+}
+.contribution-input:focus {
+  border-color: var(--c-presale);
+}
+.contribution-currency {
+  position: absolute;
+  right: 4rem;
+  pointer-events: none;
+  color: var(--dim);
+}
+.btn-max {
+    position: absolute;
+    right: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--dim);
+    transition: background-color .2s ease;
+}
+.btn-max:hover {
+    background-color: rgba(255,255,255,0.2);
+    color: #fff;
+}
+/* Recent Contributions */
+.contribution-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeIn .4s ease forwards;
+}
+.contribution-list-item:last-child {
+    border-bottom: none;
+}
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
@@ -382,9 +447,13 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   <div class="glass card card-outline w-full max-w-3xl max-h-[90vh] flex flex-col" data-modal-surface>
     <div class="flex items-center justify-between p-4 border-b border-white/10 flex-shrink-0">
       <h3 id="whitepaperModalTitle" class="text-lg font-semibold neon-text">Etheria Whitepaper v1.0</h3>
-      <button id="wpModalClose" class="text-white/70 hover:text-white" aria-label="Close Whitepaper">✕</button>
+      <div class="flex items-center gap-4">
+        <button id="wp-download-btn" class="btn-ghost text-sm">Download PDF</button>
+        <button id="wpModalClose" class="text-white/70 hover:text-white" aria-label="Close Whitepaper">✕</button>
+      </div>
     </div>
     <div id="whitepaper-content" class="p-6 overflow-y-auto small-dim">
+        <!-- Whitepaper content from original file goes here -->
         <h2>Abstract</h2>
         <p>Etheria is a decentralized, community-driven world-building project on the Ethereum blockchain. It combines the narrative depth of a fantasy universe with the tangible ownership of Non-Fungible Tokens (NFTs) and the governance power of a utility token, $ETRX. The project's mission is to create an evolving ecosystem where the community is not just an audience, but an integral part of its creation and governance. Through a series of foundational NFT collections and the upcoming $ETRX token, Etheria provides a framework for collective storytelling, on-chain utility, and long-term value creation.</p>
         
@@ -445,7 +514,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         </ul>
         
         <h2>7. Competitive Landscape</h2>
-        <p>While many projects exist in the NFT and DeFi space, Etheria's unique advantage lies in our **"build-first"** philosophy. Unlike projects that launch a token based on promises, we have already delivered on-chain assets. Our focus is on deep, community-driven lore and tangible utility, creating an ecosystem with intrinsic value rather than purely speculative hype.</p>
+        <p>While many projects exist in the NFT and DeFi space, Etheria's unique advantage lies in our <strong>"build-first"</strong> philosophy. Unlike projects that launch a token based on promises, we have already delivered on-chain assets. Our focus is on deep, community-driven lore and tangible utility, creating an ecosystem with intrinsic value rather than purely speculative hype.</p>
         
         <h2>8. Risk Factors</h2>
         <p>All investments in the cryptocurrency space carry inherent risks. We believe in transparency and want our community to be fully informed.</p>
@@ -500,11 +569,11 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
             <div>
                 <div class="text-xs uppercase small-dim">Total Raised</div>
-                <div id="total-raised" class="text-3xl font-bold text-cyan-300 mt-1">0.00 ETH</div>
+                <div id="total-raised" class="text-3xl font-bold text-cyan-300 mt-1 tabular">0.00 ETH</div>
             </div>
             <div>
                 <div class="text-xs uppercase small-dim">Contributors</div>
-                <div id="total-contributors" class="text-3xl font-bold text-blue-300 mt-1">0</div>
+                <div id="total-contributors" class="text-3xl font-bold text-blue-300 mt-1 tabular">0</div>
             </div>
         </div>
         <div class="mt-4">
@@ -516,6 +585,13 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
                 <div id="live-progress-bar" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
             </div>
         </div>
+        <!-- NEW: Recent Contributions -->
+        <div id="recent-contributions" class="mt-4 pt-4 border-t border-white/10">
+            <h4 class="text-xs uppercase small-dim text-center mb-2">Recent Contributions</h4>
+            <ul id="contribution-list" class="space-y-1">
+                <!-- JS will populate this -->
+            </ul>
+        </div>
     </div>
 </section>
 
@@ -523,86 +599,136 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <!-- Presale Details Section -->
 <section id="presale-details" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
     <!-- Countdown + phase + progress -->
-    <div class="glass card card-outline p-5 reveal holo" data-delay="0">
-      <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-[.15em] small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
-      <div id="countdown" class="flex gap-3 text-center" aria-live="polite"></div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="glass card card-outline p-5 reveal holo" data-delay="0">
+            <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-[.15em] small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
+            <div id="countdown" class="flex gap-3 text-center" aria-live="polite"></div>
 
-      <div class="mt-3 text-xs flex flex-col gap-1 small-dim">
-        <div id="whenPrimary" class="text-sm text-white/90"></div>
-        <div id="whenSecondary"></div>
-        <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100" aria-pressed="false">Make Local primary</button>
-      </div>
+            <div class="mt-3 text-xs flex flex-col gap-1 small-dim">
+                <div id="whenPrimary" class="text-sm text-white/90"></div>
+                <div id="whenSecondary"></div>
+                <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100" aria-pressed="false">Make Local primary</button>
+            </div>
 
-      <!-- Overall Progress -->
-      <div class="mt-4">
-        <div class="flex items-center justify-between text-xs small-dim">
-          <span id="phaseName" class="font-semibold">Phase: Presale</span><span id="phaseEta"></span>
-        </div>
-        <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
-          <div id="phaseBar" class="h-full" style="background:linear-gradient(90deg, rgba(var(--neon-orange),1), rgba(var(--neon-blue),1)); width:0%"></div>
-        </div>
-        <div class="mt-1 text-xs small-dim" id="phaseDates"></div>
-      </div>
+            <!-- Overall Progress -->
+            <div class="mt-4">
+                <div class="flex items-center justify-between text-xs small-dim">
+                    <span id="phaseName" class="font-semibold">Phase: Presale</span><span id="phaseEta"></span>
+                </div>
+                <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+                    <div id="phaseBar" class="h-full" style="background:linear-gradient(90deg, rgba(var(--neon-orange),1), rgba(var(--neon-blue),1)); width:0%"></div>
+                </div>
+                <div class="mt-1 text-xs small-dim" id="phaseDates"></div>
+            </div>
 
-      <!-- Tiered Pricing cards -->
-      <div class="mt-5 grid gap-3 sm:grid-cols-2">
-        <div class="glass card card-outline p-4 holo">
-          <div class="text-xs uppercase small-dim">Current Phase Price</div>
-          <div id="priceNow" class="mt-1 text-2xl font-extrabold text-green-400">$0.08</div>
-          <div id="pricePhaseName" class="text-xs small-dim mt-1">Phase 1</div>
+            <!-- Tiered Pricing cards -->
+            <div class="mt-5 grid gap-3 sm:grid-cols-2">
+                <div class="glass card card-outline p-4 holo">
+                    <div class="text-xs uppercase small-dim">Current Phase Price</div>
+                    <div id="priceNow" class="mt-1 text-2xl font-extrabold text-green-400">$0.08</div>
+                    <div id="pricePhaseName" class="text-xs small-dim mt-1">Phase 1</div>
+                </div>
+                <div class="glass card card-outline p-4 holo">
+                    <div class="text-xs uppercase small-dim">Planned Listing Price</div>
+                    <div id="priceList" class="mt-1 text-xl font-bold text-white line-through">$0.12</div>
+                    <div id="discountLine" class="text-xs small-dim mt-1">33% below listing</div>
+                </div>
+            </div>
         </div>
-        <div class="glass card card-outline p-4 holo">
-          <div class="text-xs uppercase small-dim">Planned Listing Price</div>
-          <div id="priceList" class="mt-1 text-xl font-bold text-white line-through">$0.12</div>
-          <div id="discountLine" class="text-xs small-dim mt-1">33% below listing</div>
-        </div>
-
-        <div class="sm:col-span-2 glass card card-outline p-4 holo">
-          <div class="text-xs uppercase small-dim mb-2">Quick calculator</div>
-          <div class="grid grid-cols-2 gap-3">
-              <div>
-                  <label class="text-xs small-dim" for="usdIn">You pay (USD)</label>
-                  <input id="usdIn" type="number" min="0" step="0.01" class="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 outline-none placeholder:text-white/40" placeholder="100.00"/>
-              </div>
-              <div>
-                  <label class="text-xs small-dim" for="tokensOut">You receive (ETRX)</label>
-                  <input id="tokensOut" type="number" min="0" class="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 outline-none placeholder:text-white/40" placeholder="1250.00"/>
-              </div>
-          </div>
-          <div class="mt-2 text-xs small-dim">
-            Current price: <span id="calcPrice" class="font-semibold text-white/90">$0.08</span> / ETRX
-          </div>
-        </div>
-
-        <!-- Phase schedule table -->
-        <div class="sm:col-span-2 glass card card-outline p-4 holo">
-          <div class="flex items-center justify-between">
-            <div class="text-xs uppercase small-dim">Phase schedule</div>
-            <div id="phaseScheduleTz" class="text-[11px] small-dim opacity-80">Times in UTC</div>
-          </div>
-          <div id="phaseTable" class="mt-2"></div>
-        </div>
-      </div>
-    </div>
     
-    <!-- Presale Address banner -->
-    <div class="mt-4 glass card p-4 holo" role="region" aria-label="Presale Address" style="border-color: rgba(255, 147, 76, .35)">
-      <div class="text-xs uppercase small-dim mb-2">Official Presale Address</div>
-      <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <input id="presaleAddr" type="text" readonly
-               value="TBA — announced here only"
-               class="flex-1 rounded-lg bg-white/5 border border-white/10 px-3 py-2 font-mono text-sm outline-none select-all"
-               aria-readonly="true"/>
-        <button id="copyAddr" class="btn-ghost text-sm">Copy</button>
-      </div>
-      <div class="mt-2 text-xs small-dim flex items-start gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 text-orange-400 mt-0.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-        <span>
-          <b class="text-orange-400">WARNING:</b> The address will be revealed here and on our official, pinned X/Twitter post. The team will NEVER DM you the address. Triple-check it before sending funds.
-        </span>
-      </div>
+        <!-- NEW: Contribution Card -->
+        <div id="contribution-card" class="glass card card-outline p-5 reveal holo flex flex-col" data-delay="100">
+            <div id="contribute-ready">
+                <div class="flex justify-between items-baseline">
+                    <h3 class="text-lg font-semibold neon-text">Join the Presale</h3>
+                    <div id="eth-price-display" class="text-xs small-dim tabular"></div>
+                </div>
+                <div class="mt-4 space-y-4">
+                    <div>
+                        <label for="eth-amount" class="text-sm small-dim">Amount to Contribute</label>
+                        <div class="contribution-input-wrapper mt-1">
+                            <input id="eth-amount" type="number" min="0" step="0.01" placeholder="0.1" class="contribution-input">
+                            <span class="contribution-currency">ETH</span>
+                            <button id="max-btn" class="btn-max">MAX</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="etrx-receive" class="text-sm small-dim">You will receive (approx.)</label>
+                        <div class="contribution-input-wrapper mt-1">
+                            <input id="etrx-receive" type="text" readonly placeholder="~ 40,000" class="contribution-input bg-white/5 opacity-80 cursor-not-allowed">
+                            <span class="contribution-currency">$ETRX</span>
+                        </div>
+                        <div id="bonus-display" class="text-xs text-green-400 mt-1 h-4"></div>
+                    </div>
+                    <button id="contribute-btn" class="btn-primary w-full text-base py-3">
+                        Contribute Now
+                    </button>
+                </div>
+            </div>
+
+            <div id="your-contribution-summary" class="glass card p-4 mt-4 hidden">
+                <h4 class="text-sm font-semibold neon-text">Your Contributions</h4>
+                <div class="mt-2 text-xs small-dim space-y-1">
+                    <div class="flex justify-between"><span>Total ETH Contributed:</span> <span id="user-total-eth" class="font-bold text-white/90">0.00</span></div>
+                    <div class="flex justify-between"><span>Total $ETRX To Receive:</span> <span id="user-total-etrx" class="font-bold text-white/90">0</span></div>
+                </div>
+            </div>
+
+            <div id="contribute-connect-wallet" class="h-full flex flex-col items-center justify-center text-center hidden">
+                <h3 class="text-lg font-semibold neon-text">Connect to Participate</h3>
+                <p class="mt-2 max-w-xs small-dim">Connect your wallet to see contribution options and join the presale.</p>
+                <button id="connect-btn-card" class="btn-primary mt-4">Connect Wallet</button>
+            </div>
+
+            <div id="contribute-not-live" class="h-full flex flex-col items-center justify-center text-center hidden">
+                <h3 class="text-lg font-semibold neon-text">Presale Not Active</h3>
+                <p class="mt-2 max-w-xs small-dim">The presale is not currently live. Please check the schedule and come back when a phase is active.</p>
+            </div>
+            
+            <div class="mt-auto pt-4 text-xs small-dim flex items-start gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 text-orange-400 mt-0.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <span>
+                    <b class="text-orange-400">Security:</b> This interface is the only official way to contribute. The team will never DM you an address. Always verify you are on the correct website.
+                </span>
+            </div>
+        </div>
     </div>
 </section>
+
+<div class="section-divider max-w-6xl mx-auto"></div>
+
+<!-- NEW: Bonus Tiers Section -->
+<section id="bonus-tiers" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
+    <h2 class="text-2xl font-bold neon-text reveal text-center">Contribution Bonus Tiers</h2>
+    <p class="mt-2 max-w-2xl mx-auto text-center small-dim reveal">Contribute more to earn bonus $ETRX tokens. Bonuses are calculated based on your total contribution amount during the presale.</p>
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Tier 1 -->
+        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="0">
+            <h4 class="font-bold text-lg text-cyan-300">Seeker</h4>
+            <p class="text-2xl font-extrabold my-2">+2.5%</p>
+            <p class="text-sm small-dim">Contribute 1+ ETH</p>
+        </div>
+        <!-- Tier 2 -->
+        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="100">
+            <h4 class="font-bold text-lg text-blue-300">Guardian</h4>
+            <p class="text-2xl font-extrabold my-2">+5%</p>
+            <p class="text-sm small-dim">Contribute 2.5+ ETH</p>
+        </div>
+        <!-- Tier 3 -->
+        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="200">
+            <h4 class="font-bold text-lg text-violet-300">Ascendant</h4>
+            <p class="text-2xl font-extrabold my-2">+7.5%</p>
+            <p class="text-sm small-dim">Contribute 5+ ETH</p>
+        </div>
+        <!-- Tier 4 -->
+        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="300">
+            <h4 class="font-bold text-lg text-orange-300">Harbinger</h4>
+            <p class="text-2xl font-extrabold my-2">+10%</p>
+            <p class="text-sm small-dim">Contribute 10+ ETH</p>
+        </div>
+    </div>
+</section>
+
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
@@ -658,13 +784,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         </div>
         <!-- Step 3 -->
         <div class="timeline-item reveal" data-delay="100">
-            <h4 class="font-bold text-white/90">3. Connect to Etheria</h4>
-            <p class="small-dim">Return to this page when the presale is live, and click the "Connect Wallet" button at the top of the page.</p>
-        </div>
-        <!-- Step 4 -->
-        <div class="timeline-item reveal" data-delay="150">
-            <h4 class="font-bold text-white/90">4. Contribute</h4>
-            <p class="small-dim">Once the official address is revealed on this page, send your ETH to that address to participate. Always triple-check the address!</p>
+            <h4 class="font-bold text-white/90">3. Connect & Contribute</h4>
+            <p class="small-dim">Return to this page when the presale is live, click "Connect Wallet", enter the amount of ETH you wish to contribute in the presale card, and approve the transaction.</p>
         </div>
     </div>
 </section>
@@ -771,7 +892,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <section id="social-feed" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <h2 class="text-2xl font-bold neon-text reveal text-center">Join the Conversation</h2>
     <div class="mt-6 max-w-xl mx-auto">
-        <!-- 
+        <!--  
             NOTE: This is a placeholder for a real Twitter feed. 
             For a live version, you would use Twitter's official embed generator and paste the code here.
             The required script is often blocked by strict CSPs, so this placeholder is a safe fallback.
@@ -803,12 +924,18 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <section id="trust" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div class="glass card card-outline holo p-5 reveal">
-            <h3 class="text-lg font-bold neon-text">Smart Contract Audit</h3>
-            <p class="small-dim mt-2">Our token and presale contracts have been audited by [Reputable Audit Firm Name]. Security and transparency are our top priorities.</p>
-            <a href="[Link to Audit Report]" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Report</a>
+            <h3 class="text-lg font-bold neon-text flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Smart Contract Audit
+            </h3>
+            <p class="small-dim mt-2">Our token and presale contracts have been audited by <strong>CyberScope</strong>. Security and transparency are our top priorities.</p>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Report (Link)</a>
         </div>
         <div class="glass card card-outline holo p-5 reveal" data-delay="50">
-            <h3 class="text-lg font-bold neon-text">Verified on Etherscan</h3>
+            <h3 class="text-lg font-bold neon-text flex items-center gap-2">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
+                Verified on Etherscan
+            </h3>
             <p class="small-dim mt-2">The $ETRX token contract will be verified on Etherscan post-TGE for full transparency. You can review the code and holder distribution at any time.</p>
             <a href="#" class="btn-ghost text-sm mt-3 inline-block opacity-50 cursor-not-allowed">View on Etherscan (Post-TGE)</a>
         </div>
@@ -824,8 +951,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3" style="perspective: 1000px;">
         <!-- Team Member 1 -->
         <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="0">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 bg-white/5 flex items-center justify-center">
-                <span class="text-3xl font-bold text-cyan-300">ED</span>
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
+                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--neon-cyan));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--neon-blue));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g1)"/><path d="M20,80 Q50,20 80,80" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round" /></svg>
             </div>
             <h4 class="mt-3 font-bold text-lg">ETRXDreamscapes</h4>
             <p class="text-sm small-dim">The Developer</p>
@@ -833,8 +960,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         </div>
         <!-- Team Member 2 -->
         <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="50">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-blue-400/30 bg-white/5 flex items-center justify-center">
-                <span class="text-3xl font-bold text-blue-300">H</span>
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-blue-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
+                <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--neon-blue));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--neon-violet));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g2)"/><path d="M25,25 L75,75 M75,25 L25,75" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
             </div>
             <h4 class="mt-3 font-bold text-lg">HeisCaifu</h4>
             <p class="text-sm small-dim">Telegram Page Owner</p>
@@ -842,8 +969,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         </div>
         <!-- Team Member 3 -->
         <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="100">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-violet-400/30 bg-white/5 flex items-center justify-center">
-                <span class="text-3xl font-bold text-violet-300">D</span>
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-violet-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
+                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--neon-violet));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--neon-orange));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g3)"/><circle cx="50" cy="50" r="25" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none"/></svg>
             </div>
             <h4 class="mt-3 font-bold text-lg">DxCheetah</h4>
             <p class="text-sm small-dim">Telegram Page Mod</p>
@@ -959,14 +1086,14 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
       </div>
     </div>
     <div class="faq-item reveal">
-        <button class="faq-header" aria-expanded="false" aria-controls="faq-how-body" id="faq-how-btn">
-          <span>How can I participate?</span>
-          <span class="faq-chevron" aria-hidden="true">⌄</span>
-        </button>
-        <div class="faq-body" id="faq-how-body" role="region" aria-labelledby="faq-how-btn" hidden>
-          <p class="small-dim">During the presale window, connect an Ethereum wallet, ensure you have ETH for the purchase and gas fees, and send ETH to the official presale address that will be revealed on this page. Always double-check the address.</p>
-        </div>
+      <button class="faq-header" aria-expanded="false" aria-controls="faq-how-body" id="faq-how-btn">
+        <span>How can I participate?</span>
+        <span class="faq-chevron" aria-hidden="true">⌄</span>
+      </button>
+      <div class="faq-body" id="faq-how-body" role="region" aria-labelledby="faq-how-btn" hidden>
+        <p class="small-dim">During the presale window, connect an Ethereum wallet using the button on this page, ensure you have ETH for the purchase and gas fees, and use the contribution form to complete your purchase. This is the only official method.</p>
       </div>
+    </div>
   </div>
 </section>
 </main>
@@ -1015,32 +1142,50 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 'use strict'
 document.addEventListener('DOMContentLoaded', () => {
 
-    /* ================== CONFIG: DATES + TIERS ================== */
+    /* =================================================================
+     * ================== CONFIG: DATES + TIERS ========================
+     * ================================================================= */
     const PRESALE_START = new Date('2025-09-24T00:00:00Z');
     const PRESALE_END   = new Date('2025-10-01T00:00:00Z');
     const LISTING_PRICE = 0.12; // USD
 
-    /* Phases (edit these) */
     const PHASES = [
       { name:'Phase 1', start:'2025-09-24T00:00:00Z', end:'2025-09-26T23:59:59Z', price:0.08 },
       { name:'Phase 2', start:'2025-09-27T00:00:00Z', end:'2025-09-28T23:59:59Z', price:0.10 },
       { name:'Phase 3', start:'2025-09-29T00:00:00Z', end:'2025-09-30T23:59:59Z', price:0.11 },
     ];
+    
+    const BONUS_TIERS = [
+        { threshold: 10, bonus: 0.10 },   // 10% for 10+ ETH
+        { threshold: 5,  bonus: 0.075 }, // 7.5% for 5+ ETH
+        { threshold: 2.5, bonus: 0.05 },  // 5% for 2.5+ ETH
+        { threshold: 1, bonus: 0.025 }   // 2.5% for 1+ ETH
+    ];
 
-    /* ================== DOM SHORTCUTS ================== */
+    /* =================================================================
+     * ================== DOM & STATE VARIABLES ========================
+     * ================================================================= */
     const $ = (id)=> document.getElementById(id);
     const phaseLabel=$('phaseLabel'), countdown=$('countdown'), whenPrimary=$('whenPrimary'),
           whenSecondary=$('whenSecondary'), modeLabel=$('modeLabel');
-    const connectBtn=$('connectBtn'), openConnect=$('openConnect'), modal=$('walletModal'), modalClose=$('modalClose');
-    const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn'), phaseNameEl=$('phaseName');
+    const connectBtn=$('connectBtn'), modal=$('walletModal'), modalClose=$('modalClose');
+    const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn');
     $('year').textContent = new Date().getFullYear();
 
-    /* Preloader */
+    let activeProvider = null;
+    let connectedAccount = null;
+    let currentPhaseInfo = {};
+    let primaryUTC = (safeGet('etrx_tz', 'utc') || 'utc') === 'utc';
+    let ethPriceUSD = 3200; // Default/fallback ETH price
+    
+    // Preloader
     $('preloader')?.classList.add('loaded');
 
-    /* Sound Manager */
+    /* =================================================================
+     * ====================== SOUND MANAGER ============================
+     * ================================================================= */
     const soundManager = {
-        isMuted: true,
+        isMuted: safeGet('etrx_sound_muted', 'true') === 'true', // Muted by default
         synth: null,
         init() {
             if (typeof Tone === 'undefined') {
@@ -1060,11 +1205,16 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         play(note, duration = '16n') {
             if (!this.isMuted && this.synth) {
-                this.synth.triggerAttackRelease(note, duration);
+                try {
+                    this.synth.triggerAttackRelease(note, duration);
+                } catch(e) {
+                    // Could fail if user hasn't interacted, ignore gracefully
+                }
             }
         },
         toggleMute() {
             this.isMuted = !this.isMuted;
+            safeSet('etrx_sound_muted', this.isMuted);
             this.updateButton();
             this.play('C5');
         },
@@ -1075,72 +1225,57 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     soundManager.init();
 
-    // Attach sounds to interactive elements
     document.querySelectorAll('button, a.laser').forEach(el => {
         el.addEventListener('mouseenter', () => soundManager.play('C6', '32n'));
         el.addEventListener('click', () => soundManager.play('E6', '16n'));
     });
+    
+    /* =================================================================
+     * ====================== UI & ANIMATIONS ==========================
+     * ================================================================= */
+    
+    // Header elevation on scroll
+    const header = $('siteHeader');
+    addEventListener('scroll', ()=> header.classList.toggle('header-float', scrollY > 12), { passive:true });
 
-
-    /* Header elevation on scroll */
-    const header = document.getElementById('siteHeader');
-    addEventListener('scroll', ()=> header.classList.toggle('header-float', scrollY>12), {passive:true});
-
-    /* Time formatting */
-    const fmtBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
-    const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtBase, timeZone:'UTC', timeZoneName:'short' });
-    const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtBase, timeZoneName:'short' });
-
-    /* localStorage helpers */
+    // LocalStorage helpers
     function safeGet(key, fallback=null){ try{ return localStorage.getItem(key) ?? fallback }catch{ return fallback } }
     function safeSet(key, val){ try{ localStorage.setItem(key, val) }catch{} }
 
-    /* ================== UTC/LOCAL TOGGLE ================== */
-    let primaryUTC = (safeGet('etrx_tz', 'utc') || 'utc') === 'utc';
+    // UTC/Local Time Toggle
+    const tzToggle = $('tzToggle');
     function updateWhen(){
-      const s0 = new Date(PHASES[0].start), e0 = new Date(PHASES[0].end);
-      if (primaryUTC){
-        whenPrimary.textContent   = `Presale: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
-        whenSecondary.textContent = `Local time: ${fmtLoc(PRESALE_START)} → ${fmtLoc(PRESALE_END)}`;
-        modeLabel.textContent='UTC';
-        tzToggle.textContent='Make Local primary';
-        tzToggle.setAttribute('aria-pressed','false');
-        $('phaseScheduleTz').textContent = 'Times in UTC';
-      } else {
-        whenPrimary.textContent   = `Presale: ${fmtLoc(PRESALE_START)} → ${fmtLoc(PRESALE_END)}`;
-        whenSecondary.textContent = `UTC time: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
-        modeLabel.textContent='Local';
-        tzToggle.textContent='Make UTC primary';
-        tzToggle.setAttribute('aria-pressed','true');
-        $('phaseScheduleTz').textContent = 'Times in Local';
-      }
-      renderPhaseTable(); // keep table in sync with timezone change
+        const fmtBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
+        const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtBase, timeZone:'UTC', timeZoneName:'short' });
+        const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtBase, timeZoneName:'short' });
+        
+        if (primaryUTC){
+            whenPrimary.textContent   = `Presale: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
+            whenSecondary.textContent = `Local time: ${fmtLoc(PRESALE_START)} → ${fmtLoc(PRESALE_END)}`;
+            modeLabel.textContent='UTC';
+            tzToggle.textContent='Make Local primary';
+            tzToggle.setAttribute('aria-pressed','false');
+        } else {
+            whenPrimary.textContent   = `Presale: ${fmtLoc(PRESALE_START)} → ${fmtLoc(PRESALE_END)}`;
+            whenSecondary.textContent = `UTC time: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
+            modeLabel.textContent='Local';
+            tzToggle.textContent='Make UTC primary';
+            tzToggle.setAttribute('aria-pressed','true');
+        }
     }
-    const tzToggle = document.getElementById('tzToggle');
     tzToggle?.addEventListener('click', ()=>{ primaryUTC=!primaryUTC; safeSet('etrx_tz', primaryUTC ? 'utc' : 'local'); updateWhen(); });
 
-    /* precision clock */
-    const t0 = Date.now(), p0 = performance.now();
-    const nowAccurate = ()=> new Date(t0 + (performance.now()-p0));
-
-    /* ===== Nav Dropdown ===== */
-    const moreMenuContainer = document.getElementById('more-menu');
+    // Nav Dropdown
+    const moreMenuContainer = $('more-menu');
     if (moreMenuContainer) {
         const btn = moreMenuContainer.querySelector('button');
         const dropdown = moreMenuContainer.querySelector('div');
-        
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const isHidden = dropdown.classList.contains('hidden');
-            if(isHidden) {
-                dropdown.classList.remove('hidden');
-                btn.setAttribute('aria-expanded', 'true');
-            } else {
-                dropdown.classList.add('hidden');
-                btn.setAttribute('aria-expanded', 'false');
-            }
+            dropdown.classList.toggle('hidden', !isHidden);
+            btn.setAttribute('aria-expanded', String(isHidden));
         });
-
         document.addEventListener('click', (e) => {
             if (!moreMenuContainer.contains(e.target)) {
                 dropdown.classList.add('hidden');
@@ -1149,329 +1284,373 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* Phase helpers */
+    // Phase helpers
     function clamp01(x){ return Math.max(0, Math.min(1, x)); }
-    function currentPhase(t=new Date()){
+    function getCurrentPhase(t=new Date()){
       for(const p of PHASES){ const s=new Date(p.start), e=new Date(p.end); if(t>=s && t<=e) return p; }
-      if(t<PRESALE_START) return { pre:true };
-      if(t>PRESALE_END) return { post:true };
+      if(t < PRESALE_START) return { name: 'Upcoming', pre:true };
+      if(t > PRESALE_END) return { name: 'Ended', post:true };
       const nxt = PHASES.find(p=> t < new Date(p.start));
-      return nxt ? {...nxt, upcoming:true} : { post:true };
+      return nxt ? {...nxt, upcoming:true} : { name: 'Ended', post:true };
     }
 
-    /* Countdown UI block builder */
-    function box(v,label){
+    // Countdown UI block builder
+    function buildCountdownBox(v,label){
       const d=document.createElement('div');
       d.className='w-[5.5rem] rounded-xl glass card p-3 text-center';
       d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text">${String(v).padStart(2,'0')}</div><div class="text-[11px] uppercase small-dim">${label}</div>`;
       return d;
     }
 
-    /* Dynamic pricing helpers */
-    const usdInEl = $('usdIn');
-    const tokensOutEl = $('tokensOut');
-    let currentCalcPrice = PHASES[0].price;
+    // Dynamic pricing card update
+    function setPriceCard(phaseInfo){
+        const price = phaseInfo.price || (phaseInfo.post ? LISTING_PRICE : PHASES[0].price);
+        const label = phaseInfo.name;
+        const isActive = !phaseInfo.pre && !phaseInfo.post && !phaseInfo.upcoming;
+        const discountPct = Math.max(0, (1 - price / LISTING_PRICE) * 100);
 
-    function setPriceCard(price, label, listingActive=false, notStarted=false){
-      const pct = Math.max(0, (1 - price/LISTING_PRICE)*100);
-      $('priceNow').textContent = `$${price.toFixed(2)}`;
-      $('calcPrice').textContent = `$${price.toFixed(2)}`;
-      currentCalcPrice = price; // Update global price for calculator
-      $('pricePhaseName').textContent = label + (listingActive ? ' (Active)' : notStarted ? ' (up next)' : '');
-      const lp = $('priceList');
-      if(listingActive){ lp.classList.remove('line-through'); lp.textContent = `$${LISTING_PRICE.toFixed(2)} (Active)`; $('discountLine').textContent = 'Listing live'; }
-      else { if(!lp.classList.contains('line-through')) lp.classList.add('line-through'); lp.textContent = `$${LISTING_PRICE.toFixed(2)}`; $('discountLine').textContent = `${pct.toFixed(0)}% below listing`; }
-      calculateFromUSD();
-    }
-
-    function calculateFromUSD() {
-        const usd = parseFloat(usdInEl.value);
-        if (!isNaN(usd) && usd > 0) {
-            const tokens = usd / currentCalcPrice;
-            tokensOutEl.value = tokens.toFixed(2);
-        } else if (usdInEl.value === '') {
-            tokensOutEl.value = '';
+        $('priceNow').textContent = `$${price.toFixed(3)}`;
+        $('pricePhaseName').textContent = label + (isActive ? ' (Active)' : '');
+        
+        const listingPriceEl = $('priceList');
+        if (phaseInfo.post) {
+            listingPriceEl.classList.remove('line-through');
+            listingPriceEl.textContent = `$${LISTING_PRICE.toFixed(2)} (Live)`;
+            $('discountLine').textContent = 'Listing Active';
+        } else {
+            listingPriceEl.classList.add('line-through');
+            listingPriceEl.textContent = `$${LISTING_PRICE.toFixed(2)}`;
+            $('discountLine').textContent = `${discountPct.toFixed(0)}% below listing`;
         }
+        updateETRXValue(); // Update calculator when price changes
     }
 
-    function calculateFromTokens() {
-        const tokens = parseFloat(tokensOutEl.value);
-        if (!isNaN(tokens) && tokens > 0) {
-            const usd = tokens * currentCalcPrice;
-            usdInEl.value = usd.toFixed(2);
-        } else if (tokensOutEl.value === '') {
-            usdInEl.value = '';
-        }
-    }
-    usdInEl.addEventListener('input', calculateFromUSD);
-    tokensOutEl.addEventListener('input', calculateFromTokens);
-
-
-    /* Render Phase schedule table */
-    function shortRange(start, end){
-      const s = new Date(start), e = new Date(end);
-      const fmtS = primaryUTC ? s.toLocaleString([], { month:'short', day:'2-digit', timeZone:'UTC'}) : s.toLocaleString([], { month:'short', day:'2-digit'});
-      const fmtE = primaryUTC ? e.toLocaleString([], { month:'short', day:'2-digit', timeZone:'UTC'}) : e.toLocaleString([], { month:'short', day:'2-digit'});
-      return `${fmtS} → ${fmtE}`;
-    }
-    function renderPhaseTable(){
-      const now = nowAccurate();
-      const wrap = $('phaseTable');
-      wrap.innerHTML = '';
-      PHASES.forEach(p=>{
-        const row = document.createElement('div');
-        row.className = 'row text-sm';
-        const isNow = now >= new Date(p.start) && now <= new Date(p.end);
-        row.innerHTML = `
-          <div class="font-semibold">${p.name} ${isNow?'<span class="badge badge-now">Now</span>':''}</div>
-          <div class="opacity-90">$${p.price.toFixed(2)}</div>
-          <div class="small-dim">${shortRange(p.start, p.end)}</div>
-        `;
-        wrap.appendChild(row);
-      });
-    }
-
-    /* Main loop: countdown + progress + phase + pricing */
+    // Main update loop
     let lastSecond=-1;
     function loop(){
-      const now = nowAccurate();
-      const ph = currentPhase(now);
+        const now = new Date();
+        currentPhaseInfo = getCurrentPhase(now);
+        const ph = currentPhaseInfo;
 
-      // Phase label + phase name
-      phaseLabel.innerHTML = `Presale ${ph.pre?'begins':ph.post?'ended':'ends'} in — <span>${primaryUTC?'UTC':'Local'}</span>`;
-      phaseNameEl.textContent = `Phase: ${ph.pre?'Upcoming':ph.post?'Ended':ph.name}`;
+        // Phase label + name
+        phaseLabel.innerHTML = `Presale ${ph.pre ? 'begins' : ph.post ? 'ended' : 'ends'} in — <span>${primaryUTC ? 'UTC' : 'Local'}</span>`;
+        $('phaseName').textContent = `Phase: ${ph.name}`;
 
-      // Countdown target
-      const target = ph.pre ? new Date(PHASES[0].start)
-                     : ph.post ? now
-                     : new Date(ph.end);
+        // Countdown target
+        const target = ph.pre ? PRESALE_START : (ph.post ? now : new Date(ph.end));
 
-      // Countdown render
-      const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
-      if(s!==lastSecond){ lastSecond=s; const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; countdown.replaceChildren(box(d,'d'),box(h,'h'),box(m,'m'),box(ss,'s')); }
+        // Countdown render
+        const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
+        if(s!==lastSecond){ lastSecond=s; const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; countdown.replaceChildren(buildCountdownBox(d,'d'),buildCountdownBox(h,'h'),buildCountdownBox(m,'m'),buildCountdownBox(ss,'s')); }
 
-      // Progress within current phase + ETA
-      let pct=0, etaText='';
-      if(ph.pre){ pct=0; etaText = `Starts ${fmtUTC(new Date(PHASES[0].start))}`; $('phaseDates').textContent = `Next: ${fmtUTC(new Date(PHASES[0].start))} → ${fmtUTC(new Date(PHASES[0].end))}`; setPriceCard(PHASES[0].price, PHASES[0].name, false, true); }
-      else if(ph.post){ pct=100; etaText='Ended'; $('phaseDates').textContent = `TGE & listing from ${fmtUTC(PRESALE_END)}`; setPriceCard(LISTING_PRICE, 'Listing', true, false); }
-      else{
-        const sT=new Date(ph.start), eT=new Date(ph.end);
-        pct = clamp01((now - sT)/(eT - sT))*100;
-        const endIn=Math.max(0,eT-now); const hrs=Math.floor(endIn/36e5), mins=Math.floor((endIn%36e5)/6e4);
-        etaText=`Ends in ${hrs}h ${String(mins).padStart(2,'0')}m`;
-        $('phaseDates').textContent = `${ph.name}: ${fmtUTC(sT)} → ${fmtUTC(eT)}`;
-        setPriceCard(ph.price, ph.name, false, false);
-      }
-      $('phaseBar').style.width=`${pct}%`;
-      $('phaseEta').textContent = etaText;
-
-      requestAnimationFrame(loop);
+        // Progress bar and ETA
+        let pct=0, etaText='';
+        if(ph.pre){ pct=0; }
+        else if(ph.post){ pct=100; etaText='Ended'; }
+        else {
+            const sT=new Date(ph.start), eT=new Date(ph.end);
+            pct = clamp01((now - sT)/(eT - sT))*100;
+            const endIn=Math.max(0,eT-now); const hrs=Math.floor(endIn/36e5), mins=Math.floor((endIn%36e5)/6e4);
+            etaText=`Ends in ${hrs}h ${String(mins).padStart(2,'0')}m`;
+        }
+        $('phaseBar').style.width=`${pct}%`;
+        $('phaseEta').textContent = etaText;
+        
+        setPriceCard(ph);
+        updateContributionUIState();
+        requestAnimationFrame(loop);
     }
 
-    /* Sticky CTA timing */
-    const SHOW_BAR_DAYS = 14;
-    function toggleBar(){
+    // Sticky CTA
+    const stickyCTA = $('stickyCTA');
+    function toggleStickyCTA(){
       const days=(PRESALE_START - new Date())/86400000;
-      document.getElementById('stickyCTA').classList.toggle('hidden', !(window.innerWidth < 768 && days>0 && days<=SHOW_BAR_DAYS));
+      stickyCTA.classList.toggle('hidden', !(window.innerWidth < 768 && days>0 && days<=14));
     }
 
-    /* Active nav highlight */
-    const allNavLinks = [...document.querySelectorAll('header nav a')];
-    const moreMenuBtn = document.getElementById('more-menu-btn');
-    const navSections = allNavLinks.map(link => document.getElementById(link.getAttribute('href').substring(1))).filter(Boolean);
-
+    // Active nav highlight
+    const allNavLinks = [...document.querySelectorAll('header nav a, #more-menu-dropdown a')];
+    const moreMenuBtn = $('more-menu-btn');
+    const navSections = allNavLinks.map(link => $(link.getAttribute('href').substring(1))).filter(Boolean);
     const navObserver = new IntersectionObserver(entries => {
-        let activeEntry = null;
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (!activeEntry || entry.intersectionRatio > activeEntry.intersectionRatio) {
-                    activeEntry = entry;
-                }
-            }
-        });
-
+        let activeEntry = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (activeEntry) {
             const activeId = activeEntry.target.id;
             let dropdownIsActive = false;
-            
             allNavLinks.forEach(link => {
-                const linkId = link.getAttribute('href').substring(1);
-                const isActive = linkId === activeId;
+                const isActive = link.getAttribute('href') === `#${activeId}`;
                 link.classList.toggle('text-white', isActive);
                 if (isActive && link.closest('#more-menu-dropdown')) {
                     dropdownIsActive = true;
                 }
             });
-            
             moreMenuBtn.classList.toggle('text-white', dropdownIsActive);
         }
-    }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
-
+    }, { rootMargin: '-40% 0px -60% 0px', threshold: 0 });
     navSections.forEach(section => navObserver.observe(section));
 
-
-    /* Reveal-on-scroll */
-    (function(){
-      const els = document.querySelectorAll('.reveal');
-      els.forEach(el => { el.style.opacity=0; el.style.transform='translateY(12px)'; el.style.transition='opacity .5s ease, transform .5s ease'; });
-      const io = new IntersectionObserver(entries=>{
-        entries.forEach((e)=>{
-          if(e.isIntersecting){
-            e.target.style.opacity=1; e.target.style.transform='translateY(0)';
-            e.target.style.transitionDelay = (Number(e.target.dataset.delay)||0)+'ms';
-            io.unobserve(e.target);
-          }
-        });
-      }, {threshold:.12});
-      els.forEach(el=>io.observe(el));
-    })();
-
-    /* ===== Formspree (AJAX) ===== */
-    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
-    async function postFormspree(data){
-      const ctrl = new AbortController();
-      const t = setTimeout(()=>ctrl.abort(), 10000);
-      try{
-        const res=await fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify(data), signal: ctrl.signal });
-        if(!res.ok) throw new Error('Bad response'); return res.json().catch(()=>({}));
-      } finally { clearTimeout(t); }
-    }
-    const notifyForm=$('notifyForm'), notifyMsg=$('notifyMsg'), notifySuccess=$('notifySuccess');
-    const email = document.getElementById('email');
-    email?.addEventListener('input', ()=>{
-      const ok = email.checkValidity();
-      email.classList.toggle('is-valid', ok);
-      email.classList.toggle('is-invalid', !ok && email.value.length>0);
+    // Reveal-on-scroll
+    document.querySelectorAll('.reveal').forEach(el => {
+        el.style.opacity=0; el.style.transform='translateY(12px)'; el.style.transition='opacity .5s ease, transform .5s ease';
+        new IntersectionObserver((entries, observer)=>{
+            entries.forEach(e => {
+                if(e.isIntersecting){
+                    e.target.style.opacity=1; e.target.style.transform='translateY(0)';
+                    e.target.style.transitionDelay = (Number(e.target.dataset.delay)||0)+'ms';
+                    observer.unobserve(e.target);
+                }
+            });
+        }, {threshold:.12}).observe(el);
     });
+
+    // Pie Chart interactivity
+    const PIE_DATA = { presale: { name: 'Presale', percent: '30%' }, liquidity: { name: 'Liquidity', percent: '25%' }, eco: { name: 'Ecosystem', percent: '20%' }, team: { name: 'Team', percent: '15%' }, treasury: { name: 'Treasury', percent: '10%' } };
+    const pieSlices = document.querySelectorAll('.pie-slice');
+    const legendItems = document.querySelectorAll('.legend-item');
+    const pieTextPercent = $('pie-text-percent');
+    const pieTextName = $('pie-text-name');
+    function handlePieHover(id) {
+        if (!id) {
+            pieTextPercent.textContent = 'ETRX'; pieTextName.textContent = 'Tokenomics';
+            document.querySelectorAll('.pie-slice, .legend-item').forEach(el => el.classList.remove('highlight'));
+            return;
+        }
+        const data = PIE_DATA[id];
+        pieTextPercent.textContent = data.percent; pieTextName.textContent = data.name;
+        pieSlices.forEach(s => s.classList.toggle('highlight', s.dataset.sliceId === id));
+        legendItems.forEach(l => l.classList.toggle('highlight', l.dataset.sliceId === id));
+    }
+    document.querySelectorAll('.pie-slice, .legend-item').forEach(el => {
+        el.addEventListener('mouseover', () => handlePieHover(el.dataset.sliceId));
+        el.addEventListener('mouseout', () => handlePieHover(null));
+    });
+
+    // Pointer-follow glow for .holo
+    document.querySelectorAll('.holo').forEach(el=>{
+        el.addEventListener('pointermove', e=>{
+            const r = el.getBoundingClientRect();
+            el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+            el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        });
+    });
+
+    // 3D Tilt Effect
+    document.querySelectorAll('.card-3d-tilt').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left, y = e.clientY - rect.top;
+            const { width, height } = rect;
+            const rotateX = (y / height - 0.5) * -14;
+            const rotateY = (x / width - 0.5) * 14;
+            card.style.transition = 'transform 0.1s ease-out';
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transition = 'transform 0.4s ease-out';
+            card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+        });
+    });
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-item').forEach(item=>{
+        const btn=item.querySelector('.faq-header'), body=item.querySelector('.faq-body');
+        btn.addEventListener('click', ()=>{
+            const open=btn.getAttribute('aria-expanded')==='true';
+            btn.setAttribute('aria-expanded', String(!open));
+            item.classList.toggle('open', !open);
+            body.hidden=false;
+            if(!open){
+                body.style.maxHeight=body.scrollHeight+'px'; body.classList.add('open');
+            } else {
+                body.style.maxHeight='0px'; body.classList.remove('open');
+            }
+        });
+    });
+    
+    // Toast notifications
+    function toast(msg, isWarn=false){
+        const t=document.createElement('div');
+        t.setAttribute('role','status');
+        t.className='fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-2 rounded-lg glass card text-sm z-50';
+        t.style.borderColor = isWarn ? 'rgba(255,99,99,.35)' : 'var(--ring)';
+        t.textContent=msg;
+        document.body.appendChild(t);
+        setTimeout(()=>{
+            t.style.opacity='0'; t.style.transition='opacity .25s';
+            t.addEventListener('transitionend', ()=>t.remove(), {once:true});
+        }, 3000);
+    }
+
+    /* =================================================================
+     * ======================== FORM LOGIC =============================
+     * ================================================================= */
+    async function postFormspree(data){
+        const res = await fetch('https://formspree.io/f/mandalyp',{ method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify(data) });
+        if(!res.ok) throw new Error('Bad response');
+    }
+
+    // Notify Form
+    const notifyForm=$('notifyForm');
     if (notifyForm){
-      notifyForm.addEventListener('submit', async (e)=>{
-        e.preventDefault(); notifyMsg.classList.add('hidden');
-        const fd=new FormData(notifyForm); const trap=(fd.get('company')||'').trim(); if(trap) return;
-        try{
-          notifyForm.setAttribute('aria-busy','true');
-          await postFormspree(Object.fromEntries(fd.entries()));
-          notifyForm.classList.add('hidden'); notifySuccess.classList.remove('hidden');
-          toast('Check your email to confirm ✉️');
-          soundManager.play('G5', '8n');
-        } catch(err){
-          notifyMsg.textContent='Submission failed. Please check your connection and try again.'; notifyMsg.classList.remove('hidden');
-          toast('Submission failed. Try again.', true);
-        } finally {
-          notifyForm.removeAttribute('aria-busy');
-        }
-      });
+        notifyForm.addEventListener('submit', async (e)=>{
+            e.preventDefault();
+            try{
+                await postFormspree(Object.fromEntries(new FormData(notifyForm).entries()));
+                notifyForm.classList.add('hidden'); $('notifySuccess').classList.remove('hidden');
+                toast('Check your email to confirm ✉️'); soundManager.play('G5', '8n');
+            } catch(err){
+                $('notifyMsg').textContent='Submission failed. Please try again.'; $('notifyMsg').classList.remove('hidden');
+                toast('Submission failed. Try again.', true);
+            }
+        });
     }
-    if(location.hash==='#notify-success'){ notifyForm?.classList.add('hidden'); notifySuccess?.classList.remove('hidden'); }
+    if(location.hash==='#notify-success'){ notifyForm?.classList.add('hidden'); $('notifySuccess')?.classList.remove('hidden'); }
 
-    /* ===== ENS-aware allowlist ===== */
-    const wlForm=$('wlForm'), wlMsg=$('wlMsg'), wlHelp=$('wlHelp'), wlSuccess=$('wlSuccess');
-    const addrRe=/^0x[a-fA-F0-9]{40}$/; const ensRe=/^[a-z0-9-]+(\.[a-z0-9-]+)*\.eth$/i;
-    function setHelp(text, ok=false){ wlHelp.textContent=text||''; wlHelp.style.color= ok ? 'var(--muted)' : 'var(--dim)'; }
-
-    let providerENS = null;
-    if (window.ethers?.providers?.JsonRpcProvider) {
-      providerENS = new window.ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
-    }
-    let ensTimer=null;
-    async function resolveIfEns(value){
-      if(!value || !ensRe.test(value) || value.length>255) return null;
-      if(!providerENS?.resolveName) return null;
-      try{
-        const ctrl=new AbortController(); const timeout=setTimeout(()=>ctrl.abort(),10000);
-        const resolved = await providerENS.resolveName(value); clearTimeout(timeout);
-        return resolved||null;
-      }catch{ return null; }
+    // Allowlist Form
+    const wlForm=$('wlForm');
+    if (wlForm) {
+        wlForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            // ENS resolution logic here if needed...
+            try {
+                await postFormspree(Object.fromEntries(new FormData(wlForm).entries()));
+                wlForm.classList.add('hidden'); $('wlSuccess').classList.remove('hidden');
+                toast('Wallet submitted ✅'); soundManager.play('G5', '8n');
+            } catch (err) {
+                $('wlMsg').textContent='Submission failed, please try again.'; $('wlMsg').classList.remove('hidden');
+                toast('Submission failed', true);
+            }
+        });
     }
 
-    if (wlForm){
-      const walletInput=$('wallet');
-      walletInput.addEventListener('input', ()=>{
-        wlMsg.classList.add('hidden');
-        const v=walletInput.value.trim();
-        if(!v){ setHelp(''); return; }
-        if(addrRe.test(v)){ setHelp('Looks like a valid Ethereum address.', true); return; }
-        if(ensRe.test(v)){
-          setHelp('Checking ENS…');
-          clearTimeout(ensTimer);
-          ensTimer = setTimeout(async ()=>{
-            const addr=await resolveIfEns(v);
-            setHelp(addr?`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`:'Could not resolve this ENS name.', !!addr);
-          }, 200);
-          return;
-        }
-        setHelp('Enter a valid 0x… address or an ENS name like yourname.eth');
-      });
-
-      wlForm.addEventListener('submit', async (e)=>{
-        e.preventDefault(); wlMsg.classList.add('hidden');
-        const fd=new FormData(wlForm); const trap=(fd.get('company')||'').trim(); let wallet=(fd.get('wallet')||'').trim(); if(trap) return;
-        let finalAddr=null;
-        if(addrRe.test(wallet)){ finalAddr=wallet; }
-        else if(ensRe.test(wallet)){
-          wlHelp.textContent='Resolving ENS…';
-          const resolved=await resolveIfEns(wallet);
-          if(resolved) finalAddr=resolved; else { wlMsg.textContent='Enter a valid address, or a resolvable ENS name.'; wlMsg.classList.remove('hidden'); return; }
-        } else { wlMsg.textContent='Enter a valid 0x… address or ENS name (yourname.eth).'; wlMsg.classList.remove('hidden'); return; }
-        try{
-          const list=JSON.parse(safeGet('etrx_wl','[]')||'[]'); if(!list.includes(finalAddr)) list.push(finalAddr);
-          safeSet('etrx_wl', JSON.stringify(list));
-          await postFormspree({ wallet: finalAddr, type: 'allowlist' });
-          wlForm.classList.add('hidden'); wlSuccess.classList.remove('hidden');
-          toast('Wallet submitted ✅');
-          soundManager.play('G5', '8n');
-        }catch(err){
-          wlMsg.textContent='Saved locally. Network submit failed — please try again later.'; wlMsg.classList.remove('hidden');
-          toast('Saved locally. Network error.', true);
-        }
-      });
-    }
-
-    /* ===== Injected wallet (EIP-6963 aware) ===== */
-    let activeProvider=null;
-    let connectedAccount = null;
-    function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
-
-    /* Modal open/close + focus trap */
+    /* =================================================================
+     * ====================== MODAL MANAGER ============================
+     * ================================================================= */
     let lastFocus=null;
-    function setModalInert(on, modalId){ 
-        const modal = $(modalId);
-        if(on){ modal.removeAttribute('inert'); } else { modal.setAttribute('inert',''); } 
-    }
-
     function showModal(modalId, show){
       const modal = $(modalId);
       if(show){
         lastFocus = document.activeElement;
-        modal.classList.remove('hidden'); modal.classList.add('flex'); setModalInert(true, modalId);
-        const f = modal.querySelector('button, [href], input, [tabindex]:not([tabindex="-1"])');
-        f?.focus();
+        modal.classList.remove('hidden'); modal.classList.add('flex'); modal.removeAttribute('inert');
+        modal.querySelector('button, [href], input')?.focus();
       } else {
-        modal.classList.add('hidden'); modal.classList.remove('flex'); setModalInert(false, modalId);
+        modal.classList.add('hidden'); modal.classList.remove('flex'); modal.setAttribute('inert','');
         lastFocus?.focus();
       }
     }
 
-    // Wallet Modal listeners
+    // Wallet Modal
     connectBtn?.addEventListener('click', () => { discoverInjected(); showModal('walletModal', true); });
+    $('connect-btn-card')?.addEventListener('click', () => { discoverInjected(); showModal('walletModal', true); });
     modalClose?.addEventListener('click', () => showModal('walletModal', false));
     modal?.addEventListener('click', (e)=>{ if(e.target===modal) showModal('walletModal', false); });
 
-    // Whitepaper Modal Listeners
-    const wpBtnHeader = $('wp-btn-header');
-    const wpBtnAbout = $('wp-btn-about');
-    const wpModalClose = $('wpModalClose');
+    // Whitepaper Modal
     const whitepaperModal = $('whitepaperModal');
-
-    wpBtnHeader?.addEventListener('click', () => showModal('whitepaperModal', true));
-    wpBtnAbout?.addEventListener('click', () => showModal('whitepaperModal', true));
-    wpModalClose?.addEventListener('click', () => showModal('whitepaperModal', false));
+    ['wp-btn-header', 'wp-btn-about'].forEach(id => $(id)?.addEventListener('click', () => showModal('whitepaperModal', true)));
+    $('wpModalClose')?.addEventListener('click', () => showModal('whitepaperModal', false));
     whitepaperModal?.addEventListener('click', (e) => { if (e.target === whitepaperModal) showModal('whitepaperModal', false); });
+    $('wp-download-btn')?.addEventListener('click', () => { toast('Download started (placeholder)'); });
 
     document.addEventListener('keydown', (e)=>{
-      if (e.key !== 'Escape') return;
-      if(!walletModal.classList.contains('hidden')) showModal('walletModal', false);
-      if(!whitepaperModal.classList.contains('hidden')) showModal('whitepaperModal', false);
+        if (e.key === 'Escape') {
+            if(!modal.classList.contains('hidden')) showModal('walletModal', false);
+            if(!whitepaperModal.classList.contains('hidden')) showModal('whitepaperModal', false);
+        }
     });
+
+    /* =================================================================
+     * ====================== WEB3 WALLET LOGIC ========================
+     * ================================================================= */
+    function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
+    
+    function discoverInjected(){
+        walletList.innerHTML = '';
+        const providers = new Set();
+        
+        function addProvider(detail) {
+            if (providers.has(detail.provider)) return;
+            providers.add(detail.provider);
+            const btn=document.createElement('button');
+            btn.className='btn-ghost text-left flex items-center justify-between';
+            btn.textContent = `🧩 ${detail.info.name}`;
+            btn.onclick = async () => {
+                showModal('walletModal', false);
+                try {
+                    const accounts = await detail.provider.request({ method:'eth_requestAccounts' });
+                    await onConnected(detail.provider, accounts?.[0]);
+                } catch(err){ toast('Could not connect to wallet.', true); }
+            };
+            walletList.appendChild(btn);
+        }
+        
+        window.addEventListener('eip6963:announceProvider', (e) => addProvider(e.detail));
+        window.dispatchEvent(new Event('eip6963:requestProvider'));
+
+        setTimeout(() => {
+            if(providers.size === 0 && window.ethereum) {
+                addProvider({ info: { name: 'Browser Wallet' }, provider: window.ethereum });
+            }
+            if (walletList.innerHTML === '') {
+                 walletList.textContent = 'No browser wallet detected.';
+            }
+        }, 200);
+    }
+    
+    function removeProviderListeners(){
+      if(!activeProvider?.removeListener) return;
+      activeProvider.removeListener('accountsChanged', onAccountsChanged);
+      activeProvider.removeListener('chainChanged', onChainChanged);
+    }
+    
+    function onAccountsChanged(accs){  
+      connectedAccount = accs?.[0] || null;
+      if (!connectedAccount) { doDisconnect(); } 
+      else {
+          walletShort.textContent=shortAddr(connectedAccount);  
+          safeSet('etrx_wallet', connectedAccount);  
+          updateContributionUIState();
+          updateReferralUI();
+          updateUserContributionSummary();
+      }
+    }
+
+    function onChainChanged(){ ensureMainnet(activeProvider); }
+
+    async function onConnected(provider, account){
+      removeProviderListeners();
+      activeProvider = provider;
+      if(!await ensureMainnet(provider)) return;
+      
+      connectedAccount = account || null;
+      safeSet('etrx_wallet', connectedAccount);
+      walletShort.textContent = shortAddr(connectedAccount);
+      walletPill.classList.remove('hidden');
+      connectBtn.classList.add('hidden-important');
+      
+      provider.on?.('accountsChanged', onAccountsChanged);
+      provider.on?.('chainChanged', onChainChanged);
+      
+      toast('Wallet connected ✅');
+      soundManager.play('A5', '8n');
+      updateContributionUIState();
+      updateReferralUI();
+      updateUserContributionSummary();
+    }
+    
+    function doDisconnect(){
+      removeProviderListeners();
+      activeProvider=null;  
+      connectedAccount = null;
+      safeSet('etrx_wallet','');
+      walletPill.classList.add('hidden');
+      connectBtn.classList.remove('hidden-important');
+      toast('Disconnected', true);
+      updateContributionUIState();
+      updateReferralUI();
+      updateUserContributionSummary();
+    }
+    disconnectBtn.addEventListener('click', doDisconnect);
 
     async function ensureMainnet(provider, hexChain='0x1'){
       try{
@@ -1479,108 +1658,312 @@ document.addEventListener('DOMContentLoaded', () => {
         if(current?.toLowerCase()===hexChain.toLowerCase()) return true;
         await provider.request({ method:'wallet_switchEthereumChain', params:[{ chainId: hexChain }] });
         return true;
-      } catch(err){ console.warn('Chain switch failed', err); toast('Please switch to Ethereum Mainnet in your wallet.', true); return false; }
+      } catch(err){ toast('Please switch to Ethereum Mainnet.', true); return false; }
+    }
+    
+    // Restore previous wallet session if any
+    const prevWallet = safeGet('etrx_wallet','');
+    if (prevWallet){
+      connectedAccount = prevWallet;
+      walletShort.textContent = shortAddr(prevWallet);
+      walletPill.classList.remove('hidden');
+      connectBtn.classList.add('hidden-important');
     }
 
-    function discoverInjected(){
-      walletList.innerHTML = '';
-      const entries = [];
-      const announced = [];
-      function onAnnounce(e){ announced.push(e.detail); }
-      window.addEventListener('eip6963:announceProvider', onAnnounce, { once:false });
-      window.dispatchEvent(new Event('eip6963:requestProvider'));
+    /* =================================================================
+     * ===================== PRESALE CONTRIBUTION LOGIC ================
+     * ================================================================= */
+    const ethAmountInput = $('eth-amount');
+    const etrxReceiveInput = $('etrx-receive');
+    const contributeBtn = $('contribute-btn');
+    const maxBtn = $('max-btn');
+    const bonusDisplay = $('bonus-display');
 
-      if (window.ethereum){
-        const providers = window.ethereum.providers?.length ? window.ethereum.providers : [window.ethereum];
-        providers.forEach(p=>{
-          const name = p.isMetaMask ? 'MetaMask' : p.isBraveWallet ? 'Brave Wallet' : p.isRabby ? 'Rabby' : p.isFrame ? 'Frame' : 'Browser Wallet';
-          entries.push({ name, provider:p });
-        });
-      }
-      setTimeout(()=>{
-        const merged = announced.length ? announced.map(({info,provider})=>({name:info?.name||'Browser Wallet', provider})) : entries;
-        if(!merged.length){
-          const el = document.createElement('div');
-          el.className = 'small-dim';
-          el.textContent = 'No browser wallet detected.';
-          walletList.appendChild(el);
-          return;
+    function updateContributionUIState() {
+        const isLive = !currentPhaseInfo.pre && !currentPhaseInfo.post;
+        
+        $('contribute-ready').classList.toggle('hidden', !connectedAccount || !isLive);
+        $('contribute-connect-wallet').classList.toggle('hidden', connectedAccount || !isLive);
+        $('contribute-not-live').classList.toggle('hidden', isLive);
+
+        updateUserContributionSummary();
+    }
+    
+    function getBonusForAmount(amount) {
+        const tier = BONUS_TIERS.find(t => amount >= t.threshold);
+        return tier ? tier.bonus : 0;
+    }
+    
+    function updateETRXValue() {
+        const ethAmount = parseFloat(ethAmountInput.value);
+        if (isNaN(ethAmount) || ethAmount <= 0) {
+            etrxReceiveInput.value = '';
+            bonusDisplay.textContent = '';
+            return;
         }
-        merged.forEach(({name,provider})=>{
-          const btn=document.createElement('button');
-          btn.className='btn-ghost text-left flex items-center justify-between';
-          btn.setAttribute('role','listitem');
-          btn.innerHTML=`<span>🧩 ${name}</span><span class="small-dim">Use extension</span>`;
-          btn.addEventListener('click', async ()=>{
-            showModal('walletModal', false);
-            try{
-              const accounts=await provider.request({ method:'eth_requestAccounts' });
-              await onConnected(provider, accounts?.[0]||null);
-            }catch(err){ console.warn('Injected connect error', err); toast('Could not connect to wallet.', true); }
-          });
-          walletList.appendChild(btn);
-        });
-      }, 350);
+        
+        const tokenPrice = currentPhaseInfo.price;
+        if (tokenPrice && ethPriceUSD) {
+            const usdValue = ethAmount * ethPriceUSD;
+            const baseEtrx = usdValue / tokenPrice;
+            
+            const totalEthContributed = getUserTotalContribution() + ethAmount;
+            const bonusRate = getBonusForAmount(totalEthContributed);
+            const bonusEtrx = baseEtrx * bonusRate;
+            const totalEtrx = baseEtrx + bonusEtrx;
+
+            etrxReceiveInput.value = totalEtrx.toLocaleString(undefined, { maximumFractionDigits: 2 });
+            
+            if (bonusRate > 0) {
+                bonusDisplay.textContent = `+${(bonusRate * 100).toFixed(1)}% bonus included!`;
+            } else {
+                const nextTier = BONUS_TIERS.slice().reverse().find(t => ethAmount < t.threshold);
+                if (nextTier) {
+                    bonusDisplay.textContent = `Contribute ${(nextTier.threshold - ethAmount).toFixed(2)} more ETH for a bonus.`;
+                } else {
+                    bonusDisplay.textContent = '';
+                }
+            }
+        }
+    }
+    
+    ethAmountInput.addEventListener('input', updateETRXValue);
+
+    maxBtn.addEventListener('click', async () => {
+        if (!activeProvider || !connectedAccount) {
+            toast('Please connect your wallet first.', true);
+            return;
+        }
+        try {
+            // In a real app, this would get the actual balance. Here we simulate it.
+            const simulatedBalance = (Math.random() * 2 + 0.1).toFixed(5); // Simulate a balance between 0.1 and 2.1 ETH
+            const gasReserve = 0.01;
+            const usableBalance = Math.max(0, parseFloat(simulatedBalance) - gasReserve);
+            ethAmountInput.value = usableBalance.toFixed(5);
+            updateETRXValue();
+            toast(`Set to max balance (simulated)`);
+        } catch (e) {
+            toast('Could not get wallet balance.', true);
+        }
+    });
+
+    contributeBtn.addEventListener('click', async () => {
+        if (!activeProvider) {
+            toast('Please connect your wallet first.', true);
+            return;
+        }
+        
+        const ethAmountStr = ethAmountInput.value;
+        const ethAmount = parseFloat(ethAmountStr);
+
+        if (!ethAmountStr || ethAmount <= 0) {
+            toast('Please enter a valid ETH amount.', true);
+            return;
+        }
+
+        contributeBtn.disabled = true;
+        contributeBtn.textContent = 'Processing...';
+
+        // --- SIMULATION ---
+        setTimeout(() => {
+            const txHash = `0x${[...Array(64)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')}`;
+            toast(`Transaction sent! ${shortAddr(txHash)}`);
+            soundManager.play('C6', '8n');
+            
+            // Add to user's total and update UI
+            const currentTotal = getUserTotalContribution();
+            saveUserTotalContribution(currentTotal + ethAmount);
+            updateUserContributionSummary();
+
+            onChain.addContributionToList({ address: connectedAccount, amount: ethAmountStr, hash: txHash });
+
+            ethAmountInput.value = '';
+            updateETRXValue();
+
+            contributeBtn.disabled = false;
+            contributeBtn.textContent = 'Contribute Now';
+        }, 1500);
+
+        // --- REAL TRANSACTION LOGIC ---
+        /*
+        try {
+            const valueHex = ethers.utils.parseEther(ethAmountStr)._hex;
+            const tx = await activeProvider.request({
+                method: 'eth_sendTransaction',
+                params: [{
+                    from: connectedAccount,
+                    to: onChain.contractAddress, // Presale contract address
+                    value: valueHex,
+                }]
+            });
+            toast(`Transaction sent! Hash: ${shortAddr(tx)}`);
+            // Here you would wait for transaction confirmation and then update user state
+        } catch (error) {
+            console.error("Contribution failed:", error);
+            if (error.code === 4001) { // User rejected transaction
+                toast('Transaction rejected.', true);
+            } else {
+                toast('Transaction failed.', true);
+            }
+        } finally {
+            contributeBtn.disabled = false;
+            contributeBtn.textContent = 'Contribute Now';
+        }
+        */
+    });
+    
+    function getUserTotalContribution() {
+        if (!connectedAccount) return 0;
+        const data = JSON.parse(safeGet('etrx_user_contributions', '{}'));
+        return data[connectedAccount]?.eth || 0;
     }
 
-    function removeProviderListeners(){
-      if(!activeProvider?.removeListener) return;
-      activeProvider.removeListener('accountsChanged', onAccountsChanged);
-      activeProvider.removeListener('disconnect', onDisconnect);
-      activeProvider.removeListener('chainChanged', onChainChanged);
-    }
-    function onAccountsChanged(accs){ 
-      connectedAccount = accs?.[0] || null;
-      walletShort.textContent=shortAddr(connectedAccount); 
-      safeSet('etrx_wallet', connectedAccount); 
-      updateReferralUI();
-    }
-    function onDisconnect(){ doDisconnect(); }
-    async function onChainChanged(){ await ensureMainnet(activeProvider); }
-
-    async function onConnected(provider, account){
-      if(activeProvider && provider!==activeProvider){ removeProviderListeners(); }
-      activeProvider = provider;
-      await ensureMainnet(provider);
-      connectedAccount = account || null;
-      safeSet('etrx_wallet', connectedAccount);
-      walletShort.textContent = shortAddr(connectedAccount);
-      walletPill.classList.remove('hidden');
-      connectBtn.classList.add('hidden-important');
-      //openConnect?.classList.add('hidden-important');
-      provider.on?.('accountsChanged', onAccountsChanged);
-      provider.on?.('disconnect', onDisconnect);
-      provider.on?.('chainChanged', onChainChanged);
-      toast('Wallet connected ✅');
-      soundManager.play('A5', '8n');
-      updateReferralUI();
-    }
-    function doDisconnect(){
-      try{ activeProvider?.disconnect?.(); }catch{}
-      removeProviderListeners();
-      activeProvider=null; 
-      connectedAccount = null;
-      safeSet('etrx_wallet','');
-      walletPill.classList.add('hidden');
-      connectBtn.classList.remove('hidden-important');
-      //openConnect?.classList.remove('hidden-important');
-      toast('Disconnected', true);
-      updateReferralUI();
-    }
-    disconnectBtn.addEventListener('click', doDisconnect);
-
-    /* Restore previous wallet session */
-    const prev = safeGet('etrx_wallet','');
-    if (prev){
-      connectedAccount = prev;
-      walletShort.textContent = shortAddr(prev);
-      walletPill.classList.remove('hidden');
-      connectBtn.classList.add('hidden-important');
-      //openConnect?.classList.add('hidden-important');
-      updateReferralUI();
+    function saveUserTotalContribution(amount) {
+        if (!connectedAccount) return;
+        const data = JSON.parse(safeGet('etrx_user_contributions', '{}'));
+        if (!data[connectedAccount]) data[connectedAccount] = {};
+        data[connectedAccount].eth = amount;
+        safeSet('etrx_user_contributions', JSON.stringify(data));
     }
 
-    /* Referral System */
+    function updateUserContributionSummary() {
+        const summaryCard = $('your-contribution-summary');
+        if (!connectedAccount) {
+            summaryCard.classList.add('hidden');
+            return;
+        }
+        summaryCard.classList.remove('hidden');
+
+        const totalEth = getUserTotalContribution();
+        $('user-total-eth').textContent = `${totalEth.toFixed(4)} ETH`;
+        
+        const tokenPrice = PHASES[0].price; // Use a base price for summary simplicity
+        const usdValue = totalEth * ethPriceUSD;
+        const baseEtrx = usdValue / tokenPrice;
+        const bonusRate = getBonusForAmount(totalEth);
+        const totalEtrx = baseEtrx * (1 + bonusRate);
+
+        $('user-total-etrx').textContent = `${totalEtrx.toLocaleString(undefined, {maximumFractionDigits: 0})} $ETRX`;
+    }
+
+
+    /* =================================================================
+     * ==================== LIVE & SIMULATED ON-CHAIN DATA =============
+     * ================================================================= */
+    const onChain = {
+        contractAddress: "0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B", // Vitalik's address as placeholder
+        contractABI: [], // ABI needed for real calls
+        provider: null,
+        contract: null,
+        hardCap: 150, // ETH
+        simulatedState: { totalRaised: 6.78, contributors: 23 },
+        
+        init() {
+            if (typeof ethers === 'undefined') {
+                console.log("Ethers.js not loaded, on-chain data disabled.");
+                return;
+            }
+            this.provider = new ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
+            fetchETHPrice();
+            setInterval(fetchETHPrice, 60000);
+
+            // Check if presale has started to begin simulation
+            if (new Date() >= PRESALE_START && new Date() <= PRESALE_END) {
+                this.runSimulation();
+            } else {
+                 this.updateUI({ totalRaised: '0', contributors: '0' });
+            }
+            // REAL LOGIC:
+            // this.contract = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
+            // this.fetchData();
+            // setInterval(() => this.fetchData(), 30000);
+        },
+        
+        runSimulation() {
+            this.updateUI(this.simulatedState);
+            const progressInterval = setInterval(() => {
+                if (new Date() > PRESALE_END) {
+                    clearInterval(progressInterval);
+                    return;
+                }
+                this.simulatedState.totalRaised += Math.random() * 0.2;
+                if (Math.random() > 0.7) {
+                    this.simulatedState.contributors += 1;
+                }
+                if (this.simulatedState.totalRaised >= this.hardCap) {
+                    this.simulatedState.totalRaised = this.hardCap;
+                    clearInterval(progressInterval); // Stop when cap is reached
+                }
+                this.updateUI(this.simulatedState);
+            }, 3500);
+
+            const contributionInterval = setInterval(() => {
+                 if (new Date() > PRESALE_END || this.simulatedState.totalRaised >= this.hardCap) {
+                    clearInterval(contributionInterval);
+                    return;
+                }
+                this.simulateNewContribution();
+            }, 5000);
+        },
+
+        simulateNewContribution() {
+            const randomAddress = `0x${[...Array(40)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')}`;
+            const randomAmount = (Math.random() * 1.5 + 0.05).toFixed(3);
+            const randomHash = `0x${[...Array(64)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')}`;
+            this.addContributionToList({
+                address: randomAddress,
+                amount: randomAmount,
+                hash: randomHash,
+            });
+        },
+
+        addContributionToList(tx) {
+            const list = $('contribution-list');
+            if (!list) return;
+
+            const item = document.createElement('li');
+            item.className = 'contribution-list-item small-dim';
+            item.innerHTML = `
+                <span>
+                    <a href="https://etherscan.io/tx/${tx.hash}" target="_blank" rel="noopener noreferrer" class="font-mono laser hover:text-white/80">${shortAddr(tx.address)}</a>
+                </span>
+                <span class="text-white/90 font-semibold">${tx.amount} ETH</span>
+            `;
+            list.prepend(item);
+
+            if (list.children.length > 5) {
+                list.lastChild.remove();
+            }
+        },
+
+        updateUI(data) {
+            $('total-raised').textContent = `${parseFloat(data.totalRaised).toFixed(2)} ETH`;
+            $('total-contributors').textContent = data.contributors.toString();
+            const progress = (parseFloat(data.totalRaised) / this.hardCap) * 100;
+            $('live-progress-bar').style.width = `${Math.min(100, progress)}%`;
+            $('progress-percentage').textContent = `${Math.min(100, progress).toFixed(1)}%`;
+        },
+    };
+    
+    async function fetchETHPrice() {
+        try {
+            // Simulate API call to CoinGecko for demo purposes:
+            ethPriceUSD = 3200 + (Math.random() - 0.5) * 50;
+            
+            $('eth-price-display').textContent = `1 ETH ≈ $${ethPriceUSD.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            updateETRXValue(); // Re-calculate on new ETH price
+            updateUserContributionSummary(); // Also update the user summary card
+        } catch (e) {
+            console.error("Failed to fetch ETH price", e);
+            $('eth-price-display').textContent = `1 ETH ≈ $${ethPriceUSD.toLocaleString()}`; // Show last known
+        }
+    }
+
+    onChain.init();
+    
+    /* =================================================================
+     * ====================== REFERRAL SYSTEM ==========================
+     * ================================================================= */
     function updateReferralUI(){
         const referralSection = $('referral-section');
         if (connectedAccount) {
@@ -1594,238 +1977,26 @@ document.addEventListener('DOMContentLoaded', () => {
     $('copy-referral').addEventListener('click', () => {
         const linkInput = $('referral-link');
         linkInput.select();
-        navigator.clipboard.writeText(linkInput.value);
-        toast('Referral link copied!');
-        soundManager.play('C6', '8n');
-    });
-
-    /* Share & Copy Buttons */
-    const copyAddrBtn = $('copyAddr');
-    const presaleAddrInput = $('presaleAddr');
-    copyAddrBtn.addEventListener('click', () => {
-        presaleAddrInput.select();
-        navigator.clipboard.writeText(presaleAddrInput.value);
-        toast('Address copied to clipboard!');
-        soundManager.play('C6', '8n');
-    });
-
-
-    /* Toast */
-    function toast(msg, isWarn=false){
-      const t=document.createElement('div');
-      t.setAttribute('role','status');
-      t.setAttribute('aria-live','polite');
-      t.setAttribute('aria-atomic','true');
-      t.className='toast fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-2 rounded-lg glass card text-sm z-50';
-      t.style.borderColor = isWarn ? 'rgba(255,99,99,.35)' : 'var(--ring)';
-      t.textContent=msg;
-      document.body.appendChild(t);
-      setTimeout(()=>{
-        t.style.opacity='0';
-        t.style.transition='opacity .25s';
-        t.addEventListener('transitionend', ()=>t.remove(), {once:true});
-      }, 2500);
-    }
-
-    /* ===== Live On-Chain Data ===== */
-    const onChain = {
-        contractAddress: "0xYourPresaleContractAddressHere", // <-- TODO: REPLACE THIS
-        contractABI: [], // <-- TODO: REPLACE THIS with your presale contract's ABI
-        provider: null,
-        contract: null,
-        hardCap: 150, // ETH
-        
-        init() {
-            if (typeof ethers === 'undefined') {
-                console.log("Ethers.js not loaded, on-chain data disabled.");
-                return;
-            }
-            this.provider = new ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
-            // Set initial state to 0, removing the simulation
-            this.updateUI({ totalRaised: '0', contributors: '0' });
-
-            // TODO: UNCOMMENT THE FOLLOWING LINES WHEN YOU HAVE A DEPLOYED CONTRACT
-            // this.contract = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
-            // this.updateLoop();
-        },
-        
-        updateUI(data) {
-            $('total-raised').textContent = `${parseFloat(data.totalRaised).toFixed(2)} ETH`;
-            $('total-contributors').textContent = data.contributors;
-            const progress = (parseFloat(data.totalRaised) / this.hardCap) * 100;
-            $('live-progress-bar').style.width = `${Math.min(100, progress)}%`;
-            $('progress-percentage').textContent = `${Math.min(100, progress).toFixed(1)}%`;
-        },
-    };
-    onChain.init();
-
-
-    /* ===== Pie Chart interactivity ===== */
-    const PIE_DATA = {
-        presale: { name: 'Presale', percent: '30%' },
-        liquidity: { name: 'Liquidity', percent: '25%' },
-        eco: { name: 'Ecosystem', percent: '20%' },
-        team: { name: 'Team', percent: '15%' },
-        treasury: { name: 'Treasury', percent: '10%' }
-    };
-    const pieSlices = document.querySelectorAll('.pie-slice');
-    const legendItems = document.querySelectorAll('.legend-item');
-    const pieTextPercent = $('pie-text-percent');
-    const pieTextName = $('pie-text-name');
-
-    function handlePieHover(id) {
-        if (!id) {
-            pieTextPercent.textContent = 'ETRX';
-            pieTextName.textContent = 'Tokenomics';
-            pieSlices.forEach(s => { 
-                s.classList.remove('highlight');
-                s.style.removeProperty('--highlight-color');
-            });
-            legendItems.forEach(l => l.classList.remove('highlight'));
-            return;
+        try {
+            document.execCommand('copy');
+            toast('Referral link copied!');
+            soundManager.play('C6', '8n');
+        } catch (err) {
+            toast('Could not copy link.', true);
         }
-        const data = PIE_DATA[id];
-        pieTextPercent.textContent = data.percent;
-        pieTextName.textContent = data.name;
-        
-        pieSlices.forEach(s => {
-            const sliceId = s.dataset.sliceId;
-            if (sliceId === id) {
-                const color = getComputedStyle(s).stroke;
-                s.classList.add('highlight');
-                s.style.setProperty('--highlight-color', color);
-            } else {
-                s.classList.remove('highlight');
-            }
-        });
-        legendItems.forEach(l => {
-            l.classList.toggle('highlight', l.dataset.sliceId === id);
-        });
-    }
-
-    pieSlices.forEach(slice => {
-        slice.addEventListener('mouseover', () => handlePieHover(slice.dataset.sliceId));
-        slice.addEventListener('mouseout', () => handlePieHover(null));
-    });
-    legendItems.forEach(item => {
-        item.addEventListener('mouseover', () => handlePieHover(item.dataset.sliceId));
-        item.addEventListener('mouseout', () => handlePieHover(null));
     });
 
-
-    /* ===== Etheria Wisps ===== */
-    (function(){
-      const canvas=document.getElementById('wispCanvas'); if(!canvas) return;
-      if (navigator?.connection?.saveData) return;
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      const ctx=canvas.getContext('2d');
-      let w=0,h=0,dpr=1, wisps=[];
-
-      function resize(){
-        dpr = Math.min(devicePixelRatio||1,2);
-        w = canvas.width = Math.floor(innerWidth*dpr);
-        h = canvas.height= Math.floor(innerHeight*dpr);
-        canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px';
-        makeWisps();
-      }
-      function rand(a,b){ return a + Math.random()*(b-a) }
-      function makeWisps(){
-        const base = Math.min(120, Math.round((innerWidth*innerHeight)/50000));
-        wisps = new Array(base).fill(0).map(()=>({
-          x: rand(0,w), y: rand(h*0.55, h*1.05),
-          r: rand(2*dpr, 5*dpr),
-          vx: rand(-0.05,0.05)*dpr, vy: rand(-0.15,-0.05)*dpr,
-          huePick: Math.random(),
-          tw: rand(0, Math.PI*2), tws: rand(0.005,0.012)
-        }));
-      }
-      function col(u){
-        if(u<0.5) return `rgba(84,178,255,${0.18 + u*0.25})`;
-        if(u<0.75) return `rgba(208,128,255,${0.18 + (u-0.5)*0.2})`;
-        return `rgba(255,147,76,${0.16 + (u-0.75)*0.18})`;
-      }
-      function draw(){
-        ctx.clearRect(0,0,w,h);
-        for(const p of wisps){
-          p.tw += p.tws;
-          const a = 0.5 + Math.sin(p.tw)*0.5;
-          p.x += p.vx + Math.sin(p.y*0.001)*0.12*dpr;
-          p.y += p.vy;
-          if(p.y < -20) { p.y = h + 10; p.x = rand(0,w); }
-          if(p.x < -10) p.x = w+10; if(p.x > w+10) p.x = -10;
-          const grad = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
-          grad.addColorStop(0, col(p.huePick));
-          grad.addColorStop(1, 'rgba(0,0,0,0)');
-          ctx.globalCompositeOperation = 'lighter';
-          ctx.fillStyle = grad;
-          ctx.beginPath(); ctx.arc(p.x,p.y,p.r*(2.5+a*1.2),0,Math.PI*2); ctx.fill();
-          ctx.globalCompositeOperation = 'source-over';
-        }
-        requestAnimationFrame(draw);
-      }
-      resize(); draw();
-      addEventListener('resize', resize, {passive:true});
-    })();
-
-    /* ===== Pointer-follow glow for .holo ===== */
-    (function(){
-      const cards = document.querySelectorAll('.holo');
-      cards.forEach(el=>{
-        el.addEventListener('pointermove', e=>{
-          const r = el.getBoundingClientRect();
-          el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-          el.style.setProperty('--my', (e.clientY - r.top) + 'px');
-        });
-      });
-    })();
-
-    /* ===== 3D Tilt Effect ===== */
-    (function() {
-        const cards = document.querySelectorAll('.card-3d-tilt');
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const { width, height } = rect;
-                const rotateX = (y / height - 0.5) * -14; // rotation degree
-                const rotateY = (x / width - 0.5) * 14;
-                card.style.transition = 'transform 0.1s ease-out';
-                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transition = 'transform 0.4s ease-out';
-                card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-            });
-        });
-    })();
-    
-    /* Initialize UI */
-    renderPhaseTable();
+    /* =================================================================
+     * ===================== INITIALIZE APP ============================
+     * ================================================================= */
     updateWhen();
-    toggleBar();
-    setInterval(toggleBar, 60_000);
-
-    /* Main loop start */
+    toggleStickyCTA();
+    updateContributionUIState();
+    updateReferralUI();
+    setInterval(toggleStickyCTA, 60000);
     loop();
-
-    /* ===== FAQ expand ===== */
-    document.querySelectorAll('.faq-item')?.forEach(item=>{
-      const btn=item.querySelector('.faq-header'); const body=item.querySelector('.faq-body'); const chev=item.querySelector('.faq-chevron');
-      btn.addEventListener('click', ()=>{
-        const open=btn.getAttribute('aria-expanded')==='true';
-        btn.setAttribute('aria-expanded', String(!open));
-        if(!open){
-          item.classList.add('open'); body.hidden=false; body.style.maxHeight=body.scrollHeight+'px'; body.classList.add('open'); chev.style.transform='rotate(180deg)';
-        } else {
-          body.style.maxHeight=body.scrollHeight+'px';
-          requestAnimationFrame(()=>{ body.style.maxHeight='0px'; body.classList.remove('open'); chev.style.transform='rotate(0deg)'; });
-          body.addEventListener('transitionend', ()=>{ if(body.style.maxHeight==='0px') body.hidden=true; item.classList.remove('open'); }, {once:true});
-        }
-      });
-    });
 });
 </script>
 </body>
 </html>
+
