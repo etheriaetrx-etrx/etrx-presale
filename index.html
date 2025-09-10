@@ -9,74 +9,65 @@
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 
-<!-- Canonical & Social -->
 <link rel="canonical" href="https://etheriaetrx-etrx.github.io/etrx-presale/">
 <meta property="og:site_name" content="Etheria">
 <meta property="og:title" content="$ETRX • Etheria Presale">
 <meta property="og:description" content="The official utility token of Etheria. Presale runs Sep 24 → Oct 1, 2025 (UTC).">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://etheriaetrx-etrx.github.io/etrx-presale/">
-<meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
+<meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.webp">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="720">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@ETRXDreamscapes">
-<meta name="twitter:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
+<meta name="twitter:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.webp">
 <meta name="twitter:image:alt" content="Etheria presale hero art">
 
-<!-- CSP (single-file build) -->
 <meta http-equiv="Content-Security-Policy"
-  content="default-src 'self' https://etheriaetrx-etrx.github.io;
-           img-src 'self' data: https:;
-           script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline';
-           style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-           font-src https://fonts.gstatic.com;
-           connect-src 'self' https://formspree.io https://cloudflare-eth.com;
-           worker-src 'self';
-           object-src 'none';
-           base-uri 'self';
-           frame-ancestors 'none';
-           upgrade-insecure-requests">
+  content="default-src 'self' https://etheriaetrx-etrx.github.io;
+           img-src 'self' data: https:;
+           script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline';
+           style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+           font-src https://fonts.gstatic.com;
+           connect-src 'self' https://formspree.io https://cloudflare-eth.com;
+           worker-src 'self';
+           object-src 'none';
+           base-uri 'self';
+           frame-ancestors 'none';
+           upgrade-insecure-requests">
 <meta name="theme-color" content="#05070d">
 <meta name="robots" content="index,follow,max-image-preview:large"/>
 
-<!-- Performance -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
-<!-- Fonts & Libraries -->
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script>
-  window.tailwind = {}
-  tailwind.config = { theme:{ extend:{
-    fontSize:{ 'hero':'clamp(2.25rem, 4vw + 1rem, 3.75rem)' },
-    maxWidth:{ 'measure':'65ch' }
-  }}}
+  window.tailwind = {}
+  tailwind.config = { theme:{ extend:{
+    fontSize:{ 'hero':'clamp(2.25rem, 4vw + 1rem, 3.75rem)' },
+    maxWidth:{ 'measure':'65ch' }
+  }}}
 </script>
 <script src="https://cdn.tailwindcss.com?v=3" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js" defer></script>
 
 
-<!-- Assets -->
-<link rel="preload" as="image" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
+<link rel="preload" as="image" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.webp">
 <link rel="icon" type="image/png" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png">
 
-<!--
-  NOTE: In a production build, this CSS would be moved to an external file (e.g., style.css)
-  and linked here: <link rel="stylesheet" href="style.css">
--->
 <style>
 :root{
-  color-scheme: dark;
-  --bg:#05070d; --panel:rgba(255,255,255,.06); --ring:rgba(0,255,255,.18);
-  --dim:rgba(255,255,255,.72); --muted:rgba(255,255,255,.9);
-  --neon-cyan: 0 255 255; --neon-blue: 84 178 255; --neon-violet: 208 128 255; --neon-orange: 255 147 76;
-  --c-presale: #00ffff; --c-liquidity: #54b2ff; --c-eco: #d080ff; --c-team: #ff934c; --c-treasury: #9ca3af;
+  color-scheme: dark;
+  --bg:#05070d; --panel:rgba(255,255,255,.06); --ring:rgba(0,255,255,.18);
+  --dim:rgba(255,255,255,.72); --muted:rgba(255,255,255,.9);
+  --neon-cyan: 0 255 255; --neon-blue: 84 178 255; --neon-violet: 208 128 255; --neon-orange: 255 147 76;
+  --c-presale: #00ffff; --c-liquidity: #54b2ff; --c-eco: #d080ff; --c-team: #ff934c; --c-treasury: #9ca3af;
 }
 html{scroll-behavior:smooth;scroll-padding-top:80px}
 *{box-sizing:border-box}
@@ -103,32 +94,32 @@ main, section, header, footer, .glass, .card { position:relative; z-index:2; iso
 
 /* Aurora background */
 #bgAurora{
-  position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
-  background:
-    radial-gradient(120% 60% at 50% -10%, rgba(0,255,255,.10), transparent 60%),
-    radial-gradient(80% 50% at 20% 10%, rgba(84,178,255,.12), transparent 60%),
-    radial-gradient(80% 50% at 80% 15%, rgba(255,147,76,.10), transparent 60%);
+  position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(0,255,255,.10), transparent 60%),
+    radial-gradient(80% 50% at 20% 10%, rgba(84,178,255,.12), transparent 60%),
+    radial-gradient(80% 50% at 80% 15%, rgba(255,147,76,.10), transparent 60%);
 }
 #bgAurora::before,
 #bgAurora::after{
-  content:""; position:absolute; inset:-20%; pointer-events:none; filter: blur(24px) saturate(1.1);
-  mix-blend-mode:screen; opacity:.45;
-  background:
-    conic-gradient(from 0deg at 50% 50%,
-      rgba(0,255,255,.28),
-      rgba(84,178,255,.28),
-      rgba(208,128,255,.26),
-      rgba(255,147,76,.22),
-      rgba(0,255,255,.28));
-  animation: auroraSweep 28s linear infinite;
+  content:""; position:absolute; inset:-20%; pointer-events:none; filter: blur(24px) saturate(1.1);
+  mix-blend-mode:screen; opacity:.45;
+  background:
+    conic-gradient(from 0deg at 50% 50%,
+      rgba(0,255,255,.28),
+      rgba(84,178,255,.28),
+      rgba(208,128,255,.26),
+      rgba(255,147,76,.22),
+      rgba(0,255,255,.28));
+  animation: auroraSweep 28s linear infinite;
 }
 #bgAurora::after{
-  opacity:.30; filter: blur(34px);
-  background:
-    radial-gradient(120% 120% at 30% 20%, rgba(0,255,255,.22), transparent 55%),
-    radial-gradient(120% 120% at 70% 25%, rgba(208,128,255,.16), transparent 55%),
-    radial-gradient(140% 100% at 50% -10%, rgba(84,178,255,.18), transparent 60%);
-  animation: auroraDrift 22s ease-in-out infinite alternate;
+  opacity:.30; filter: blur(34px);
+  background:
+    radial-gradient(120% 120% at 30% 20%, rgba(0,255,255,.22), transparent 55%),
+    radial-gradient(120% 120% at 70% 25%, rgba(208,128,255,.16), transparent 55%),
+    radial-gradient(140% 100% at 50% -10%, rgba(84,178,255,.18), transparent 60%);
+  animation: auroraDrift 22s ease-in-out infinite alternate;
 }
 @keyframes auroraSweep { to { transform: rotate(360deg); } }
 @keyframes auroraDrift { from { transform: translateY(-3%) } to { transform: translateY(3%) } }
@@ -138,12 +129,12 @@ main, section, header, footer, .glass, .card { position:relative; z-index:2; iso
 
 /* Neon text */
 .neon-text{
-  text-shadow: 0 0 6px rgba(var(--neon-cyan)/.8), 0 0 24px rgba(var(--neon-blue)/.45), 0 0 48px rgba(var(--neon-violet)/.35);
+  text-shadow: 0 0 6px rgba(var(--neon-cyan)/.8), 0 0 24px rgba(var(--neon-blue)/.45), 0 0 48px rgba(var(--neon-violet)/.35);
 }
 .neon-grad{
-  background: linear-gradient(90deg, rgb(var(--neon-orange)), rgb(var(--neon-blue)));
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-  background-size:200% 100%; animation: sweep 6s linear infinite;
+  background: linear-gradient(90deg, rgb(var(--neon-orange)), rgb(var(--neon-blue)));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  background-size:200% 100%; animation: sweep 6s linear infinite;
 }
 @keyframes sweep{ to{ background-position:-200% 0 } }
 
@@ -154,19 +145,19 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 /* Cards */
 .glass{backdrop-filter: blur(12px); background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border:1px solid var(--ring)}
 .card{
-  border-radius:18px; box-shadow: 0 0 0 1px rgba(0,255,255,.08) inset, 0 8px 30px rgba(0,255,255,.08), 0 0 60px rgba(130,200,255,.06);
-  transition: transform .2s ease, box-shadow .25s ease;
+  border-radius:18px; box-shadow: 0 0 0 1px rgba(0,255,255,.08) inset, 0 8px 30px rgba(0,255,255,.08), 0 0 60px rgba(130,200,255,.06);
+  transition: transform .2s ease, box-shadow .25s ease;
 }
 .card:hover{ transform: translateY(-2px) }
 .card:active{ transform: translateY(0) scale(.997) }
 .card:focus-within{ box-shadow: 0 0 0 2px rgba(0,255,255,.25), 0 8px 30px rgba(0,255,255,.08) }
 .card-outline{position:relative}
 .card-outline::before{
-  content:""; position:absolute; inset:-1px; border-radius:inherit; pointer-events:none;
-  background: conic-gradient(from 180deg at 50% 50%, rgba(var(--neon-orange)/.7), rgba(var(--neon-blue)/.7), rgba(var(--neon-violet)/.7), rgba(var(--neon-orange)/.7));
-  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
-  filter: blur(8px) saturate(1.4); opacity:.35; animation: spinBorder 10s linear infinite;
+  content:""; position:absolute; inset:-1px; border-radius:inherit; pointer-events:none;
+  background: conic-gradient(from 180deg at 50% 50%, rgba(var(--neon-orange)/.7), rgba(var(--neon-blue)/.7), rgba(var(--neon-violet)/.7), rgba(var(--neon-orange)/.7));
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  filter: blur(8px) saturate(1.4); opacity:.35; animation: spinBorder 10s linear infinite;
 }
 @keyframes spinBorder { to { transform: rotate(360deg) } }
 
@@ -176,31 +167,32 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 /* Holo hover (pointer-follow glow) */
 .holo{ position:relative; overflow:hidden }
 .holo::before{
-  content:""; position:absolute; inset:-1px; pointer-events:none; border-radius:inherit;
-  background:
-    radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(84,178,255,.22), transparent 45%),
-    radial-gradient(360px circle at var(--mx,50%) var(--my,50%), rgba(208,128,255,.18), transparent 55%),
-    radial-gradient(520px circle at var(--mx,50%) var(--my,50%), rgba(255,147,76,.14), transparent 60%);
-  mix-blend-mode:screen; opacity:.45; transition: opacity .18s ease;
+  content:""; position:absolute; inset:-1px; pointer-events:none; border-radius:inherit;
+  background:
+    radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(84,178,255,.22), transparent 45%),
+    radial-gradient(360px circle at var(--mx,50%) var(--my,50%), rgba(208,128,255,.18), transparent 55%),
+    radial-gradient(520px circle at var(--mx,50%) var(--my,50%), rgba(255,147,76,.14), transparent 60%);
+  mix-blend-mode:screen; opacity:.45; transition: opacity .18s ease;
 }
 .holo:hover::before{ opacity:.7 }
 /* Optional sweeping sheen */
 .holo::after{
-  content:""; position:absolute; inset:-160% -160%;
-  background: conic-gradient(from 0deg, #fff0, #fff3 10%, #fff0 20%), linear-gradient(120deg, #ff934c44, #54b2ff44, #d080ff44);
-  mix-blend-mode:screen; filter:saturate(1.3) blur(10px); opacity:.25; pointer-events:none;
-  transform:translateX(-30%); transition: transform .8s ease, opacity .3s ease;
+  content:""; position:absolute; inset:-160% -160%;
+  background: conic-gradient(from 0deg, #fff0, #fff3 10%, #fff0 20%), linear-gradient(120deg, #ff934c44, #54b2ff44, #d080ff44);
+  mix-blend-mode:screen; filter:saturate(1.3) blur(10px); opacity:.25; pointer-events:none;
+  transform:translateX(-30%); transition: transform .8s ease, opacity .3s ease;
 }
 .holo:hover::after{ transform:translateX(30%); opacity:.45 }
 
 /* Buttons */
 .btn-primary{
-  position:relative; display:inline-flex; align-items:center; gap:.55rem; padding:.75rem 1rem;
-  border-radius:14px; font-weight:800; color:#02040a;
-  background:linear-gradient(90deg, rgb(var(--neon-orange)), rgb(var(--neon-blue)));
-  box-shadow: 0 0 16px rgba(255,147,76,.45), 0 0 24px rgba(84,178,255,.35);
+  position:relative; display:inline-flex; align-items:center; justify-content:center; gap:.55rem; padding:.75rem 1rem;
+  border-radius:14px; font-weight:800; color:#02040a;
+  background:linear-gradient(90deg, rgb(var(--neon-orange)), rgb(var(--neon-blue)));
+  box-shadow: 0 0 16px rgba(255,147,76,.45), 0 0 24px rgba(84,178,255,.35);
 }
 .btn-primary:hover{ transform: translateY(-1px) scale(1.01) }
+.btn-primary:disabled { background: #555; color: #999; cursor: not-allowed; box-shadow: none; transform: none; }
 .btn-ghost{ border:1px solid rgba(0,255,255,.25); background: rgba(255,255,255,.03); padding:.6rem .9rem; border-radius:12px; }
 .hidden-important{ display:none !important }
 .small-dim{ color:var(--dim) }
@@ -224,28 +216,28 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 .hero-glow{ position:relative; border-radius:1.5rem; overflow:visible; }
 .hero-glow::before,
 .hero-glow::after{
-  content:""; position:absolute; border-radius:inherit; pointer-events:none; inset:-22px;
-  mix-blend-mode:screen;
+  content:""; position:absolute; border-radius:inherit; pointer-events:none; inset:-22px;
+  mix-blend-mode:screen;
 }
 .hero-glow::before{
-  background: conic-gradient(from 0deg at 50% 50%,
-    rgba(0,255,255,.32),
-    rgba(84,178,255,.36),
-    rgba(208,128,255,.34),
-    rgba(255,147,76,.30),
-    rgba(0,255,255,.32));
-  filter: blur(50px) saturate(1.35) brightness(1.05);
-  opacity:.75; animation: glowSpin 18s linear infinite;
+  background: conic-gradient(from 0deg at 50% 50%,
+    rgba(0,255,255,.32),
+    rgba(84,178,255,.36),
+    rgba(208,128,255,.34),
+    rgba(255,147,76,.30),
+    rgba(0,255,255,.32));
+  filter: blur(50px) saturate(1.35) brightness(1.05);
+  opacity:.75; animation: glowSpin 18s linear infinite;
 }
 .hero-glow::after{
-  background: radial-gradient(120% 120% at 50% 50%,
-    rgba(0,255,255,.22),
-    rgba(84,178,255,.18) 35%,
-    rgba(208,128,255,.14) 60%,
-    rgba(255,147,76,.12) 75%,
-    transparent 85%);
-  filter: blur(40px) saturate(1.15);
-  opacity:.6; animation: glowPulse 7.5s ease-in-out infinite alternate;
+  background: radial-gradient(120% 120% at 50% 50%,
+    rgba(0,255,255,.22),
+    rgba(84,178,255,.18) 35%,
+    rgba(208,128,255,.14) 60%,
+    rgba(255,147,76,.12) 75%,
+    transparent 85%);
+  filter: blur(40px) saturate(1.15);
+  opacity:.6; animation: glowPulse 7.5s ease-in-out infinite alternate;
 }
 @keyframes glowSpin { to { transform: rotate(360deg); } }
 @keyframes glowPulse { from { opacity:.5; filter: blur(32px); } to { opacity:.65; filter: blur(44px); } }
@@ -257,34 +249,34 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 .row + .row{ border-top:1px solid rgba(255,255,255,.08); padding-top:.5rem; margin-top:.5rem }
 
 /* Pie Chart */
-.pie-slice { 
-  transition: transform .2s ease, opacity .2s ease;
-  transform-origin: center;
+.pie-slice { 
+  transition: transform .2s ease, opacity .2s ease;
+  transform-origin: center;
 }
 .pie-slice.highlight {
-  transform: scale(1.05);
-  filter: drop-shadow(0 0 8px var(--highlight-color));
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 8px var(--highlight-color));
 }
 #pie-legend-list .legend-item {
-  cursor: pointer;
-  transition: background-color .2s ease;
-  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color .2s ease;
+  border-radius: 8px;
 }
 #pie-legend-list .legend-item.highlight {
-  background-color: rgba(255,255,255,0.08);
+  background-color: rgba(255,255,255,0.08);
 }
 #pie-text-group { transition: opacity .2s ease; }
 
 /* Roadmap & How-to-Buy Timeline */
 .timeline { position: relative; }
 .timeline::before {
-  content: ''; position: absolute; left: 1rem; top: .5rem; bottom: .5rem; width: 2px;
-  background: linear-gradient(to bottom, var(--c-presale), var(--c-eco)); border-radius: 2px;
+  content: ''; position: absolute; left: 1rem; top: .5rem; bottom: .5rem; width: 2px;
+  background: linear-gradient(to bottom, var(--c-presale), var(--c-eco)); border-radius: 2px;
 }
 .timeline-item { position: relative; padding-left: 3rem; }
 .timeline-item::before {
-  content: ''; position: absolute; left: calc(1rem - 6px); top: 6px; width: 14px; height: 14px;
-  border-radius: 50%; background: var(--bg); border: 2px solid var(--c-presale);
+  content: ''; position: absolute; left: calc(1rem - 6px); top: 6px; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--bg); border: 2px solid var(--c-presale);
 }
 .timeline-item:hover::before { border-color: white; }
 
@@ -294,32 +286,32 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 .vesting-marker { position: absolute; top: -4px; bottom: -4px; width: 2px; background-color: rgba(255,255,255,0.5); }
 
 /* Whitepaper Modal */
-#whitepaper-content h2 { font-size: 1.5rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+#whitepaper-content h2 { font-size: 1.5rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.25rem; }
 #whitepaper-content h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; }
 #whitepaper-content h4 { font-size: 1.1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.25rem; }
 #whitepaper-content p { margin-bottom: 1rem; line-height: 1.6; }
 #whitepaper-content ul { list-style-position: inside; margin-left: 0.5rem; margin-bottom: 1rem; }
 #whitepaper-content li { margin-bottom: 0.5rem; }
+#whitepaper-content hr { border-color: rgba(255,255,255,0.1); margin: 1.5rem 0; }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
-  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
-  #bgAurora::before, #bgAurora::after, .card-outline::before, .holo::after, .hero-glow::before, .hero-glow::after{ display:none }
+  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
+  #bgAurora::before, #bgAurora::after, .card-outline::before, .holo::after, .hero-glow::before, .hero-glow::after{ display:none }
 }
 </style>
 </head>
 <body>
 <div id="preloader">
-    <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-16 w-16"/>
+    <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-16 w-16"/>
 </div>
 
 <noscript>
-  <div style="position:relative;z-index:3;margin:1rem auto;max-width:60rem;padding:.75rem 1rem;border:1px solid #0ff3;border-radius:10px;background:#06121a;color:#bfefff;font:14px/1.3 Inter,system-ui">
-    JavaScript is disabled — countdown and forms require it.
-  </div>
+  <div style="position:relative;z-index:3;margin:1rem auto;max-width:60rem;padding:.75rem 1rem;border:1px solid #0ff3;border-radius:10px;background:#06121a;color:#bfefff;font:14px/1.3 Inter,system-ui">
+    JavaScript is disabled — countdown and forms require it.
+  </div>
 </noscript>
 
-<!-- Background & layers -->
 <div id="bgAurora" aria-hidden="true"></div>
 <canvas id="wispCanvas" aria-hidden="true"></canvas>
 <div class="scanlines" aria-hidden="true"></div>
@@ -327,1506 +319,1482 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
 
 <header id="siteHeader" class="sticky top-0 z-40">
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-    <div class="flex items-center gap-3">
-      <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-cyan-400/20 object-contain bg-white/5"/>
-      <div class="text-sm tracking-wide small-dim">Etheria</div>
-    </div>
-    <nav class="hidden gap-6 text-sm opacity-80 md:flex items-center" aria-label="Primary">
-      <a class="laser hover:opacity-100" href="#about">About</a>
-      <a class="laser hover:opacity-100" href="#how-to-buy">How to Buy</a>
-      <a class="laser hover:opacity-100" href="#token">Tokenomics</a>
-      
-      <div class="relative group" id="more-menu">
-        <button id="more-menu-btn" class="flex items-center gap-1 laser hover:opacity-100" aria-haspopup="true" aria-expanded="false" aria-label="More sections">
-          More
-          <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-        </button>
-        <div id="more-menu-dropdown" class="absolute top-full right-0 mt-2 w-48 p-2 glass card hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-          <a href="#milestones" class="block px-3 py-2 rounded-md hover:bg-white/10">Milestones</a>
-          <a href="#team" class="block px-3 py-2 rounded-md hover:bg-white/10">Team</a>
-          <a href="#road" class="block px-3 py-2 rounded-md hover:bg-white/10">Roadmap</a>
-          <a href="#faq" class="block px-3 py-2 rounded-md hover:bg-white/10">FAQ</a>
-        </div>
-      </div>
-    </nav>
-    <div class="flex items-center gap-3">
-      <button id="wp-btn-header" class="btn-ghost text-sm hidden sm:inline-flex">Whitepaper</button>
-      <button id="connectBtn" class="btn-primary text-sm" aria-haspopup="dialog" aria-controls="walletModal">Connect Wallet</button>
-      <div id="walletPill" class="btn-ghost text-xs hidden" aria-live="polite">
-        <span id="walletShort" class="addr"></span>
-        <button id="disconnectBtn" class="ml-2 underline underline-offset-4" aria-label="Disconnect Wallet">Disconnect</button>
-      </div>
-    </div>
-  </div>
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <div class="flex items-center gap-3">
+      <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-cyan-400/20 object-contain bg-white/5"/>
+      <div class="text-sm tracking-wide small-dim">Etheria</div>
+    </div>
+    <nav class="hidden gap-6 text-sm opacity-80 md:flex items-center" aria-label="Primary">
+      <a class="laser hover:opacity-100" href="#about">About</a>
+      <a class="laser hover:opacity-100" href="#how-to-buy">How to Buy</a>
+      <a class="laser hover:opacity-100" href="#token">Tokenomics</a>
+      
+      <div class="relative group" id="more-menu">
+        <button id="more-menu-btn" class="flex items-center gap-1 laser hover:opacity-100" aria-haspopup="true" aria-expanded="false" aria-label="More sections">
+          More
+          <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+        <div id="more-menu-dropdown" class="absolute top-full right-0 mt-2 w-48 p-2 glass card hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+          <a href="#milestones" class="block px-3 py-2 rounded-md hover:bg-white/10">Milestones</a>
+          <a href="#team" class="block px-3 py-2 rounded-md hover:bg-white/10">Team</a>
+          <a href="#road" class="block px-3 py-2 rounded-md hover:bg-white/10">Roadmap</a>
+          <a href="#faq" class="block px-3 py-2 rounded-md hover:bg-white/10">FAQ</a>
+        </div>
+      </div>
+    </nav>
+    <div class="flex items-center gap-3">
+      <button id="wp-btn-header" class="btn-ghost text-sm hidden sm:inline-flex">Whitepaper</button>
+      <button id="connectBtn" class="btn-primary text-sm" aria-haspopup="dialog" aria-controls="walletModal">Connect Wallet</button>
+      <div id="walletPill" class="btn-ghost text-xs hidden" aria-live="polite">
+        <span id="walletShort" class="addr"></span>
+        <button id="disconnectBtn" class="ml-2 underline underline-offset-4" aria-label="Disconnect Wallet">Disconnect</button>
+      </div>
+    </div>
+  </div>
 </header>
 
 
-<!-- Wallet modal -->
 <div id="walletModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
-     role="dialog" aria-modal="true" aria-labelledby="walletModalTitle" inert>
-  <div class="glass card card-outline w-[min(420px,92vw)] p-4" data-modal-surface>
-    <div class="flex items-center justify-between">
-      <h3 id="walletModalTitle" class="text-lg font-semibold neon-text">Choose a wallet</h3>
-      <button id="modalClose" class="text-white/70 hover:text-white" aria-label="Close dialog">✕</button>
-    </div>
-    <p class="mt-1 text-xs small-dim">Use a browser wallet (MetaMask, Rabby, Brave, Frame, etc.).</p>
-    <div id="walletList" class="mt-4 grid gap-2" role="list"></div>
-    <p class="mt-2 text-xs small-dim">Tip: If nothing shows up, install a wallet extension or use a browser with a built-in wallet.</p>
-  </div>
+     role="dialog" aria-modal="true" aria-labelledby="walletModalTitle" inert>
+  <div class="glass card card-outline w-[min(420px,92vw)] p-4" data-modal-surface>
+    <div class="flex items-center justify-between">
+      <h3 id="walletModalTitle" class="text-lg font-semibold neon-text">Choose a wallet</h3>
+      <button id="modalClose" class="text-white/70 hover:text-white" aria-label="Close dialog">✕</button>
+    </div>
+    <p class="mt-1 text-xs small-dim">Use a browser wallet (MetaMask, Rabby, Brave, Frame, etc.).</p>
+    <div id="walletList" class="mt-4 grid gap-2" role="list"></div>
+    <p class="mt-2 text-xs small-dim">Tip: If nothing shows up, install a wallet extension or use a browser with a built-in wallet.</p>
+  </div>
 </div>
 
-<!-- Whitepaper Modal -->
 <div id="whitepaperModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
-     role="dialog" aria-modal="true" aria-labelledby="whitepaperModalTitle" inert>
-  <div class="glass card card-outline w-full max-w-3xl max-h-[90vh] flex flex-col" data-modal-surface>
-    <div class="flex items-center justify-between p-4 border-b border-white/10 flex-shrink-0">
-      <h3 id="whitepaperModalTitle" class="text-lg font-semibold neon-text">Etheria Whitepaper v1.0</h3>
-      <button id="wpModalClose" class="text-white/70 hover:text-white" aria-label="Close Whitepaper">✕</button>
-    </div>
-    <div id="whitepaper-content" class="p-6 overflow-y-auto small-dim">
-        <h2>Abstract</h2>
-        <p>Etheria is a decentralized, community-driven world-building project on the Ethereum blockchain. It combines the narrative depth of a fantasy universe with the tangible ownership of Non-Fungible Tokens (NFTs) and the governance power of a utility token, $ETRX. The project's mission is to create an evolving ecosystem where the community is not just an audience, but an integral part of its creation and governance. Through a series of foundational NFT collections and the upcoming $ETRX token, Etheria provides a framework for collective storytelling, on-chain utility, and long-term value creation.</p>
-        
-        <h2>1. Introduction</h2>
-        <p>The current digital landscape is saturated with projects that promise utility but often fail to deliver, leaving communities with speculative assets that lack intrinsic value. Many NFT projects exist as static pieces of art with no deeper function, and many utility tokens are created without a pre-existing ecosystem to support them.</p>
-        <p>Etheria is being built to challenge this paradigm. Our approach is <strong>build first, market second</strong>. Before launching a single token, we have already designed, developed, and deployed our foundational NFT collections on the Ethereum mainnet. The $ETRX token is not a promise to build an ecosystem; it is the key to unlocking and governing an ecosystem that already exists.</p>
-        
-        <h2>2. The Etheria Vision</h2>
-        <p>Our vision is to create a persistent, decentralized world that grows and evolves based on the collective decisions of its community. We are not just building a collection of JPEGs; we are laying the foundation for a new form of interactive lore.</p>
-        <p>The world of Etheria is a fantasy realm filled with ancient magic, powerful artifacts, and mysterious keepers. Holders of our NFTs and the $ETRX token will have the power to:</p>
-        <ul>
-            <li><strong>Influence the Narrative:</strong> Vote on key lore decisions, character arcs, and the future direction of the world's story.</li>
-            <li><strong>Own a Piece of the World:</strong> NFTs in Etheria are not just art; they are titles, keys, and functional items within the ecosystem.</li>
-            <li><strong>Participate in a Sustainable Economy:</strong> The $ETRX token will serve as the economic backbone for minting new assets, accessing exclusive content, and rewarding community participation.</li>
-        </ul>
-        
-        <h2>3. The Etheria Ecosystem</h2>
-        <p>The ecosystem is composed of two core components: the NFT Collections and the $ETRX Token.</p>
-        <h3>3.1. NFT Collections</h3>
-        <ul>
-            <li><strong>Arc Genesis:</strong> The foundational art collection that represents the visual and thematic cornerstone of Etheria. These are the genesis pieces that prove our artistic vision and technical capability.</li>
-            <li><strong>Etherian Keepers:</strong> The first generation of characters within the Etherian realm. These NFTs establish the first inhabitants and will play a role in the future lore and governance of the world.</li>
-            <li><strong>Artifacts (Coming Soon):</strong> The next evolution of on-chain utility. Artifacts will be powerful, functional NFTs that can be equipped, combined, or staked to provide tangible benefits within the Etheria ecosystem, such as boosting rewards or granting access to exclusive mints.</li>
-        </ul>
-        <h3>3.2. The $ETRX Token</h3>
-        <p>$ETRX is an ERC-20 token on the Ethereum blockchain with a fixed supply of <strong>10,000,000</strong>. It is designed to be the primary medium of exchange and governance within Etheria.</p>
-        
-        <h2>4. Tokenomics ($ETRX)</h2>
-        <p>The tokenomics of $ETRX are designed for long-term sustainability, community empowerment, and team commitment.</p>
-        <ul>
-            <li><strong>Total Supply:</strong> 10,000,000 $ETRX</li>
-            <li><strong>Token Standard:</strong> ERC-20 on Ethereum</li>
-        </ul>
-        <p><strong>Distribution:</strong></p>
-        <ul>
-            <li><strong>Presale (30%):</strong> 3,000,000 ETRX for early supporters.</li>
-            <li><strong>Liquidity (25%):</strong> 2,500,000 ETRX for DEX listings and stable trading.</li>
-            <li><strong>Ecosystem & Rewards (20%):</strong> 2,000,000 ETRX to fund community grants and in-world rewards.</li>
-            <li><strong>Team (15%):</strong> 1,500,000 ETRX.</li>
-            <li><strong>Treasury & Advisors (10%):</strong> 1,000,000 ETRX for strategic partnerships and operational costs.</li>
-        </ul>
-        
-        <h2>5. Governance Mechanics</h2>
-        <p>The Etheria DAO will be the cornerstone of community-led development. The process is designed to be transparent and straightforward.</p>
-        <ul>
-            <li><strong>Proposal Process:</strong> Any community member holding a minimum of [e.g., 10,000 $ETRX] can submit a proposal for community review.</li>
-            <li><strong>Voting Power:</strong> Voting power will be based on a snapshot of $ETRX holdings. The standard will be 1 token = 1 vote.</li>
-            <li><strong>Quorum:</strong> For a vote to be considered valid, a minimum of [e.g., 5%] of the circulating supply must participate.</li>
-        </ul>
-        
-        <h2>6. Roadmap</h2>
-        <p>Our roadmap is divided into clear, deliverable phases.</p>
-        <ul>
-            <li><strong>Phase 1: Foundation (Q3 2025):</strong> Launch presale site, publish whitepaper, and complete smart contract audit.</li>
-            <li><strong>Phase 2: Launch (Q4 2025):</strong> Conduct the $ETRX presale event, execute the Token Generation Event (TGE), and establish initial liquidity on a decentralized exchange.</li>
-            <li><strong>Phase 3: Utility (Late Sep 2025):</strong> Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on initial lore decisions.</li>
-            <li><strong>Phase 4: Expansion (Q2 2026 & Beyond):</strong> Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges to expand our ecosystem.</li>
-        </ul>
-        
-        <h2>7. Competitive Landscape</h2>
-        <p>While many projects exist in the NFT and DeFi space, Etheria's unique advantage lies in our **"build-first"** philosophy. Unlike projects that launch a token based on promises, we have already delivered on-chain assets. Our focus is on deep, community-driven lore and tangible utility, creating an ecosystem with intrinsic value rather than purely speculative hype.</p>
-        
-        <h2>8. Risk Factors</h2>
-        <p>All investments in the cryptocurrency space carry inherent risks. We believe in transparency and want our community to be fully informed.</p>
-        <ul>
-            <li><strong>Market Volatility:</strong> The value of $ETRX can fluctuate significantly.</li>
-            <li><strong>Smart Contract Risk:</strong> Although our contracts will be audited, there is always a risk of vulnerabilities.</li>
-            <li><strong>Regulatory Uncertainty:</strong> The global regulatory landscape for crypto is still evolving.</li>
-        </ul>
-        <p>Our team is committed to mitigating these risks through rigorous security practices, sustainable tokenomics, and transparent communication.</p>
+     role="dialog" aria-modal="true" aria-labelledby="whitepaperModalTitle" inert>
+  <div class="glass card card-outline w-full max-w-3xl max-h-[90vh] flex flex-col" data-modal-surface>
+    <div class="flex items-center justify-between p-4 border-b border-white/10 flex-shrink-0">
+      <div>
+          <h3 id="whitepaperModalTitle" class="text-lg font-semibold neon-text">Etheria Whitepaper v1.0</h3>
+      </div>
+      <div class="flex items-center gap-2">
+          <a href="/path/to/your/whitepaper.pdf" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm">Download PDF</a>
+          <button id="wpModalClose" class="text-white/70 hover:text-white" aria-label="Close Whitepaper">✕</button>
+      </div>
+    </div>
+    <div id="whitepaper-content" class="p-6 overflow-y-auto small-dim">
+        <h2>Abstract</h2>
+        <p>Etheria is a decentralized, community-driven world-building project on the Ethereum blockchain. It combines the narrative depth of a fantasy universe with the tangible ownership of Non-Fungible Tokens (NFTs) and the governance power of a utility token, $ETRX. The project's mission is to create an evolving ecosystem where the community is not just an audience, but an integral part of its creation and governance. Through a series of foundational NFT collections and the upcoming $ETRX token, Etheria provides a framework for collective storytelling, on-chain utility, and long-term value creation.</p>
+        
+        <h2>1. Introduction</h2>
+        <p>The current digital landscape is saturated with projects that promise utility but often fail to deliver, leaving communities with speculative assets that lack intrinsic value. Many NFT projects exist as static pieces of art with no deeper function, and many utility tokens are created without a pre-existing ecosystem to support them.</p>
+        <p>Etheria is being built to challenge this paradigm. Our approach is <strong>build first, market second</strong>. Before launching a single token, we have already designed, developed, and deployed our foundational NFT collections on the Ethereum mainnet. The $ETRX token is not a promise to build an ecosystem; it is the key to unlocking and governing an ecosystem that already exists.</p>
+        
+        <h2>2. The Etheria Vision</h2>
+        <p>Our vision is to create a persistent, decentralized world that grows and evolves based on the collective decisions of its community. We are not just building a collection of JPEGs; we are laying the foundation for a new form of interactive lore.</p>
+        <h4>Key Holder Abilities:</h4>
+        <ul>
+            <li><strong>Influence the Narrative:</strong> Vote on key lore decisions, character arcs, and the future direction of the world's story.</li>
+            <li><strong>Own a Piece of the World:</strong> NFTs in Etheria are not just art; they are titles, keys, and functional items within the ecosystem.</li>
+            <li><strong>Participate in a Sustainable Economy:</strong> The $ETRX token will serve as the economic backbone for minting new assets, accessing exclusive content, and rewarding community participation.</li>
+        </ul>
+        
+        <hr/>
 
-        <h2>9. Team</h2>
-        <p>The Etheria project is led by a public-facing team of dedicated builders with experience in software development and community management.</p>
-        <ul>
-            <li>ETRXDreamscapes: The Developer</li>
-            <li>HeisCaifu: Telegram Page Owner</li>
-            <li>DxCheetah: Telegram Page Mod</li>
-        </ul>
-        
-        <h2>10. Disclaimer</h2>
-        <p>This whitepaper is for informational purposes only and does not constitute an offer to sell or a solicitation to buy any financial instrument in any jurisdiction. The $ETRX token is a utility token designed for use within the Etheria ecosystem. It is not a security.</p>
-        <p>Participation in the presale and the purchase of crypto assets are subject to significant risks, including the risk of complete loss. All participants should conduct their own due diligence (DYOR) and consult with a financial advisor before making any decisions. The project roadmap is subject to change based on development progress and community feedback.</p>
-    </div>
-  </div>
+        <h2>3. The Etheria Ecosystem</h2>
+        <p>The ecosystem is composed of two core components: the NFT Collections and the $ETRX Token.</p>
+        <h3>3.1. NFT Collections</h3>
+        <ul>
+            <li><strong>Arc Genesis:</strong> The foundational art collection that represents the visual and thematic cornerstone of Etheria. These are the genesis pieces that prove our artistic vision and technical capability.</li>
+            <li><strong>Etherian Keepers:</strong> The first generation of characters within the Etherian realm. These NFTs establish the first inhabitants and will play a role in the future lore and governance of the world.</li>
+            <li><strong>Artifacts (Coming Soon):</strong> The next evolution of on-chain utility. Artifacts will be powerful, functional NFTs that can be equipped, combined, or staked to provide tangible benefits within the Etheria ecosystem, such as boosting rewards or granting access to exclusive mints.</li>
+        </ul>
+        <h3>3.2. The $ETRX Token</h3>
+        <p>$ETRX is an ERC-20 token on the Ethereum blockchain with a fixed supply of <strong>10,000,000</strong>. It is designed to be the primary medium of exchange and governance within Etheria.</p>
+        
+        <h2>4. Tokenomics ($ETRX)</h2>
+        <p>The tokenomics of $ETRX are designed for long-term sustainability, community empowerment, and team commitment.</p>
+        <ul>
+            <li><strong>Total Supply:</strong> 10,000,000 $ETRX</li>
+            <li><strong>Token Standard:</strong> ERC-20 on Ethereum</li>
+        </ul>
+        <h4>Distribution:</h4>
+        <ul>
+            <li><strong>Presale (30%):</strong> 3,000,000 ETRX for early supporters.</li>
+            <li><strong>Liquidity (25%):</strong> 2,500,000 ETRX for DEX listings and stable trading.</li>
+            <li><strong>Ecosystem & Rewards (20%):</strong> 2,000,000 ETRX to fund community grants and in-world rewards.</li>
+            <li><strong>Team (15%):</strong> 1,500,000 ETRX.</li>
+            <li><strong>Treasury & Advisors (10%):</strong> 1,000,000 ETRX for strategic partnerships and operational costs.</li>
+        </ul>
+        
+        <hr/>
+
+        <h2>5. Governance Mechanics</h2>
+        <p>The Etheria DAO will be the cornerstone of community-led development. The process is designed to be transparent and straightforward.</p>
+        <ul>
+            <li><strong>Proposal Process:</strong> Any community member holding a minimum of [e.g., 10,000 $ETRX] can submit a proposal for community review.</li>
+            <li><strong>Voting Power:</strong> Voting power will be based on a snapshot of $ETRX holdings. The standard will be 1 token = 1 vote.</li>
+            <li><strong>Quorum:</strong> For a vote to be considered valid, a minimum of [e.g., 5%] of the circulating supply must participate.</li>
+        </ul>
+        
+        <h2>6. Roadmap</h2>
+        <p>Our roadmap is divided into clear, deliverable phases.</p>
+        <ul>
+            <li><strong>Phase 1: Foundation (Q3 2025):</strong> Launch presale site, publish whitepaper, and complete smart contract audit.</li>
+            <li><strong>Phase 2: Launch (Q4 2025):</strong> Conduct the $ETRX presale event, execute the Token Generation Event (TGE), and establish initial liquidity on a decentralized exchange.</li>
+            <li><strong>Phase 3: Utility (Late Sep 2025):</strong> Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on initial lore decisions.</li>
+            <li><strong>Phase 4: Expansion (Q2 2026 & Beyond):</strong> Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges to expand our ecosystem.</li>
+        </ul>
+        
+        <h2>7. Competitive Landscape</h2>
+        <p>While many projects exist in the NFT and DeFi space, Etheria's unique advantage lies in our **"build-first"** philosophy. Unlike projects that launch a token based on promises, we have already delivered on-chain assets. Our focus is on deep, community-driven lore and tangible utility, creating an ecosystem with intrinsic value rather than purely speculative hype.</p>
+        
+        <h2>8. Risk Factors</h2>
+        <p>All investments in the cryptocurrency space carry inherent risks. We believe in transparency and want our community to be fully informed.</p>
+        <ul>
+            <li><strong>Market Volatility:</strong> The value of $ETRX can fluctuate significantly.</li>
+            <li><strong>Smart Contract Risk:</strong> Although our contracts will be audited, there is always a risk of vulnerabilities.</li>
+            <li><strong>Regulatory Uncertainty:</strong> The global regulatory landscape for crypto is still evolving.</li>
+        </ul>
+        <p>Our team is committed to mitigating these risks through rigorous security practices, sustainable tokenomics, and transparent communication.</p>
+
+        <h2>9. Team</h2>
+        <p>The Etheria project is led by a public-facing team of dedicated builders with experience in software development and community management.</p>
+        <ul>
+            <li>ETRXDreamscapes: The Developer</li>
+            <li>HeisCaifu: Telegram Page Owner</li>
+            <li>DxCheetah: Telegram Page Mod</li>
+        </ul>
+        
+        <h2>10. Disclaimer</h2>
+        <p>This whitepaper is for informational purposes only and does not constitute an offer to sell or a solicitation to buy any financial instrument in any jurisdiction. The $ETRX token is a utility token designed for use within the Etheria ecosystem. It is not a security.</p>
+        <p>Participation in the presale and the purchase of crypto assets are subject to significant risks, including the risk of complete loss. All participants should conduct their own due diligence (DYOR) and consult with a financial advisor before making any decisions. The project roadmap is subject to change based on development progress and community feedback.</p>
+    </div>
+  </div>
 </div>
 
-<!-- Main Content -->
 <main>
 <section class="hero relative z-10 mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:items-center md:pt-10">
-  <div class="hero-vignette" aria-hidden="true"></div>
+  <div class="hero-vignette" aria-hidden="true"></div>
 
-  <!-- Left: copy -->
-  <div class="order-2 md:order-1">
-    <h1 class="title-glow neon-text text-hero leading-tight md:text-6xl">
-        The Official Token of Etheria<br/>
-        <span class="neon-grad">$ETRX Presale</span>
-    </h1>
-    <p class="mt-4 max-w-measure small-dim">Powering realms, artifacts, governance and community rewards. Built on Ethereum for permanence and reach.</p>
-  </div>
+    <div class="order-2 md:order-1">
+    <h1 class="title-glow neon-text text-hero leading-tight md:text-6xl">
+        The Official Token of Etheria<br/>
+        <span class="neon-grad">$ETRX Presale</span>
+    </h1>
+    <p class="mt-4 max-w-measure small-dim">The single token to govern the Etheria universe, mint exclusive Artifacts, and earn rewards for your participation. Built on Ethereum for permanence and security.</p>
+  </div>
 
-  <!-- Right: Hero Image -->
-  <div class="order-1 md:order-2 reveal" data-delay="0">
-    <div class="hero-glow relative rounded-3xl">
-        <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png" alt="An ethereal, glowing cavern representing the world of Etheria" class="w-full h-auto object-cover rounded-3xl ring-1 ring-cyan-400/20"/>
-    </div>
-  </div>
+    <div class="order-1 md:order-2 reveal" data-delay="0">
+    <div class="hero-glow relative rounded-3xl">
+        <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.webp" alt="An ethereal, glowing cavern representing the world of Etheria" class="w-full h-auto object-cover rounded-3xl ring-1 ring-cyan-400/20"/>
+    </div>
+  </div>
 </section>
 
-<!-- Live On-Chain Data -->
-<section id="live-data" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
-    <div class="glass card card-outline p-5 reveal holo">
-        <h3 class="text-center text-lg font-semibold neon-text mb-4">Live Presale Status</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
-            <div>
-                <div class="text-xs uppercase small-dim">Total Raised</div>
-                <div id="total-raised" class="text-3xl font-bold text-cyan-300 mt-1">0.00 ETH</div>
-            </div>
-            <div>
-                <div class="text-xs uppercase small-dim">Contributors</div>
-                <div id="total-contributors" class="text-3xl font-bold text-blue-300 mt-1">0</div>
-            </div>
-        </div>
-        <div class="mt-4">
-            <div class="flex justify-between text-xs small-dim mb-1">
-                <span>Progress</span>
-                <span id="progress-percentage">0%</span>
-            </div>
-            <div class="w-full bg-white/10 rounded-full h-2.5">
-                <div id="live-progress-bar" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
-            </div>
-        </div>
-    </div>
-</section>
+<section id="presale-hub" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
+    <div class="glass card card-outline p-5 reveal holo grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex flex-col gap-5">
+                        <div>
+                <h3 class="text-center text-lg font-semibold neon-text mb-4">Live Presale Status</h3>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div>
+                        <div class="text-xs uppercase small-dim">Total Raised</div>
+                        <div id="total-raised" class="text-3xl font-bold text-cyan-300 mt-1 tabular">0.00 ETH</div>
+                    </div>
+                    <div>
+                        <div class="text-xs uppercase small-dim">Contributors</div>
+                        <div id="total-contributors" class="text-3xl font-bold text-blue-300 mt-1 tabular">0</div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex justify-between text-xs small-dim mb-1">
+                        <span>Progress</span>
+                        <span id="progress-percentage">0%</span>
+                    </div>
+                    <div class="w-full bg-white/10 rounded-full h-2.5">
+                        <div id="live-progress-bar" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
 
+                        <div>
+                <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-[.15em] small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
+                <div id="countdown" class="flex gap-3 text-center" aria-live="polite"></div>
+                <div class="mt-3 text-xs flex flex-col gap-1 small-dim">
+                    <div id="whenPrimary" class="text-sm text-white/90"></div>
+                    <div id="whenSecondary"></div>
+                    <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100" aria-pressed="false">Make Local primary</button>
+                </div>
+            </div>
+        </div>
 
-<!-- Presale Details Section -->
-<section id="presale-details" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
-    <!-- Countdown + phase + progress -->
-    <div class="glass card card-outline p-5 reveal holo" data-delay="0">
-      <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-[.15em] small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
-      <div id="countdown" class="flex gap-3 text-center" aria-live="polite"></div>
+                <div class="glass card p-4 flex flex-col gap-4">
+                        <div class="border border-white/10 rounded-xl p-4">
+                <h4 class="font-semibold text-lg neon-text">Participate Now</h4>
+                <div class="grid grid-cols-1 gap-3 mt-3">
+                    <div>
+                        <label class="text-xs small-dim" for="ethIn">You pay (ETH)</label>
+                        <input id="ethIn" type="number" min="0" step="0.01" class="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 outline-none placeholder:text-white/40" placeholder="0.5"/>
+                    </div>
+                    <div>
+                        <label class="text-xs small-dim" for="tokensOut">You receive (ETRX)</label>
+                        <input id="tokensOut" type="text" readonly class="mt-1 w-full rounded-lg bg-black/20 border border-white/10 px-3 py-2 outline-none placeholder:text-white/40 cursor-not-allowed" placeholder="6250.00"/>
+                    </div>
+                </div>
+                <div class="mt-2 text-xs small-dim">
+                    Current price: <span id="calcPrice" class="font-semibold text-white/90">$0.08</span> / ETRX
+                </div>
+                <button id="buyBtn" class="btn-primary w-full mt-4">Buy $ETRX</button>
+            </div>
 
-      <div class="mt-3 text-xs flex flex-col gap-1 small-dim">
-        <div id="whenPrimary" class="text-sm text-white/90"></div>
-        <div id="whenSecondary"></div>
-        <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100" aria-pressed="false">Make Local primary</button>
-      </div>
+                        <div class="grid gap-3 sm:grid-cols-2">
+                <div class="glass card p-3">
+                    <div class="text-xs uppercase small-dim">Current Price</div>
+                    <div id="priceNow" class="mt-1 text-2xl font-extrabold text-green-400">$0.08</div>
+                    <div id="discountLine" class="text-xs small-dim mt-1">33% below listing</div>
+                </div>
+                <div class="glass card p-3">
+                    <div class="text-xs uppercase small-dim">Listing Price</div>
+                    <div id="priceList" class="mt-1 text-xl font-bold text-white line-through">$0.12</div>
+                    <div class="text-xs small-dim mt-1">Post-Presale</div>
+                </div>
+            </div>
 
-      <!-- Overall Progress -->
-      <div class="mt-4">
-        <div class="flex items-center justify-between text-xs small-dim">
-          <span id="phaseName" class="font-semibold">Phase: Presale</span><span id="phaseEta"></span>
-        </div>
-        <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
-          <div id="phaseBar" class="h-full" style="background:linear-gradient(90deg, rgba(var(--neon-orange),1), rgba(var(--neon-blue),1)); width:0%"></div>
-        </div>
-        <div class="mt-1 text-xs small-dim" id="phaseDates"></div>
-      </div>
-
-      <!-- Tiered Pricing cards -->
-      <div class="mt-5 grid gap-3 sm:grid-cols-2">
-        <div class="glass card card-outline p-4 holo">
-          <div class="text-xs uppercase small-dim">Current Phase Price</div>
-          <div id="priceNow" class="mt-1 text-2xl font-extrabold text-green-400">$0.08</div>
-          <div id="pricePhaseName" class="text-xs small-dim mt-1">Phase 1</div>
-        </div>
-        <div class="glass card card-outline p-4 holo">
-          <div class="text-xs uppercase small-dim">Planned Listing Price</div>
-          <div id="priceList" class="mt-1 text-xl font-bold text-white line-through">$0.12</div>
-          <div id="discountLine" class="text-xs small-dim mt-1">33% below listing</div>
-        </div>
-
-        <div class="sm:col-span-2 glass card card-outline p-4 holo">
-          <div class="text-xs uppercase small-dim mb-2">Quick calculator</div>
-          <div class="grid grid-cols-2 gap-3">
-              <div>
-                  <label class="text-xs small-dim" for="usdIn">You pay (USD)</label>
-                  <input id="usdIn" type="number" min="0" step="0.01" class="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 outline-none placeholder:text-white/40" placeholder="100.00"/>
-              </div>
-              <div>
-                  <label class="text-xs small-dim" for="tokensOut">You receive (ETRX)</label>
-                  <input id="tokensOut" type="number" min="0" class="mt-1 w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 outline-none placeholder:text-white/40" placeholder="1250.00"/>
-              </div>
-          </div>
-          <div class="mt-2 text-xs small-dim">
-            Current price: <span id="calcPrice" class="font-semibold text-white/90">$0.08</span> / ETRX
-          </div>
-        </div>
-
-        <!-- Phase schedule table -->
-        <div class="sm:col-span-2 glass card card-outline p-4 holo">
-          <div class="flex items-center justify-between">
-            <div class="text-xs uppercase small-dim">Phase schedule</div>
-            <div id="phaseScheduleTz" class="text-[11px] small-dim opacity-80">Times in UTC</div>
-          </div>
-          <div id="phaseTable" class="mt-2"></div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Presale Address banner -->
-    <div class="mt-4 glass card p-4 holo" role="region" aria-label="Presale Address" style="border-color: rgba(255, 147, 76, .35)">
-      <div class="text-xs uppercase small-dim mb-2">Official Presale Address</div>
-      <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <input id="presaleAddr" type="text" readonly
-               value="TBA — announced here only"
-               class="flex-1 rounded-lg bg-white/5 border border-white/10 px-3 py-2 font-mono text-sm outline-none select-all"
-               aria-readonly="true"/>
-        <button id="copyAddr" class="btn-ghost text-sm">Copy</button>
-      </div>
-      <div class="mt-2 text-xs small-dim flex items-start gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 text-orange-400 mt-0.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-        <span>
-          <b class="text-orange-400">WARNING:</b> The address will be revealed here and on our official, pinned X/Twitter post. The team will NEVER DM you the address. Triple-check it before sending funds.
-        </span>
-      </div>
-    </div>
+            <div class="glass card p-3">
+                <div class="flex items-center justify-between">
+                  <div class="text-xs uppercase small-dim">Phase schedule</div>
+                  <div id="phaseScheduleTz" class="text-[11px] small-dim opacity-80">Times in UTC</div>
+                </div>
+                <div id="phaseTable" class="mt-2"></div>
+            </div>
+        </div>
+    </div>
+    
+        <div class="mt-6 glass card p-4 holo" role="region" aria-label="Presale Address" style="border-color: rgba(255, 147, 76, .35)">
+      <div class="text-xs uppercase small-dim mb-2">Official Presale Address</div>
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+        <input id="presaleAddr" type="text" readonly
+               value="TBA — announced here only"
+               class="flex-1 rounded-lg bg-white/5 border border-white/10 px-3 py-2 font-mono text-sm outline-none select-all"
+               aria-readonly="true"/>
+        <button id="copyAddr" class="btn-ghost text-sm">Copy</button>
+      </div>
+      <div class="mt-2 text-xs small-dim flex items-start gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 text-orange-400 mt-0.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        <span>
+          <b class="text-orange-400">SECURITY WARNING:</b> The address will be revealed here and on our official, pinned X/Twitter post. The team will NEVER DM you. Verify the address on Etherscan and cross-reference with our Telegram announcement before sending any funds.
+        </span>
+      </div>
+    </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- About -->
 <section id="about" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-  <h2 class="text-2xl font-bold neon-text reveal text-center">What is $ETRX?</h2>
-  <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
-    <!-- Utility Card -->
-    <div class="glass card card-outline holo p-5 text-center reveal" data-delay="0">
-      <div class="mx-auto h-16 w-16 rounded-2xl bg-cyan-500/10 flex items-center justify-center ring-1 ring-cyan-500/20">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-300"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-      </div>
-      <h4 class="mt-3 font-bold text-lg">Utility</h4>
-      <p class="text-sm small-dim mt-1">Unlock rare Realms & Artifacts, access exclusive drops, and get in-world boosts.</p>
-    </div>
-    <!-- Governance Card -->
-    <div class="glass card card-outline holo p-5 text-center reveal" data-delay="100">
-      <div class="mx-auto h-16 w-16 rounded-2xl bg-blue-500/10 flex items-center justify-center ring-1 ring-blue-500/20">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-300"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
-      </div>
-      <h4 class="mt-3 font-bold text-lg">Governance</h4>
-      <p class="text-sm small-dim mt-1">Vote on community proposals, project direction, and the evolution of Etheria's lore.</p>
-    </div>
-    <!-- Rewards Card -->
-    <div class="glass card card-outline holo p-5 text-center reveal" data-delay="200">
-      <div class="mx-auto h-16 w-16 rounded-2xl bg-violet-500/10 flex items-center justify-center ring-1 ring-violet-500/20">
-         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-violet-300"><path d="M20.2 6.2c.4-.5.4-1.2 0-1.7l-2.8-2.8c-.5-.4-1.2-.4-1.7 0L14 3.4 12 5.1l-1.7-2.3L8.6 1c-.5-.4-1.2-.4-1.7 0L4 3.8c-.4.5-.4 1.2 0 1.7L6.2 8 3.4 9.7c-.4.5-.4 1.2 0 1.7l2.8 2.8c.5.4 1.2.4 1.7 0L10 12.6l2 1.7 1.7 2.3 1.7 1.7c.5.4 1.2.4 1.7 0l2.8-2.8c.4-.5.4-1.2 0-1.7L17.8 16l2.4-1.7 2.8-2.8c.4-.5.4-1.2 0-1.7L20.2 6.2z"></path></svg>
-      </div>
-      <h4 class="mt-3 font-bold text-lg">Rewards</h4>
-      <p class="text-sm small-dim mt-1">Earn airdrops, participate in holder-only events, and be rewarded for on-chain participation.</p>
-    </div>
-  </div>
-   <div class="text-center mt-6 reveal">
-        <button id="wp-btn-about" class="btn-ghost text-sm">Read the Whitepaper</button>
-    </div>
+  <h2 class="text-2xl font-bold neon-text reveal text-center">What is Etheria?</h2>
+  <p class="mt-2 text-center max-w-2xl mx-auto small-dim">Etheria is a decentralized world-building project founded on the principle of **"build first, market second."** Before launching a token, we delivered on-chain NFT collections. $ETRX is the key to this existing ecosystem, not a promise for a future one.</p>
+  <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="0">
+      <div class="mx-auto h-16 w-16 rounded-2xl bg-cyan-500/10 flex items-center justify-center ring-1 ring-cyan-500/20">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-300"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+      </div>
+      <h4 class="mt-3 font-bold text-lg">Unlock Your Power</h4>
+      <p class="text-sm small-dim mt-1">Use $ETRX to mint rare Artifacts, access exclusive drops, and gain advantages within the world of Etheria.</p>
+    </div>
+        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="100">
+      <div class="mx-auto h-16 w-16 rounded-2xl bg-blue-500/10 flex items-center justify-center ring-1 ring-blue-500/20">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-300"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+      </div>
+      <h4 class="mt-3 font-bold text-lg">Shape The World</h4>
+      <p class="text-sm small-dim mt-1">Your $ETRX is your vote. Decide on the future of the lore, influence key project decisions, and govern the community treasury.</p>
+    </div>
+        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="200">
+      <div class="mx-auto h-16 w-16 rounded-2xl bg-violet-500/10 flex items-center justify-center ring-1 ring-violet-500/20">
+         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-violet-300"><path d="M20.2 6.2c.4-.5.4-1.2 0-1.7l-2.8-2.8c-.5-.4-1.2-.4-1.7 0L14 3.4 12 5.1l-1.7-2.3L8.6 1c-.5-.4-1.2-.4-1.7 0L4 3.8c-.4.5-.4 1.2 0 1.7L6.2 8 3.4 9.7c-.4.5-.4 1.2 0 1.7l2.8 2.8c.5.4 1.2.4 1.7 0L10 12.6l2 1.7 1.7 2.3 1.7 1.7c.5.4 1.2.4 1.7 0l2.8-2.8c.4-.5.4-1.2 0-1.7L17.8 16l2.4-1.7 2.8-2.8c.4-.5.4-1.2 0-1.7L20.2 6.2z"></path></svg>
+      </div>
+      <h4 class="mt-3 font-bold text-lg">Earn Rewards</h4>
+      <p class="text-sm small-dim mt-1">Receive token airdrops, qualify for holder-only events, and be rewarded for your active participation in the ecosystem.</p>
+    </div>
+  </div>
+   <div class="text-center mt-8 reveal">
+        <button id="wp-btn-about" class="btn-ghost text-lg py-3 px-5">Read the Full Whitepaper</button>
+    </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- How to Buy -->
 <section id="how-to-buy" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-    <h2 class="text-2xl font-bold neon-text reveal text-center">How to Participate</h2>
-    <div class="mt-8 timeline space-y-8">
-        <!-- Step 1 -->
-        <div class="timeline-item reveal" data-delay="0">
-            <h4 class="font-bold text-white/90">1. Get a Wallet</h4>
-            <p class="small-dim">Download and set up a self-custody wallet like MetaMask, Rabby, or Trust Wallet. This is where your $ETRX tokens will be sent.</p>
-        </div>
-        <!-- Step 2 -->
-        <div class="timeline-item reveal" data-delay="50">
-            <h4 class="font-bold text-white/90">2. Fund with ETH</h4>
-            <p class="small-dim">Purchase Ethereum (ETH) from an exchange and send it to your wallet. Make sure you have enough for your desired contribution plus a little extra for gas fees.</p>
-        </div>
-        <!-- Step 3 -->
-        <div class="timeline-item reveal" data-delay="100">
-            <h4 class="font-bold text-white/90">3. Connect to Etheria</h4>
-            <p class="small-dim">Return to this page when the presale is live, and click the "Connect Wallet" button at the top of the page.</p>
-        </div>
-        <!-- Step 4 -->
-        <div class="timeline-item reveal" data-delay="150">
-            <h4 class="font-bold text-white/90">4. Contribute</h4>
-            <p class="small-dim">Once the official address is revealed on this page, send your ETH to that address to participate. Always triple-check the address!</p>
-        </div>
-    </div>
+    <h2 class="text-2xl font-bold neon-text reveal text-center">How to Participate in 4 Steps</h2>
+    <div class="mt-8 timeline space-y-8">
+                <div class="timeline-item reveal" data-delay="0">
+            <h4 class="font-bold text-white/90">1. Get a Wallet</h4>
+            <p class="small-dim">Download a self-custody wallet like MetaMask, Rabby, or Trust Wallet. This is where your $ETRX tokens will be sent after the presale.</p>
+        </div>
+                <div class="timeline-item reveal" data-delay="50">
+            <h4 class="font-bold text-white/90">2. Fund with ETH</h4>
+            <p class="small-dim">Purchase Ethereum (ETH) from an exchange (e.g., Coinbase, Binance) and send it to your personal wallet address. Ensure you have enough for your contribution plus gas fees.</p>
+        </div>
+                <div class="timeline-item reveal" data-delay="100">
+            <h4 class="font-bold text-white/90">3. Connect to This Site</h4>
+            <p class="small-dim">Return to this page during the presale, click the "Connect Wallet" button at the top, and approve the connection in your wallet.</p>
+        </div>
+                <div class="timeline-item reveal" data-delay="150">
+            <h4 class="font-bold text-white/90">4. Contribute & Claim</h4>
+            <p class="small-dim">Enter the amount of ETH you wish to contribute in the presale hub and confirm the transaction. Your $ETRX tokens will be airdropped to your wallet after the TGE (Token Generation Event).</p>
+        </div>
+    </div>
 </section>
 
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Milestones -->
 <section id="milestones" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-  <h2 class="text-2xl font-bold neon-text reveal text-center">NFT Milestones & The Future</h2>
-  <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-    <div class="glass card card-outline holo p-5 reveal" data-delay="0">
-      <h4 class="font-bold text-lg text-cyan-300">Arc Genesis (NFT)</h4>
-      <p class="text-sm small-dim mt-1">Successfully launched the foundational Arc Genesis collection on Foundation, marking our first step into the NFT space.</p>
-      <a href="https://foundation.app/collection/etheriagenesis" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on Foundation</a>
-    </div>
-    <div class="glass card card-outline holo p-5 reveal" data-delay="100">
-      <h4 class="font-bold text-lg text-blue-300">Etherian Keepers (NFT)</h4>
-      <p class="text-sm small-dim mt-1">Introduced the Etherian Keepers, establishing the first generation of guardians within the Etheria ecosystem.</p>
-       <a href="https://foundation.app/collection/etrx-k" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on Foundation</a>
-    </div>
-     <div class="glass card card-outline holo p-5 reveal" data-delay="200">
-      <h4 class="font-bold text-lg text-violet-300">Artifacts (Coming Soon)</h4>
-      <p class="text-sm small-dim mt-1">The next evolution of on-chain utility items is in development. These powerful artifacts will play a key role in the Etherian world.</p>
-       <a href="#" class="laser text-sm mt-2 inline-block opacity-50 cursor-not-allowed">Stay Tuned</a>
-    </div>
-  </div>
+  <h2 class="text-2xl font-bold neon-text reveal text-center">Our On-Chain Foundation</h2>
+  <p class="mt-2 text-center max-w-2xl mx-auto small-dim">We build first. These NFT collections are already live on the Ethereum mainnet, forming the bedrock of the Etheria ecosystem.</p>
+  <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+    <div class="glass card card-outline holo p-5 reveal" data-delay="0">
+      <h4 class="font-bold text-lg text-cyan-300">Arc Genesis (NFT)</h4>
+      <p class="text-sm small-dim mt-1">The foundational art collection that established our visual and thematic cornerstone. Live on Foundation.</p>
+      <a href="https://foundation.app/collection/etheriagenesis" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on Foundation</a>
+    </div>
+    <div class="glass card card-outline holo p-5 reveal" data-delay="100">
+      <h4 class="font-bold text-lg text-blue-300">Etherian Keepers (NFT)</h4>
+      <p class="text-sm small-dim mt-1">The first generation of characters in the Etherian realm, setting the stage for future lore and governance.</p>
+       <a href="https://foundation.app/collection/etrx-k" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on Foundation</a>
+    </div>
+     <div class="glass card card-outline holo p-5 reveal" data-delay="200">
+      <h4 class="font-bold text-lg text-violet-300">Artifacts (Coming Soon)</h4>
+      <p class="text-sm small-dim mt-1">The next evolution: powerful, on-chain utility items that will be mintable using $ETRX and provide tangible benefits.</p>
+       <a href="#road" class="laser text-sm mt-2 inline-block">See Roadmap</a>
+    </div>
+  </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Tokenomics -->
 <section id="token" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-    <h2 class="text-2xl font-bold neon-text reveal">Tokenomics</h2>
-    <p class="mt-2 max-w-3xl small-dim reveal">Total Supply: 10,000,000 $ETRX</p>
-    
-    <div class="mt-5 grid grid-cols-1 gap-8 md:grid-cols-2">
-        <!-- Left: Allocation List -->
-        <div id="pie-legend" class="reveal" data-delay="50">
-            <h3 class="font-semibold text-lg neon-text">Distribution</h3>
-            <ul id="pie-legend-list" class="mt-3 space-y-2 small-dim">
-                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="presale">
-                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-presale)"></span>
-                    <div><b>Presale (30%):</b> 3,000,000 ETRX for early supporters.</div>
-                </li>
-                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="liquidity">
-                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-liquidity)"></span>
-                    <div><b>Liquidity (25%):</b> 2,500,000 ETRX for DEX listings.</div>
-                </li>
-                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="eco">
-                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-eco)"></span>
-                    <div><b>Ecosystem & Rewards (20%):</b> 2,000,000 ETRX for community grants.</div>
-                </li>
-                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="team">
-                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-team)"></span>
-                    <div><b>Team (15%):</b> 1,500,000 ETRX vested over 24 months (6-month cliff).</div>
-                </li>
-                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="treasury">
-                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-treasury)"></span>
-                    <div><b>Treasury & Advisors (10%):</b> 1,000,000 ETRX for strategic costs.</div>
-                </li>
-            </ul>
-        </div>
-        <!-- Right: Pie Chart SVG -->
-        <div class="flex items-center justify-center reveal" data-delay="100">
-            <svg id="pieChart" viewBox="0 0 100 100" class="w-full max-w-[280px] h-auto" aria-labelledby="pie-title">
-                <title id="pie-title">Tokenomics Distribution Chart</title>
-                <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="20" />
-                <g id="pie-slices">
-                    <circle class="pie-slice" data-slice-id="presale" cx="50" cy="50" r="35" fill="none" stroke="var(--c-presale)" stroke-width="20" stroke-dasharray="94.2 219.9" transform="rotate(-90 50 50)" />
-                    <circle class="pie-slice" data-slice-id="liquidity" cx="50" cy="50" r="35" fill="none" stroke="var(--c-liquidity)" stroke-width="20" stroke-dasharray="78.5 219.9" stroke-dashoffset="-94.2" transform="rotate(-90 50 50)" />
-                    <circle class="pie-slice" data-slice-id="eco" cx="50" cy="50" r="35" fill="none" stroke="var(--c-eco)" stroke-width="20" stroke-dasharray="62.8 219.9" stroke-dashoffset="-172.7" transform="rotate(-90 50 50)" />
-                    <circle class="pie-slice" data-slice-id="team" cx="50" cy="50" r="35" fill="none" stroke="var(--c-team)" stroke-width="20" stroke-dasharray="47.1 219.9" stroke-dashoffset="-235.5" transform="rotate(-90 50 50)" />
-                    <circle class="pie-slice" data-slice-id="treasury" cx="50" cy="50" r="35" fill="none" stroke="var(--c-treasury)" stroke-width="20" stroke-dasharray="31.4 219.9" stroke-dashoffset="-282.6" transform="rotate(-90 50 50)" />
-                </g>
-                <g id="pie-text-group" class="text-center" pointer-events="none">
-                    <text id="pie-text-percent" x="50" y="48" text-anchor="middle" class="text-4xl font-bold fill-white">ETRX</text>
-                    <text id="pie-text-name" x="50" y="62" text-anchor="middle" class="text-sm font-semibold fill-white/80">Tokenomics</text>
-                </g>
-            </svg>
-        </div>
-    </div>
-    <!-- Vesting Schedule Section -->
-    <div class="mt-8 glass card card-outline p-5 reveal holo" data-delay="150">
-        <h3 class="font-semibold text-lg neon-text">Team Vesting Schedule</h3>
-        <p class="text-sm small-dim mt-1 mb-4">To ensure long-term commitment, team tokens are subject to a 24-month linear vesting schedule with a 6-month cliff.</p>
-        <div class="space-y-2 text-xs small-dim">
-            <div class="vesting-bar">
-                <div class="vesting-fill" style="width: 100%;"></div>
-                <div class="vesting-marker" style="left: 25%;"></div> <!-- 6 months / 24 months -->
-            </div>
-            <div class="flex justify-between">
-                <span>Launch</span>
-                <span>6mo Cliff</span>
-                <span>24mo Complete</span>
-            </div>
-        </div>
-    </div>
+    <h2 class="text-2xl font-bold neon-text reveal">Tokenomics & Vesting</h2>
+    <p class="mt-2 max-w-3xl small-dim reveal">A sustainable economy designed for longevity. Total Supply: 10,000,000 $ETRX</p>
+    
+    <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2">
+                <div id="pie-legend" class="reveal" data-delay="50">
+            <h3 class="font-semibold text-lg neon-text">Token Distribution</h3>
+            <ul id="pie-legend-list" class="mt-3 space-y-2 small-dim">
+                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="presale">
+                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-presale)"></span>
+                    <div><b>Presale (30%):</b> 3,000,000 ETRX for early supporters.</div>
+                </li>
+                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="liquidity">
+                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-liquidity)"></span>
+                    <div><b>Liquidity (25%):</b> 2,500,000 ETRX for DEX listings.</div>
+                </li>
+                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="eco">
+                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-eco)"></span>
+                    <div><b>Ecosystem & Rewards (20%):</b> 2,000,000 ETRX for community grants.</div>
+                </li>
+                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="team">
+                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-team)"></span>
+                    <div><b>Team (15%):</b> 1,500,000 ETRX vested over 24 months (6-month cliff).</div>
+                </li>
+                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="treasury">
+                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-treasury)"></span>
+                    <div><b>Treasury & Advisors (10%):</b> 1,000,000 ETRX for strategic costs.</div>
+                </li>
+            </ul>
+        </div>
+                <div class="flex items-center justify-center reveal" data-delay="100">
+            <svg id="pieChart" viewBox="0 0 100 100" class="w-full max-w-[280px] h-auto" aria-labelledby="pie-title">
+                <title id="pie-title">Tokenomics Distribution Chart</title>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="20" />
+                <g id="pie-slices">
+                    <circle class="pie-slice" data-slice-id="presale" cx="50" cy="50" r="35" fill="none" stroke="var(--c-presale)" stroke-width="20" stroke-dasharray="94.2 219.9" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="liquidity" cx="50" cy="50" r="35" fill="none" stroke="var(--c-liquidity)" stroke-width="20" stroke-dasharray="78.5 219.9" stroke-dashoffset="-94.2" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="eco" cx="50" cy="50" r="35" fill="none" stroke="var(--c-eco)" stroke-width="20" stroke-dasharray="62.8 219.9" stroke-dashoffset="-172.7" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="team" cx="50" cy="50" r="35" fill="none" stroke="var(--c-team)" stroke-width="20" stroke-dasharray="47.1 219.9" stroke-dashoffset="-235.5" transform="rotate(-90 50 50)" />
+                    <circle class="pie-slice" data-slice-id="treasury" cx="50" cy="50" r="35" fill="none" stroke="var(--c-treasury)" stroke-width="20" stroke-dasharray="31.4 219.9" stroke-dashoffset="-282.6" transform="rotate(-90 50 50)" />
+                </g>
+                <g id="pie-text-group" class="text-center" pointer-events="none">
+                    <text id="pie-text-percent" x="50" y="48" text-anchor="middle" class="text-4xl font-bold fill-white">ETRX</text>
+                    <text id="pie-text-name" x="50" y="62" text-anchor="middle" class="text-sm font-semibold fill-white/80">Tokenomics</text>
+                </g>
+            </svg>
+        </div>
+    </div>
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass card card-outline p-5 reveal holo" data-delay="150">
+            <h3 class="font-semibold text-lg neon-text">Team Vesting Schedule</h3>
+            <p class="text-sm small-dim mt-1 mb-4">To ensure long-term commitment, team tokens are subject to a 24-month linear vesting schedule with a 6-month cliff. No team tokens can be sold for at least 6 months post-launch.</p>
+            <div class="space-y-2 text-xs small-dim">
+                <div class="vesting-bar">
+                    <div class="vesting-fill" style="width: 100%;"></div>
+                    <div class="vesting-marker" style="left: 25%;"></div>                 </div>
+                <div class="flex justify-between">
+                    <span>Launch</span>
+                    <span>6mo Cliff</span>
+                    <span>24mo Complete</span>
+                </div>
+            </div>
+        </div>
+        <div class="glass card card-outline p-5 reveal holo" data-delay="200">
+            <h3 class="font-semibold text-lg neon-text">Liquidity Lock</h3>
+            <p class="text-sm small-dim mt-1">To ensure a stable and secure trading environment, 100% of the initial DEX liquidity raised from the presale will be locked for **12 months** via a trusted third-party locker like Team.Finance immediately after the TGE. This is a non-negotiable commitment to our community.</p>
+        </div>
+    </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Social Feed Section -->
 <section id="social-feed" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-    <h2 class="text-2xl font-bold neon-text reveal text-center">Join the Conversation</h2>
-    <div class="mt-6 max-w-xl mx-auto">
-        <!-- 
-            NOTE: This is a placeholder for a real Twitter feed. 
-            For a live version, you would use Twitter's official embed generator and paste the code here.
-            The required script is often blocked by strict CSPs, so this placeholder is a safe fallback.
-        -->
-        <div class="glass card card-outline holo p-5 reveal">
-            <div class="flex items-start gap-4">
-                <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-full flex-shrink-0"/>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <h4 class="font-bold">Etheria</h4>
-                        <span class="small-dim">@ETRXDreamscapes</span>
-                    </div>
-                    <p class="mt-1 text-sm small-dim">
-                        The $ETRX presale is approaching! We're building a world, not just a token. Join our Telegram and get ready for the journey ahead.
-                        <a href="https://t.me/Etheria_official" class="text-cyan-400 laser">#Etheria</a> <a href="#" class="text-cyan-400 laser">$ETRX</a>
-                    </p>
-                    <div class="mt-3 text-xs small-dim">9:00 AM · Sep 9, 2025</div>
-                </div>
-            </div>
-             <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-4 w-full text-center block">View on X/Twitter</a>
-        </div>
-    </div>
+    <h2 class="text-2xl font-bold neon-text reveal text-center">Join the Conversation</h2>
+    <div class="mt-6 max-w-xl mx-auto">
+        <div class="glass card card-outline holo p-5 reveal">
+            <div class="flex items-start gap-4">
+                <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-full flex-shrink-0"/>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h4 class="font-bold">Etheria</h4>
+                        <span class="small-dim">@ETRXDreamscapes</span>
+                    </div>
+                    <p class="mt-1 text-sm small-dim">
+                        The $ETRX presale is approaching! We're building a world, not just a token. Join our Telegram and get ready for the journey ahead. Our build-first philosophy means you're investing in an ecosystem that's already alive.
+                        <a href="https://t.me/Etheria_official" class="text-cyan-400 laser">#Etheria</a> <a href="#" class="text-cyan-400 laser">$ETRX</a>
+                    </p>
+                    <div class="mt-3 text-xs small-dim">9:00 AM · Sep 9, 2025</div>
+                </div>
+            </div>
+             <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-4 w-full text-center block">View on X/Twitter</a>
+        </div>
+    </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
 
-<!-- Audit & Trust Section -->
 <section id="trust" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div class="glass card card-outline holo p-5 reveal">
-            <h3 class="text-lg font-bold neon-text">Smart Contract Audit</h3>
-            <p class="small-dim mt-2">Our token and presale contracts have been audited by [Reputable Audit Firm Name]. Security and transparency are our top priorities.</p>
-            <a href="[Link to Audit Report]" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Report</a>
-        </div>
-        <div class="glass card card-outline holo p-5 reveal" data-delay="50">
-            <h3 class="text-lg font-bold neon-text">Verified on Etherscan</h3>
-            <p class="small-dim mt-2">The $ETRX token contract will be verified on Etherscan post-TGE for full transparency. You can review the code and holder distribution at any time.</p>
-            <a href="#" class="btn-ghost text-sm mt-3 inline-block opacity-50 cursor-not-allowed">View on Etherscan (Post-TGE)</a>
-        </div>
-    </div>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div class="glass card card-outline holo p-5 reveal">
+            <h3 class="text-lg font-bold neon-text">Smart Contract Audit</h3>
+            <p class="small-dim mt-2">Our token and presale contracts are currently undergoing a comprehensive audit by a top-tier security firm. The full report will be published here for public review prior to the presale launch. Security is our top priority.</p>
+            <a href="#" class="btn-ghost text-sm mt-3 inline-block opacity-50 cursor-not-allowed">View Report (Coming Soon)</a>
+        </div>
+        <div class="glass card card-outline holo p-5 reveal" data-delay="50">
+            <h3 class="text-lg font-bold neon-text">Verified on Etherscan</h3>
+            <p class="small-dim mt-2">The $ETRX token contract will be publicly verified on Etherscan immediately following the TGE. This ensures full transparency, allowing anyone to review the code and track on-chain activity.</p>
+            <a href="#" class="btn-ghost text-sm mt-3 inline-block opacity-50 cursor-not-allowed">View on Etherscan (Post-TGE)</a>
+        </div>
+    </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Team -->
 <section id="team" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-    <h2 class="text-2xl font-bold neon-text reveal">Core Contributors</h2>
-    <p class="mt-2 max-w-3xl small-dim reveal">The pseudonymous team behind Etheria, dedicated to building a lasting world.</p>
-    <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3" style="perspective: 1000px;">
-        <!-- Team Member 1 -->
-        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="0">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 bg-white/5 flex items-center justify-center">
-                <span class="text-3xl font-bold text-cyan-300">ED</span>
-            </div>
-            <h4 class="mt-3 font-bold text-lg">ETRXDreamscapes</h4>
-            <p class="text-sm small-dim">The Developer</p>
-            <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@ETRXDreamscapes</a>
-        </div>
-        <!-- Team Member 2 -->
-        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="50">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-blue-400/30 bg-white/5 flex items-center justify-center">
-                <span class="text-3xl font-bold text-blue-300">H</span>
-            </div>
-            <h4 class="mt-3 font-bold text-lg">HeisCaifu</h4>
-            <p class="text-sm small-dim">Telegram Page Owner</p>
-            <a href="https://t.me/HeisCaifu" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@HeisCaifu</a>
-        </div>
-        <!-- Team Member 3 -->
-        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="100">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-violet-400/30 bg-white/5 flex items-center justify-center">
-                <span class="text-3xl font-bold text-violet-300">D</span>
-            </div>
-            <h4 class="mt-3 font-bold text-lg">DxCheetah</h4>
-            <p class="text-sm small-dim">Telegram Page Mod</p>
-            <a href="https://t.me/DxCheetah" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@DxCheetah</a>
-        </div>
-    </div>
+    <h2 class="text-2xl font-bold neon-text reveal">Core Contributors</h2>
+    <p class="mt-2 max-w-3xl small-dim reveal">The pseudonymous but dedicated team behind Etheria. While we value privacy, we are committed to transparency and have been third-party KYC-verified to ensure accountability.</p>
+    <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3" style="perspective: 1000px;">
+                <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="0">
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 bg-white/5 flex items-center justify-center">
+                <span class="text-3xl font-bold text-cyan-300">ED</span>
+            </div>
+            <h4 class="mt-3 font-bold text-lg">ETRXDreamscapes</h4>
+            <p class="text-sm font-semibold text-cyan-300">Lead Developer</p>
+            <p class="text-xs small-dim mt-2">A full-stack developer with years of experience in both Web2 and Web3, specializing in smart contract architecture and security.</p>
+            <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@ETRXDreamscapes</a>
+        </div>
+                <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="50">
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-blue-400/30 bg-white/5 flex items-center justify-center">
+                <span class="text-3xl font-bold text-blue-300">H</span>
+            </div>
+            <h4 class="mt-3 font-bold text-lg">HeisCaifu</h4>
+            <p class="text-sm font-semibold text-blue-300">Community & Operations</p>
+            <p class="text-xs small-dim mt-2">An experienced community manager and crypto-native operator, responsible for fostering a healthy community and managing project operations.</p>
+            <a href="https://t.me/HeisCaifu" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@HeisCaifu</a>
+        </div>
+                <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="100">
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-violet-400/30 bg-white/5 flex items-center justify-center">
+                <span class="text-3xl font-bold text-violet-300">D</span>
+            </div>
+            <h4 class="mt-3 font-bold text-lg">DxCheetah</h4>
+            <p class="text-sm font-semibold text-violet-300">Marketing & Moderation</p>
+            <p class="text-xs small-dim mt-2">A digital marketing specialist with a deep understanding of the crypto landscape, ensuring our message reaches the right audience safely.</p>
+            <a href="https://t.me/DxCheetah" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@DxCheetah</a>
+        </div>
+    </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Road -->
 <section id="road" class="relative z-10 mx-auto max-w-6xl px-6 py-14">
-  <h2 class="text-2xl font-bold neon-text reveal">Roadmap: The Path Forward</h2>
-  <div class="mt-5 timeline space-y-6 small-dim">
-    <div class="timeline-item reveal" data-delay="0">
-      <h4 class="font-bold text-white/90">Phase 1: Foundation (Q3 2025)</h4>
-      <p>Launch presale site, publish whitepaper, and complete smart contract audit.</p>
-    </div>
-    <div class="timeline-item reveal" data-delay="50">
-      <h4 class="font-bold text-white/90">Phase 2: Launch (Q4 2025)</h4>
-      <p>Conduct the $ETRX presale event, execute the Token Generation Event (TGE), and establish initial liquidity on a decentralized exchange.</p>
-    </div>
-    <div class="timeline-item reveal" data-delay="100">
-      <h4 class="font-bold text-white/90">Phase 3: Utility (Late Sep 2025)</h4>
-      <p>Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on initial lore decisions.</p>
-    </div>
-    <div class="timeline-item reveal" data-delay="150">
-      <h4 class="font-bold text-white/90">Phase 4: Expansion (Q2 2026 & Beyond)</h4>
-      <p>Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges to expand our ecosystem.</p>
-    </div>
-  </div>
+  <h2 class="text-2xl font-bold neon-text reveal">Roadmap: The Path Forward</h2>
+  <div class="mt-5 timeline space-y-6 small-dim">
+    <div class="timeline-item reveal" data-delay="0">
+      <h4 class="font-bold text-white/90">Phase 1: Foundation (Q3 2025)</h4>
+      <p>Launch presale site, publish whitepaper, and complete smart contract audit.</p>
+    </div>
+    <div class="timeline-item reveal" data-delay="50">
+      <h4 class="font-bold text-white/90">Phase 2: Launch (Q4 2025)</h4>
+      <p>Conduct the $ETRX presale event, execute the Token Generation Event (TGE), and establish initial liquidity on a decentralized exchange.</p>
+    </div>
+    <div class="timeline-item reveal" data-delay="100">
+      <h4 class="font-bold text-white/90">Phase 3: Utility (Late Sep 2025)</h4>
+      <p>Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on initial lore decisions.</p>
+    </div>
+    <div class="timeline-item reveal" data-delay="150">
+      <h4 class="font-bold text-white/90">Phase 4: Expansion (Q2 2026 & Beyond)</h4>
+      <p>Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges to expand our ecosystem.</p>
+    </div>
+  </div>
 </section>
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Notify & Allowlist -->
 <section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-24">
-  <div class="glass card card-outline holo p-6 reveal">
-    <h3 class="text-xl font-semibold neon-text">Get notified when the presale opens</h3>
+  <div class="glass card card-outline holo p-6 reveal">
+    <h3 class="text-xl font-semibold neon-text">Get notified when the presale opens</h3>
 
-    <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row"
-          action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate autocomplete="on">
-      <label class="sr-only" for="email">Email</label>
-      <input required id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"
-             class="flex-1 rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"/>
-      <!-- Honeypot -->
-      <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
-      <input type="hidden" name="form_name" value="notify"/>
-      <input type="hidden" name="_redirect" value="https://etheriaetrx-etrx.github.io/etrx-presale/#notify-success">
-      <button class="btn-primary" type="submit">Notify Me</button>
-    </form>
+    <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row"
+          action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate autocomplete="on">
+      <label class="sr-only" for="email">Email</label>
+      <input required id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"
+             class="flex-1 rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"/>
+            <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
+      <input type="hidden" name="form_name" value="notify"/>
+      <input type="hidden" name="_redirect" value="https://etheriaetrx-etrx.github.io/etrx-presale/#notify-success">
+      <button class="btn-primary" type="submit">Notify Me</button>
+    </form>
 
-    <div id="notifySuccess" class="hidden mt-4 glass card p-5" role="status" aria-live="polite" aria-atomic="true">
-      <div class="text-sm">✅ Thanks! Please check your inbox to confirm your email.</div>
-      <div class="mt-1 text-xs small-dim">Tip: If you don’t see it, look in spam/promotions.</div>
-    </div>
+    <div id="notifySuccess" class="hidden mt-4 glass card p-5" role="status" aria-live="polite" aria-atomic="true">
+      <div class="text-sm">✅ Thanks! Please check your inbox to confirm your email.</div>
+      <div class="mt-1 text-xs small-dim">Tip: If you don’t see it, look in spam/promotions.</div>
+    </div>
 
-    <p id="notifyMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
-    <p class="mt-1 text-xs small-dim">We only use your info for presale notifications. No spam.</p>
+    <p id="notifyMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
+    <p class="mt-1 text-xs small-dim">We only use your info for presale notifications. No spam.</p>
 
-    <div class="mt-8">
-      <h4 class="text-base font-semibold neon-text">Allowlist & Referrals</h4>
-      <form id="wlForm" class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]"
-            action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate>
-        <label class="sr-only" for="wallet">Ethereum wallet or ENS</label>
-        <input id="wallet" name="wallet" inputmode="text" autocomplete="off" placeholder="0x… or yourname.eth" spellcheck="false"
-               class="rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400" />
-        <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
-        <input type="hidden" name="type" value="allowlist" />
-        <button class="btn-primary" type="submit">Join Allowlist</button>
-      </form>
-      
-      <p id="wlHelp" class="mt-2 text-xs small-dim"></p>
-      <div id="wlSuccess" class="hidden mt-3 glass card p-5 sm:col-span-2" role="status" aria-live="polite" aria-atomic="true">
-        <div class="text-sm">✅ Wallet submitted! We’ll verify allowlist details before presale.</div>
-        <div class="mt-1 text-xs small-dim">You’ll be notified by email before the window opens.</div>
-      </div>
-      <p id="wlMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
+    <div class="mt-8">
+      <h4 class="text-base font-semibold neon-text">Allowlist & Referrals</h4>
+      <form id="wlForm" class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]"
+            action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate>
+        <label class="sr-only" for="wallet">Ethereum wallet or ENS</label>
+        <input id="wallet" name="wallet" inputmode="text" autocomplete="off" placeholder="0x… or yourname.eth" spellcheck="false"
+               class="rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400" />
+        <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
+        <input type="hidden" name="type" value="allowlist" />
+        <button class="btn-primary" type="submit">Join Allowlist</button>
+      </form>
+      
+      <p id="wlHelp" class="mt-2 text-xs small-dim"></p>
+      <div id="wlSuccess" class="hidden mt-3 glass card p-5 sm:col-span-2" role="status" aria-live="polite" aria-atomic="true">
+        <div class="text-sm">✅ Wallet submitted! We’ll verify allowlist details before presale.</div>
+        <div class="mt-1 text-xs small-dim">You’ll be notified by email before the window opens.</div>
+      </div>
+      <p id="wlMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
 
-      <!-- Referral Section -->
-      <div id="referral-section" class="mt-4 hidden">
-          <p class="text-xs small-dim">Generate your unique referral link to earn an $ETRX bonus for every contributor you bring!</p>
-          <div class="mt-2 flex flex-col sm:flex-row gap-2">
-              <input id="referral-link" type="text" readonly class="flex-1 rounded-lg bg-white/5 border border-white/10 px-3 py-2 font-mono text-sm outline-none select-all" aria-label="Your referral link"/>
-              <button id="copy-referral" class="btn-ghost text-sm">Copy Link</button>
-          </div>
-      </div>
+            <div id="referral-section" class="mt-4 hidden">
+          <p class="text-xs small-dim">Generate your unique referral link to earn an $ETRX bonus for every contributor you bring!</p>
+          <div class="mt-2 flex flex-col sm:flex-row gap-2">
+              <input id="referral-link" type="text" readonly class="flex-1 rounded-lg bg-white/5 border border-white/10 px-3 py-2 font-mono text-sm outline-none select-all" aria-label="Your referral link"/>
+              <button id="copy-referral" class="btn-ghost text-sm">Copy Link</button>
+          </div>
+      </div>
 
-    </div>
-  </div>
+    </div>
+  </div>
 </section>
 
-<!-- FAQ -->
 <section id="faq" class="relative z-10 mx-auto max-w-6xl px-6 pb-8">
-  <h2 class="text-2xl font-bold neon-text reveal">FAQ</h2>
-  <div class="mt-4 grid gap-3">
-    <div class="faq-item reveal">
-      <button class="faq-header" aria-expanded="false" aria-controls="faq-when-body" id="faq-when-btn">
-        <span>When does the presale run?</span>
-        <span class="faq-chevron" aria-hidden="true">⌄</span>
-      </button>
-      <div class="faq-body" id="faq-when-body" role="region" aria-labelledby="faq-when-btn" hidden>
-        <p class="small-dim">Sep 24 → Oct 1, 2025 (UTC). Use the toggle above to view local time.</p>
-      </div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-header" aria-expanded="false" aria-controls="faq-tge-body" id="faq-tge-btn">
-        <span>Will there be a TGE?</span>
-        <span class="faq-chevron" aria-hidden="true">⌄</span>
-      </button>
-      <div class="faq-body" id="faq-tge-body" role="region" aria-labelledby="faq-tge-btn" hidden>
-        <p class="small-dim">Yes—after the presale window closes, we’ll proceed with the Token Generation Event (TGE), which includes distributing tokens to presale wallets and seeding initial DEX listings/liquidity.</p>
-      </div>
-    </div>
-    <div class="faq-item reveal">
-        <button class="faq-header" aria-expanded="false" aria-controls="faq-how-body" id="faq-how-btn">
-          <span>How can I participate?</span>
-          <span class="faq-chevron" aria-hidden="true">⌄</span>
-        </button>
-        <div class="faq-body" id="faq-how-body" role="region" aria-labelledby="faq-how-btn" hidden>
-          <p class="small-dim">During the presale window, connect an Ethereum wallet, ensure you have ETH for the purchase and gas fees, and send ETH to the official presale address that will be revealed on this page. Always double-check the address.</p>
-        </div>
-      </div>
-  </div>
+  <h2 class="text-2xl font-bold neon-text reveal">Frequently Asked Questions</h2>
+  <div class="mt-4 grid gap-3">
+    <div class="faq-item reveal">
+      <button class="faq-header" aria-expanded="false" aria-controls="faq-when-body" id="faq-when-btn">
+        <span>When does the presale run?</span>
+        <span class="faq-chevron" aria-hidden="true">⌄</span>
+      </button>
+      <div class="faq-body" id="faq-when-body" role="region" aria-labelledby="faq-when-btn" hidden>
+        <p class="small-dim">The presale is scheduled to run from Sep 24 → Oct 1, 2025 (UTC). Use the toggle in the presale hub to see the times in your local timezone.</p>
+      </div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-header" aria-expanded="false" aria-controls="faq-tge-body" id="faq-tge-btn">
+        <span>When can I claim my tokens?</span>
+        <span class="faq-chevron" aria-hidden="true">⌄</span>
+      </button>
+      <div class="faq-body" id="faq-tge-body" role="region" aria-labelledby="faq-tge-btn" hidden>
+        <p class="small-dim">There is no claim process. To ensure a smooth launch, your purchased $ETRX tokens will be automatically airdropped to the wallet you used for contribution shortly after the presale concludes and the Token Generation Event (TGE) is complete.</p>
+      </div>
+    </div>
+    <div class="faq-item reveal">
+        <button class="faq-header" aria-expanded="false" aria-controls="faq-how-body" id="faq-how-btn">
+          <span>What is the minimum/maximum contribution?</span>
+          <span class="faq-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="faq-body" id="faq-how-body" role="region" aria-labelledby="faq-how-btn" hidden>
+          <p class="small-dim">The contribution limits will be announced closer to the presale date on our official channels. This is to ensure fair distribution and prevent whale domination. Join our Telegram or follow our X/Twitter for the latest updates.</p>
+        </div>
+      </div>
+  </div>
 </section>
 </main>
 
 <footer class="relative z-10 border-t border-cyan-400/15 py-10 small-dim">
-  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm">
-    <div>© <span id="year"></span> Etheria • $ETRX</div>
-    <div class="flex items-center gap-4">
-        <a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" aria-label="Follow Etheria on X/Twitter">X/Twitter</a>
-        <a class="laser hover:text-white" href="https://t.me/Etheria_official" target="_blank" rel="noopener noreferrer" aria-label="Join Etheria on Telegram">Telegram</a>
-        <button id="mute-button" class="text-white/70 hover:text-white" aria-label="Toggle Sound">
-            <svg id="sound-on-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-            <svg id="sound-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-        </button>
-    </div>
-    <p class="mt-2 max-w-3xl text-center text-xs opacity-80">
-      Disclaimer: This site and presale information are for community use only and do not constitute an offer to sell or a solicitation to buy any financial instrument. Participation may be restricted by local laws. Crypto assets are volatile and carry significant risk. DYOR.
-    </p>
-  </div>
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm">
+    <div>© <span id="year"></span> Etheria • $ETRX</div>
+    <div class="flex items-center gap-4">
+        <a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" aria-label="Follow Etheria on X/Twitter">X/Twitter</a>
+        <a class="laser hover:text-white" href="https://t.me/Etheria_official" target="_blank" rel="noopener noreferrer" aria-label="Join Etheria on Telegram">Telegram</a>
+        <button id="mute-button" class="text-white/70 hover:text-white" aria-label="Toggle Sound">
+            <svg id="sound-on-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            <svg id="sound-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+        </button>
+    </div>
+    <p class="mt-2 max-w-3xl text-center text-xs opacity-80">
+      Disclaimer: This website is for informational purposes only and does not constitute an offer to sell or a solicitation to buy any financial instrument. Participation may be restricted by local laws. Crypto assets are volatile and carry significant risk. Always conduct your own due diligence (DYOR).
+    </p>
+  </div>
 </footer>
 
 <a href="#notify" id="stickyCTA" class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">Get notified for $ETRX</a>
 
-<!-- Schema.org event (SEO) -->
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Event",
-  "name": "ETRX Presale",
-  "startDate": "2025-09-24T00:00:00Z",
-  "endDate": "2025-10-01T00:00:00Z",
-  "eventStatus": "https://schema.org/EventScheduled",
-  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
-  "url": "https://etheriaetrx-etrx.github.io/etrx-presale/",
-  "image": "https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png",
-  "organizer": { "@type": "Organization", "name": "Etheria" },
-  "description": "Etheria’s official $ETRX presale on Ethereum."
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "ETRX Presale",
+  "startDate": "2025-09-24T00:00:00Z",
+  "endDate": "2025-10-01T00:00:00Z",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+  "url": "https://etheriaetrx-etrx.github.io/etrx-presale/",
+  "image": "https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.webp",
+  "organizer": { "@type": "Organization", "name": "Etheria" },
+  "description": "Etheria’s official $ETRX presale on Ethereum."
 }
 </script>
 
-<!--
-  NOTE: In a production build, this JavaScript would be moved to an external file (e.g., app.js)
-  and linked here: <script src="app.js" defer></script>
--->
 <script>
 'use strict'
 document.addEventListener('DOMContentLoaded', () => {
 
-    /* ================== CONFIG: DATES + TIERS ================== */
-    const PRESALE_START = new Date('2025-09-24T00:00:00Z');
-    const PRESALE_END   = new Date('2025-10-01T00:00:00Z');
-    const LISTING_PRICE = 0.12; // USD
-
-    /* Phases (edit these) */
-    const PHASES = [
-      { name:'Phase 1', start:'2025-09-24T00:00:00Z', end:'2025-09-26T23:59:59Z', price:0.08 },
-      { name:'Phase 2', start:'2025-09-27T00:00:00Z', end:'2025-09-28T23:59:59Z', price:0.10 },
-      { name:'Phase 3', start:'2025-09-29T00:00:00Z', end:'2025-09-30T23:59:59Z', price:0.11 },
-    ];
-
-    /* ================== DOM SHORTCUTS ================== */
-    const $ = (id)=> document.getElementById(id);
-    const phaseLabel=$('phaseLabel'), countdown=$('countdown'), whenPrimary=$('whenPrimary'),
-          whenSecondary=$('whenSecondary'), modeLabel=$('modeLabel');
-    const connectBtn=$('connectBtn'), openConnect=$('openConnect'), modal=$('walletModal'), modalClose=$('modalClose');
-    const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn'), phaseNameEl=$('phaseName');
-    $('year').textContent = new Date().getFullYear();
-
-    /* Preloader */
-    $('preloader')?.classList.add('loaded');
-
-    /* Sound Manager */
-    const soundManager = {
-        isMuted: true,
-        synth: null,
-        init() {
-            if (typeof Tone === 'undefined') {
-                console.log("Tone.js not loaded, sounds disabled.");
-                $('mute-button').style.display = 'none';
-                return;
-            }
-            this.synth = new Tone.PolySynth(Tone.Synth, {
-                oscillator: { type: 'sine' },
-                envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 },
-                volume: -20
-            }).toDestination();
-            
-            const muteButton = $('mute-button');
-            muteButton.addEventListener('click', () => this.toggleMute());
-            this.updateButton();
-        },
-        play(note, duration = '16n') {
-            if (!this.isMuted && this.synth) {
-                this.synth.triggerAttackRelease(note, duration);
-            }
-        },
-        toggleMute() {
-            this.isMuted = !this.isMuted;
-            this.updateButton();
-            this.play('C5');
-        },
-        updateButton() {
-            $('sound-on-icon').classList.toggle('hidden', this.isMuted);
-            $('sound-off-icon').classList.toggle('hidden', !this.isMuted);
-        }
-    };
-    soundManager.init();
-
-    // Attach sounds to interactive elements
-    document.querySelectorAll('button, a.laser').forEach(el => {
-        el.addEventListener('mouseenter', () => soundManager.play('C6', '32n'));
-        el.addEventListener('click', () => soundManager.play('E6', '16n'));
-    });
-
-
-    /* Header elevation on scroll */
-    const header = document.getElementById('siteHeader');
-    addEventListener('scroll', ()=> header.classList.toggle('header-float', scrollY>12), {passive:true});
-
-    /* Time formatting */
-    const fmtBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
-    const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtBase, timeZone:'UTC', timeZoneName:'short' });
-    const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtBase, timeZoneName:'short' });
-
-    /* localStorage helpers */
-    function safeGet(key, fallback=null){ try{ return localStorage.getItem(key) ?? fallback }catch{ return fallback } }
-    function safeSet(key, val){ try{ localStorage.setItem(key, val) }catch{} }
-
-    /* ================== UTC/LOCAL TOGGLE ================== */
-    let primaryUTC = (safeGet('etrx_tz', 'utc') || 'utc') === 'utc';
-    function updateWhen(){
-      const s0 = new Date(PHASES[0].start), e0 = new Date(PHASES[0].end);
-      if (primaryUTC){
-        whenPrimary.textContent   = `Presale: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
-        whenSecondary.textContent = `Local time: ${fmtLoc(PRESALE_START)} → ${fmtLoc(PRESALE_END)}`;
-        modeLabel.textContent='UTC';
-        tzToggle.textContent='Make Local primary';
-        tzToggle.setAttribute('aria-pressed','false');
-        $('phaseScheduleTz').textContent = 'Times in UTC';
-      } else {
-        whenPrimary.textContent   = `Presale: ${fmtLoc(PRESALE_START)} → ${fmtLoc(PRESALE_END)}`;
-        whenSecondary.textContent = `UTC time: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
-        modeLabel.textContent='Local';
-        tzToggle.textContent='Make UTC primary';
-        tzToggle.setAttribute('aria-pressed','true');
-        $('phaseScheduleTz').textContent = 'Times in Local';
-      }
-      renderPhaseTable(); // keep table in sync with timezone change
-    }
-    const tzToggle = document.getElementById('tzToggle');
-    tzToggle?.addEventListener('click', ()=>{ primaryUTC=!primaryUTC; safeSet('etrx_tz', primaryUTC ? 'utc' : 'local'); updateWhen(); });
-
-    /* precision clock */
-    const t0 = Date.now(), p0 = performance.now();
-    const nowAccurate = ()=> new Date(t0 + (performance.now()-p0));
-
-    /* ===== Nav Dropdown ===== */
-    const moreMenuContainer = document.getElementById('more-menu');
-    if (moreMenuContainer) {
-        const btn = moreMenuContainer.querySelector('button');
-        const dropdown = moreMenuContainer.querySelector('div');
-        
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isHidden = dropdown.classList.contains('hidden');
-            if(isHidden) {
-                dropdown.classList.remove('hidden');
-                btn.setAttribute('aria-expanded', 'true');
-            } else {
-                dropdown.classList.add('hidden');
-                btn.setAttribute('aria-expanded', 'false');
-            }
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!moreMenuContainer.contains(e.target)) {
-                dropdown.classList.add('hidden');
-                btn.setAttribute('aria-expanded', 'false');
-            }
-        });
-    }
-
-    /* Phase helpers */
-    function clamp01(x){ return Math.max(0, Math.min(1, x)); }
-    function currentPhase(t=new Date()){
-      for(const p of PHASES){ const s=new Date(p.start), e=new Date(p.end); if(t>=s && t<=e) return p; }
-      if(t<PRESALE_START) return { pre:true };
-      if(t>PRESALE_END) return { post:true };
-      const nxt = PHASES.find(p=> t < new Date(p.start));
-      return nxt ? {...nxt, upcoming:true} : { post:true };
-    }
-
-    /* Countdown UI block builder */
-    function box(v,label){
-      const d=document.createElement('div');
-      d.className='w-[5.5rem] rounded-xl glass card p-3 text-center';
-      d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text">${String(v).padStart(2,'0')}</div><div class="text-[11px] uppercase small-dim">${label}</div>`;
-      return d;
-    }
-
-    /* Dynamic pricing helpers */
-    const usdInEl = $('usdIn');
-    const tokensOutEl = $('tokensOut');
-    let currentCalcPrice = PHASES[0].price;
-
-    function setPriceCard(price, label, listingActive=false, notStarted=false){
-      const pct = Math.max(0, (1 - price/LISTING_PRICE)*100);
-      $('priceNow').textContent = `$${price.toFixed(2)}`;
-      $('calcPrice').textContent = `$${price.toFixed(2)}`;
-      currentCalcPrice = price; // Update global price for calculator
-      $('pricePhaseName').textContent = label + (listingActive ? ' (Active)' : notStarted ? ' (up next)' : '');
-      const lp = $('priceList');
-      if(listingActive){ lp.classList.remove('line-through'); lp.textContent = `$${LISTING_PRICE.toFixed(2)} (Active)`; $('discountLine').textContent = 'Listing live'; }
-      else { if(!lp.classList.contains('line-through')) lp.classList.add('line-through'); lp.textContent = `$${LISTING_PRICE.toFixed(2)}`; $('discountLine').textContent = `${pct.toFixed(0)}% below listing`; }
-      calculateFromUSD();
-    }
-
-    function calculateFromUSD() {
-        const usd = parseFloat(usdInEl.value);
-        if (!isNaN(usd) && usd > 0) {
-            const tokens = usd / currentCalcPrice;
-            tokensOutEl.value = tokens.toFixed(2);
-        } else if (usdInEl.value === '') {
-            tokensOutEl.value = '';
-        }
-    }
-
-    function calculateFromTokens() {
-        const tokens = parseFloat(tokensOutEl.value);
-        if (!isNaN(tokens) && tokens > 0) {
-            const usd = tokens * currentCalcPrice;
-            usdInEl.value = usd.toFixed(2);
-        } else if (tokensOutEl.value === '') {
-            usdInEl.value = '';
-        }
-    }
-    usdInEl.addEventListener('input', calculateFromUSD);
-    tokensOutEl.addEventListener('input', calculateFromTokens);
-
-
-    /* Render Phase schedule table */
-    function shortRange(start, end){
-      const s = new Date(start), e = new Date(end);
-      const fmtS = primaryUTC ? s.toLocaleString([], { month:'short', day:'2-digit', timeZone:'UTC'}) : s.toLocaleString([], { month:'short', day:'2-digit'});
-      const fmtE = primaryUTC ? e.toLocaleString([], { month:'short', day:'2-digit', timeZone:'UTC'}) : e.toLocaleString([], { month:'short', day:'2-digit'});
-      return `${fmtS} → ${fmtE}`;
-    }
-    function renderPhaseTable(){
-      const now = nowAccurate();
-      const wrap = $('phaseTable');
-      wrap.innerHTML = '';
-      PHASES.forEach(p=>{
-        const row = document.createElement('div');
-        row.className = 'row text-sm';
-        const isNow = now >= new Date(p.start) && now <= new Date(p.end);
-        row.innerHTML = `
-          <div class="font-semibold">${p.name} ${isNow?'<span class="badge badge-now">Now</span>':''}</div>
-          <div class="opacity-90">$${p.price.toFixed(2)}</div>
-          <div class="small-dim">${shortRange(p.start, p.end)}</div>
-        `;
-        wrap.appendChild(row);
-      });
-    }
-
-    /* Main loop: countdown + progress + phase + pricing */
-    let lastSecond=-1;
-    function loop(){
-      const now = nowAccurate();
-      const ph = currentPhase(now);
-
-      // Phase label + phase name
-      phaseLabel.innerHTML = `Presale ${ph.pre?'begins':ph.post?'ended':'ends'} in — <span>${primaryUTC?'UTC':'Local'}</span>`;
-      phaseNameEl.textContent = `Phase: ${ph.pre?'Upcoming':ph.post?'Ended':ph.name}`;
-
-      // Countdown target
-      const target = ph.pre ? new Date(PHASES[0].start)
-                     : ph.post ? now
-                     : new Date(ph.end);
-
-      // Countdown render
-      const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
-      if(s!==lastSecond){ lastSecond=s; const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; countdown.replaceChildren(box(d,'d'),box(h,'h'),box(m,'m'),box(ss,'s')); }
-
-      // Progress within current phase + ETA
-      let pct=0, etaText='';
-      if(ph.pre){ pct=0; etaText = `Starts ${fmtUTC(new Date(PHASES[0].start))}`; $('phaseDates').textContent = `Next: ${fmtUTC(new Date(PHASES[0].start))} → ${fmtUTC(new Date(PHASES[0].end))}`; setPriceCard(PHASES[0].price, PHASES[0].name, false, true); }
-      else if(ph.post){ pct=100; etaText='Ended'; $('phaseDates').textContent = `TGE & listing from ${fmtUTC(PRESALE_END)}`; setPriceCard(LISTING_PRICE, 'Listing', true, false); }
-      else{
-        const sT=new Date(ph.start), eT=new Date(ph.end);
-        pct = clamp01((now - sT)/(eT - sT))*100;
-        const endIn=Math.max(0,eT-now); const hrs=Math.floor(endIn/36e5), mins=Math.floor((endIn%36e5)/6e4);
-        etaText=`Ends in ${hrs}h ${String(mins).padStart(2,'0')}m`;
-        $('phaseDates').textContent = `${ph.name}: ${fmtUTC(sT)} → ${fmtUTC(eT)}`;
-        setPriceCard(ph.price, ph.name, false, false);
-      }
-      $('phaseBar').style.width=`${pct}%`;
-      $('phaseEta').textContent = etaText;
-
-      requestAnimationFrame(loop);
-    }
-
-    /* Sticky CTA timing */
-    const SHOW_BAR_DAYS = 14;
-    function toggleBar(){
-      const days=(PRESALE_START - new Date())/86400000;
-      document.getElementById('stickyCTA').classList.toggle('hidden', !(window.innerWidth < 768 && days>0 && days<=SHOW_BAR_DAYS));
-    }
-
-    /* Active nav highlight */
-    const allNavLinks = [...document.querySelectorAll('header nav a')];
-    const moreMenuBtn = document.getElementById('more-menu-btn');
-    const navSections = allNavLinks.map(link => document.getElementById(link.getAttribute('href').substring(1))).filter(Boolean);
-
-    const navObserver = new IntersectionObserver(entries => {
-        let activeEntry = null;
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (!activeEntry || entry.intersectionRatio > activeEntry.intersectionRatio) {
-                    activeEntry = entry;
-                }
-            }
-        });
-
-        if (activeEntry) {
-            const activeId = activeEntry.target.id;
-            let dropdownIsActive = false;
-            
-            allNavLinks.forEach(link => {
-                const linkId = link.getAttribute('href').substring(1);
-                const isActive = linkId === activeId;
-                link.classList.toggle('text-white', isActive);
-                if (isActive && link.closest('#more-menu-dropdown')) {
-                    dropdownIsActive = true;
-                }
-            });
-            
-            moreMenuBtn.classList.toggle('text-white', dropdownIsActive);
-        }
-    }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
-
-    navSections.forEach(section => navObserver.observe(section));
-
-
-    /* Reveal-on-scroll */
-    (function(){
-      const els = document.querySelectorAll('.reveal');
-      els.forEach(el => { el.style.opacity=0; el.style.transform='translateY(12px)'; el.style.transition='opacity .5s ease, transform .5s ease'; });
-      const io = new IntersectionObserver(entries=>{
-        entries.forEach((e)=>{
-          if(e.isIntersecting){
-            e.target.style.opacity=1; e.target.style.transform='translateY(0)';
-            e.target.style.transitionDelay = (Number(e.target.dataset.delay)||0)+'ms';
-            io.unobserve(e.target);
-          }
-        });
-      }, {threshold:.12});
-      els.forEach(el=>io.observe(el));
-    })();
-
-    /* ===== Formspree (AJAX) ===== */
-    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
-    async function postFormspree(data){
-      const ctrl = new AbortController();
-      const t = setTimeout(()=>ctrl.abort(), 10000);
-      try{
-        const res=await fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify(data), signal: ctrl.signal });
-        if(!res.ok) throw new Error('Bad response'); return res.json().catch(()=>({}));
-      } finally { clearTimeout(t); }
-    }
-    const notifyForm=$('notifyForm'), notifyMsg=$('notifyMsg'), notifySuccess=$('notifySuccess');
-    const email = document.getElementById('email');
-    email?.addEventListener('input', ()=>{
-      const ok = email.checkValidity();
-      email.classList.toggle('is-valid', ok);
-      email.classList.toggle('is-invalid', !ok && email.value.length>0);
-    });
-    if (notifyForm){
-      notifyForm.addEventListener('submit', async (e)=>{
-        e.preventDefault(); notifyMsg.classList.add('hidden');
-        const fd=new FormData(notifyForm); const trap=(fd.get('company')||'').trim(); if(trap) return;
-        try{
-          notifyForm.setAttribute('aria-busy','true');
-          await postFormspree(Object.fromEntries(fd.entries()));
-          notifyForm.classList.add('hidden'); notifySuccess.classList.remove('hidden');
-          toast('Check your email to confirm ✉️');
-          soundManager.play('G5', '8n');
-        } catch(err){
-          notifyMsg.textContent='Submission failed. Please check your connection and try again.'; notifyMsg.classList.remove('hidden');
-          toast('Submission failed. Try again.', true);
-        } finally {
-          notifyForm.removeAttribute('aria-busy');
-        }
-      });
-    }
-    if(location.hash==='#notify-success'){ notifyForm?.classList.add('hidden'); notifySuccess?.classList.remove('hidden'); }
-
-    /* ===== ENS-aware allowlist ===== */
-    const wlForm=$('wlForm'), wlMsg=$('wlMsg'), wlHelp=$('wlHelp'), wlSuccess=$('wlSuccess');
-    const addrRe=/^0x[a-fA-F0-9]{40}$/; const ensRe=/^[a-z0-9-]+(\.[a-z0-9-]+)*\.eth$/i;
-    function setHelp(text, ok=false){ wlHelp.textContent=text||''; wlHelp.style.color= ok ? 'var(--muted)' : 'var(--dim)'; }
-
-    let providerENS = null;
-    if (window.ethers?.providers?.JsonRpcProvider) {
-      providerENS = new window.ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
-    }
-    let ensTimer=null;
-    async function resolveIfEns(value){
-      if(!value || !ensRe.test(value) || value.length>255) return null;
-      if(!providerENS?.resolveName) return null;
-      try{
-        const ctrl=new AbortController(); const timeout=setTimeout(()=>ctrl.abort(),10000);
-        const resolved = await providerENS.resolveName(value); clearTimeout(timeout);
-        return resolved||null;
-      }catch{ return null; }
-    }
-
-    if (wlForm){
-      const walletInput=$('wallet');
-      walletInput.addEventListener('input', ()=>{
-        wlMsg.classList.add('hidden');
-        const v=walletInput.value.trim();
-        if(!v){ setHelp(''); return; }
-        if(addrRe.test(v)){ setHelp('Looks like a valid Ethereum address.', true); return; }
-        if(ensRe.test(v)){
-          setHelp('Checking ENS…');
-          clearTimeout(ensTimer);
-          ensTimer = setTimeout(async ()=>{
-            const addr=await resolveIfEns(v);
-            setHelp(addr?`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`:'Could not resolve this ENS name.', !!addr);
-          }, 200);
-          return;
-        }
-        setHelp('Enter a valid 0x… address or an ENS name like yourname.eth');
-      });
-
-      wlForm.addEventListener('submit', async (e)=>{
-        e.preventDefault(); wlMsg.classList.add('hidden');
-        const fd=new FormData(wlForm); const trap=(fd.get('company')||'').trim(); let wallet=(fd.get('wallet')||'').trim(); if(trap) return;
-        let finalAddr=null;
-        if(addrRe.test(wallet)){ finalAddr=wallet; }
-        else if(ensRe.test(wallet)){
-          wlHelp.textContent='Resolving ENS…';
-          const resolved=await resolveIfEns(wallet);
-          if(resolved) finalAddr=resolved; else { wlMsg.textContent='Enter a valid address, or a resolvable ENS name.'; wlMsg.classList.remove('hidden'); return; }
-        } else { wlMsg.textContent='Enter a valid 0x… address or ENS name (yourname.eth).'; wlMsg.classList.remove('hidden'); return; }
-        try{
-          const list=JSON.parse(safeGet('etrx_wl','[]')||'[]'); if(!list.includes(finalAddr)) list.push(finalAddr);
-          safeSet('etrx_wl', JSON.stringify(list));
-          await postFormspree({ wallet: finalAddr, type: 'allowlist' });
-          wlForm.classList.add('hidden'); wlSuccess.classList.remove('hidden');
-          toast('Wallet submitted ✅');
-          soundManager.play('G5', '8n');
-        }catch(err){
-          wlMsg.textContent='Saved locally. Network submit failed — please try again later.'; wlMsg.classList.remove('hidden');
-          toast('Saved locally. Network error.', true);
-        }
-      });
-    }
-
-    /* ===== Injected wallet (EIP-6963 aware) ===== */
-    let activeProvider=null;
-    let connectedAccount = null;
-    function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
-
-    /* Modal open/close + focus trap */
-    let lastFocus=null;
-    function setModalInert(on, modalId){ 
-        const modal = $(modalId);
-        if(on){ modal.removeAttribute('inert'); } else { modal.setAttribute('inert',''); } 
-    }
-
-    function showModal(modalId, show){
-      const modal = $(modalId);
-      if(show){
-        lastFocus = document.activeElement;
-        modal.classList.remove('hidden'); modal.classList.add('flex'); setModalInert(true, modalId);
-        const f = modal.querySelector('button, [href], input, [tabindex]:not([tabindex="-1"])');
-        f?.focus();
-      } else {
-        modal.classList.add('hidden'); modal.classList.remove('flex'); setModalInert(false, modalId);
-        lastFocus?.focus();
-      }
-    }
-
-    // Wallet Modal listeners
-    connectBtn?.addEventListener('click', () => { discoverInjected(); showModal('walletModal', true); });
-    modalClose?.addEventListener('click', () => showModal('walletModal', false));
-    modal?.addEventListener('click', (e)=>{ if(e.target===modal) showModal('walletModal', false); });
-
-    // Whitepaper Modal Listeners
-    const wpBtnHeader = $('wp-btn-header');
-    const wpBtnAbout = $('wp-btn-about');
-    const wpModalClose = $('wpModalClose');
-    const whitepaperModal = $('whitepaperModal');
-
-    wpBtnHeader?.addEventListener('click', () => showModal('whitepaperModal', true));
-    wpBtnAbout?.addEventListener('click', () => showModal('whitepaperModal', true));
-    wpModalClose?.addEventListener('click', () => showModal('whitepaperModal', false));
-    whitepaperModal?.addEventListener('click', (e) => { if (e.target === whitepaperModal) showModal('whitepaperModal', false); });
-
-    document.addEventListener('keydown', (e)=>{
-      if (e.key !== 'Escape') return;
-      if(!walletModal.classList.contains('hidden')) showModal('walletModal', false);
-      if(!whitepaperModal.classList.contains('hidden')) showModal('whitepaperModal', false);
-    });
-
-    async function ensureMainnet(provider, hexChain='0x1'){
-      try{
-        const current=await provider.request({ method:'eth_chainId' });
-        if(current?.toLowerCase()===hexChain.toLowerCase()) return true;
-        await provider.request({ method:'wallet_switchEthereumChain', params:[{ chainId: hexChain }] });
-        return true;
-      } catch(err){ console.warn('Chain switch failed', err); toast('Please switch to Ethereum Mainnet in your wallet.', true); return false; }
-    }
-
-    function discoverInjected(){
-      walletList.innerHTML = '';
-      const entries = [];
-      const announced = [];
-      function onAnnounce(e){ announced.push(e.detail); }
-      window.addEventListener('eip6963:announceProvider', onAnnounce, { once:false });
-      window.dispatchEvent(new Event('eip6963:requestProvider'));
-
-      if (window.ethereum){
-        const providers = window.ethereum.providers?.length ? window.ethereum.providers : [window.ethereum];
-        providers.forEach(p=>{
-          const name = p.isMetaMask ? 'MetaMask' : p.isBraveWallet ? 'Brave Wallet' : p.isRabby ? 'Rabby' : p.isFrame ? 'Frame' : 'Browser Wallet';
-          entries.push({ name, provider:p });
-        });
-      }
-      setTimeout(()=>{
-        const merged = announced.length ? announced.map(({info,provider})=>({name:info?.name||'Browser Wallet', provider})) : entries;
-        if(!merged.length){
-          const el = document.createElement('div');
-          el.className = 'small-dim';
-          el.textContent = 'No browser wallet detected.';
-          walletList.appendChild(el);
-          return;
-        }
-        merged.forEach(({name,provider})=>{
-          const btn=document.createElement('button');
-          btn.className='btn-ghost text-left flex items-center justify-between';
-          btn.setAttribute('role','listitem');
-          btn.innerHTML=`<span>🧩 ${name}</span><span class="small-dim">Use extension</span>`;
-          btn.addEventListener('click', async ()=>{
-            showModal('walletModal', false);
-            try{
-              const accounts=await provider.request({ method:'eth_requestAccounts' });
-              await onConnected(provider, accounts?.[0]||null);
-            }catch(err){ console.warn('Injected connect error', err); toast('Could not connect to wallet.', true); }
-          });
-          walletList.appendChild(btn);
-        });
-      }, 350);
-    }
-
-    function removeProviderListeners(){
-      if(!activeProvider?.removeListener) return;
-      activeProvider.removeListener('accountsChanged', onAccountsChanged);
-      activeProvider.removeListener('disconnect', onDisconnect);
-      activeProvider.removeListener('chainChanged', onChainChanged);
-    }
-    function onAccountsChanged(accs){ 
-      connectedAccount = accs?.[0] || null;
-      walletShort.textContent=shortAddr(connectedAccount); 
-      safeSet('etrx_wallet', connectedAccount); 
-      updateReferralUI();
-    }
-    function onDisconnect(){ doDisconnect(); }
-    async function onChainChanged(){ await ensureMainnet(activeProvider); }
-
-    async function onConnected(provider, account){
-      if(activeProvider && provider!==activeProvider){ removeProviderListeners(); }
-      activeProvider = provider;
-      await ensureMainnet(provider);
-      connectedAccount = account || null;
-      safeSet('etrx_wallet', connectedAccount);
-      walletShort.textContent = shortAddr(connectedAccount);
-      walletPill.classList.remove('hidden');
-      connectBtn.classList.add('hidden-important');
-      //openConnect?.classList.add('hidden-important');
-      provider.on?.('accountsChanged', onAccountsChanged);
-      provider.on?.('disconnect', onDisconnect);
-      provider.on?.('chainChanged', onChainChanged);
-      toast('Wallet connected ✅');
-      soundManager.play('A5', '8n');
-      updateReferralUI();
-    }
-    function doDisconnect(){
-      try{ activeProvider?.disconnect?.(); }catch{}
-      removeProviderListeners();
-      activeProvider=null; 
-      connectedAccount = null;
-      safeSet('etrx_wallet','');
-      walletPill.classList.add('hidden');
-      connectBtn.classList.remove('hidden-important');
-      //openConnect?.classList.remove('hidden-important');
-      toast('Disconnected', true);
-      updateReferralUI();
-    }
-    disconnectBtn.addEventListener('click', doDisconnect);
-
-    /* Restore previous wallet session */
-    const prev = safeGet('etrx_wallet','');
-    if (prev){
-      connectedAccount = prev;
-      walletShort.textContent = shortAddr(prev);
-      walletPill.classList.remove('hidden');
-      connectBtn.classList.add('hidden-important');
-      //openConnect?.classList.add('hidden-important');
-      updateReferralUI();
-    }
-
-    /* Referral System */
-    function updateReferralUI(){
-        const referralSection = $('referral-section');
-        if (connectedAccount) {
-            const link = `${window.location.origin}${window.location.pathname}?ref=${connectedAccount}`;
-            $('referral-link').value = link;
-            referralSection.classList.remove('hidden');
-        } else {
-            referralSection.classList.add('hidden');
-        }
-    }
-    $('copy-referral').addEventListener('click', () => {
-        const linkInput = $('referral-link');
-        linkInput.select();
-        navigator.clipboard.writeText(linkInput.value);
-        toast('Referral link copied!');
-        soundManager.play('C6', '8n');
-    });
-
-    /* Share & Copy Buttons */
-    const copyAddrBtn = $('copyAddr');
-    const presaleAddrInput = $('presaleAddr');
-    copyAddrBtn.addEventListener('click', () => {
-        presaleAddrInput.select();
-        navigator.clipboard.writeText(presaleAddrInput.value);
-        toast('Address copied to clipboard!');
-        soundManager.play('C6', '8n');
-    });
-
-
-    /* Toast */
-    function toast(msg, isWarn=false){
-      const t=document.createElement('div');
-      t.setAttribute('role','status');
-      t.setAttribute('aria-live','polite');
-      t.setAttribute('aria-atomic','true');
-      t.className='toast fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-2 rounded-lg glass card text-sm z-50';
-      t.style.borderColor = isWarn ? 'rgba(255,99,99,.35)' : 'var(--ring)';
-      t.textContent=msg;
-      document.body.appendChild(t);
-      setTimeout(()=>{
-        t.style.opacity='0';
-        t.style.transition='opacity .25s';
-        t.addEventListener('transitionend', ()=>t.remove(), {once:true});
-      }, 2500);
-    }
-
-    /* ===== Live On-Chain Data ===== */
-    const onChain = {
-        contractAddress: "0xYourPresaleContractAddressHere", // <-- TODO: REPLACE THIS
-        contractABI: [], // <-- TODO: REPLACE THIS with your presale contract's ABI
-        provider: null,
-        contract: null,
-        hardCap: 150, // ETH
-        
-        init() {
-            if (typeof ethers === 'undefined') {
-                console.log("Ethers.js not loaded, on-chain data disabled.");
-                return;
-            }
-            this.provider = new ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
-            // Set initial state to 0, removing the simulation
-            this.updateUI({ totalRaised: '0', contributors: '0' });
-
-            // TODO: UNCOMMENT THE FOLLOWING LINES WHEN YOU HAVE A DEPLOYED CONTRACT
-            // this.contract = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
-            // this.updateLoop();
-        },
-        
-        updateUI(data) {
-            $('total-raised').textContent = `${parseFloat(data.totalRaised).toFixed(2)} ETH`;
-            $('total-contributors').textContent = data.contributors;
-            const progress = (parseFloat(data.totalRaised) / this.hardCap) * 100;
-            $('live-progress-bar').style.width = `${Math.min(100, progress)}%`;
-            $('progress-percentage').textContent = `${Math.min(100, progress).toFixed(1)}%`;
-        },
-    };
-    onChain.init();
-
-
-    /* ===== Pie Chart interactivity ===== */
-    const PIE_DATA = {
-        presale: { name: 'Presale', percent: '30%' },
-        liquidity: { name: 'Liquidity', percent: '25%' },
-        eco: { name: 'Ecosystem', percent: '20%' },
-        team: { name: 'Team', percent: '15%' },
-        treasury: { name: 'Treasury', percent: '10%' }
-    };
-    const pieSlices = document.querySelectorAll('.pie-slice');
-    const legendItems = document.querySelectorAll('.legend-item');
-    const pieTextPercent = $('pie-text-percent');
-    const pieTextName = $('pie-text-name');
-
-    function handlePieHover(id) {
-        if (!id) {
-            pieTextPercent.textContent = 'ETRX';
-            pieTextName.textContent = 'Tokenomics';
-            pieSlices.forEach(s => { 
-                s.classList.remove('highlight');
-                s.style.removeProperty('--highlight-color');
-            });
-            legendItems.forEach(l => l.classList.remove('highlight'));
-            return;
-        }
-        const data = PIE_DATA[id];
-        pieTextPercent.textContent = data.percent;
-        pieTextName.textContent = data.name;
-        
-        pieSlices.forEach(s => {
-            const sliceId = s.dataset.sliceId;
-            if (sliceId === id) {
-                const color = getComputedStyle(s).stroke;
-                s.classList.add('highlight');
-                s.style.setProperty('--highlight-color', color);
-            } else {
-                s.classList.remove('highlight');
-            }
-        });
-        legendItems.forEach(l => {
-            l.classList.toggle('highlight', l.dataset.sliceId === id);
-        });
-    }
-
-    pieSlices.forEach(slice => {
-        slice.addEventListener('mouseover', () => handlePieHover(slice.dataset.sliceId));
-        slice.addEventListener('mouseout', () => handlePieHover(null));
-    });
-    legendItems.forEach(item => {
-        item.addEventListener('mouseover', () => handlePieHover(item.dataset.sliceId));
-        item.addEventListener('mouseout', () => handlePieHover(null));
-    });
-
-
-    /* ===== Etheria Wisps ===== */
-    (function(){
-      const canvas=document.getElementById('wispCanvas'); if(!canvas) return;
-      if (navigator?.connection?.saveData) return;
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      const ctx=canvas.getContext('2d');
-      let w=0,h=0,dpr=1, wisps=[];
-
-      function resize(){
-        dpr = Math.min(devicePixelRatio||1,2);
-        w = canvas.width = Math.floor(innerWidth*dpr);
-        h = canvas.height= Math.floor(innerHeight*dpr);
-        canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px';
-        makeWisps();
-      }
-      function rand(a,b){ return a + Math.random()*(b-a) }
-      function makeWisps(){
-        const base = Math.min(120, Math.round((innerWidth*innerHeight)/50000));
-        wisps = new Array(base).fill(0).map(()=>({
-          x: rand(0,w), y: rand(h*0.55, h*1.05),
-          r: rand(2*dpr, 5*dpr),
-          vx: rand(-0.05,0.05)*dpr, vy: rand(-0.15,-0.05)*dpr,
-          huePick: Math.random(),
-          tw: rand(0, Math.PI*2), tws: rand(0.005,0.012)
-        }));
-      }
-      function col(u){
-        if(u<0.5) return `rgba(84,178,255,${0.18 + u*0.25})`;
-        if(u<0.75) return `rgba(208,128,255,${0.18 + (u-0.5)*0.2})`;
-        return `rgba(255,147,76,${0.16 + (u-0.75)*0.18})`;
-      }
-      function draw(){
-        ctx.clearRect(0,0,w,h);
-        for(const p of wisps){
-          p.tw += p.tws;
-          const a = 0.5 + Math.sin(p.tw)*0.5;
-          p.x += p.vx + Math.sin(p.y*0.001)*0.12*dpr;
-          p.y += p.vy;
-          if(p.y < -20) { p.y = h + 10; p.x = rand(0,w); }
-          if(p.x < -10) p.x = w+10; if(p.x > w+10) p.x = -10;
-          const grad = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
-          grad.addColorStop(0, col(p.huePick));
-          grad.addColorStop(1, 'rgba(0,0,0,0)');
-          ctx.globalCompositeOperation = 'lighter';
-          ctx.fillStyle = grad;
-          ctx.beginPath(); ctx.arc(p.x,p.y,p.r*(2.5+a*1.2),0,Math.PI*2); ctx.fill();
-          ctx.globalCompositeOperation = 'source-over';
-        }
-        requestAnimationFrame(draw);
-      }
-      resize(); draw();
-      addEventListener('resize', resize, {passive:true});
-    })();
-
-    /* ===== Pointer-follow glow for .holo ===== */
-    (function(){
-      const cards = document.querySelectorAll('.holo');
-      cards.forEach(el=>{
-        el.addEventListener('pointermove', e=>{
-          const r = el.getBoundingClientRect();
-          el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-          el.style.setProperty('--my', (e.clientY - r.top) + 'px');
-        });
-      });
-    })();
-
-    /* ===== 3D Tilt Effect ===== */
-    (function() {
-        const cards = document.querySelectorAll('.card-3d-tilt');
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const { width, height } = rect;
-                const rotateX = (y / height - 0.5) * -14; // rotation degree
-                const rotateY = (x / width - 0.5) * 14;
-                card.style.transition = 'transform 0.1s ease-out';
-                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transition = 'transform 0.4s ease-out';
-                card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-            });
-        });
-    })();
-    
-    /* Initialize UI */
-    renderPhaseTable();
-    updateWhen();
-    toggleBar();
-    setInterval(toggleBar, 60_000);
-
-    /* Main loop start */
-    loop();
-
-    /* ===== FAQ expand ===== */
-    document.querySelectorAll('.faq-item')?.forEach(item=>{
-      const btn=item.querySelector('.faq-header'); const body=item.querySelector('.faq-body'); const chev=item.querySelector('.faq-chevron');
-      btn.addEventListener('click', ()=>{
-        const open=btn.getAttribute('aria-expanded')==='true';
-        btn.setAttribute('aria-expanded', String(!open));
-        if(!open){
-          item.classList.add('open'); body.hidden=false; body.style.maxHeight=body.scrollHeight+'px'; body.classList.add('open'); chev.style.transform='rotate(180deg)';
-        } else {
-          body.style.maxHeight=body.scrollHeight+'px';
-          requestAnimationFrame(()=>{ body.style.maxHeight='0px'; body.classList.remove('open'); chev.style.transform='rotate(0deg)'; });
-          body.addEventListener('transitionend', ()=>{ if(body.style.maxHeight==='0px') body.hidden=true; item.classList.remove('open'); }, {once:true});
-        }
-      });
-    });
+    /* ================================================= */
+    /* ================== CONFIGURATION ================ */
+    /* ================================================= */
+    const CONFIG = {
+        PRESALE_START: new Date('2025-09-24T00:00:00Z'),
+        PRESALE_END:   new Date('2025-10-01T00:00:00Z'),
+        LISTING_PRICE: 0.12, // USD
+
+        // Presale Phases
+        PHASES: [
+          { name:'Phase 1', start:'2025-09-24T00:00:00Z', end:'2025-09-26T23:59:59Z', price:0.08 },
+          { name:'Phase 2', start:'2025-09-27T00:00:00Z', end:'2025-09-28T23:59:59Z', price:0.10 },
+          { name:'Phase 3', start:'2025-09-29T00:00:00Z', end:'2025-09-30T23:59:59Z', price:0.11 },
+        ],
+
+        // On-Chain Data (FILL THESE IN LATER)
+        CONTRACT_ADDRESS: "0xYourPresaleContractAddressHere",
+        CONTRACT_ABI: [/* Your Presale Contract ABI */],
+        HARD_CAP_ETH: 150, // The presale goal in ETH
+        ETH_USD_PRICE: 3500 // Fallback ETH price in USD, can be updated dynamically
+    };
+
+
+    /* ================== DOM SHORTCUTS ================== */
+    const $ = (id)=> document.getElementById(id);
+    const phaseLabel=$('phaseLabel'), countdown=$('countdown'), whenPrimary=$('whenPrimary'),
+          whenSecondary=$('whenSecondary'), modeLabel=$('modeLabel');
+    const connectBtn=$('connectBtn'), modal=$('walletModal'), modalClose=$('modalClose');
+    const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn');
+    $('year').textContent = new Date().getFullYear();
+
+    /* Preloader */
+    $('preloader')?.classList.add('loaded');
+
+    /* Sound Manager */
+    const soundManager = {
+        isMuted: true,
+        synth: null,
+        init() {
+            if (typeof Tone === 'undefined') {
+                console.log("Tone.js not loaded, sounds disabled.");
+                $('mute-button').style.display = 'none';
+                return;
+            }
+            this.synth = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: 'sine' },
+                envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 },
+                volume: -20
+            }).toDestination();
+            
+            const muteButton = $('mute-button');
+            muteButton.addEventListener('click', () => this.toggleMute());
+            this.updateButton();
+        },
+        play(note, duration = '16n') {
+            if (!this.isMuted && this.synth) {
+                this.synth.triggerAttackRelease(note, duration);
+            }
+        },
+        toggleMute() {
+            this.isMuted = !this.isMuted;
+            this.updateButton();
+            this.play('C5');
+        },
+        updateButton() {
+            $('sound-on-icon').classList.toggle('hidden', this.isMuted);
+            $('sound-off-icon').classList.toggle('hidden', !this.isMuted);
+        }
+    };
+    soundManager.init();
+
+    // Attach sounds to interactive elements
+    document.querySelectorAll('button, a.laser').forEach(el => {
+        el.addEventListener('mouseenter', () => soundManager.play('C6', '32n'));
+        el.addEventListener('click', () => soundManager.play('E6', '16n'));
+    });
+
+
+    /* Header elevation on scroll */
+    const header = document.getElementById('siteHeader');
+    addEventListener('scroll', ()=> header.classList.toggle('header-float', scrollY>12), {passive:true});
+
+    /* Time formatting */
+    const fmtBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
+    const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtBase, timeZone:'UTC', timeZoneName:'short' });
+    const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtBase, timeZoneName:'short' });
+
+    /* localStorage helpers */
+    function safeGet(key, fallback=null){ try{ return localStorage.getItem(key) ?? fallback }catch{ return fallback } }
+    function safeSet(key, val){ try{ localStorage.setItem(key, val) }catch{} }
+
+    /* ================== UTC/LOCAL TOGGLE ================== */
+    let primaryUTC = (safeGet('etrx_tz', 'utc') || 'utc') === 'utc';
+    function updateWhen(){
+      const s0 = new Date(CONFIG.PHASES[0].start);
+      if (primaryUTC){
+        whenPrimary.textContent   = `Presale: ${fmtUTC(CONFIG.PRESALE_START)} → ${fmtUTC(CONFIG.PRESALE_END)}`;
+        whenSecondary.textContent = `Local time: ${fmtLoc(CONFIG.PRESALE_START)} → ${fmtLoc(CONFIG.PRESALE_END)}`;
+        modeLabel.textContent='UTC';
+        tzToggle.textContent='Make Local primary';
+        tzToggle.setAttribute('aria-pressed','false');
+        $('phaseScheduleTz').textContent = 'Times in UTC';
+      } else {
+        whenPrimary.textContent   = `Presale: ${fmtLoc(CONFIG.PRESALE_START)} → ${fmtLoc(CONFIG.PRESALE_END)}`;
+        whenSecondary.textContent = `UTC time: ${fmtUTC(CONFIG.PRESALE_START)} → ${fmtUTC(CONFIG.PRESALE_END)}`;
+        modeLabel.textContent='Local';
+        tzToggle.textContent='Make UTC primary';
+        tzToggle.setAttribute('aria-pressed','true');
+        $('phaseScheduleTz').textContent = 'Times in Local';
+      }
+      renderPhaseTable(); // keep table in sync with timezone change
+    }
+    const tzToggle = document.getElementById('tzToggle');
+    tzToggle?.addEventListener('click', ()=>{ primaryUTC=!primaryUTC; safeSet('etrx_tz', primaryUTC ? 'utc' : 'local'); updateWhen(); });
+
+    /* precision clock */
+    const t0 = Date.now(), p0 = performance.now();
+    const nowAccurate = ()=> new Date(t0 + (performance.now()-p0));
+
+    /* ===== Nav Dropdown ===== */
+    const moreMenuContainer = document.getElementById('more-menu');
+    if (moreMenuContainer) {
+        const btn = moreMenuContainer.querySelector('button');
+        const dropdown = moreMenuContainer.querySelector('div');
+        
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isHidden = dropdown.classList.contains('hidden');
+            dropdown.classList.toggle('hidden', !isHidden);
+            btn.setAttribute('aria-expanded', String(isHidden));
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!moreMenuContainer.contains(e.target)) {
+                dropdown.classList.add('hidden');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    /* Phase helpers */
+    function clamp01(x){ return Math.max(0, Math.min(1, x)); }
+    function currentPhase(t=new Date()){
+      for(const p of CONFIG.PHASES){ const s=new Date(p.start), e=new Date(p.end); if(t>=s && t<=e) return p; }
+      if(t < CONFIG.PRESALE_START) return { pre:true };
+      if(t > CONFIG.PRESALE_END) return { post:true };
+      const nxt = CONFIG.PHASES.find(p=> t < new Date(p.start));
+      return nxt ? {...nxt, upcoming:true} : { post:true };
+    }
+
+    /* Countdown UI block builder */
+    function box(v,label){
+      const d=document.createElement('div');
+      d.className='w-[4.5rem] rounded-xl glass card p-2 text-center';
+      d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text">${String(v).padStart(2,'0')}</div><div class="text-[10px] uppercase small-dim">${label}</div>`;
+      return d;
+    }
+
+    /* Dynamic pricing & calculator */
+    const ethInEl = $('ethIn');
+    const tokensOutEl = $('tokensOut');
+    const buyBtn = $('buyBtn');
+    let currentCalcPrice = CONFIG.PHASES[0].price;
+
+    function setPriceInfo(price, isListing=false, isUpcoming=false){
+      const pct = Math.max(0, (1 - price/CONFIG.LISTING_PRICE)*100);
+      $('priceNow').textContent = `$${price.toFixed(3)}`;
+      $('calcPrice').textContent = `$${price.toFixed(3)}`;
+      currentCalcPrice = price;
+      
+      const lpEl = $('priceList');
+      if(isListing){
+          lpEl.classList.remove('line-through');
+          lpEl.textContent = `$${CONFIG.LISTING_PRICE.toFixed(2)}`;
+          $('discountLine').textContent = 'Listing Active';
+      } else {
+          lpEl.classList.add('line-through');
+          lpEl.textContent = `$${CONFIG.LISTING_PRICE.toFixed(2)}`;
+          $('discountLine').textContent = `${pct.toFixed(0)}% below listing`;
+      }
+      calculateFromEth();
+    }
+
+    function calculateFromEth() {
+        const eth = parseFloat(ethInEl.value);
+        if (!isNaN(eth) && eth > 0) {
+            const usdValue = eth * CONFIG.ETH_USD_PRICE;
+            const tokens = usdValue / currentCalcPrice;
+            tokensOutEl.value = tokens.toLocaleString(undefined, {maximumFractionDigits: 2});
+        } else {
+            tokensOutEl.value = '';
+        }
+    }
+    ethInEl.addEventListener('input', calculateFromEth);
+
+    /* Render Phase schedule table */
+    function shortRange(start, end){
+      const s = new Date(start), e = new Date(end);
+      const fmtS = primaryUTC ? s.toLocaleString([], { month:'short', day:'2-digit', timeZone:'UTC'}) : s.toLocaleString([], { month:'short', day:'2-digit'});
+      const fmtE = primaryUTC ? e.toLocaleString([], { month:'short', day:'2-digit', timeZone:'UTC'}) : e.toLocaleString([], { month:'short', day:'2-digit'});
+      return `${fmtS} → ${fmtE}`;
+    }
+    function renderPhaseTable(){
+      const now = nowAccurate();
+      const wrap = $('phaseTable');
+      wrap.innerHTML = '';
+      CONFIG.PHASES.forEach(p=>{
+        const row = document.createElement('div');
+        row.className = 'row text-sm';
+        const isNow = now >= new Date(p.start) && now <= new Date(p.end);
+        row.innerHTML = `
+          <div class="font-semibold">${p.name} ${isNow?'<span class="badge badge-now">Now</span>':''}</div>
+          <div class="opacity-90">$${p.price.toFixed(3)}</div>
+          <div class="small-dim">${shortRange(p.start, p.end)}</div>
+        `;
+        wrap.appendChild(row);
+      });
+    }
+
+    /* Main loop: countdown + progress + phase + pricing */
+    let lastSecond=-1;
+    function loop(){
+      const now = nowAccurate();
+      const ph = currentPhase(now);
+
+      // Phase label & buy button state
+      let target;
+      if (ph.pre) {
+          phaseLabel.innerHTML = `Presale begins in — <span>${primaryUTC?'UTC':'Local'}</span>`;
+          buyBtn.disabled = true;
+          buyBtn.textContent = 'Presale Not Started';
+          target = CONFIG.PRESALE_START;
+          setPriceInfo(CONFIG.PHASES[0].price, false, true);
+      } else if (ph.post) {
+          phaseLabel.innerHTML = `Presale has ended — <span>${primaryUTC?'UTC':'Local'}</span>`;
+          buyBtn.disabled = true;
+          buyBtn.textContent = 'Presale Ended';
+          target = now;
+          setPriceInfo(CONFIG.LISTING_PRICE, true, false);
+      } else {
+          phaseLabel.innerHTML = `Phase ends in — <span>${primaryUTC?'UTC':'Local'}</span>`;
+          buyBtn.disabled = false;
+          buyBtn.textContent = 'Buy $ETRX';
+          target = new Date(ph.end);
+          setPriceInfo(ph.price, false, false);
+      }
+
+      // Countdown render
+      const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
+      if(s!==lastSecond){ lastSecond=s; const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; countdown.replaceChildren(box(d,'days'),box(h,'hours'),box(m,'mins'),box(ss,'secs')); }
+
+      requestAnimationFrame(loop);
+    }
+
+    /* Sticky CTA timing */
+    const SHOW_BAR_DAYS = 14;
+    function toggleBar(){
+      const days=(CONFIG.PRESALE_START - new Date())/86400000;
+      document.getElementById('stickyCTA').classList.toggle('hidden', !(window.innerWidth < 768 && days>0 && days<=SHOW_BAR_DAYS));
+    }
+
+    /* Active nav highlight */
+    const allNavLinks = [...document.querySelectorAll('header nav a')];
+    const moreMenuBtn = document.getElementById('more-menu-btn');
+    const navSections = allNavLinks.map(link => document.getElementById(link.getAttribute('href').substring(1))).filter(Boolean);
+
+    const navObserver = new IntersectionObserver(entries => {
+        let activeEntry = null;
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if (!activeEntry || entry.intersectionRatio > activeEntry.intersectionRatio) {
+                    activeEntry = entry;
+                }
+            }
+        });
+
+        if (activeEntry) {
+            const activeId = activeEntry.target.id;
+            let dropdownIsActive = false;
+            
+            allNavLinks.forEach(link => {
+                const linkId = link.getAttribute('href').substring(1);
+                const isActive = linkId === activeId;
+                link.classList.toggle('text-white', isActive);
+                if (isActive && link.closest('#more-menu-dropdown')) {
+                    dropdownIsActive = true;
+                }
+            });
+            
+            moreMenuBtn.classList.toggle('text-white', dropdownIsActive);
+        }
+    }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+
+    navSections.forEach(section => navObserver.observe(section));
+
+
+    /* Reveal-on-scroll */
+    (function(){
+      const els = document.querySelectorAll('.reveal');
+      els.forEach(el => { el.style.opacity=0; el.style.transform='translateY(12px)'; el.style.transition='opacity .5s ease, transform .5s ease'; });
+      const io = new IntersectionObserver(entries=>{
+        entries.forEach((e)=>{
+          if(e.isIntersecting){
+            e.target.style.opacity=1; e.target.style.transform='translateY(0)';
+            e.target.style.transitionDelay = (Number(e.target.dataset.delay)||0)+'ms';
+            io.unobserve(e.target);
+          }
+        });
+      }, {threshold:.12});
+      els.forEach(el=>io.observe(el));
+    })();
+
+    /* ===== Formspree (AJAX) ===== */
+    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mandalyp';
+    async function postFormspree(data){
+      const ctrl = new AbortController();
+      const t = setTimeout(()=>ctrl.abort(), 10000);
+      try{
+        const res=await fetch(FORMSPREE_ENDPOINT,{ method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify(data), signal: ctrl.signal });
+        if(!res.ok) throw new Error('Bad response'); return res.json().catch(()=>({}));
+      } finally { clearTimeout(t); }
+    }
+    const notifyForm=$('notifyForm'), notifyMsg=$('notifyMsg'), notifySuccess=$('notifySuccess');
+    const email = document.getElementById('email');
+    email?.addEventListener('input', ()=>{
+      const ok = email.checkValidity();
+      email.classList.toggle('is-valid', ok);
+      email.classList.toggle('is-invalid', !ok && email.value.length>0);
+    });
+    if (notifyForm){
+      notifyForm.addEventListener('submit', async (e)=>{
+        e.preventDefault(); notifyMsg.classList.add('hidden');
+        const fd=new FormData(notifyForm); const trap=(fd.get('company')||'').trim(); if(trap) return;
+        try{
+          notifyForm.setAttribute('aria-busy','true');
+          await postFormspree(Object.fromEntries(fd.entries()));
+          notifyForm.classList.add('hidden'); notifySuccess.classList.remove('hidden');
+          toast('Check your email to confirm ✉️');
+          soundManager.play('G5', '8n');
+        } catch(err){
+          notifyMsg.textContent='Submission failed. Please check your connection and try again.'; notifyMsg.classList.remove('hidden');
+          toast('Submission failed. Try again.', true);
+        } finally {
+          notifyForm.removeAttribute('aria-busy');
+        }
+      });
+    }
+    if(location.hash==='#notify-success'){ notifyForm?.classList.add('hidden'); notifySuccess?.classList.remove('hidden'); }
+
+    /* ===== ENS-aware allowlist ===== */
+    const wlForm=$('wlForm'), wlMsg=$('wlMsg'), wlHelp=$('wlHelp'), wlSuccess=$('wlSuccess');
+    const addrRe=/^0x[a-fA-F0-9]{40}$/; const ensRe=/^[a-z0-9-]+(\.[a-z0-9-]+)*\.eth$/i;
+    function setHelp(text, ok=false){ wlHelp.textContent=text||''; wlHelp.style.color= ok ? 'var(--muted)' : 'var(--dim)'; }
+
+    let providerENS = null;
+    if (window.ethers?.providers?.JsonRpcProvider) {
+      providerENS = new window.ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
+    }
+    let ensTimer=null;
+    async function resolveIfEns(value){
+      if(!value || !ensRe.test(value) || value.length>255) return null;
+      if(!providerENS?.resolveName) return null;
+      try{
+        const ctrl=new AbortController(); const timeout=setTimeout(()=>ctrl.abort(),10000);
+        const resolved = await providerENS.resolveName(value); clearTimeout(timeout);
+        return resolved||null;
+      }catch{ return null; }
+    }
+
+    if (wlForm){
+      const walletInput=$('wallet');
+      walletInput.addEventListener('input', ()=>{
+        wlMsg.classList.add('hidden');
+        const v=walletInput.value.trim();
+        if(!v){ setHelp(''); return; }
+        if(addrRe.test(v)){ setHelp('Looks like a valid Ethereum address.', true); return; }
+        if(ensRe.test(v)){
+          setHelp('Checking ENS…');
+          clearTimeout(ensTimer);
+          ensTimer = setTimeout(async ()=>{
+            const addr=await resolveIfEns(v);
+            setHelp(addr?`ENS resolved to ${addr.slice(0,6)}…${addr.slice(-4)}.`:'Could not resolve this ENS name.', !!addr);
+          }, 200);
+          return;
+        }
+        setHelp('Enter a valid 0x… address or an ENS name like yourname.eth');
+      });
+
+      wlForm.addEventListener('submit', async (e)=>{
+        e.preventDefault(); wlMsg.classList.add('hidden');
+        const fd=new FormData(wlForm); const trap=(fd.get('company')||'').trim(); let wallet=(fd.get('wallet')||'').trim(); if(trap) return;
+        let finalAddr=null;
+        if(addrRe.test(wallet)){ finalAddr=wallet; }
+        else if(ensRe.test(wallet)){
+          wlHelp.textContent='Resolving ENS…';
+          const resolved=await resolveIfEns(wallet);
+          if(resolved) finalAddr=resolved; else { wlMsg.textContent='Enter a valid address, or a resolvable ENS name.'; wlMsg.classList.remove('hidden'); return; }
+        } else { wlMsg.textContent='Enter a valid 0x… address or ENS name (yourname.eth).'; wlMsg.classList.remove('hidden'); return; }
+        try{
+          const list=JSON.parse(safeGet('etrx_wl','[]')||'[]'); if(!list.includes(finalAddr)) list.push(finalAddr);
+          safeSet('etrx_wl', JSON.stringify(list));
+          await postFormspree({ wallet: finalAddr, type: 'allowlist' });
+          wlForm.classList.add('hidden'); wlSuccess.classList.remove('hidden');
+          toast('Wallet submitted ✅');
+          soundManager.play('G5', '8n');
+        }catch(err){
+          wlMsg.textContent='Saved locally. Network submit failed — please try again later.'; wlMsg.classList.remove('hidden');
+          toast('Saved locally. Network error.', true);
+        }
+      });
+    }
+
+    /* ===== Injected wallet (EIP-6963 aware) ===== */
+    let activeProvider=null;
+    let connectedAccount = null;
+    function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
+
+    /* Modal open/close + focus trap */
+    let lastFocus=null;
+    function setModalInert(on, modalId){ 
+        const modal = $(modalId);
+        if(on){ modal.removeAttribute('inert'); } else { modal.setAttribute('inert',''); } 
+    }
+
+    function showModal(modalId, show){
+      const modal = $(modalId);
+      if(show){
+        lastFocus = document.activeElement;
+        modal.classList.remove('hidden'); modal.classList.add('flex'); setModalInert(true, modalId);
+        const f = modal.querySelector('button, [href], input, [tabindex]:not([tabindex="-1"])');
+        f?.focus();
+      } else {
+        modal.classList.add('hidden'); modal.classList.remove('flex'); setModalInert(false, modalId);
+        lastFocus?.focus();
+      }
+    }
+
+    // Wallet Modal listeners
+    connectBtn?.addEventListener('click', () => { discoverInjected(); showModal('walletModal', true); });
+    modalClose?.addEventListener('click', () => showModal('walletModal', false));
+    modal?.addEventListener('click', (e)=>{ if(e.target===modal) showModal('walletModal', false); });
+
+    // Whitepaper Modal Listeners
+    const wpBtnHeader = $('wp-btn-header');
+    const wpBtnAbout = $('wp-btn-about');
+    const wpModalClose = $('wpModalClose');
+    const whitepaperModal = $('whitepaperModal');
+
+    wpBtnHeader?.addEventListener('click', () => showModal('whitepaperModal', true));
+    wpBtnAbout?.addEventListener('click', () => showModal('whitepaperModal', true));
+    wpModalClose?.addEventListener('click', () => showModal('whitepaperModal', false));
+    whitepaperModal?.addEventListener('click', (e) => { if (e.target === whitepaperModal) showModal('whitepaperModal', false); });
+
+    document.addEventListener('keydown', (e)=>{
+      if (e.key !== 'Escape') return;
+      if(!walletModal.classList.contains('hidden')) showModal('walletModal', false);
+      if(!whitepaperModal.classList.contains('hidden')) showModal('whitepaperModal', false);
+    });
+
+    async function ensureMainnet(provider, hexChain='0x1'){
+      try{
+        const current=await provider.request({ method:'eth_chainId' });
+        if(current?.toLowerCase()===hexChain.toLowerCase()) return true;
+        await provider.request({ method:'wallet_switchEthereumChain', params:[{ chainId: hexChain }] });
+        return true;
+      } catch(err){ console.warn('Chain switch failed', err); toast('Please switch to Ethereum Mainnet in your wallet.', true); return false; }
+    }
+
+    function discoverInjected(){
+      walletList.innerHTML = '';
+      const entries = [];
+      const announced = [];
+      function onAnnounce(e){ announced.push(e.detail); }
+      window.addEventListener('eip6963:announceProvider', onAnnounce, { once:false });
+      window.dispatchEvent(new Event('eip6963:requestProvider'));
+
+      if (window.ethereum){
+        const providers = window.ethereum.providers?.length ? window.ethereum.providers : [window.ethereum];
+        providers.forEach(p=>{
+          const name = p.isMetaMask ? 'MetaMask' : p.isBraveWallet ? 'Brave Wallet' : p.isRabby ? 'Rabby' : p.isFrame ? 'Frame' : 'Browser Wallet';
+          entries.push({ name, provider:p });
+        });
+      }
+      setTimeout(()=>{
+        const merged = announced.length ? announced.map(({info,provider})=>({name:info?.name||'Browser Wallet', provider})) : entries;
+        if(!merged.length){
+          const el = document.createElement('div');
+          el.className = 'small-dim';
+          el.textContent = 'No browser wallet detected.';
+          walletList.appendChild(el);
+          return;
+        }
+        merged.forEach(({name,provider})=>{
+          const btn=document.createElement('button');
+          btn.className='btn-ghost text-left flex items-center justify-between';
+          btn.setAttribute('role','listitem');
+          btn.innerHTML=`<span>🧩 ${name}</span><span class="small-dim">Use extension</span>`;
+          btn.addEventListener('click', async ()=>{
+            showModal('walletModal', false);
+            try{
+              const accounts=await provider.request({ method:'eth_requestAccounts' });
+              await onConnected(provider, accounts?.[0]||null);
+            }catch(err){ console.warn('Injected connect error', err); toast('Could not connect to wallet.', true); }
+          });
+          walletList.appendChild(btn);
+        });
+      }, 350);
+    }
+
+    function removeProviderListeners(){
+      if(!activeProvider?.removeListener) return;
+      activeProvider.removeListener('accountsChanged', onAccountsChanged);
+      activeProvider.removeListener('disconnect', onDisconnect);
+      activeProvider.removeListener('chainChanged', onChainChanged);
+    }
+    function onAccountsChanged(accs){ 
+      connectedAccount = accs?.[0] || null;
+      walletShort.textContent=shortAddr(connectedAccount); 
+      safeSet('etrx_wallet', connectedAccount); 
+      updateReferralUI();
+    }
+    function onDisconnect(){ doDisconnect(); }
+    async function onChainChanged(){ await ensureMainnet(activeProvider); }
+
+    async function onConnected(provider, account){
+      if(activeProvider && provider!==activeProvider){ removeProviderListeners(); }
+      activeProvider = provider;
+      await ensureMainnet(provider);
+      connectedAccount = account || null;
+      safeSet('etrx_wallet', connectedAccount);
+      walletShort.textContent = shortAddr(connectedAccount);
+      walletPill.classList.remove('hidden');
+      connectBtn.classList.add('hidden-important');
+      provider.on?.('accountsChanged', onAccountsChanged);
+      provider.on?.('disconnect', onDisconnect);
+      provider.on?.('chainChanged', onChainChanged);
+      toast('Wallet connected ✅');
+      soundManager.play('A5', '8n');
+      updateReferralUI();
+    }
+    function doDisconnect(){
+      try{ activeProvider?.disconnect?.(); }catch{}
+      removeProviderListeners();
+      activeProvider=null; 
+      connectedAccount = null;
+      safeSet('etrx_wallet','');
+      walletPill.classList.add('hidden');
+      connectBtn.classList.remove('hidden-important');
+      toast('Disconnected', true);
+      updateReferralUI();
+    }
+    disconnectBtn.addEventListener('click', doDisconnect);
+
+    /* Restore previous wallet session */
+    const prev = safeGet('etrx_wallet','');
+    if (prev){
+      connectedAccount = prev;
+      walletShort.textContent = shortAddr(prev);
+      walletPill.classList.remove('hidden');
+      connectBtn.classList.add('hidden-important');
+      updateReferralUI();
+    }
+
+    /* Referral System */
+    function updateReferralUI(){
+        const referralSection = $('referral-section');
+        if (connectedAccount) {
+            const link = `${window.location.origin}${window.location.pathname}?ref=${connectedAccount}`;
+            $('referral-link').value = link;
+            referralSection.classList.remove('hidden');
+        } else {
+            referralSection.classList.add('hidden');
+        }
+    }
+    $('copy-referral').addEventListener('click', () => {
+        const linkInput = $('referral-link');
+        linkInput.select();
+        navigator.clipboard.writeText(linkInput.value);
+        toast('Referral link copied!');
+        soundManager.play('C6', '8n');
+    });
+
+    /* Share & Copy Buttons */
+    const copyAddrBtn = $('copyAddr');
+    const presaleAddrInput = $('presaleAddr');
+    copyAddrBtn.addEventListener('click', () => {
+        presaleAddrInput.select();
+        navigator.clipboard.writeText(presaleAddrInput.value);
+        toast('Address copied to clipboard!');
+        soundManager.play('C6', '8n');
+    });
+
+
+    /* Toast */
+    function toast(msg, isWarn=false){
+      const t=document.createElement('div');
+      t.setAttribute('role','status');
+      t.setAttribute('aria-live','polite');
+      t.setAttribute('aria-atomic','true');
+      t.className='toast fixed bottom-6 left-1/2 -translate-x-1/2 px-3 py-2 rounded-lg glass card text-sm z-50';
+      t.style.borderColor = isWarn ? 'rgba(255,99,99,.35)' : 'var(--ring)';
+      t.textContent=msg;
+      document.body.appendChild(t);
+      setTimeout(()=>{
+        t.style.opacity='0';
+        t.style.transition='opacity .25s';
+        t.addEventListener('transitionend', ()=>t.remove(), {once:true});
+      }, 2500);
+    }
+
+    /* ===== Live On-Chain Data ===== */
+    const onChain = {
+        provider: null,
+        contract: null,
+        
+        init() {
+            if (typeof ethers === 'undefined') {
+                console.warn("Ethers.js not loaded, on-chain data disabled.");
+                return;
+            }
+            this.provider = new ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
+            // Set initial UI to 0, as we are pre-launch.
+            this.updateUI({ totalRaised: '0', contributors: '0' });
+
+            // TODO: UNCOMMENT THE FOLLOWING LINES WHEN YOU HAVE A DEPLOYED CONTRACT
+            // if (CONFIG.CONTRACT_ADDRESS && CONFIG.CONTRACT_ABI.length > 0) {
+            //     this.contract = new ethers.Contract(CONFIG.CONTRACT_ADDRESS, CONFIG.CONTRACT_ABI, this.provider);
+            //     this.fetchData();
+            //     setInterval(() => this.fetchData(), 30000); // Fetch every 30 seconds
+            // }
+        },
+        
+        async fetchData() {
+            if (!this.contract) return;
+            try {
+                // NOTE: Replace 'totalDeposited' and 'getContributorCount' with your actual contract methods
+                const [raisedWei, contributorCount] = await Promise.all([
+                    this.contract.totalDeposited(),
+                    this.contract.getContributorCount()
+                ]);
+                const totalRaised = ethers.utils.formatEther(raisedWei);
+                const contributors = contributorCount.toString();
+                this.updateUI({ totalRaised, contributors });
+            } catch(err) {
+                console.error("Failed to fetch on-chain data:", err);
+            }
+        },
+
+        updateUI(data) {
+            $('total-raised').textContent = `${parseFloat(data.totalRaised).toFixed(2)} ETH`;
+            $('total-contributors').textContent = data.contributors;
+            const progress = (parseFloat(data.totalRaised) / CONFIG.HARD_CAP_ETH) * 100;
+            $('live-progress-bar').style.width = `${Math.min(100, progress)}%`;
+            $('progress-percentage').textContent = `${Math.min(100, progress).toFixed(1)}%`;
+        },
+    };
+    onChain.init();
+
+
+    /* ===== Pie Chart interactivity ===== */
+    const PIE_DATA = {
+        presale: { name: 'Presale', percent: '30%' },
+        liquidity: { name: 'Liquidity', percent: '25%' },
+        eco: { name: 'Ecosystem', percent: '20%' },
+        team: { name: 'Team', percent: '15%' },
+        treasury: { name: 'Treasury', percent: '10%' }
+    };
+    const pieSlices = document.querySelectorAll('.pie-slice');
+    const legendItems = document.querySelectorAll('.legend-item');
+    const pieTextPercent = $('pie-text-percent');
+    const pieTextName = $('pie-text-name');
+
+    function handlePieHover(id) {
+        if (!id) {
+            pieTextPercent.textContent = 'ETRX';
+            pieTextName.textContent = 'Tokenomics';
+            pieSlices.forEach(s => { 
+                s.classList.remove('highlight');
+                s.style.removeProperty('--highlight-color');
+            });
+            legendItems.forEach(l => l.classList.remove('highlight'));
+            return;
+        }
+        const data = PIE_DATA[id];
+        pieTextPercent.textContent = data.percent;
+        pieTextName.textContent = data.name;
+        
+        pieSlices.forEach(s => {
+            const sliceId = s.dataset.sliceId;
+            if (sliceId === id) {
+                const color = getComputedStyle(s).stroke;
+                s.classList.add('highlight');
+                s.style.setProperty('--highlight-color', color);
+            } else {
+                s.classList.remove('highlight');
+            }
+        });
+        legendItems.forEach(l => {
+            l.classList.toggle('highlight', l.dataset.sliceId === id);
+        });
+    }
+
+    pieSlices.forEach(slice => {
+        slice.addEventListener('mouseover', () => handlePieHover(slice.dataset.sliceId));
+        slice.addEventListener('mouseout', () => handlePieHover(null));
+    });
+    legendItems.forEach(item => {
+        item.addEventListener('mouseover', () => handlePieHover(item.dataset.sliceId));
+        item.addEventListener('mouseout', () => handlePieHover(null));
+    });
+
+
+    /* ===== Etheria Wisps ===== */
+    (function(){
+      const canvas=document.getElementById('wispCanvas'); if(!canvas) return;
+      if (navigator?.connection?.saveData) return;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const ctx=canvas.getContext('2d');
+      let w=0,h=0,dpr=1, wisps=[];
+
+      function resize(){
+        dpr = Math.min(devicePixelRatio||1,2);
+        w = canvas.width = Math.floor(innerWidth*dpr);
+        h = canvas.height= Math.floor(innerHeight*dpr);
+        canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px';
+        makeWisps();
+      }
+      function rand(a,b){ return a + Math.random()*(b-a) }
+      function makeWisps(){
+        const base = Math.min(120, Math.round((innerWidth*innerHeight)/50000));
+        wisps = new Array(base).fill(0).map(()=>({
+          x: rand(0,w), y: rand(h*0.55, h*1.05),
+          r: rand(2*dpr, 5*dpr),
+          vx: rand(-0.05,0.05)*dpr, vy: rand(-0.15,-0.05)*dpr,
+          huePick: Math.random(),
+          tw: rand(0, Math.PI*2), tws: rand(0.005,0.012)
+        }));
+      }
+      function col(u){
+        if(u<0.5) return `rgba(84,178,255,${0.18 + u*0.25})`;
+        if(u<0.75) return `rgba(208,128,255,${0.18 + (u-0.5)*0.2})`;
+        return `rgba(255,147,76,${0.16 + (u-0.75)*0.18})`;
+      }
+      function draw(){
+        ctx.clearRect(0,0,w,h);
+        for(const p of wisps){
+          p.tw += p.tws;
+          const a = 0.5 + Math.sin(p.tw)*0.5;
+          p.x += p.vx + Math.sin(p.y*0.001)*0.12*dpr;
+          p.y += p.vy;
+          if(p.y < -20) { p.y = h + 10; p.x = rand(0,w); }
+          if(p.x < -10) p.x = w+10; if(p.x > w+10) p.x = -10;
+          const grad = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
+          grad.addColorStop(0, col(p.huePick));
+          grad.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.fillStyle = grad;
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.r*(2.5+a*1.2),0,Math.PI*2); ctx.fill();
+          ctx.globalCompositeOperation = 'source-over';
+        }
+        requestAnimationFrame(draw);
+      }
+      resize(); draw();
+      addEventListener('resize', resize, {passive:true});
+    })();
+
+    /* ===== Pointer-follow glow for .holo ===== */
+    (function(){
+      const cards = document.querySelectorAll('.holo');
+      cards.forEach(el=>{
+        el.addEventListener('pointermove', e=>{
+          const r = el.getBoundingClientRect();
+          el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+          el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        });
+      });
+    })();
+
+    /* ===== 3D Tilt Effect ===== */
+    (function() {
+        const cards = document.querySelectorAll('.card-3d-tilt');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const { width, height } = rect;
+                const rotateX = (y / height - 0.5) * -14; // rotation degree
+                const rotateY = (x / width - 0.5) * 14;
+                card.style.transition = 'transform 0.1s ease-out';
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transition = 'transform 0.4s ease-out';
+                card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+            });
+        });
+    })();
+    
+    /* ===== FAQ expand ===== */
+    document.querySelectorAll('.faq-item')?.forEach(item=>{
+      const btn=item.querySelector('.faq-header'); const body=item.querySelector('.faq-body'); const chev=item.querySelector('.faq-chevron');
+      btn.addEventListener('click', ()=>{
+        const open=btn.getAttribute('aria-expanded')==='true';
+        btn.setAttribute('aria-expanded', String(!open));
+        if(!open){
+          item.classList.add('open'); body.hidden=false; body.style.maxHeight=body.scrollHeight+'px'; body.classList.add('open'); chev.style.transform='rotate(180deg)';
+        } else {
+          body.style.maxHeight=body.scrollHeight+'px';
+          requestAnimationFrame(()=>{ body.style.maxHeight='0px'; body.classList.remove('open'); chev.style.transform='rotate(0deg)'; });
+          body.addEventListener('transitionend', ()=>{ if(body.style.maxHeight==='0px') body.hidden=true; item.classList.remove('open'); }, {once:true});
+        }
+      });
+    });
+
+    /* Initialize UI */
+    renderPhaseTable();
+    updateWhen();
+    toggleBar();
+    setInterval(toggleBar, 60_000);
+    loop(); // Main loop start
 });
 </script>
 </body>
 </html>
-
