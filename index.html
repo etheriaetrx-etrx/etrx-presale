@@ -364,6 +364,10 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         transform: translateY(0);
     }
 }
+.bonus-tier.active {
+    box-shadow: 0 0 0 2px var(--c-presale), 0 0 20px var(--c-presale);
+    transform: translateY(-4px) scale(1.02);
+}
 
 
 /* Reduced motion */
@@ -531,6 +535,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
             <li>ETRXDreamscapes: The Developer</li>
             <li>HeisCaifu: Telegram Page Owner</li>
             <li>DxCheetah: Telegram Page Mod</li>
+            <li>Laidy_zee: Social Moderator</li>
         </ul>
         
         <h2>10. Disclaimer</h2>
@@ -566,7 +571,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <section id="live-data" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
     <div class="glass card card-outline p-5 reveal holo">
         <h3 class="text-center text-lg font-semibold neon-text mb-4">Live Presale Status</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
             <div>
                 <div class="text-xs uppercase small-dim">Total Raised</div>
                 <div id="total-raised" class="text-3xl font-bold text-cyan-300 mt-1 tabular">0.00 ETH</div>
@@ -574,6 +579,17 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
             <div>
                 <div class="text-xs uppercase small-dim">Contributors</div>
                 <div id="total-contributors" class="text-3xl font-bold text-blue-300 mt-1 tabular">0</div>
+            </div>
+             <!-- NEW: Community Growth Stats -->
+            <div class="md:col-span-1 grid grid-cols-2 gap-2">
+                <div class="text-center">
+                    <div class="text-xs uppercase small-dim">Telegram</div>
+                    <div id="telegram-count" class="text-xl font-bold text-violet-300 mt-1 tabular">0</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-xs uppercase small-dim">X/Twitter</div>
+                    <div id="twitter-count" class="text-xl font-bold text-violet-300 mt-1 tabular">0</div>
+                </div>
             </div>
         </div>
         <div class="mt-4">
@@ -585,7 +601,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
                 <div id="live-progress-bar" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
             </div>
         </div>
-        <!-- NEW: Recent Contributions -->
+        <!-- Recent Contributions -->
         <div id="recent-contributions" class="mt-4 pt-4 border-t border-white/10">
             <h4 class="text-xs uppercase small-dim text-center mb-2">Recent Contributions</h4>
             <ul id="contribution-list" class="space-y-1">
@@ -636,7 +652,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
             </div>
         </div>
     
-        <!-- NEW: Contribution Card -->
+        <!-- Contribution Card -->
         <div id="contribution-card" class="glass card card-outline p-5 reveal holo flex flex-col" data-delay="100">
             <div id="contribute-ready">
                 <div class="flex justify-between items-baseline">
@@ -697,31 +713,31 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- NEW: Bonus Tiers Section -->
+<!-- Bonus Tiers Section -->
 <section id="bonus-tiers" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <h2 class="text-2xl font-bold neon-text reveal text-center">Contribution Bonus Tiers</h2>
     <p class="mt-2 max-w-2xl mx-auto text-center small-dim reveal">Contribute more to earn bonus $ETRX tokens. Bonuses are calculated based on your total contribution amount during the presale.</p>
     <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Tier 1 -->
-        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="0">
+        <div id="bonus-tier-1" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="0">
             <h4 class="font-bold text-lg text-cyan-300">Seeker</h4>
             <p class="text-2xl font-extrabold my-2">+2.5%</p>
             <p class="text-sm small-dim">Contribute 1+ ETH</p>
         </div>
         <!-- Tier 2 -->
-        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="100">
+        <div id="bonus-tier-2.5" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="100">
             <h4 class="font-bold text-lg text-blue-300">Guardian</h4>
             <p class="text-2xl font-extrabold my-2">+5%</p>
             <p class="text-sm small-dim">Contribute 2.5+ ETH</p>
         </div>
         <!-- Tier 3 -->
-        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="200">
+        <div id="bonus-tier-5" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="200">
             <h4 class="font-bold text-lg text-violet-300">Ascendant</h4>
             <p class="text-2xl font-extrabold my-2">+7.5%</p>
             <p class="text-sm small-dim">Contribute 5+ ETH</p>
         </div>
         <!-- Tier 4 -->
-        <div class="glass card card-outline holo p-5 text-center reveal" data-delay="300">
+        <div id="bonus-tier-10" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="300">
             <h4 class="font-bold text-lg text-orange-300">Harbinger</h4>
             <p class="text-2xl font-extrabold my-2">+10%</p>
             <p class="text-sm small-dim">Contribute 10+ ETH</p>
@@ -922,22 +938,31 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 <!-- Audit & Trust Section -->
 <section id="trust" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+     <h2 class="text-2xl font-bold neon-text reveal text-center mb-8">Trust & Security</h2>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
         <div class="glass card card-outline holo p-5 reveal">
             <h3 class="text-lg font-bold neon-text flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                Smart Contract Audit
+                Automated Security Scan
             </h3>
-            <p class="small-dim mt-2">Our token and presale contracts have been audited by <strong>CyberScope</strong>. Security and transparency are our top priorities.</p>
-            <a href="#" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Report (Link)</a>
+            <p class="small-dim mt-2">Our contracts passed a comprehensive automated scan by <strong>De.Fi</strong>. A full manual audit is planned post-presale.</p>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Scan Report</a>
         </div>
         <div class="glass card card-outline holo p-5 reveal" data-delay="50">
             <h3 class="text-lg font-bold neon-text flex items-center gap-2">
                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
                 Verified on Etherscan
             </h3>
-            <p class="small-dim mt-2">The $ETRX token contract will be verified on Etherscan post-TGE for full transparency. You can review the code and holder distribution at any time.</p>
+            <p class="small-dim mt-2">The $ETRX contract will be verified on Etherscan post-TGE for full transparency. Review the code and holder distribution at any time.</p>
             <a href="#" class="btn-ghost text-sm mt-3 inline-block opacity-50 cursor-not-allowed">View on Etherscan (Post-TGE)</a>
+        </div>
+        <div class="glass card card-outline holo p-5 reveal" data-delay="100">
+            <h3 class="text-lg font-bold neon-text flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-400"><path d="M20 6L9 17l-5-5"></path></svg>
+                Public-Facing Team
+            </h3>
+            <p class="small-dim mt-2">Our core team is public-facing with established social and professional profiles to ensure accountability and build community trust.</p>
+            <a href="#team" class="btn-ghost text-sm mt-3 inline-block">Meet the Team</a>
         </div>
     </div>
 </section>
@@ -947,34 +972,51 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <!-- Team -->
 <section id="team" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <h2 class="text-2xl font-bold neon-text reveal">Core Contributors</h2>
-    <p class="mt-2 max-w-3xl small-dim reveal">The pseudonymous team behind Etheria, dedicated to building a lasting world.</p>
-    <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3" style="perspective: 1000px;">
+    <p class="mt-2 max-w-3xl small-dim reveal">The public-facing team behind Etheria, dedicated to building a lasting world.</p>
+    <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4" style="perspective: 1000px;">
         <!-- Team Member 1 -->
-        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="0">
+        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="0">
             <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
                  <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--neon-cyan));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--neon-blue));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g1)"/><path d="M20,80 Q50,20 80,80" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round" /></svg>
             </div>
             <h4 class="mt-3 font-bold text-lg">ETRXDreamscapes</h4>
             <p class="text-sm small-dim">The Developer</p>
-            <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@ETRXDreamscapes</a>
+            <div class="mt-auto pt-3 flex justify-center gap-4">
+                <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white" aria-label="ETRXDreamscapes on X/Twitter"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            </div>
         </div>
         <!-- Team Member 2 -->
-        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="50">
+        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="50">
             <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-blue-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--neon-blue));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--neon-violet));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g2)"/><path d="M25,25 L75,75 M75,25 L25,75" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
             </div>
             <h4 class="mt-3 font-bold text-lg">HeisCaifu</h4>
             <p class="text-sm small-dim">Telegram Page Owner</p>
-            <a href="https://t.me/HeisCaifu" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@HeisCaifu</a>
+            <div class="mt-auto pt-3 flex justify-center gap-4">
+                <a href="https://x.com/HeisCaifu" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white" aria-label="HeisCaifu on X/Twitter"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            </div>
         </div>
         <!-- Team Member 3 -->
-        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal" data-delay="100">
+        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="100">
             <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-violet-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
                  <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--neon-violet));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--neon-orange));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g3)"/><circle cx="50" cy="50" r="25" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none"/></svg>
             </div>
             <h4 class="mt-3 font-bold text-lg">DxCheetah</h4>
             <p class="text-sm small-dim">Telegram Page Mod</p>
-            <a href="https://t.me/DxCheetah" target="_blank" rel="noopener noreferrer" class="mt-2 text-xs laser">@DxCheetah</a>
+            <div class="mt-auto pt-3 flex justify-center gap-4">
+                 <a href="https://x.com/0x_Cheetah_x0" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white" aria-label="DxCheetah on X/Twitter"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            </div>
+        </div>
+        <!-- Team Member 4 -->
+        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="150">
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-orange-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
+                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--neon-orange));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--neon-cyan));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g4)"/><path d="M50,20 L80,80 L20,80 Z" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h4 class="mt-3 font-bold text-lg">Laidy_zee</h4>
+            <p class="text-sm small-dim">Social Moderator</p>
+             <div class="mt-auto pt-3 flex justify-center gap-4">
+                 <a href="https://x.com/ThatDefi_gurll" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white" aria-label="Laidy_zee on X/Twitter"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            </div>
         </div>
     </div>
 </section>
@@ -1156,10 +1198,10 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     
     const BONUS_TIERS = [
-        { threshold: 10, bonus: 0.10 },   // 10% for 10+ ETH
-        { threshold: 5,  bonus: 0.075 }, // 7.5% for 5+ ETH
-        { threshold: 2.5, bonus: 0.05 },  // 5% for 2.5+ ETH
-        { threshold: 1, bonus: 0.025 }   // 2.5% for 1+ ETH
+        { threshold: 10, bonus: 0.10, id: 'bonus-tier-10' },
+        { threshold: 5,  bonus: 0.075, id: 'bonus-tier-5' },
+        { threshold: 2.5, bonus: 0.05, id: 'bonus-tier-2.5' },
+        { threshold: 1, bonus: 0.025, id: 'bonus-tier-1' }
     ];
 
     /* =================================================================
@@ -1363,10 +1405,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Sticky CTA
     const stickyCTA = $('stickyCTA');
-    function toggleStickyCTA(){
-      const days=(PRESALE_START - new Date())/86400000;
-      stickyCTA.classList.toggle('hidden', !(window.innerWidth < 768 && days>0 && days<=14));
-    }
+    const heroSection = document.querySelector('.hero');
+    const notifySection = $('notify');
+
+    const ctaObserver = new IntersectionObserver(entries => {
+        const heroEntry = entries.find(e => e.target === heroSection);
+        const notifyEntry = entries.find(e => e.target === notifySection);
+
+        let showButton = false;
+        // Show if hero is NOT visible
+        if (heroEntry && !heroEntry.isIntersecting) {
+            showButton = true;
+        }
+        // Hide if notify section IS visible
+        if (notifyEntry && notifyEntry.isIntersecting) {
+            showButton = false;
+        }
+        
+        const isPresaleOver = new Date() > PRESALE_END;
+        stickyCTA.classList.toggle('hidden', !showButton || isPresaleOver);
+
+    }, { threshold: [0, 0.1] }); // Trigger when element enters or leaves view
+
+    if(heroSection) ctaObserver.observe(heroSection);
+    if(notifySection) ctaObserver.observe(notifySection);
+
 
     // Active nav highlight
     const allNavLinks = [...document.querySelectorAll('header nav a, #more-menu-dropdown a')];
@@ -1696,6 +1759,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function updateETRXValue() {
         const ethAmount = parseFloat(ethAmountInput.value);
+
+        // Reset bonus tier highlights
+        document.querySelectorAll('.bonus-tier').forEach(el => el.classList.remove('active'));
+        
         if (isNaN(ethAmount) || ethAmount <= 0) {
             etrxReceiveInput.value = '';
             bonusDisplay.textContent = '';
@@ -1716,10 +1783,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (bonusRate > 0) {
                 bonusDisplay.textContent = `+${(bonusRate * 100).toFixed(1)}% bonus included!`;
+                // Highlight the active tier
+                const activeTier = BONUS_TIERS.find(t => totalEthContributed >= t.threshold);
+                if(activeTier) $(activeTier.id)?.classList.add('active');
             } else {
-                const nextTier = BONUS_TIERS.slice().reverse().find(t => ethAmount < t.threshold);
+                const nextTier = BONUS_TIERS.slice().reverse().find(t => totalEthContributed < t.threshold);
                 if (nextTier) {
-                    bonusDisplay.textContent = `Contribute ${(nextTier.threshold - ethAmount).toFixed(2)} more ETH for a bonus.`;
+                    bonusDisplay.textContent = `Contribute ${(nextTier.threshold - totalEthContributed).toFixed(2)} more ETH for a bonus.`;
                 } else {
                     bonusDisplay.textContent = '';
                 }
@@ -1832,9 +1902,15 @@ document.addEventListener('DOMContentLoaded', () => {
             summaryCard.classList.add('hidden');
             return;
         }
-        summaryCard.classList.remove('hidden');
-
+        
         const totalEth = getUserTotalContribution();
+        if(totalEth > 0) {
+            summaryCard.classList.remove('hidden');
+        } else {
+            summaryCard.classList.add('hidden');
+            return;
+        }
+
         $('user-total-eth').textContent = `${totalEth.toFixed(4)} ETH`;
         
         const tokenPrice = PHASES[0].price; // Use a base price for summary simplicity
@@ -1856,65 +1932,30 @@ document.addEventListener('DOMContentLoaded', () => {
         provider: null,
         contract: null,
         hardCap: 150, // ETH
-        simulatedState: { totalRaised: 6.78, contributors: 23 },
+        initialState: { 
+            totalRaised: 0, 
+            contributors: 0,
+            telegram: 14,
+            twitter: 39
+        },
         
         init() {
             if (typeof ethers === 'undefined') {
                 console.log("Ethers.js not loaded, on-chain data disabled.");
+                this.updateUI(this.initialState);
                 return;
             }
             this.provider = new ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
             fetchETHPrice();
             setInterval(fetchETHPrice, 60000);
 
-            // Check if presale has started to begin simulation
-            if (new Date() >= PRESALE_START && new Date() <= PRESALE_END) {
-                this.runSimulation();
-            } else {
-                 this.updateUI({ totalRaised: '0', contributors: '0' });
-            }
-            // REAL LOGIC:
+            // Display initial state statically. The simulation is removed.
+            this.updateUI(this.initialState);
+            
+            // REAL LOGIC (can be uncommented later)
             // this.contract = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
             // this.fetchData();
             // setInterval(() => this.fetchData(), 30000);
-        },
-        
-        runSimulation() {
-            this.updateUI(this.simulatedState);
-            const progressInterval = setInterval(() => {
-                if (new Date() > PRESALE_END) {
-                    clearInterval(progressInterval);
-                    return;
-                }
-                this.simulatedState.totalRaised += Math.random() * 0.2;
-                if (Math.random() > 0.7) {
-                    this.simulatedState.contributors += 1;
-                }
-                if (this.simulatedState.totalRaised >= this.hardCap) {
-                    this.simulatedState.totalRaised = this.hardCap;
-                    clearInterval(progressInterval); // Stop when cap is reached
-                }
-                this.updateUI(this.simulatedState);
-            }, 3500);
-
-            const contributionInterval = setInterval(() => {
-                 if (new Date() > PRESALE_END || this.simulatedState.totalRaised >= this.hardCap) {
-                    clearInterval(contributionInterval);
-                    return;
-                }
-                this.simulateNewContribution();
-            }, 5000);
-        },
-
-        simulateNewContribution() {
-            const randomAddress = `0x${[...Array(40)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')}`;
-            const randomAmount = (Math.random() * 1.5 + 0.05).toFixed(3);
-            const randomHash = `0x${[...Array(64)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')}`;
-            this.addContributionToList({
-                address: randomAddress,
-                amount: randomAmount,
-                hash: randomHash,
-            });
         },
 
         addContributionToList(tx) {
@@ -1937,11 +1978,18 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         updateUI(data) {
-            $('total-raised').textContent = `${parseFloat(data.totalRaised).toFixed(2)} ETH`;
-            $('total-contributors').textContent = data.contributors.toString();
-            const progress = (parseFloat(data.totalRaised) / this.hardCap) * 100;
+            const isPresaleActive = new Date() >= PRESALE_START && new Date() <= PRESALE_END;
+            const raised = isPresaleActive ? data.totalRaised : 0;
+            const contributors = isPresaleActive ? data.contributors : 0;
+
+            $('total-raised').textContent = `${parseFloat(raised).toFixed(2)} ETH`;
+            $('total-contributors').textContent = contributors.toString();
+            const progress = (parseFloat(raised) / this.hardCap) * 100;
             $('live-progress-bar').style.width = `${Math.min(100, progress)}%`;
             $('progress-percentage').textContent = `${Math.min(100, progress).toFixed(1)}%`;
+            
+            $('telegram-count').textContent = data.telegram.toLocaleString();
+            $('twitter-count').textContent = data.twitter.toLocaleString();
         },
     };
     
@@ -1990,10 +2038,8 @@ document.addEventListener('DOMContentLoaded', () => {
      * ===================== INITIALIZE APP ============================
      * ================================================================= */
     updateWhen();
-    toggleStickyCTA();
     updateContributionUIState();
     updateReferralUI();
-    setInterval(toggleStickyCTA, 60000);
     loop();
 });
 </script>
