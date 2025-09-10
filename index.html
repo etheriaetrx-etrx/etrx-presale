@@ -199,9 +199,12 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   border-radius:14px; font-weight:800; color:#02040a;
   background:linear-gradient(90deg, rgb(var(--neon-orange)), rgb(var(--neon-blue)));
   box-shadow: 0 0 16px rgba(255,147,76,.45), 0 0 24px rgba(84,178,255,.35);
+  transition: box-shadow .3s ease;
 }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-.btn-primary:hover:not(:disabled){ transform: translateY(-1px) scale(1.01) }
+.btn-primary:hover:not(:disabled){
+  box-shadow: 0 0 24px rgba(255,147,76,.65), 0 0 36px rgba(84,178,255,.55);
+}
 .btn-ghost{ border:1px solid rgba(0,255,255,.25); background: rgba(255,255,255,.03); padding:.6rem .9rem; border-radius:12px; }
 .hidden-important{ display:none !important }
 .small-dim{ color:var(--dim) }
@@ -254,7 +257,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 /* Badges + table */
 .badge{ display:inline-flex; align-items:center; gap:.4rem; padding:.15rem .5rem; border-radius:.5rem; font-size:.7rem; font-weight:700; letter-spacing:.02em }
 .badge-now{ background:rgba(16,185,129,.18); border:1px solid rgba(16,185,129,.35); color:#a7f3d0 }
-.row{ display:grid; grid-template-columns: 1fr auto auto; gap:.75rem; align-items:center }
+.row{ display:grid; grid-template-columns: 1fr auto auto; gap:.75rem; align-items:center; transition: background-color .2s ease; padding-left: 0.5rem; padding-right: 0.5rem; }
+.row.active-phase { background-color: rgba(0,255,255,0.05); border-radius: 0.5rem; }
 .row + .row{ border-top:1px solid rgba(255,255,255,.08); padding-top:.5rem; margin-top:.5rem }
 
 /* Pie Chart */
@@ -282,12 +286,23 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   content: ''; position: absolute; left: 1rem; top: .5rem; bottom: .5rem; width: 2px;
   background: linear-gradient(to bottom, var(--c-presale), var(--c-eco)); border-radius: 2px;
 }
-.timeline-item { position: relative; padding-left: 3rem; }
-.timeline-item::before {
-  content: ''; position: absolute; left: calc(1rem - 6px); top: 6px; width: 14px; height: 14px;
-  border-radius: 50%; background: var(--bg); border: 2px solid var(--c-presale);
+.timeline-item { position: relative; padding-left: 3rem; display: flex; align-items: flex-start; gap: 1rem; }
+.timeline-item .timeline-icon {
+    position: absolute;
+    left: calc(1rem - 12px);
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--c-presale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--c-presale);
 }
-.timeline-item:hover::before { border-color: white; }
+.timeline-item:hover .timeline-icon { border-color: white; color: white; }
+.timeline-item .timeline-content { padding-top: 2px; }
 
 /* Vesting Schedule */
 .vesting-bar { position: relative; height: 1rem; background-color: rgba(255,255,255,0.1); border-radius: .5rem; overflow: hidden; }
@@ -790,18 +805,33 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     <div class="mt-8 timeline space-y-8">
         <!-- Step 1 -->
         <div class="timeline-item reveal" data-delay="0">
-            <h4 class="font-bold text-white/90">1. Get a Wallet</h4>
-            <p class="small-dim">Download and set up a self-custody wallet like MetaMask, Rabby, or Trust Wallet. This is where your $ETRX tokens will be sent.</p>
+            <div class="timeline-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12"></path><path d="M20 12v4h-4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h4z"></path></svg>
+            </div>
+            <div class="timeline-content">
+                <h4 class="font-bold text-white/90">1. Get a Wallet</h4>
+                <p class="small-dim">Download and set up a self-custody wallet like MetaMask, Rabby, or Trust Wallet. This is where your $ETRX tokens will be sent.</p>
+            </div>
         </div>
         <!-- Step 2 -->
         <div class="timeline-item reveal" data-delay="50">
-            <h4 class="font-bold text-white/90">2. Fund with ETH</h4>
-            <p class="small-dim">Purchase Ethereum (ETH) from an exchange and send it to your wallet. Make sure you have enough for your desired contribution plus a little extra for gas fees.</p>
+             <div class="timeline-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 15 6 6v-4.5"></path><path d="m12 9-6-6v4.5"></path><path d="M14.5 12 21 5.5"></path><path d="M3 21l6.5-6.5"></path><path d="M12 9h.01"></path><path d="M12 15h.01"></path></svg>
+            </div>
+            <div class="timeline-content">
+                <h4 class="font-bold text-white/90">2. Fund with ETH</h4>
+                <p class="small-dim">Purchase Ethereum (ETH) from an exchange and send it to your wallet. Make sure you have enough for your desired contribution plus a little extra for gas fees.</p>
+            </div>
         </div>
         <!-- Step 3 -->
         <div class="timeline-item reveal" data-delay="100">
-            <h4 class="font-bold text-white/90">3. Connect & Contribute</h4>
-            <p class="small-dim">Return to this page when the presale is live, click "Connect Wallet", enter the amount of ETH you wish to contribute in the presale card, and approve the transaction.</p>
+             <div class="timeline-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
+            </div>
+            <div class="timeline-content">
+                <h4 class="font-bold text-white/90">3. Connect & Contribute</h4>
+                <p class="small-dim">Return to this page when the presale is live, click "Connect Wallet", enter the amount of ETH you wish to contribute in the presale card, and approve the transaction.</p>
+            </div>
         </div>
     </div>
 </section>
@@ -1134,6 +1164,15 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
       </button>
       <div class="faq-body" id="faq-how-body" role="region" aria-labelledby="faq-how-btn" hidden>
         <p class="small-dim">During the presale window, connect an Ethereum wallet using the button on this page, ensure you have ETH for the purchase and gas fees, and use the contribution form to complete your purchase. This is the only official method.</p>
+      </div>
+    </div>
+     <div class="faq-item reveal">
+      <button class="faq-header" aria-expanded="false" aria-controls="faq-claim-body" id="faq-claim-btn">
+        <span>How do I claim my $ETRX tokens?</span>
+        <span class="faq-chevron" aria-hidden="true">⌄</span>
+      </button>
+      <div class="faq-body" id="faq-claim-body" role="region" aria-labelledby="faq-claim-btn" hidden>
+        <p class="small-dim">There is no claim process needed. After the presale concludes and the Token Generation Event (TGE) is complete, your purchased $ETRX tokens (including any bonuses) will be airdropped directly to the wallet you used to contribute. Stay tuned to our official social channels for the TGE announcement.</p>
       </div>
     </div>
   </div>
@@ -2045,4 +2084,5 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
 
