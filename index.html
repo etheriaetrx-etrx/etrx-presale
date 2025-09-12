@@ -32,7 +32,7 @@
            script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline';
            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
            font-src https://fonts.gstatic.com;
-           connect-src 'self' https://formspree.io https://cloudflare-eth.com https://api.etherscan.io;
+           connect-src 'self' https://api.web3forms.com https://cloudflare-eth.com https://api.etherscan.io;
            worker-src 'self';
            object-src 'none';
            base-uri 'self';
@@ -410,6 +410,11 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 <a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
 
+<div id="announcement-banner" class="relative z-50 text-center p-2 text-sm bg-gradient-to-r from-cyan-500 to-violet-500">
+    <strong>Token Launch:</strong> $ETRX will be live on Mainnet September 13, 2025! The presale begins September 24.
+</div>
+
+
 <header id="siteHeader" class="sticky top-0 z-40">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
     <div class="flex items-center gap-3">
@@ -526,10 +531,10 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <h2>6. Roadmap</h2>
         <p>Our roadmap is divided into clear, deliverable phases.</p>
         <ul>
-            <li><strong>Phase 1: Foundation (Q3 2025):</strong> Launch presale site, publish whitepaper, and complete smart contract audit.</li>
-            <li><strong>Phase 2: Launch (Q4 2025):</strong> Conduct the $ETRX presale event, execute the Token Generation Event (TGE), and establish initial liquidity on a decentralized exchange.</li>
-            <li><strong>Phase 3: Utility (Late Sep 2025):</strong> Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on initial lore decisions.</li>
-            <li><strong>Phase 4: Expansion (Q2 2026 & Beyond):</strong> Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges to expand our ecosystem.</li>
+            <li><strong>Phase 1: Foundation (Q3 2025):</strong> Launch presale site, publish whitepaper, and complete contract scans.</li>
+            <li><strong>Phase 2: Token Live (Sep 13, 2025):</strong> Execute the Token Generation Event (TGE) on mainnet, making $ETRX publicly available for trading and establishing initial liquidity.</li>
+            <li><strong>Phase 3: Presale & Utility (Sep 24, 2025):</strong> Conduct the $ETRX presale event. Launch the first on-chain Artifacts mint. Integrate $ETRX for governance voting on initial lore decisions.</li>
+            <li><strong>Phase 4: Expansion (Q2 2026 & Beyond):</strong> Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges.</li>
         </ul>
         
         <h2>7. Competitive Landscape</h2>
@@ -629,45 +634,39 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 <!-- Presale Details Section -->
 <section id="presale-details" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
-    <!-- Countdown + phase + progress -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="glass card card-outline p-5 reveal holo" data-delay="0">
-            <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-[.15em] small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
-            <div id="countdown" class="flex gap-3 text-center" aria-live="polite"></div>
-
-            <div class="mt-3 text-xs flex flex-col gap-1 small-dim">
-                <div id="whenPrimary" class="text-sm text-white/90"></div>
-                <div id="whenSecondary"></div>
-                <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100" aria-pressed="false">Make Local primary</button>
+        <!-- Left Column: Details & Schedule -->
+        <div class="space-y-6">
+            <div class="glass card card-outline p-5 reveal holo" data-delay="0">
+                <div id="phaseLabel" class="mb-2 text-xs uppercase tracking-[.15em] small-dim">Presale begins in — <span id="modeLabel">UTC</span></div>
+                <div id="countdown" class="flex gap-3 text-center" aria-live="polite"></div>
+                <div class="mt-3 text-xs flex flex-col gap-1 small-dim">
+                    <div id="whenPrimary" class="text-sm text-white/90"></div>
+                    <div id="whenSecondary"></div>
+                    <button id="tzToggle" class="mt-2 self-start underline underline-offset-4 opacity-90 hover:opacity-100" aria-pressed="false">Make Local primary</button>
+                </div>
+                <!-- Overall Progress -->
+                <div class="mt-4">
+                    <div class="flex items-center justify-between text-xs small-dim">
+                        <span id="phaseName" class="font-semibold">Phase: Presale</span><span id="phaseEta"></span>
+                    </div>
+                    <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+                        <div id="phaseBar" class="h-full" style="background:linear-gradient(90deg, rgba(var(--neon-orange),1), rgba(var(--neon-blue),1)); width:0%"></div>
+                    </div>
+                    <div class="mt-1 text-xs small-dim" id="phaseDates"></div>
+                </div>
             </div>
 
-            <!-- Overall Progress -->
-            <div class="mt-4">
-                <div class="flex items-center justify-between text-xs small-dim">
-                    <span id="phaseName" class="font-semibold">Phase: Presale</span><span id="phaseEta"></span>
+            <div class="glass card card-outline p-5 reveal holo" data-delay="50">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-semibold neon-text">Phase Schedule</h3>
+                    <div id="phaseScheduleTz" class="text-[11px] small-dim opacity-80">Times in UTC</div>
                 </div>
-                <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
-                    <div id="phaseBar" class="h-full" style="background:linear-gradient(90deg, rgba(var(--neon-orange),1), rgba(var(--neon-blue),1)); width:0%"></div>
-                </div>
-                <div class="mt-1 text-xs small-dim" id="phaseDates"></div>
-            </div>
-
-            <!-- Tiered Pricing cards -->
-            <div class="mt-5 grid gap-3 sm:grid-cols-2">
-                <div class="glass card card-outline p-4 holo">
-                    <div class="text-xs uppercase small-dim">Current Phase Price</div>
-                    <div id="priceNow" class="mt-1 text-2xl font-extrabold text-green-400">$0.08</div>
-                    <div id="pricePhaseName" class="text-xs small-dim mt-1">Phase 1</div>
-                </div>
-                <div class="glass card card-outline p-4 holo">
-                    <div class="text-xs uppercase small-dim">Planned Listing Price</div>
-                    <div id="priceList" class="mt-1 text-xl font-bold text-white line-through">$0.12</div>
-                    <div id="discountLine" class="text-xs small-dim mt-1">33% below listing</div>
-                </div>
+                <div id="phaseTable" class="mt-2 space-y-2"></div>
             </div>
         </div>
     
-        <!-- Contribution Card -->
+        <!-- Right Column: Contribution Card -->
         <div id="contribution-card" class="glass card card-outline p-5 reveal holo flex flex-col" data-delay="100">
             <div id="contribute-ready">
                 <div class="flex justify-between items-baseline">
@@ -917,7 +916,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     <!-- Vesting Schedule Section -->
     <div class="mt-8 glass card card-outline p-5 reveal holo" data-delay="150">
         <h3 class="font-semibold text-lg neon-text">Team Vesting Schedule</h3>
-        <p class="text-sm small-dim mt-1 mb-4">To ensure long-term commitment, team tokens are subject to a 24-month linear vesting schedule with a 6-month cliff.</p>
+        <p class="text-sm small-dim mt-1 mb-4">To ensure long-term commitment, team tokens are subject to a 24-month linear vesting schedule with a 6-month cliff. The vesting contract is live and verifiable on the Sepolia testnet.</p>
         <div class="space-y-2 text-xs small-dim">
             <div class="vesting-bar">
                 <div class="vesting-fill" style="width: 100%;"></div>
@@ -929,6 +928,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
                 <span>24mo Complete</span>
             </div>
         </div>
+        <a href="https://sepolia.etherscan.io/address/0x953FeB4572296f4e997c8B5B4ACB79b04E994780" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Vesting Contract</a>
     </div>
 </section>
 
@@ -973,18 +973,18 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <div class="glass card card-outline holo p-5 reveal">
             <h3 class="text-lg font-bold neon-text flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                Automated Security Scan
+                Static Analysis Report
             </h3>
-            <p class="small-dim mt-2">Our contracts passed a comprehensive automated scan by <strong>De.Fi</strong>. A full manual audit is planned post-presale.</p>
-            <a href="#" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Scan Report</a>
+            <p class="small-dim mt-2">Our contracts passed a comprehensive static analysis scan via <strong>Slither</strong>, the industry-standard tool by Trail of Bits, with no critical issues found. A full manual audit is planned before presale.</p>
+            <a href="https://drive.google.com/file/d/1tVrT4XMKdF4LtFw4Q_mgmaAWEByeZf7k/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Slither Report</a>
         </div>
         <div class="glass card card-outline holo p-5 reveal" data-delay="50">
             <h3 class="text-lg font-bold neon-text flex items-center gap-2">
                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
                 Verified on Etherscan
             </h3>
-            <p class="small-dim mt-2">The $ETRX contract will be verified on Etherscan post-TGE for full transparency. Review the code and holder distribution at any time.</p>
-            <a href="#" class="btn-ghost text-sm mt-3 inline-block opacity-50 cursor-not-allowed">View on Etherscan (Post-TGE)</a>
+            <p class="small-dim mt-2">The $ETRX token and vesting contracts are verified on the Sepolia testnet. Mainnet verification will occur before the presale.</p>
+            <a href="https://sepolia.etherscan.io/address/0x52F8E416158C3B256883D8AC0752A3DC74C3A6a8" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Contracts on Sepolia</a>
         </div>
         <div class="glass card card-outline holo p-5 reveal" data-delay="100">
             <h3 class="text-lg font-bold neon-text flex items-center gap-2">
@@ -1059,19 +1059,19 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   <div class="mt-5 timeline space-y-6 small-dim">
     <div class="timeline-item reveal" data-delay="0">
       <h4 class="font-bold text-white/90">Phase 1: Foundation (Q3 2025)</h4>
-      <p>Launch presale site, publish whitepaper, and complete smart contract audit.</p>
+      <p>Launch presale site, publish whitepaper, and complete contract scans.</p>
     </div>
     <div class="timeline-item reveal" data-delay="50">
-      <h4 class="font-bold text-white/90">Phase 2: Launch (Q4 2025)</h4>
-      <p>Conduct the $ETRX presale event, execute the Token Generation Event (TGE), and establish initial liquidity on a decentralized exchange.</p>
+      <h4 class="font-bold text-white/90">Phase 2: Token Live (Sep 13, 2025)</h4>
+      <p>Execute the Token Generation Event (TGE) on mainnet, making $ETRX publicly available for trading and establishing initial liquidity.</p>
     </div>
     <div class="timeline-item reveal" data-delay="100">
-      <h4 class="font-bold text-white/90">Phase 3: Utility (Late Sep 2025)</h4>
-      <p>Launch of the first on-chain Artifacts mint. Integration of $ETRX for governance voting on initial lore decisions.</p>
+      <h4 class="font-bold text-white/90">Phase 3: Presale & Utility (Sep 24, 2025)</h4>
+      <p>Conduct the $ETRX presale event. Launch the first on-chain Artifacts mint. Integrate $ETRX for governance voting on initial lore decisions.</p>
     </div>
     <div class="timeline-item reveal" data-delay="150">
       <h4 class="font-bold text-white/90">Phase 4: Expansion (Q2 2026 & Beyond)</h4>
-      <p>Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges to expand our ecosystem.</p>
+      <p>Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges.</p>
     </div>
   </div>
 </section>
@@ -1083,15 +1083,12 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   <div class="glass card card-outline holo p-6 reveal">
     <h3 class="text-xl font-semibold neon-text">Get notified when the presale opens</h3>
 
-    <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row"
-          action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate autocomplete="on">
+    <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row">
       <label class="sr-only" for="email">Email</label>
       <input required id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"
              class="flex-1 rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"/>
       <!-- Honeypot -->
-      <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
-      <input type="hidden" name="form_name" value="notify"/>
-      <input type="hidden" name="_redirect" value="https://etheriaetrx-etrx.github.io/etrx-presale/#notify-success">
+      <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
       <button class="btn-primary" type="submit">Notify Me</button>
     </form>
 
@@ -1105,13 +1102,11 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
     <div class="mt-8">
       <h4 class="text-base font-semibold neon-text">Allowlist & Referrals</h4>
-      <form id="wlForm" class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]"
-            action="https://formspree.io/f/mandalyp" method="POST" data-formspree="true" novalidate>
+      <form id="wlForm" class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]">
         <label class="sr-only" for="wallet">Ethereum wallet or ENS</label>
         <input id="wallet" name="wallet" inputmode="text" autocomplete="off" placeholder="0x… or yourname.eth" spellcheck="false"
                class="rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400" />
-        <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
-        <input type="hidden" name="type" value="allowlist" />
+        <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
         <button class="btn-primary" type="submit">Join Allowlist</button>
       </form>
       
@@ -1145,7 +1140,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <span class="faq-chevron" aria-hidden="true">⌄</span>
       </button>
       <div class="faq-body" id="faq-when-body" role="region" aria-labelledby="faq-when-btn" hidden>
-        <p class="small-dim">Sep 24 → Oct 1, 2025 (UTC). Use the toggle above to view local time.</p>
+        <p class="small-dim">The presale runs from September 24 → October 1, 2025 (UTC). The $ETRX token will be live on mainnet before the presale, on September 13, 2025.</p>
       </div>
     </div>
     <div class="faq-item reveal">
@@ -1154,7 +1149,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <span class="faq-chevron" aria-hidden="true">⌄</span>
       </button>
       <div class="faq-body" id="faq-tge-body" role="region" aria-labelledby="faq-tge-btn" hidden>
-        <p class="small-dim">Yes—after the presale window closes, we’ll proceed with the Token Generation Event (TGE), which includes distributing tokens to presale wallets and seeding initial DEX listings/liquidity.</p>
+        <p class="small-dim">Yes, the Token Generation Event (TGE) will occur on September 13, 2025. This is when the token contract goes live on the Ethereum mainnet and initial liquidity is seeded on a DEX. Tokens purchased during the presale will be airdropped after the presale concludes.</p>
       </div>
     </div>
     <div class="faq-item reveal">
@@ -1163,7 +1158,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <span class="faq-chevron" aria-hidden="true">⌄</span>
       </button>
       <div class="faq-body" id="faq-how-body" role="region" aria-labelledby="faq-how-btn" hidden>
-        <p class="small-dim">During the presale window, connect an Ethereum wallet using the button on this page, ensure you have ETH for the purchase and gas fees, and use the contribution form to complete your purchase. This is the only official method.</p>
+        <p class="small-dim">During the presale window (starting Sep 24), connect an Ethereum wallet using the button on this page, ensure you have ETH for the purchase and gas fees, and use the contribution form to complete your purchase. This is the only official method.</p>
       </div>
     </div>
      <div class="faq-item reveal">
@@ -1172,7 +1167,16 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <span class="faq-chevron" aria-hidden="true">⌄</span>
       </button>
       <div class="faq-body" id="faq-claim-body" role="region" aria-labelledby="faq-claim-btn" hidden>
-        <p class="small-dim">There is no claim process needed. After the presale concludes and the Token Generation Event (TGE) is complete, your purchased $ETRX tokens (including any bonuses) will be airdropped directly to the wallet you used to contribute. Stay tuned to our official social channels for the TGE announcement.</p>
+        <p class="small-dim">There is no claim process needed. After the presale concludes, your purchased $ETRX tokens (including any bonuses) will be airdropped directly to the wallet you used to contribute. Stay tuned to our official social channels for the airdrop announcement.</p>
+      </div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-header" aria-expanded="false" aria-controls="faq-testnet-body" id="faq-testnet-btn">
+        <span>Why are the contracts on the Sepolia testnet?</span>
+        <span class="faq-chevron" aria-hidden="true">⌄</span>
+      </button>
+      <div class="faq-body" id="faq-testnet-body" role="region" aria-labelledby="faq-testnet-btn" hidden>
+        <p class="small-dim">For security and transparency, we first deploy our contracts to a public testnet like Sepolia. This allows us and the community to test all functionality (vesting, transfers, etc.) in a live environment without risking real funds. Once testing is complete, the final contracts will be deployed to the Ethereum mainnet for the token launch.</p>
       </div>
     </div>
   </div>
@@ -1343,6 +1347,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tzToggle.textContent='Make UTC primary';
             tzToggle.setAttribute('aria-pressed','true');
         }
+        renderPhaseTable();
     }
     tzToggle?.addEventListener('click', ()=>{ primaryUTC=!primaryUTC; safeSet('etrx_tz', primaryUTC ? 'utc' : 'local'); updateWhen(); });
 
@@ -1382,6 +1387,32 @@ document.addEventListener('DOMContentLoaded', () => {
       d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text">${String(v).padStart(2,'0')}</div><div class="text-[11px] uppercase small-dim">${label}</div>`;
       return d;
     }
+    
+    // Function to render the phase schedule table
+    function renderPhaseTable(){
+        const now = new Date();
+        const wrap = $('phaseTable');
+        if (!wrap) return;
+        wrap.innerHTML = '';
+        
+        const fmtBase = { month:'short', day:'2-digit' };
+        const fmt = (d) => d.toLocaleString([], { ...fmtBase, timeZone: primaryUTC ? 'UTC' : undefined });
+
+        PHASES.forEach(p => {
+            const row = document.createElement('div');
+            row.className = 'row text-sm';
+            const isNow = now >= new Date(p.start) && now <= new Date(p.end);
+            if(isNow) row.classList.add('active-phase');
+            
+            row.innerHTML = `
+              <div class="font-semibold">${p.name} ${isNow ? '<span class="badge badge-now">Now</span>' : ''}</div>
+              <div class="opacity-90">$${p.price.toFixed(3)}</div>
+              <div class="small-dim">${fmt(new Date(p.start))} → ${fmt(new Date(p.end))}</div>
+            `;
+            wrap.appendChild(row);
+        });
+    }
+
 
     // Dynamic pricing card update
     function setPriceCard(phaseInfo){
@@ -1390,18 +1421,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const isActive = !phaseInfo.pre && !phaseInfo.post && !phaseInfo.upcoming;
         const discountPct = Math.max(0, (1 - price / LISTING_PRICE) * 100);
 
-        $('priceNow').textContent = `$${price.toFixed(3)}`;
-        $('pricePhaseName').textContent = label + (isActive ? ' (Active)' : '');
+        const priceNowEl = $('priceNow');
+        const pricePhaseNameEl = $('pricePhaseName');
+        if(priceNowEl) priceNowEl.textContent = `$${price.toFixed(3)}`;
+        if(pricePhaseNameEl) pricePhaseNameEl.textContent = label + (isActive ? ' (Active)' : '');
         
         const listingPriceEl = $('priceList');
-        if (phaseInfo.post) {
-            listingPriceEl.classList.remove('line-through');
-            listingPriceEl.textContent = `$${LISTING_PRICE.toFixed(2)} (Live)`;
-            $('discountLine').textContent = 'Listing Active';
-        } else {
-            listingPriceEl.classList.add('line-through');
-            listingPriceEl.textContent = `$${LISTING_PRICE.toFixed(2)}`;
-            $('discountLine').textContent = `${discountPct.toFixed(0)}% below listing`;
+        const discountLineEl = $('discountLine');
+
+        if(listingPriceEl && discountLineEl) {
+            if (phaseInfo.post) {
+                listingPriceEl.classList.remove('line-through');
+                listingPriceEl.textContent = `$${LISTING_PRICE.toFixed(2)} (Live)`;
+                discountLineEl.textContent = 'Listing Active';
+            } else {
+                listingPriceEl.classList.add('line-through');
+                listingPriceEl.textContent = `$${LISTING_PRICE.toFixed(2)}`;
+                discountLineEl.textContent = `${discountPct.toFixed(0)}% below listing`;
+            }
         }
         updateETRXValue(); // Update calculator when price changes
     }
@@ -1414,15 +1451,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const ph = currentPhaseInfo;
 
         // Phase label + name
-        phaseLabel.innerHTML = `Presale ${ph.pre ? 'begins' : ph.post ? 'ended' : 'ends'} in — <span>${primaryUTC ? 'UTC' : 'Local'}</span>`;
-        $('phaseName').textContent = `Phase: ${ph.name}`;
+        if(phaseLabel) phaseLabel.innerHTML = `Presale ${ph.pre ? 'begins' : ph.post ? 'ended' : 'ends'} in — <span>${primaryUTC ? 'UTC' : 'Local'}</span>`;
+        if($('phaseName')) $('phaseName').textContent = `Phase: ${ph.name}`;
 
         // Countdown target
         const target = ph.pre ? PRESALE_START : (ph.post ? now : new Date(ph.end));
 
         // Countdown render
         const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
-        if(s!==lastSecond){ lastSecond=s; const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; countdown.replaceChildren(buildCountdownBox(d,'d'),buildCountdownBox(h,'h'),buildCountdownBox(m,'m'),buildCountdownBox(ss,'s')); }
+        if(s!==lastSecond){ 
+            lastSecond=s; 
+            const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; 
+            if(countdown) countdown.replaceChildren(buildCountdownBox(d,'d'),buildCountdownBox(h,'h'),buildCountdownBox(m,'m'),buildCountdownBox(ss,'s')); 
+            renderPhaseTable(); // Update table once per second
+        }
 
         // Progress bar and ETA
         let pct=0, etaText='';
@@ -1434,8 +1476,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const endIn=Math.max(0,eT-now); const hrs=Math.floor(endIn/36e5), mins=Math.floor((endIn%36e5)/6e4);
             etaText=`Ends in ${hrs}h ${String(mins).padStart(2,'0')}m`;
         }
-        $('phaseBar').style.width=`${pct}%`;
-        $('phaseEta').textContent = etaText;
+        if($('phaseBar')) $('phaseBar').style.width=`${pct}%`;
+        if($('phaseEta')) $('phaseEta').textContent = etaText;
         
         setPriceCard(ph);
         updateContributionUIState();
@@ -1462,7 +1504,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const isPresaleOver = new Date() > PRESALE_END;
-        stickyCTA.classList.toggle('hidden', !showButton || isPresaleOver);
+        if(stickyCTA) stickyCTA.classList.toggle('hidden', !showButton || isPresaleOver);
 
     }, { threshold: [0, 0.1] }); // Trigger when element enters or leaves view
 
@@ -1586,9 +1628,25 @@ document.addEventListener('DOMContentLoaded', () => {
     /* =================================================================
      * ======================== FORM LOGIC =============================
      * ================================================================= */
-    async function postFormspree(data){
-        const res = await fetch('https://formspree.io/f/mandalyp',{ method:'POST', headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }, body: JSON.stringify(data) });
-        if(!res.ok) throw new Error('Bad response');
+     async function postFormData(data){
+        // IMPORTANT: Replace this with your own access key from web3forms.com
+        data.access_key = '953c1e4c-5fd2-4315-b3e8-cd852a739e1c'; 
+
+        const ctrl = new AbortController();
+        const t = setTimeout(()=>ctrl.abort(), 10000);
+        try{
+            const res = await fetch("https://api.web3forms.com/submit",{
+                method:'POST',
+                headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+                body: JSON.stringify(data),
+                signal: ctrl.signal
+            });
+            const result = await res.json();
+            if(!result.success) throw new Error('Submission failed');
+            return result;
+        } finally {
+            clearTimeout(t);
+        }
     }
 
     // Notify Form
@@ -1596,8 +1654,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (notifyForm){
         notifyForm.addEventListener('submit', async (e)=>{
             e.preventDefault();
+            const fd = new FormData(notifyForm);
+            const data = Object.fromEntries(fd.entries());
+             if((data._honey || '').trim()) return; // Honeypot check
             try{
-                await postFormspree(Object.fromEntries(new FormData(notifyForm).entries()));
+                await postFormData(data);
                 notifyForm.classList.add('hidden'); $('notifySuccess').classList.remove('hidden');
                 toast('Check your email to confirm ✉️'); soundManager.play('G5', '8n');
             } catch(err){
@@ -1606,24 +1667,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    if(location.hash==='#notify-success'){ notifyForm?.classList.add('hidden'); $('notifySuccess')?.classList.remove('hidden'); }
 
     // Allowlist Form
     const wlForm=$('wlForm');
     if (wlForm) {
         wlForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            // ENS resolution logic here if needed...
+            const fd = new FormData(wlForm);
+            let data = Object.fromEntries(fd.entries());
+            if((data._honey || '').trim()) return; // Honeypot check
+            
+            // Basic validation
+            let wallet = (data.wallet || '').trim();
+            if (!/^0x[a-fA-F0-9]{40}$/.test(wallet) && !/^[a-z0-9-]+(\.[a-z0-9-]+)*\.eth$/i.test(wallet)) {
+                 $('wlMsg').textContent='Please enter a valid ETH address or ENS name.'; 
+                 $('wlMsg').classList.remove('hidden');
+                 return;
+            }
             try {
-                await postFormspree(Object.fromEntries(new FormData(wlForm).entries()));
+                await postFormData({ wallet: wallet, type: 'allowlist' });
                 wlForm.classList.add('hidden'); $('wlSuccess').classList.remove('hidden');
                 toast('Wallet submitted ✅'); soundManager.play('G5', '8n');
             } catch (err) {
-                $('wlMsg').textContent='Submission failed, please try again.'; $('wlMsg').classList.remove('hidden');
+                $('wlMsg').textContent='Submission failed, please try again.'; 
+                $('wlMsg').classList.remove('hidden');
                 toast('Submission failed', true);
             }
         });
     }
+
 
     /* =================================================================
      * ====================== MODAL MANAGER ============================
@@ -1892,33 +1964,6 @@ document.addEventListener('DOMContentLoaded', () => {
             contributeBtn.disabled = false;
             contributeBtn.textContent = 'Contribute Now';
         }, 1500);
-
-        // --- REAL TRANSACTION LOGIC ---
-        /*
-        try {
-            const valueHex = ethers.utils.parseEther(ethAmountStr)._hex;
-            const tx = await activeProvider.request({
-                method: 'eth_sendTransaction',
-                params: [{
-                    from: connectedAccount,
-                    to: onChain.contractAddress, // Presale contract address
-                    value: valueHex,
-                }]
-            });
-            toast(`Transaction sent! Hash: ${shortAddr(tx)}`);
-            // Here you would wait for transaction confirmation and then update user state
-        } catch (error) {
-            console.error("Contribution failed:", error);
-            if (error.code === 4001) { // User rejected transaction
-                toast('Transaction rejected.', true);
-            } else {
-                toast('Transaction failed.', true);
-            }
-        } finally {
-            contributeBtn.disabled = false;
-            contributeBtn.textContent = 'Contribute Now';
-        }
-        */
     });
     
     function getUserTotalContribution() {
@@ -1988,13 +2033,8 @@ document.addEventListener('DOMContentLoaded', () => {
             fetchETHPrice();
             setInterval(fetchETHPrice, 60000);
 
-            // Display initial state statically. The simulation is removed.
+            // Display initial state statically.
             this.updateUI(this.initialState);
-            
-            // REAL LOGIC (can be uncommented later)
-            // this.contract = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
-            // this.fetchData();
-            // setInterval(() => this.fetchData(), 30000);
         },
 
         addContributionToList(tx) {
@@ -2018,8 +2058,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updateUI(data) {
             const isPresaleActive = new Date() >= PRESALE_START && new Date() <= PRESALE_END;
-            const raised = isPresaleActive ? data.totalRaised : 0;
-            const contributors = isPresaleActive ? data.contributors : 0;
+            const raised = isPresaleActive ? data.totalRaised : 0; // Show 0 if not active
+            const contributors = isPresaleActive ? data.contributors : 0; // Show 0 if not active
 
             $('total-raised').textContent = `${parseFloat(raised).toFixed(2)} ETH`;
             $('total-contributors').textContent = contributors.toString();
@@ -2084,5 +2124,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
 
