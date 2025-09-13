@@ -1058,8 +1058,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   <h2 class="text-2xl font-bold neon-text reveal">Roadmap: The Path Forward</h2>
   <div class="mt-5 timeline space-y-6 small-dim">
     <div class="timeline-item reveal" data-delay="0">
-      <h4 class="font-bold text-white/90">Phase 1: Foundation (Q3 2025)</h4>
-      <p>Launch presale site, publish whitepaper, and complete contract scans.</p>
+      <h4 class="font-bold text-white/90">Phase 1: Foundation (Completed)</h4>
+      <p>Presale site launched, whitepaper published, and initial contract scans completed.</p>
     </div>
     <div class="timeline-item reveal" data-delay="50">
       <h4 class="font-bold text-white/90">Phase 2: Token Live (Completed)</h4>
@@ -1189,10 +1189,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     <div class="flex items-center gap-4">
         <a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" aria-label="Follow Etheria on X/Twitter">X/Twitter</a>
         <a class="laser hover:text-white" href="https://t.me/Etheria_official" target="_blank" rel="noopener noreferrer" aria-label="Join Etheria on Telegram">Telegram</a>
-        <button id="mute-button" class="text-white/70 hover:text-white" aria-label="Toggle Sound">
-            <svg id="sound-on-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-            <svg id="sound-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-        </button>
     </div>
     <p class="mt-2 max-w-3xl text-center text-xs opacity-80">
       Disclaimer: This site and presale information are for community use only and do not constitute an offer to sell or a solicitation to buy any financial instrument. Participation may be restricted by local laws. Crypto assets are volatile and carry significant risk. DYOR.
@@ -1201,6 +1197,11 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 </footer>
 
 <a href="#notify" id="stickyCTA" class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">Get notified for $ETRX</a>
+
+<button id="mute-button" class="fixed bottom-4 left-4 z-50 btn-primary rounded-full p-3 shadow-lg" aria-label="Toggle Sound">
+    <svg id="sound-on-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+    <svg id="sound-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+</button>
 
 <!-- Schema.org event (SEO) -->
 <script type="application/ld+json">
@@ -1270,40 +1271,64 @@ document.addEventListener('DOMContentLoaded', () => {
      * ====================== SOUND MANAGER ============================
      * ================================================================= */
     const soundManager = {
-        isMuted: safeGet('etrx_sound_muted', 'true') === 'true', // Muted by default
+        isMuted: safeGet('etrx_sound_muted', 'true') === 'true',
+        isStarted: false,
         synth: null,
+
+        async start() {
+            if (this.isStarted || typeof Tone === 'undefined') return;
+            try {
+                await Tone.start();
+                this.synth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: 'sine' },
+                    envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 },
+                    volume: -20
+                }).toDestination();
+                this.isStarted = true;
+                console.log("Audio context started.");
+            } catch(e) {
+                console.error("Could not start audio context:", e);
+            }
+        },
+
         init() {
             if (typeof Tone === 'undefined') {
-                console.log("Tone.js not loaded, sounds disabled.");
-                $('mute-button').style.display = 'none';
+                const muteButton = $('mute-button');
+                if(muteButton) muteButton.style.display = 'none';
                 return;
             }
-            this.synth = new Tone.PolySynth(Tone.Synth, {
-                oscillator: { type: 'sine' },
-                envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 },
-                volume: -20
-            }).toDestination();
+
+            // A single, one-time event to start the audio context on first interaction
+            const startAudio = async () => {
+                await this.start();
+            };
+            document.body.addEventListener('click', startAudio, { once: true });
+            document.body.addEventListener('touchend', startAudio, { once: true });
             
             const muteButton = $('mute-button');
-            muteButton.addEventListener('click', () => this.toggleMute());
+            muteButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevents the body's 'startAudio' listener from firing on this same click
+                this.toggleMute();
+            });
             this.updateButton();
         },
+
         play(note, duration = '16n') {
-            if (!this.isMuted && this.synth) {
-                try {
-                    this.synth.triggerAttackRelease(note, duration);
-                } catch(e) {
-                    // Could fail if user hasn't interacted, ignore gracefully
-                }
+            if (!this.isMuted && this.isStarted && this.synth) {
+                this.synth.triggerAttackRelease(note, duration, Tone.now());
             }
         },
+
         toggleMute() {
             this.isMuted = !this.isMuted;
             safeSet('etrx_sound_muted', this.isMuted);
             this.updateButton();
-            this.play('C5');
+            this.play('C5'); // Play feedback sound
         },
+
         updateButton() {
+            const muteButton = $('mute-button');
+            if (!muteButton) return;
             $('sound-on-icon').classList.toggle('hidden', this.isMuted);
             $('sound-off-icon').classList.toggle('hidden', !this.isMuted);
         }
@@ -1311,8 +1336,11 @@ document.addEventListener('DOMContentLoaded', () => {
     soundManager.init();
 
     document.querySelectorAll('button, a.laser').forEach(el => {
-        el.addEventListener('mouseenter', () => soundManager.play('C6', '32n'));
-        el.addEventListener('click', () => soundManager.play('E6', '16n'));
+        // We handle the mute button separately
+        if (el.id !== 'mute-button') {
+            el.addEventListener('mouseenter', () => soundManager.play('C6', '32n'));
+            el.addEventListener('click', () => soundManager.play('E6', '16n'));
+        }
     });
     
     /* =================================================================
@@ -1324,8 +1352,8 @@ document.addEventListener('DOMContentLoaded', () => {
     addEventListener('scroll', ()=> header.classList.toggle('header-float', scrollY > 12), { passive:true });
 
     // LocalStorage helpers
-    function safeGet(key, fallback=null){ try{ return localStorage.getItem(key) ?? fallback }catch{ return fallback } }
-    function safeSet(key, val){ try{ localStorage.setItem(key, val) }catch{} }
+    function safeGet(key, fallback=null){ try{ return localStorage.getItem(key) ?? fallback }catch(e){ return fallback } }
+    function safeSet(key, val){ try{ localStorage.setItem(key, val) }catch(e){} }
 
     // UTC/Local Time Toggle
     const tzToggle = $('tzToggle');
