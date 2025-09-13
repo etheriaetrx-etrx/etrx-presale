@@ -59,7 +59,6 @@
 </script>
 <script src="https://cdn.tailwindcss.com?v=3" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js" defer></script>
 
 
 <!-- Assets -->
@@ -1298,28 +1297,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // A single, one-time event to start the audio context on first interaction
             const startAudio = async () => {
                 await this.start();
+                document.body.removeEventListener('click', startAudio);
+                document.body.removeEventListener('touchend', startAudio);
             };
             document.body.addEventListener('click', startAudio, { once: true });
             document.body.addEventListener('touchend', startAudio, { once: true });
             
             const muteButton = $('mute-button');
             muteButton.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevents the body's 'startAudio' listener from firing on this same click
+                e.stopPropagation(); 
                 this.toggleMute();
             });
             this.updateButton();
         },
 
-        play(note, duration = '16n') {
+        async play(note, duration = '16n') {
+            if (!this.isStarted) await this.start();
             if (!this.isMuted && this.isStarted && this.synth) {
                 this.synth.triggerAttackRelease(note, duration, Tone.now());
             }
         },
 
-        toggleMute() {
+        async toggleMute() {
+            if (!this.isStarted) await this.start();
             this.isMuted = !this.isMuted;
             safeSet('etrx_sound_muted', this.isMuted);
             this.updateButton();
@@ -1334,14 +1336,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     soundManager.init();
-
-    document.querySelectorAll('button, a.laser').forEach(el => {
-        // We handle the mute button separately
-        if (el.id !== 'mute-button') {
-            el.addEventListener('mouseenter', () => soundManager.play('C6', '32n'));
-            el.addEventListener('click', () => soundManager.play('E6', '16n'));
-        }
-    });
     
     /* =================================================================
      * ====================== UI & ANIMATIONS ==========================
@@ -1688,7 +1682,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try{
                 await postFormData(data);
                 notifyForm.classList.add('hidden'); $('notifySuccess').classList.remove('hidden');
-                toast('Check your email to confirm ✉️'); soundManager.play('G5', '8n');
+                toast('Check your email to confirm ✉️'); 
             } catch(err){
                 $('notifyMsg').textContent='Submission failed. Please try again.'; $('notifyMsg').classList.remove('hidden');
                 toast('Submission failed. Try again.', true);
@@ -1715,7 +1709,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 await postFormData({ wallet: wallet, type: 'allowlist' });
                 wlForm.classList.add('hidden'); $('wlSuccess').classList.remove('hidden');
-                toast('Wallet submitted ✅'); soundManager.play('G5', '8n');
+                toast('Wallet submitted ✅');
             } catch (err) {
                 $('wlMsg').textContent='Submission failed, please try again.'; 
                 $('wlMsg').classList.remove('hidden');
@@ -1834,7 +1828,6 @@ document.addEventListener('DOMContentLoaded', () => {
       provider.on?.('chainChanged', onChainChanged);
       
       toast('Wallet connected ✅');
-      soundManager.play('A5', '8n');
       updateContributionUIState();
       updateReferralUI();
       updateUserContributionSummary();
@@ -1977,7 +1970,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             const txHash = `0x${[...Array(64)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')}`;
             toast(`Transaction sent! ${shortAddr(txHash)}`);
-            soundManager.play('C6', '8n');
             
             // Add to user's total and update UI
             const currentTotal = getUserTotalContribution();
@@ -2135,7 +2127,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             document.execCommand('copy');
             toast('Referral link copied!');
-            soundManager.play('C6', '8n');
         } catch (err) {
             toast('Could not copy link.', true);
         }
