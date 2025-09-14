@@ -16,13 +16,13 @@
 <meta property="og:description" content="The official utility token of Etheria. Presale runs Sep 24 → Oct 1, 2025 (UTC).">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://etheriaetrx-etrx.github.io/etrx-presale/">
-<meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
+<meta property="og:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/background.png">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="720">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@ETRXDreamscapes">
-<meta name="twitter:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
+<meta name="twitter:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/background.png">
 <meta name="twitter:image:alt" content="Etheria presale hero art">
 
 <!-- CSP (single-file build) -->
@@ -38,7 +38,7 @@
            base-uri 'self';
            frame-ancestors 'none';
            upgrade-insecure-requests">
-<meta name="theme-color" content="#05070d">
+<meta name="theme-color" content="#100c14">
 <meta name="robots" content="index,follow,max-image-preview:large"/>
 
 <!-- Performance -->
@@ -62,8 +62,8 @@
 
 
 <!-- Assets -->
-<link rel="preload" as="image" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png">
-<link rel="icon" type="image/png" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png">
+<link rel="preload" as="image" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/background.png">
+<link rel="icon" type="image/png" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png">
 
 <!--
   NOTE: In a production build, this CSS would be moved to an external file (e.g., style.css)
@@ -72,10 +72,15 @@
 <style>
 :root{
   color-scheme: dark;
-  --bg:#05070d; --panel:rgba(255,255,255,.06); --ring:rgba(0,255,255,.18);
-  --dim:rgba(255,255,255,.72); --muted:rgba(255,255,255,.9);
-  --neon-cyan: 0 255 255; --neon-blue: 84 178 255; --neon-violet: 208 128 255; --neon-orange: 255 147 76;
-  --c-presale: #00ffff; --c-liquidity: #54b2ff; --c-eco: #d080ff; --c-team: #ff934c; --c-treasury: #9ca3af;
+  --bg:#100c14; --panel:rgba(255,204,137,.06); --ring:rgba(255,140,66,.18);
+  --dim:rgba(255,230,200,.72); --muted:rgba(255,240,220,.9);
+  
+  --c-fire: 255 140 66; 
+  --c-dusk: 91 69 112; 
+  --c-ember: 229 90 90;
+  --c-highlight: 255 204 137;
+
+  --c-presale: #ff8c42; --c-liquidity: #ffb86c; --c-eco: #6247aa; --c-team: #e06c75; --c-treasury: #9ca3af;
 }
 html{scroll-behavior:smooth;scroll-padding-top:80px}
 *{box-sizing:border-box}
@@ -104,9 +109,9 @@ main, section, header, footer, .glass, .card { position:relative; z-index:2; iso
 #bgAurora{
   position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
   background:
-    radial-gradient(120% 60% at 50% -10%, rgba(0,255,255,.10), transparent 60%),
-    radial-gradient(80% 50% at 20% 10%, rgba(84,178,255,.12), transparent 60%),
-    radial-gradient(80% 50% at 80% 15%, rgba(255,147,76,.10), transparent 60%);
+    radial-gradient(120% 60% at 50% -10%, rgba(var(--c-ember),.10), transparent 60%),
+    radial-gradient(80% 50% at 20% 10%, rgba(var(--c-dusk),.12), transparent 60%),
+    radial-gradient(80% 50% at 80% 15%, rgba(var(--c-fire),.10), transparent 60%);
 }
 #bgAurora::before,
 #bgAurora::after{
@@ -114,19 +119,19 @@ main, section, header, footer, .glass, .card { position:relative; z-index:2; iso
   mix-blend-mode:screen; opacity:.45;
   background:
     conic-gradient(from 0deg at 50% 50%,
-      rgba(0,255,255,.28),
-      rgba(84,178,255,.28),
-      rgba(208,128,255,.26),
-      rgba(255,147,76,.22),
-      rgba(0,255,255,.28));
+      rgba(var(--c-fire),.28),
+      rgba(var(--c-ember),.28),
+      rgba(var(--c-dusk),.26),
+      rgba(var(--c-highlight),.22),
+      rgba(var(--c-fire),.28));
   animation: auroraSweep 28s linear infinite;
 }
 #bgAurora::after{
   opacity:.30; filter: blur(34px);
   background:
-    radial-gradient(120% 120% at 30% 20%, rgba(0,255,255,.22), transparent 55%),
-    radial-gradient(120% 120% at 70% 25%, rgba(208,128,255,.16), transparent 55%),
-    radial-gradient(140% 100% at 50% -10%, rgba(84,178,255,.18), transparent 60%);
+    radial-gradient(120% 120% at 30% 20%, rgba(var(--c-fire),.22), transparent 55%),
+    radial-gradient(120% 120% at 70% 25%, rgba(var(--c-dusk),.16), transparent 55%),
+    radial-gradient(140% 100% at 50% -10%, rgba(var(--c-ember),.18), transparent 60%);
   animation: auroraDrift 22s ease-in-out infinite alternate;
 }
 @keyframes auroraSweep { to { transform: rotate(360deg); } }
@@ -137,32 +142,32 @@ main, section, header, footer, .glass, .card { position:relative; z-index:2; iso
 
 /* Neon text */
 .neon-text{
-  text-shadow: 0 0 6px rgba(var(--neon-cyan)/.8), 0 0 24px rgba(var(--neon-blue)/.45), 0 0 48px rgba(var(--neon-violet)/.35);
+  text-shadow: 0 0 6px rgba(var(--c-highlight)/.8), 0 0 24px rgba(var(--c-fire)/.45), 0 0 48px rgba(var(--c-dusk)/.35);
 }
 .neon-grad{
-  background: linear-gradient(90deg, rgb(var(--neon-orange)), rgb(var(--neon-blue)));
+  background: linear-gradient(90deg, rgb(var(--c-fire)), rgb(var(--c-highlight)));
   -webkit-background-clip:text; background-clip:text; color:transparent;
   background-size:200% 100%; animation: sweep 6s linear infinite;
 }
 @keyframes sweep{ to{ background-position:-200% 0 } }
 
 /* Links laser underline */
-a.laser{ background: linear-gradient(90deg, #00ffff 0 0) bottom left / 0 2px no-repeat; transition: background-size .3s ease; }
-a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
+a.laser{ background: linear-gradient(90deg, var(--c-presale) 0 0) bottom left / 0 2px no-repeat; transition: background-size .3s ease; }
+a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) }
 
 /* Cards */
 .glass{backdrop-filter: blur(12px); background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border:1px solid var(--ring)}
 .card{
-  border-radius:18px; box-shadow: 0 0 0 1px rgba(0,255,255,.08) inset, 0 8px 30px rgba(0,255,255,.08), 0 0 60px rgba(130,200,255,.06);
+  border-radius:18px; box-shadow: 0 0 0 1px rgba(var(--c-fire),.08) inset, 0 8px 30px rgba(var(--c-fire),.08), 0 0 60px rgba(var(--c-dusk),.06);
   transition: transform .2s ease, box-shadow .25s ease;
 }
 .card:hover{ transform: translateY(-2px) }
 .card:active{ transform: translateY(0) scale(.997) }
-.card:focus-within{ box-shadow: 0 0 0 2px rgba(0,255,255,.25), 0 8px 30px rgba(0,255,255,.08) }
+.card:focus-within{ box-shadow: 0 0 0 2px rgba(var(--c-fire),.25), 0 8px 30px rgba(var(--c-fire),.08) }
 .card-outline{position:relative}
 .card-outline::before{
   content:""; position:absolute; inset:-1px; border-radius:inherit; pointer-events:none;
-  background: conic-gradient(from 180deg at 50% 50%, rgba(var(--neon-orange)/.7), rgba(var(--neon-blue)/.7), rgba(var(--neon-violet)/.7), rgba(var(--neon-orange)/.7));
+  background: conic-gradient(from 180deg at 50% 50%, rgba(var(--c-fire)/.7), rgba(var(--c-ember)/.7), rgba(var(--c-dusk)/.7), rgba(var(--c-fire)/.7));
   -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude;
   filter: blur(8px) saturate(1.4); opacity:.35; animation: spinBorder 10s linear infinite;
@@ -177,16 +182,16 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 .holo::before{
   content:""; position:absolute; inset:-1px; pointer-events:none; border-radius:inherit;
   background:
-    radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(84,178,255,.22), transparent 45%),
-    radial-gradient(360px circle at var(--mx,50%) var(--my,50%), rgba(208,128,255,.18), transparent 55%),
-    radial-gradient(520px circle at var(--mx,50%) var(--my,50%), rgba(255,147,76,.14), transparent 60%);
+    radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(var(--c-highlight),.22), transparent 45%),
+    radial-gradient(360px circle at var(--mx,50%) var(--my,50%), rgba(var(--c-dusk),.18), transparent 55%),
+    radial-gradient(520px circle at var(--mx,50%) var(--my,50%), rgba(var(--c-fire),.14), transparent 60%);
   mix-blend-mode:screen; opacity:.45; transition: opacity .18s ease;
 }
 .holo:hover::before{ opacity:.7 }
 /* Optional sweeping sheen */
 .holo::after{
   content:""; position:absolute; inset:-160% -160%;
-  background: conic-gradient(from 0deg, #fff0, #fff3 10%, #fff0 20%), linear-gradient(120deg, #ff934c44, #54b2ff44, #d080ff44);
+  background: conic-gradient(from 0deg, #fff0, #fff3 10%, #fff0 20%), linear-gradient(120deg, #ff934c44, #e06c7544, #6247aa44);
   mix-blend-mode:screen; filter:saturate(1.3) blur(10px); opacity:.25; pointer-events:none;
   transform:translateX(-30%); transition: transform .8s ease, opacity .3s ease;
 }
@@ -195,32 +200,32 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 /* Buttons */
 .btn-primary{
   position:relative; display:inline-flex; align-items:center; justify-content:center; gap:.55rem; padding:.75rem 1rem;
-  border-radius:14px; font-weight:800; color:#02040a;
-  background:linear-gradient(90deg, rgb(var(--neon-orange)), rgb(var(--neon-blue)));
-  box-shadow: 0 0 16px rgba(255,147,76,.45), 0 0 24px rgba(84,178,255,.35);
+  border-radius:14px; font-weight:800; color:#100c14;
+  background:linear-gradient(90deg, rgb(var(--c-fire)), rgb(var(--c-highlight)));
+  box-shadow: 0 0 16px rgba(var(--c-fire),.45), 0 0 24px rgba(var(--c-highlight),.35);
   transition: box-shadow .3s ease;
 }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 .btn-primary:hover:not(:disabled){
-  box-shadow: 0 0 24px rgba(255,147,76,.65), 0 0 36px rgba(84,178,255,.55);
+  box-shadow: 0 0 24px rgba(var(--c-fire),.65), 0 0 36px rgba(var(--c-highlight),.55);
 }
-.btn-ghost{ border:1px solid rgba(0,255,255,.25); background: rgba(255,255,255,.03); padding:.6rem .9rem; border-radius:12px; }
+.btn-ghost{ border:1px solid rgba(var(--c-fire),.25); background: rgba(255,255,255,.03); padding:.6rem .9rem; border-radius:12px; }
 .hidden-important{ display:none !important }
 .small-dim{ color:var(--dim) }
-.title-glow{ text-shadow:0 0 14px rgba(0,255,255,.3), 0 0 36px rgba(84,178,255,.25) }
+.title-glow{ text-shadow:0 0 14px rgba(var(--c-fire),.3), 0 0 36px rgba(var(--c-ember),.25) }
 .tabular{ font-variant-numeric: tabular-nums }
 
 /* Header elevation */
-.header-float{ backdrop-filter: blur(10px); background:rgba(4,7,12,.5); border-bottom:1px solid rgba(0,255,255,.12); transition: background .2s ease }
+.header-float{ backdrop-filter: blur(10px); background:rgba(16,12,20,.5); border-bottom:1px solid rgba(var(--c-fire),.12); transition: background .2s ease }
 
 /* FAQ */
-.faq-item{ border:1px solid #00ffff22; border-radius:14px; overflow:hidden }
+.faq-item{ border:1px solid rgba(var(--c-fire),.22); border-radius:14px; overflow:hidden }
 .faq-header{ position:relative; width:100%; display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding:1rem 1.25rem; text-align:left }
-.faq-header::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background: linear-gradient(90deg, #00ffff44, transparent); pointer-events:none }
+.faq-header::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background: linear-gradient(90deg, rgba(var(--c-fire),.44), transparent); pointer-events:none }
 .faq-body{ padding: 0 1.25rem; max-height:0; transition:max-height .28s ease, padding .2s ease }
 .faq-body.open { padding: .25rem 1.25rem 1rem; }
 .faq-chevron { transition: transform .25s ease }
-.faq-item.open{ box-shadow:0 0 24px #00ffff22 inset }
+.faq-item.open{ box-shadow:0 0 24px rgba(var(--c-fire),.22) inset }
 
 /* Hero glow */
 .hero-vignette{ position:absolute; inset:0; pointer-events:none; background: radial-gradient(80% 60% at 50% 10%, transparent 0 60%, rgba(0,0,0,.35) 100%); z-index:1 }
@@ -232,20 +237,20 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 }
 .hero-glow::before{
   background: conic-gradient(from 0deg at 50% 50%,
-    rgba(0,255,255,.32),
-    rgba(84,178,255,.36),
-    rgba(208,128,255,.34),
-    rgba(255,147,76,.30),
-    rgba(0,255,255,.32));
+    rgba(var(--c-fire),.32),
+    rgba(var(--c-ember),.36),
+    rgba(var(--c-dusk),.34),
+    rgba(var(--c-highlight),.30),
+    rgba(var(--c-fire),.32));
   filter: blur(50px) saturate(1.35) brightness(1.05);
   opacity:.75; animation: glowSpin 18s linear infinite;
 }
 .hero-glow::after{
   background: radial-gradient(120% 120% at 50% 50%,
-    rgba(0,255,255,.22),
-    rgba(84,178,255,.18) 35%,
-    rgba(208,128,255,.14) 60%,
-    rgba(255,147,76,.12) 75%,
+    rgba(var(--c-fire),.22),
+    rgba(var(--c-ember),.18) 35%,
+    rgba(var(--c-dusk),.14) 60%,
+    rgba(var(--c-highlight),.12) 75%,
     transparent 85%);
   filter: blur(40px) saturate(1.15);
   opacity:.6; animation: glowPulse 7.5s ease-in-out infinite alternate;
@@ -257,7 +262,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 .badge{ display:inline-flex; align-items:center; gap:.4rem; padding:.15rem .5rem; border-radius:.5rem; font-size:.7rem; font-weight:700; letter-spacing:.02em }
 .badge-now{ background:rgba(16,185,129,.18); border:1px solid rgba(16,185,129,.35); color:#a7f3d0 }
 .row{ display:grid; grid-template-columns: 1fr auto auto; gap:.75rem; align-items:center; transition: background-color .2s ease; padding-left: 0.5rem; padding-right: 0.5rem; }
-.row.active-phase { background-color: rgba(0,255,255,0.05); border-radius: 0.5rem; }
+.row.active-phase { background-color: rgba(var(--c-fire),0.05); border-radius: 0.5rem; }
 .row + .row{ border-top:1px solid rgba(255,255,255,.08); padding-top:.5rem; margin-top:.5rem }
 
 /* Pie Chart */
@@ -383,6 +388,22 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     transform: translateY(-4px) scale(1.02);
 }
 
+/* Countdown Animation */
+.countdown-value {
+    display: inline-block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.countdown-value.updated {
+    transform: translateY(-5px);
+    opacity: 0;
+}
+@keyframes flip-in {
+    from { transform: translateY(10px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+.countdown-flip {
+    animation: flip-in 0.3s ease forwards;
+}
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
@@ -393,7 +414,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 </head>
 <body>
 <div id="preloader">
-    <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-16 w-16"/>
+    <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png" alt="Etheria Logo" class="h-16 w-16"/>
 </div>
 
 <noscript>
@@ -409,7 +430,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 <a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
 
-<div id="announcement-banner" class="relative z-50 text-center p-2 text-sm bg-gradient-to-r from-cyan-500 to-violet-500">
+<div id="announcement-banner" class="relative z-50 text-center p-2 text-sm bg-gradient-to-r from-orange-500 to-red-500">
     <strong>We are live!</strong> $ETRX is now on the Ethereum Mainnet! The presale begins September 24.
 </div>
 
@@ -417,11 +438,12 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <header id="siteHeader" class="sticky top-0 z-40">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
     <div class="flex items-center gap-3">
-      <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-cyan-400/20 object-contain bg-white/5"/>
+      <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-orange-400/20 object-contain"/>
       <div class="text-sm tracking-wide small-dim">Etheria</div>
     </div>
     <nav class="hidden gap-6 text-sm opacity-80 md:flex items-center" aria-label="Primary">
       <a class="laser hover:opacity-100" href="#about">About</a>
+      <a class="laser hover:opacity-100" href="#lore">Lore</a>
       <a class="laser hover:opacity-100" href="#how-to-buy">How to Buy</a>
       <a class="laser hover:opacity-100" href="#token">Tokenomics</a>
       
@@ -497,8 +519,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <p>The ecosystem is composed of two core components: the NFT Collections and the $ETRX Token.</p>
         <h3>3.1. NFT Collections</h3>
         <ul>
-            <li><strong>Arc Genesis:</strong> The foundational art collection that represents the visual and thematic cornerstone of Etheria. These are the genesis pieces that prove our artistic vision and technical capability.</li>
-            <li><strong>Etherian Keepers:</strong> The first generation of characters within the Etherian realm. These NFTs establish the first inhabitants and will play a role in the future lore and governance of the world.</li>
+            <li><strong>Etheria (Arc Genesis) & Etherian Keepers:</strong> The foundational art and character collections that represent the visual and thematic cornerstone of Etheria. These collections are now available on OpenSea.</li>
+            <li><strong>Eclipse of Etheria (Trial Arc):</strong> Unveiling the celestial and shadow aspects of Etheria's lore, also on OpenSea.</li>
             <li><strong>Artifacts (Coming Soon):</strong> The next evolution of on-chain utility. Artifacts will be powerful, functional NFTs that can be equipped, combined, or staked to provide tangible benefits within the Etheria ecosystem, such as boosting rewards or granting access to exclusive mints.</li>
         </ul>
         <h3>3.2. The $ETRX Token</h3>
@@ -581,7 +603,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   <!-- Right: Hero Image -->
   <div class="order-1 md:order-2 reveal" data-delay="0">
     <div class="hero-glow relative rounded-3xl">
-        <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png" alt="An ethereal, glowing cavern representing the world of Etheria" class="w-full h-auto object-cover rounded-3xl ring-1 ring-cyan-400/20"/>
+        <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/background.png" alt="An ethereal, glowing cavern representing the world of Etheria" class="w-full h-auto object-cover rounded-3xl ring-1 ring-orange-400/20"/>
     </div>
   </div>
 </section>
@@ -593,11 +615,11 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
             <div>
                 <div class="text-xs uppercase small-dim">Total Raised</div>
-                <div id="total-raised" class="text-3xl font-bold text-cyan-300 mt-1 tabular">0.00 ETH</div>
+                <div id="total-raised" class="text-3xl font-bold text-orange-300 mt-1 tabular">0.00 ETH</div>
             </div>
             <div>
                 <div class="text-xs uppercase small-dim">Contributors</div>
-                <div id="total-contributors" class="text-3xl font-bold text-blue-300 mt-1 tabular">0</div>
+                <div id="total-contributors" class="text-3xl font-bold text-orange-300 mt-1 tabular">0</div>
             </div>
              <!-- NEW: Community Growth Stats -->
             <div class="md:col-span-1 grid grid-cols-2 gap-2">
@@ -617,7 +639,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
                 <span id="progress-percentage">0%</span>
             </div>
             <div class="w-full bg-white/10 rounded-full h-2.5">
-                <div id="live-progress-bar" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
+                <div id="live-progress-bar" class="bg-gradient-to-r from-orange-400 to-red-500 h-2.5 rounded-full" style="width: 0%"></div>
             </div>
         </div>
         <!-- Recent Contributions -->
@@ -650,7 +672,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
                         <span id="phaseName" class="font-semibold">Phase: Presale</span><span id="phaseEta"></span>
                     </div>
                     <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
-                        <div id="phaseBar" class="h-full" style="background:linear-gradient(90deg, rgba(var(--neon-orange),1), rgba(var(--neon-blue),1)); width:0%"></div>
+                        <div id="phaseBar" class="h-full" style="background:linear-gradient(90deg, var(--c-fire), var(--c-ember)); width:0%"></div>
                     </div>
                     <div class="mt-1 text-xs small-dim" id="phaseDates"></div>
                 </div>
@@ -733,25 +755,25 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Tier 1 -->
         <div id="bonus-tier-1" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="0">
-            <h4 class="font-bold text-lg text-cyan-300">Seeker</h4>
+            <h4 class="font-bold text-lg text-orange-300">Seeker</h4>
             <p class="text-2xl font-extrabold my-2">+2.5%</p>
             <p class="text-sm small-dim">Contribute 1+ ETH</p>
         </div>
         <!-- Tier 2 -->
         <div id="bonus-tier-2.5" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="100">
-            <h4 class="font-bold text-lg text-blue-300">Guardian</h4>
+            <h4 class="font-bold text-lg text-orange-300">Guardian</h4>
             <p class="text-2xl font-extrabold my-2">+5%</p>
             <p class="text-sm small-dim">Contribute 2.5+ ETH</p>
         </div>
         <!-- Tier 3 -->
         <div id="bonus-tier-5" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="200">
-            <h4 class="font-bold text-lg text-violet-300">Ascendant</h4>
+            <h4 class="font-bold text-lg text-purple-300">Ascendant</h4>
             <p class="text-2xl font-extrabold my-2">+7.5%</p>
             <p class="text-sm small-dim">Contribute 5+ ETH</p>
         </div>
         <!-- Tier 4 -->
         <div id="bonus-tier-10" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="300">
-            <h4 class="font-bold text-lg text-orange-300">Harbinger</h4>
+            <h4 class="font-bold text-lg text-red-400">Harbinger</h4>
             <p class="text-2xl font-extrabold my-2">+10%</p>
             <p class="text-sm small-dim">Contribute 10+ ETH</p>
         </div>
@@ -767,24 +789,24 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
     <!-- Utility Card -->
     <div class="glass card card-outline holo p-5 text-center reveal" data-delay="0">
-      <div class="mx-auto h-16 w-16 rounded-2xl bg-cyan-500/10 flex items-center justify-center ring-1 ring-cyan-500/20">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-300"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+      <div class="mx-auto h-16 w-16 rounded-2xl bg-orange-500/10 flex items-center justify-center ring-1 ring-orange-500/20">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-300"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
       </div>
       <h4 class="mt-3 font-bold text-lg">Utility</h4>
       <p class="text-sm small-dim mt-1">Unlock rare Realms & Artifacts, access exclusive drops, and get in-world boosts.</p>
     </div>
     <!-- Governance Card -->
     <div class="glass card card-outline holo p-5 text-center reveal" data-delay="100">
-      <div class="mx-auto h-16 w-16 rounded-2xl bg-blue-500/10 flex items-center justify-center ring-1 ring-blue-500/20">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-300"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+      <div class="mx-auto h-16 w-16 rounded-2xl bg-red-500/10 flex items-center justify-center ring-1 ring-red-500/20">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-300"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
       </div>
       <h4 class="mt-3 font-bold text-lg">Governance</h4>
       <p class="text-sm small-dim mt-1">Vote on community proposals, project direction, and the evolution of Etheria's lore.</p>
     </div>
     <!-- Rewards Card -->
     <div class="glass card card-outline holo p-5 text-center reveal" data-delay="200">
-      <div class="mx-auto h-16 w-16 rounded-2xl bg-violet-500/10 flex items-center justify-center ring-1 ring-violet-500/20">
-         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-violet-300"><path d="M20.2 6.2c.4-.5.4-1.2 0-1.7l-2.8-2.8c-.5-.4-1.2-.4-1.7 0L14 3.4 12 5.1l-1.7-2.3L8.6 1c-.5-.4-1.2-.4-1.7 0L4 3.8c-.4.5-.4 1.2 0 1.7L6.2 8 3.4 9.7c-.4.5-.4 1.2 0 1.7l2.8 2.8c.5.4 1.2.4 1.7 0L10 12.6l2 1.7 1.7 2.3 1.7 1.7c.5.4 1.2.4 1.7 0l2.8-2.8c.4-.5.4-1.2 0-1.7L17.8 16l2.4-1.7 2.8-2.8c.4-.5.4-1.2 0-1.7L20.2 6.2z"></path></svg>
+      <div class="mx-auto h-16 w-16 rounded-2xl bg-purple-500/10 flex items-center justify-center ring-1 ring-purple-500/20">
+         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-300"><path d="M20.2 6.2c.4-.5.4-1.2 0-1.7l-2.8-2.8c-.5-.4-1.2-.4-1.7 0L14 3.4 12 5.1l-1.7-2.3L8.6 1c-.5-.4-1.2-.4-1.7 0L4 3.8c-.4.5-.4 1.2 0 1.7L6.2 8 3.4 9.7c-.4.5-.4 1.2 0 1.7l2.8 2.8c.5.4 1.2.4 1.7 0L10 12.6l2 1.7 1.7 2.3 1.7 1.7c.5.4 1.2.4 1.7 0l2.8-2.8c.4-.5.4-1.2 0-1.7L17.8 16l2.4-1.7 2.8-2.8c.4-.5.4-1.2 0-1.7L20.2 6.2z"></path></svg>
       </div>
       <h4 class="mt-3 font-bold text-lg">Rewards</h4>
       <p class="text-sm small-dim mt-1">Earn airdrops, participate in holder-only events, and be rewarded for on-chain participation.</p>
@@ -792,6 +814,24 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   </div>
    <div class="text-center mt-6 reveal">
         <button id="wp-btn-about" class="btn-ghost text-sm">Read the Whitepaper</button>
+    </div>
+</section>
+
+<div class="section-divider max-w-6xl mx-auto"></div>
+
+<!-- Lore of Etheria Section -->
+<section id="lore" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
+    <h2 class="text-2xl font-bold neon-text reveal text-center">The Lore of Etheria</h2>
+    <div class="mt-6 max-w-3xl mx-auto space-y-4 text-center small-dim reveal">
+        <p>
+            In the beginning, there was the Arc Genesis—a celestial event that breathed life into the cosmos and scattered its divine essence across the nascent world of Etheria. These fragments, imbued with raw creation, became the foundation of all magic, shaping the mountains, rivers, and skies. The story of Etheria is the story of this scattered power and those who would seek to reclaim it.
+        </p>
+        <p>
+            From the heart of this Genesis emerged the Etherian Keepers, the first sentient beings and the sworn guardians of the world's balance. Each Keeper is a living conduit to the Arc's power, tasked with protecting the sacred Artifacts—items of immense power that, if combined, could reshape reality itself. They are the silent watchers, the shepherds of magic, and the first line of defense against the encroaching shadows.
+        </p>
+        <p>
+            But for every dawn, there is a dusk. The Eclipse of Etheria was not just a celestial alignment; it was a prophecy—a moment when the veil between worlds thinned, allowing corrupting forces to seep into the land. This event gave rise to twisted creatures and a growing darkness that seeks to consume the Arc's light. The Trial Arc has begun, a new age where the fate of Etheria will be decided not by gods or prophecies, but by the choices of its inhabitants.
+        </p>
     </div>
 </section>
 
@@ -840,19 +880,24 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <!-- Milestones -->
 <section id="milestones" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
   <h2 class="text-2xl font-bold neon-text reveal text-center">NFT Milestones & The Future</h2>
-  <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+  <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
     <div class="glass card card-outline holo p-5 reveal" data-delay="0">
-      <h4 class="font-bold text-lg text-cyan-300">Arc Genesis (NFT)</h4>
-      <p class="text-sm small-dim mt-1">Successfully launched the foundational Arc Genesis collection on Foundation, marking our first step into the NFT space.</p>
-      <a href="https://foundation.app/collection/etheriagenesis" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on Foundation</a>
+      <h4 class="font-bold text-lg text-orange-300">Etheria (Arc Genesis)</h4>
+      <p class="text-sm small-dim mt-1">The foundational Arc Genesis collection is now available on OpenSea, marking our first step into the NFT space.</p>
+      <a href="https://opensea.io/collection/arc-genesis-by-etheria" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on OpenSea</a>
     </div>
     <div class="glass card card-outline holo p-5 reveal" data-delay="100">
-      <h4 class="font-bold text-lg text-blue-300">Etherian Keepers (NFT)</h4>
-      <p class="text-sm small-dim mt-1">Introduced the Etherian Keepers, establishing the first generation of guardians within the Etheria ecosystem.</p>
-       <a href="https://foundation.app/collection/etrx-k" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on Foundation</a>
+      <h4 class="font-bold text-lg text-red-300">Etherian Keepers (NFT)</h4>
+      <p class="text-sm small-dim mt-1">The Etherian Keepers, the first generation of guardians within the Etheria ecosystem, are now available on OpenSea.</p>
+       <a href="https://opensea.io/collection/etherian-keepers" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on OpenSea</a>
     </div>
      <div class="glass card card-outline holo p-5 reveal" data-delay="200">
-      <h4 class="font-bold text-lg text-violet-300">Artifacts (Coming Soon)</h4>
+      <h4 class="font-bold text-lg text-purple-300">Eclipse of Etheria (Trial Arc)</h4>
+      <p class="text-sm small-dim mt-1">Unveiling the celestial and shadow aspects of Etheria's lore through the Eclipse collection.</p>
+       <a href="https://opensea.io/collection/eclipseofetheria" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on OpenSea</a>
+    </div>
+    <div class="glass card card-outline holo p-5 reveal" data-delay="300">
+      <h4 class="font-bold text-lg text-orange-400">Artifacts (Coming Soon)</h4>
       <p class="text-sm small-dim mt-1">The next evolution of on-chain utility items is in development. These powerful artifacts will play a key role in the Etherian world.</p>
        <a href="#" class="laser text-sm mt-2 inline-block opacity-50 cursor-not-allowed">Stay Tuned</a>
     </div>
@@ -944,7 +989,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         -->
         <div class="glass card card-outline holo p-5 reveal">
             <div class="flex items-start gap-4">
-                <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-full flex-shrink-0"/>
+                <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-full flex-shrink-0"/>
                 <div>
                     <div class="flex items-center gap-2">
                         <h4 class="font-bold">Etheria</h4>
@@ -952,7 +997,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
                     </div>
                     <p class="mt-1 text-sm small-dim">
                         The $ETRX presale is approaching! We're building a world, not just a token. Join our Telegram and get ready for the journey ahead.
-                        <a href="https://t.me/Etheria_official" class="text-cyan-400 laser">#Etheria</a> <a href="#" class="text-cyan-400 laser">$ETRX</a>
+                        <a href="https://t.me/Etheria_official" class="text-orange-400 laser">#Etheria</a> <a href="#" class="text-orange-400 laser">$ETRX</a>
                     </p>
                     <div class="mt-3 text-xs small-dim">9:00 AM · Sep 9, 2025</div>
                 </div>
@@ -968,29 +1013,37 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 <!-- Audit & Trust Section -->
 <section id="trust" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
      <h2 class="text-2xl font-bold neon-text reveal text-center mb-8">Trust & Security</h2>
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <div class="glass card card-outline holo p-5 reveal">
             <h3 class="text-lg font-bold neon-text flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                Static Analysis Report
+                Static Analysis
             </h3>
-            <p class="small-dim mt-2">Our contracts passed a comprehensive static analysis scan via <strong>Slither</strong>, the industry-standard tool by Trail of Bits, with no critical issues found. A full manual audit is planned before presale.</p>
+            <p class="small-dim mt-2">Our contracts passed a comprehensive static analysis scan via <strong>Slither</strong> with no critical issues found.</p>
             <a href="https://drive.google.com/file/d/1tVrT4XMKdF4LtFw4Q_mgmaAWEByeZf7k/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Slither Report</a>
         </div>
         <div class="glass card card-outline holo p-5 reveal" data-delay="50">
             <h3 class="text-lg font-bold neon-text flex items-center gap-2">
                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
-                Verified on Mainnet
+                Verified Token Contract
             </h3>
-            <p class="small-dim mt-2">The official $ETRX token contract is now deployed and verified on the Ethereum Mainnet, ensuring full transparency for the community.</p>
+            <p class="small-dim mt-2">The official $ETRX token contract is deployed and verified on the Ethereum Mainnet, ensuring full transparency.</p>
             <a href="https://etherscan.io/address/0xa3c48EF518cab21E5772392D5405DE5d73b35190#code" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View on Etherscan</a>
         </div>
-        <div class="glass card card-outline holo p-5 reveal" data-delay="100">
+         <div class="glass card card-outline holo p-5 reveal" data-delay="100">
+            <h3 class="text-lg font-bold neon-text flex items-center gap-2">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
+                Verified Vesting Contract
+            </h3>
+            <p class="small-dim mt-2">The team's token vesting contract is also deployed and verified on Mainnet, locking the team's allocation.</p>
+            <a href="https://etherscan.io/address/0xa78208f38a1f1fa8086ca960a06024fb61bc86bf" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View on Etherscan</a>
+        </div>
+        <div class="glass card card-outline holo p-5 reveal" data-delay="150">
             <h3 class="text-lg font-bold neon-text flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-400"><path d="M20 6L9 17l-5-5"></path></svg>
                 Public-Facing Team
             </h3>
-            <p class="small-dim mt-2">Our core team is public-facing with established social and professional profiles to ensure accountability and build community trust.</p>
+            <p class="small-dim mt-2">Our core team is public-facing with established social profiles to ensure accountability and build community trust.</p>
             <a href="#team" class="btn-ghost text-sm mt-3 inline-block">Meet the Team</a>
         </div>
     </div>
@@ -1005,8 +1058,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4" style="perspective: 1000px;">
         <!-- Team Member 1 -->
         <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="0">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-cyan-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
-                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--neon-cyan));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--neon-blue));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g1)"/><path d="M20,80 Q50,20 80,80" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round" /></svg>
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-orange-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
+                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--c-fire));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--c-ember));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g1)"/><path d="M20,80 Q50,20 80,80" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round" /></svg>
             </div>
             <h4 class="mt-3 font-bold text-lg">ETRXDreamscapes</h4>
             <p class="text-sm small-dim">The Developer</p>
@@ -1016,8 +1069,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         </div>
         <!-- Team Member 2 -->
         <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="50">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-blue-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
-                <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--neon-blue));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--neon-violet));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g2)"/><path d="M25,25 L75,75 M75,25 L25,75" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-red-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
+                <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--c-ember));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--c-dusk));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g2)"/><path d="M25,25 L75,75 M75,25 L25,75" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
             </div>
             <h4 class="mt-3 font-bold text-lg">HeisCaifu</h4>
             <p class="text-sm small-dim">Telegram Page Owner</p>
@@ -1027,8 +1080,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         </div>
         <!-- Team Member 3 -->
         <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="100">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-violet-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
-                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--neon-violet));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--neon-orange));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g3)"/><circle cx="50" cy="50" r="25" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none"/></svg>
+            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-purple-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
+                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--c-dusk));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--c-highlight));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g3)"/><circle cx="50" cy="50" r="25" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none"/></svg>
             </div>
             <h4 class="mt-3 font-bold text-lg">DxCheetah</h4>
             <p class="text-sm small-dim">Telegram Page Mod</p>
@@ -1039,7 +1092,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
         <!-- Team Member 4 -->
         <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="150">
             <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-orange-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
-                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--neon-orange));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--neon-cyan));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g4)"/><path d="M50,20 L80,80 L20,80 Z" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--c-highlight));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--c-fire));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g4)"/><path d="M50,20 L80,80 L20,80 Z" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <h4 class="mt-3 font-bold text-lg">Laidy_zee</h4>
             <p class="text-sm small-dim">Social Moderator</p>
@@ -1085,7 +1138,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
     <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row">
       <label class="sr-only" for="email">Email</label>
       <input required id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"
-             class="flex-1 rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400"/>
+             class="flex-1 rounded-2xl border border-orange-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-orange-400"/>
       <!-- Honeypot -->
       <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
       <button class="btn-primary" type="submit">Notify Me</button>
@@ -1104,7 +1157,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
       <form id="wlForm" class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]">
         <label class="sr-only" for="wallet">Ethereum wallet or ENS</label>
         <input id="wallet" name="wallet" inputmode="text" autocomplete="off" placeholder="0x… or yourname.eth" spellcheck="false"
-               class="rounded-2xl border border-cyan-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-cyan-400" />
+               class="rounded-2xl border border-orange-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-orange-400" />
         <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
         <button class="btn-primary" type="submit">Join Allowlist</button>
       </form>
@@ -1182,7 +1235,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 </section>
 </main>
 
-<footer class="relative z-10 border-t border-cyan-400/15 py-10 small-dim">
+<footer class="relative z-10 border-t border-orange-400/15 py-10 small-dim">
   <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm">
     <div>© <span id="year"></span> Etheria • $ETRX</div>
     <div class="flex items-center gap-4">
@@ -1197,11 +1250,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
 
 <a href="#notify" id="stickyCTA" class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">Get notified for $ETRX</a>
 
-<button id="mute-button" class="fixed bottom-4 left-4 z-50 btn-primary rounded-full p-3 shadow-lg" aria-label="Toggle Sound">
-    <svg id="sound-on-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-    <svg id="sound-off-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-</button>
-
 <!-- Schema.org event (SEO) -->
 <script type="application/ld+json">
 {
@@ -1213,7 +1261,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px #00ffff66 }
   "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
   "url": "https://etheriaetrx-etrx.github.io/etrx-presale/",
-  "image": "https://etheriaetrx-etrx.github.io/etrx-presale/assets/Background.png",
+  "image": "https://etheriaetrx-etrx.github.io/etrx-presale/assets/background.png",
   "organizer": { "@type": "Organization", "name": "Etheria" },
   "description": "Etheria’s official $ETRX presale on Ethereum."
 }
@@ -1265,77 +1313,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Preloader
     $('preloader')?.classList.add('loaded');
-
-    /* =================================================================
-     * ====================== SOUND MANAGER ============================
-     * ================================================================= */
-    const soundManager = {
-        isMuted: safeGet('etrx_sound_muted', 'true') === 'true',
-        isStarted: false,
-        synth: null,
-
-        async start() {
-            if (this.isStarted || typeof Tone === 'undefined') return;
-            try {
-                await Tone.start();
-                this.synth = new Tone.PolySynth(Tone.Synth, {
-                    oscillator: { type: 'sine' },
-                    envelope: { attack: 0.005, decay: 0.1, sustain: 0.3, release: 1 },
-                    volume: -20
-                }).toDestination();
-                this.isStarted = true;
-                console.log("Audio context started.");
-            } catch(e) {
-                console.error("Could not start audio context:", e);
-            }
-        },
-
-        init() {
-            if (typeof Tone === 'undefined') {
-                const muteButton = $('mute-button');
-                if(muteButton) muteButton.style.display = 'none';
-                return;
-            }
-
-            const startAudio = async () => {
-                await this.start();
-                document.body.removeEventListener('click', startAudio);
-                document.body.removeEventListener('touchend', startAudio);
-            };
-            document.body.addEventListener('click', startAudio, { once: true });
-            document.body.addEventListener('touchend', startAudio, { once: true });
-            
-            const muteButton = $('mute-button');
-            muteButton.addEventListener('click', (e) => {
-                e.stopPropagation(); 
-                this.toggleMute();
-            });
-            this.updateButton();
-        },
-
-        async play(note, duration = '16n') {
-            if (!this.isStarted) await this.start();
-            if (!this.isMuted && this.isStarted && this.synth) {
-                this.synth.triggerAttackRelease(note, duration, Tone.now());
-            }
-        },
-
-        async toggleMute() {
-            if (!this.isStarted) await this.start();
-            this.isMuted = !this.isMuted;
-            safeSet('etrx_sound_muted', this.isMuted);
-            this.updateButton();
-            this.play('C5'); // Play feedback sound
-        },
-
-        updateButton() {
-            const muteButton = $('mute-button');
-            if (!muteButton) return;
-            $('sound-on-icon').classList.toggle('hidden', this.isMuted);
-            $('sound-off-icon').classList.toggle('hidden', !this.isMuted);
-        }
-    };
-    soundManager.init();
     
     /* =================================================================
      * ====================== UI & ANIMATIONS ==========================
@@ -1406,7 +1383,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function buildCountdownBox(v,label){
       const d=document.createElement('div');
       d.className='w-[5.5rem] rounded-xl glass card p-3 text-center';
-      d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text">${String(v).padStart(2,'0')}</div><div class="text-[11px] uppercase small-dim">${label}</div>`;
+      d.innerHTML=`<div class="text-3xl font-extrabold tabular neon-text"><span class="countdown-value">${String(v).padStart(2,'0')}</span></div><div class="text-[11px] uppercase small-dim">${label}</div>`;
       return d;
     }
     
@@ -1484,7 +1461,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if(s!==lastSecond){ 
             lastSecond=s; 
             const d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),ss=s%60; 
-            if(countdown) countdown.replaceChildren(buildCountdownBox(d,'d'),buildCountdownBox(h,'h'),buildCountdownBox(m,'m'),buildCountdownBox(ss,'s')); 
+            if(countdown.children.length === 0) {
+                 countdown.replaceChildren(buildCountdownBox(d,'d'),buildCountdownBox(h,'h'),buildCountdownBox(m,'m'),buildCountdownBox(ss,'s')); 
+            } else {
+                const values = [d,h,m,ss];
+                countdown.querySelectorAll('.countdown-value').forEach((el, i) => {
+                    const newVal = String(values[i]).padStart(2, '0');
+                    if (el.textContent !== newVal) {
+                        el.classList.add('updated');
+                        el.addEventListener('transitionend', () => {
+                            el.textContent = newVal;
+                            el.classList.remove('updated');
+                            el.classList.add('countdown-flip');
+                            el.addEventListener('animationend', () => el.classList.remove('countdown-flip'), { once: true });
+                        }, { once: true });
+                    }
+                });
+            }
             renderPhaseTable(); // Update table once per second
         }
 
