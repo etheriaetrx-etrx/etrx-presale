@@ -431,7 +431,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 <a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
 
 <div id="announcement-banner" class="relative z-50 text-center p-2 text-sm bg-gradient-to-r from-orange-500 to-red-500">
-    <strong>We are live!</strong> $ETRX is now on the Ethereum Mainnet! The presale begins September 24.
+    <strong>We are live!</strong> $ETRX is now on the Ethereum Mainnet! The presale begins September 24. <span class="mx-2">|</span> <strong>Now Listed on CoinGecko!</strong>
 </div>
 
 
@@ -1013,8 +1013,21 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 <!-- Audit & Trust Section -->
 <section id="trust" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
      <h2 class="text-2xl font-bold neon-text reveal text-center mb-8">Trust & Security</h2>
+
+    <!-- CoinGecko Listing Card -->
+    <div class="mb-8 max-w-sm mx-auto reveal" data-delay="0">
+        <div class="glass card card-outline holo p-5 text-center">
+            <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo2.avif" alt="Listed on CoinGecko" class="h-16 mx-auto mb-3" onerror="this.style.display='none'"/>
+            <h3 class="text-lg font-bold neon-text">
+                Listed on CoinGecko
+            </h3>
+            <p class="small-dim mt-2 text-xs">Request ID: CL1509250041</p>
+            <a href="https://www.coingecko.com/en/coins/etheria-token" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Listing</a>
+        </div>
+    </div>
+    
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <div class="glass card card-outline holo p-5 reveal">
+        <div class="glass card card-outline holo p-5 reveal" data-delay="50">
             <h3 class="text-lg font-bold neon-text flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                 Static Analysis
@@ -1022,7 +1035,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
             <p class="small-dim mt-2">Our contracts passed a comprehensive static analysis scan via <strong>Slither</strong> with no critical issues found.</p>
             <a href="https://drive.google.com/file/d/1tVrT4XMKdF4LtFw4Q_mgmaAWEByeZf7k/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Slither Report</a>
         </div>
-        <div class="glass card card-outline holo p-5 reveal" data-delay="50">
+        <div class="glass card card-outline holo p-5 reveal" data-delay="100">
             <h3 class="text-lg font-bold neon-text flex items-center gap-2">
                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
                 Verified Token Contract
@@ -1030,7 +1043,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
             <p class="small-dim mt-2">The official $ETRX token contract is deployed and verified on the Ethereum Mainnet, ensuring full transparency.</p>
             <a href="https://etherscan.io/address/0xa3c48EF518cab21E5772392D5405DE5d73b35190#code" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View on Etherscan</a>
         </div>
-         <div class="glass card card-outline holo p-5 reveal" data-delay="100">
+         <div class="glass card card-outline holo p-5 reveal" data-delay="150">
             <h3 class="text-lg font-bold neon-text flex items-center gap-2">
                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
                 Verified Vesting Contract
@@ -1038,7 +1051,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
             <p class="small-dim mt-2">The team's token vesting contract is also deployed and verified on Mainnet, locking the team's allocation.</p>
             <a href="https://etherscan.io/address/0xa78208f38a1f1fa8086ca960a06024fb61bc86bf" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View on Etherscan</a>
         </div>
-        <div class="glass card card-outline holo p-5 reveal" data-delay="150">
+        <div class="glass card card-outline holo p-5 reveal" data-delay="200">
             <h3 class="text-lg font-bold neon-text flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-400"><path d="M20 6L9 17l-5-5"></path></svg>
                 Public-Facing Team
@@ -2136,4 +2149,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
+
 
