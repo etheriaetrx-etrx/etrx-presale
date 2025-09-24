@@ -1711,7 +1711,9 @@ document.addEventListener('DOMContentLoaded', () => {
           let events = [];
           try {
             events = await this.contract.queryFilter(this.contract.filters.Contributed(), start, latest);
-          } catch {}
+          } catch (e) {
+            console.error("Failed to query 'Contributed' events during backfill:", e);
+          }
 
           if (events.length > 0) {
             events.slice(-5).reverse().forEach(ev => {
@@ -1764,7 +1766,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const start  = Math.max(0, latest - 2000000);
             const evs = await this.contract.queryFilter(this.contract.filters.Contributed(), start, latest);
             buyers = evs.map(e => e.args.buyer);
-          } catch {}
+          } catch (e) {
+            console.error("Failed to query 'Contributed' events for contributor count:", e);
+          }
 
           if (buyers.length === 0) {
             const tokenAddr = await this.contract.token();
@@ -1787,7 +1791,8 @@ document.addEventListener('DOMContentLoaded', () => {
           const evs = await this.contract.queryFilter(this.contract.filters.Contributed(user));
           const sum = evs.reduce((acc, e) => acc.add(e.args.weiAmount), ethers.BigNumber.from(0));
           return parseFloat(ethers.utils.formatEther(sum));
-        } catch {
+        } catch (e) {
+          console.error("Primary user contribution fetch failed, attempting fallback.", e);
           // Fallback via token transfers
           try {
             const tokenAddr = await this.contract.token();
@@ -1797,7 +1802,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const txs = await erc20.queryFilter(tf);
             const wei = txs.reduce((acc, e) => acc.add(e.args.value.mul(ethers.constants.WeiPerEther).div(rate)), ethers.BigNumber.from(0));
             return parseFloat(ethers.utils.formatEther(wei));
-          } catch { return 0; }
+          } catch (fallbackError) { 
+            console.error("Fallback user contribution fetch also failed.", fallbackError);
+            return 0; 
+          }
         }
       },
 
@@ -1842,3 +1850,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
