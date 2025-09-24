@@ -1205,7 +1205,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
         <span class="faq-chevron" aria-hidden="true">⌄</span>
       </button>
       <div class="faq-body" id="faq-when-body" role="region" aria-labelledby="faq-when-btn" hidden>
-        <p class="small-dim">The presale starts September 24, 2025 at 05:00 UTC and ends on October 1, 2025 (UTC). The $ETRX token is now live on the Ethereum mainnet.</p>
+        <p class="small-dim">The presale starts September 24, 2025 at 06:30 UTC (1:30 AM CDT) and ends on October 1, 2025 (UTC). The $ETRX token is now live on the Ethereum mainnet.</p>
       </div>
     </div>
     <div class="faq-item reveal">
@@ -1269,7 +1269,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
   "@context": "https://schema.org",
   "@type": "Event",
   "name": "ETRX Presale",
-  "startDate": "2025-09-24T05:00:00Z",
+  "startDate": "2025-09-24T06:30:00Z",
   "endDate": "2025-10-01T00:00:00Z",
   "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
@@ -1291,13 +1291,13 @@ document.addEventListener('DOMContentLoaded', () => {
     /* =================================================================
      * ================== CONFIG: DATES + TIERS ========================
      * ================================================================= */
-    // --- Presale start time is Sep 24, 2025, 12:00 AM (Arkansas Time / CDT) which is Sep 24, 05:00 UTC
-    const PRESALE_START = new Date('2025-09-24T05:00:00Z');
+    // --- Presale start time is Sep 24, 2025, 1:30 AM (Arkansas Time / CDT) which is Sep 24, 06:30 UTC
+    const PRESALE_START = new Date('2025-09-24T06:30:00Z');
     const PRESALE_END   = new Date('2025-10-01T00:00:00Z');
     const LISTING_PRICE = 0.12; // USD
 
     const PHASES = [
-      { name:'Phase 1', start:'2025-09-24T05:00:00Z', end:'2025-09-26T23:59:59Z', price:0.08 },
+      { name:'Phase 1', start:'2025-09-24T06:30:00Z', end:'2025-09-26T23:59:59Z', price:0.08 },
       { name:'Phase 2', start:'2025-09-27T00:00:00Z', end:'2025-09-28T23:59:59Z', price:0.10 },
       { name:'Phase 3', start:'2025-09-29T00:00:00Z', end:'2025-09-30T23:59:59Z', price:0.11 },
     ];
@@ -1345,7 +1345,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateWhen(){
         const fmtBase = { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:true };
         const fmtUTC  = (d)=> d.toLocaleString([], { ...fmtBase, timeZone:'UTC', timeZoneName:'short' });
-        const fmtLoc  = (d)=> d.toLocaleString([], { ...fmtBase, timeZoneName:'short' });
+        const fmtLoc  = (d)=> {
+            const str = d.toLocaleString([], { ...fmtBase, timeZoneName: 'short' });
+            // Corrects a browser display bug for future dates in US Central time where it might show GMT-6 instead of GMT-5 (CDT).
+            if (str.includes('GMT-6')) {
+                return str.replace('GMT-6', 'CDT (GMT-5)');
+            }
+            return str;
+        };
         
         if (primaryUTC){
             whenPrimary.textContent   = `Presale: ${fmtUTC(PRESALE_START)} → ${fmtUTC(PRESALE_END)}`;
@@ -1385,12 +1392,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Phase helpers
     function clamp01(x){ return Math.max(0, Math.min(1, x)); }
-    function getCurrentPhase(t=new Date()){
-      for(const p of PHASES){ const s=new Date(p.start), e=new Date(p.end); if(t>=s && t<=e) return p; }
-      if(t < PRESALE_START) return { name: 'Upcoming', pre:true };
-      if(t > PRESALE_END) return { name: 'Ended', post:true };
-      const nxt = PHASES.find(p=> t < new Date(p.start));
-      return nxt ? {...nxt, upcoming:true} : { name: 'Ended', post:true };
+    function getCurrentPhase(t = new Date()) {
+        const nowMs = t.getTime();
+        const startMs = PRESALE_START.getTime();
+        const endMs = PRESALE_END.getTime();
+
+        if (nowMs < startMs) {
+            return { name: 'Upcoming', pre: true };
+        }
+        if (nowMs > endMs) {
+            return { name: 'Ended', post: true };
+        }
+
+        // If we are here, the presale is generally active.
+        // Let's find the specific phase.
+        for (const p of PHASES) {
+            const pStartMs = new Date(p.start).getTime();
+            const pEndMs = new Date(p.end).getTime();
+            if (nowMs >= pStartMs && nowMs <= pEndMs) {
+                return { ...p, pre: false, post: false }; // It's an active phase
+            }
+        }
+
+        // If no active phase was found, it must be a gap between phases.
+        // The presale is still "on", just waiting for the next phase.
+        const nextPhase = PHASES.find(p => nowMs < new Date(p.start).getTime());
+        return { name: `Next: ${nextPhase.name}`, pre: false, post: false, upcoming: true };
     }
 
     // Countdown UI block builder
@@ -1460,15 +1487,27 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastSecond=-1;
     function loop(){
         const now = new Date();
+        const isUpcoming = now < PRESALE_START;
+        const isOver = now > PRESALE_END;
+        const isLive = !isUpcoming && !isOver;
+        
         currentPhaseInfo = getCurrentPhase(now);
         const ph = currentPhaseInfo;
 
         // Phase label + name
-        if(phaseLabel) phaseLabel.innerHTML = `Presale ${ph.pre ? 'begins' : ph.post ? 'ended' : 'ends'} in — <span>${primaryUTC ? 'UTC' : 'Local'}</span>`;
+        if(phaseLabel) {
+            let labelText = 'ends';
+            if (isUpcoming) {
+                labelText = 'begins';
+            } else if (isOver) {
+                labelText = 'ended';
+            }
+            phaseLabel.innerHTML = `Presale ${labelText} in — <span>${primaryUTC ? 'UTC' : 'Local'}</span>`;
+        }
         if($('phaseName')) $('phaseName').textContent = `Phase: ${ph.name}`;
 
         // Countdown target
-        const target = ph.pre ? PRESALE_START : (ph.post ? now : new Date(ph.end));
+        const target = isUpcoming ? PRESALE_START : (isOver ? now : PRESALE_END);
 
         // Countdown render
         const diff = Math.max(0, target-now); const s=Math.floor(diff/1000);
@@ -1481,14 +1520,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const values = [d,h,m,ss];
                 countdown.querySelectorAll('.countdown-value').forEach((el, i) => {
                     const newVal = String(values[i]).padStart(2, '0');
+                    // Direct update: This is more reliable than complex animation callbacks which might not fire consistently.
                     if (el.textContent !== newVal) {
-                        el.classList.add('updated');
-                        el.addEventListener('transitionend', () => {
-                            el.textContent = newVal;
-                            el.classList.remove('updated');
-                            el.classList.add('countdown-flip');
-                            el.addEventListener('animationend', () => el.classList.remove('countdown-flip'), { once: true });
-                        }, { once: true });
+                        el.textContent = newVal;
                     }
                 });
             }
@@ -1509,7 +1543,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if($('phaseEta')) $('phaseEta').textContent = etaText;
         
         setPriceCard(ph);
-        updateContributionUIState();
+        updateContributionUIState(isLive);
         requestAnimationFrame(loop);
     }
 
@@ -1881,9 +1915,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const maxBtn = $('max-btn');
     const bonusDisplay = $('bonus-display');
 
-    function updateContributionUIState() {
-        const isLive = !currentPhaseInfo.pre && !currentPhaseInfo.post;
-        
+    function updateContributionUIState(isLive) {
         $('contribute-ready').classList.toggle('hidden', !connectedAccount || !isLive);
         $('contribute-connect-wallet').classList.toggle('hidden', connectedAccount || !isLive);
         $('contribute-not-live').classList.toggle('hidden', isLive);
@@ -2197,3 +2229,13 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
