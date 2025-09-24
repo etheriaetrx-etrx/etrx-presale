@@ -1664,95 +1664,160 @@ document.addEventListener('DOMContentLoaded', () => {
      * ==================== ON-CHAIN DATA FETCHER ======================
      * ================================================================= */
     const onChain = {
-        contractAddress: "0x7E5e15d7FA217861ab9df5a47218942D1181e0e7",
-        contractABI: [{"inputs":[{"internalType":"address","name":"_token","type":"address"},{"internalType":"uint256","name":"_rate","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":false,"internalType":"uint256","name":"weiAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"tokensOut","type":"uint256"}],"name":"Contributed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"WithdrawETH","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"WithdrawUnsold","type":"event"},{"inputs":[],"name":"contribute","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"live","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"rate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bool","name":"_live","type":"bool"}],"name":"setLive","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_rate","type":"uint256"}],"name":"setRate","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"contract IERC20","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"weiRaised","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address payable","name":"to","type":"address"}],"name":"withdrawETH","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdrawUnsold","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}],
-        provider: null,
-        contract: null,
-        hardCap: 150,
-        
-        init() {
-            if (typeof ethers === 'undefined') return console.error("Ethers.js not loaded.");
-            try {
-                this.provider = new ethers.providers.JsonRpcProvider('https://cloudflare-eth.com');
-                this.contract = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
-                this.fetchOnChainData();
-                this.backfillRecentContributions();
-                setInterval(() => this.fetchOnChainData(), 15000); 
-                this.contract.on('Contributed', (buyer, weiAmount, tokensOut, event) => {
-                    this.addContributionToList({
-                        address: buyer,
-                        amount: ethers.utils.formatEther(weiAmount),
-                        hash: event.transactionHash
-                    });
-                    this.fetchOnChainData(); // Refresh totals on new contribution
-                });
-            } catch (error) { console.error("Could not initialize contract instance:", error); }
-        },
+      contractAddress: "0x7E5e15d7FA217861ab9df5a47218942D1181e0e7",
+      contractABI: [
+        {"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":false,"internalType":"uint256","name":"weiAmount","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"tokensOut","type":"uint256"}],"name":"Contributed","type":"event"},
+        {"inputs":[],"name":"contribute","outputs":[],"stateMutability":"payable","type":"function"},
+        {"inputs":[],"name":"weiRaised","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+        {"inputs":[],"name":"rate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+        {"inputs":[],"name":"token","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}
+      ],
+      provider: null,
+      contract: null,
+      hardCap: 150, // ETH
 
-        async backfillRecentContributions() {
-            if (!this.contract || !this.provider) return;
-            const list = $('contribution-list');
-            if (!list) return;
-            list.innerHTML = '';
-            try {
-                const latestBlock = await this.provider.getBlockNumber();
-                const startBlock = Math.max(0, latestBlock - 250000);
-                const filter = this.contract.filters.Contributed();
-                const events = await this.contract.queryFilter(filter, startBlock, latestBlock);
-                events.slice(-5).reverse().forEach(event => {
-                    this.addContributionToList({
-                        address: event.args.buyer,
-                        amount: ethers.utils.formatEther(event.args.weiAmount),
-                        hash: event.transactionHash
-                    });
-                });
-            } catch (error) { console.error("Could not backfill recent contributions:", error); }
-        },
+      async init() {
+        if (typeof ethers === 'undefined') return console.error("Ethers.js not loaded.");
+        try {
+          this.provider = new ethers.providers.JsonRpcProvider("https://cloudflare-eth.com");
+          this.contract  = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
+          await this.fetchOnChainData();
+          await this.backfillRecentContributions();
+          setInterval(() => this.fetchOnChainData(), 15000);
 
-        async fetchOnChainData() {
-            if (!this.contract) return;
-            try {
-                const totalWei = await this.contract.weiRaised(); 
-                const totalEthRaised = ethers.utils.formatEther(totalWei);
-                const filter = this.contract.filters.Contributed();
-                const latestBlock = await this.provider.getBlockNumber();
-                const startBlock = Math.max(0, latestBlock - 2000000); // Query a large but finite window (~30 days) to prevent RPC timeout
-                const events = await this.contract.queryFilter(filter, startBlock, 'latest');
-                const uniqueContributors = new Set(events.map(e => e.args.buyer)).size;
-                this.updateUI(totalEthRaised, uniqueContributors);
-            } catch (error) { console.error("Error fetching contract data:", error); }
-        },
-
-        async fetchUserTotalContribution(userAddress) {
-            if (!this.contract || !userAddress) return 0;
-            try {
-                const filter = this.contract.filters.Contributed(userAddress);
-                const events = await this.contract.queryFilter(filter);
-                const totalWei = events.reduce((sum, event) => sum.add(event.args.weiAmount), ethers.BigNumber.from(0));
-                return parseFloat(ethers.utils.formatEther(totalWei));
-            } catch (error) {
-                console.error("Could not fetch user contributions:", error);
-                return 0;
-            }
-        },
-
-        addContributionToList(tx) {
-            const list = $('contribution-list');
-            if (!list) return;
-            const item = document.createElement('li');
-            item.className = 'contribution-list-item small-dim';
-            item.innerHTML = `<span><a href="https://etherscan.io/tx/${tx.hash}" target="_blank" rel="noopener noreferrer" class="font-mono laser hover:text-white/80">${shortAddr(tx.address)}</a></span><span class="text-white/90 font-semibold">${parseFloat(tx.amount).toFixed(3)} ETH</span>`;
-            list.prepend(item);
-            while (list.children.length > 5) list.lastChild.remove();
-        },
-
-        updateUI(raised, contributors) {
-            $('total-raised').textContent = `${parseFloat(raised).toFixed(2)} ETH`;
-            $('total-contributors').textContent = contributors.toString();
-            const progress = (parseFloat(raised) / this.hardCap) * 100;
-            $('live-progress-bar').style.width = `${Math.min(100, progress)}%`;
-            $('progress-percentage').textContent = `${Math.min(100, progress).toFixed(1)}%`;
+          // Live push
+          this.contract.on("Contributed", (buyer, weiAmount, tokensOut, event) => {
+            this.addContributionToList({
+              address: buyer,
+              amount: ethers.utils.formatEther(weiAmount),
+              hash: event.transactionHash
+            });
+            this.fetchOnChainData();
+          });
+        } catch (e) {
+          console.error("Init failed:", e);
         }
+      },
+
+      async backfillRecentContributions() {
+        const list = document.getElementById("contribution-list");
+        if (!list) return;
+        list.innerHTML = "";
+        try {
+          const latest = await this.provider.getBlockNumber();
+          const start  = Math.max(0, latest - 250000);
+
+          // Try presale Contributed events first
+          let events = [];
+          try {
+            events = await this.contract.queryFilter(this.contract.filters.Contributed(), start, latest);
+          } catch {}
+
+          if (events.length > 0) {
+            events.slice(-5).reverse().forEach(ev => {
+              this.addContributionToList({
+                address: ev.args.buyer,
+                amount: ethers.utils.formatEther(ev.args.weiAmount),
+                hash: ev.transactionHash
+              });
+            });
+            return;
+          }
+
+          // Fallback: read ERC20 Transfers from presale -> buyers
+          const tokenAddr = await this.contract.token();
+          const erc20 = new ethers.Contract(
+            tokenAddr,
+            ["event Transfer(address indexed from,address indexed to,uint256 value)","function decimals() view returns (uint8)"],
+            this.provider
+          );
+          const rate = await this.contract.rate(); // tokens per 1 ETH
+          const tf = erc20.filters.Transfer(this.contractAddress, null);
+          const txs = await erc20.queryFilter(tf, start, latest);
+          const dec = await erc20.decimals();
+
+          txs.slice(-5).reverse().forEach(ev => {
+            const tokens = ev.args.value; // token units
+            // Approx ETH from tokens/rate (both 18 decimals assumed; adjust if token decimals != 18)
+            const eth = tokens.mul(ethers.constants.WeiPerEther).div(rate);
+            this.addContributionToList({
+              address: ev.args.to,
+              amount: ethers.utils.formatEther(eth),
+              hash: ev.transactionHash
+            });
+          });
+        } catch (e) {
+          console.error("Backfill failed:", e);
+        }
+      },
+
+      async fetchOnChainData() {
+        try {
+          // Total raised (ETH)
+          const totalWei = await this.contract.weiRaised();
+          const totalEth = ethers.utils.formatEther(totalWei);
+
+          // Contributors via Contributed events (fallback to ERC20 Transfers)
+          let buyers = [];
+          try {
+            const latest = await this.provider.getBlockNumber();
+            const start  = Math.max(0, latest - 2000000);
+            const evs = await this.contract.queryFilter(this.contract.filters.Contributed(), start, latest);
+            buyers = evs.map(e => e.args.buyer);
+          } catch {}
+
+          if (buyers.length === 0) {
+            const tokenAddr = await this.contract.token();
+            const erc20 = new ethers.Contract(tokenAddr, ["event Transfer(address indexed from,address indexed to,uint256 value)"], this.provider);
+            const tf = erc20.filters.Transfer(this.contractAddress, null);
+            const txs = await erc20.queryFilter(tf, undefined, "latest");
+            buyers = txs.map(e => e.args.to);
+          }
+
+          const unique = new Set(buyers).size;
+          this.updateUI(totalEth, unique);
+        } catch (e) {
+          console.error("fetchOnChainData failed:", e);
+        }
+      },
+
+      async fetchUserTotalContribution(user) {
+        if (!user) return 0;
+        try {
+          const evs = await this.contract.queryFilter(this.contract.filters.Contributed(user));
+          const sum = evs.reduce((acc, e) => acc.add(e.args.weiAmount), ethers.BigNumber.from(0));
+          return parseFloat(ethers.utils.formatEther(sum));
+        } catch {
+          // Fallback via token transfers
+          try {
+            const tokenAddr = await this.contract.token();
+            const erc20 = new ethers.Contract(tokenAddr, ["event Transfer(address indexed from,address indexed to,uint256 value)"], this.provider);
+            const tf = erc20.filters.Transfer(this.contractAddress, user);
+            const rate = await this.contract.rate();
+            const txs = await erc20.queryFilter(tf);
+            const wei = txs.reduce((acc, e) => acc.add(e.args.value.mul(ethers.constants.WeiPerEther).div(rate)), ethers.BigNumber.from(0));
+            return parseFloat(ethers.utils.formatEther(wei));
+          } catch { return 0; }
+        }
+      },
+
+      addContributionToList(tx) {
+        const list = document.getElementById("contribution-list");
+        if (!list) return;
+        const li = document.createElement("li");
+        li.className = "contribution-list-item small-dim";
+        li.innerHTML = `<span><a href="https://etherscan.io/tx/${tx.hash}" target="_blank" rel="noopener noreferrer" class="font-mono laser hover:text-white/80">${shortAddr(tx.address)}</a></span><span class="text-white/90 font-semibold">${parseFloat(tx.amount).toFixed(3)} ETH</span>`;
+        list.prepend(li);
+        while (list.children.length > 5) list.lastChild.remove();
+      },
+
+      updateUI(raised, contributors){
+        document.getElementById("total-raised").textContent = `${parseFloat(raised).toFixed(2)} ETH`;
+        document.getElementById("total-contributors").textContent = `${contributors}`;
+        const progress = Math.min(100, (parseFloat(raised) / this.hardCap) * 100);
+        document.getElementById("live-progress-bar").style.width = `${progress}%`;
+        document.getElementById("progress-percentage").textContent = `${progress.toFixed(1)}%`;
+      }
     };
     
     async function fetchETHPrice() {
@@ -1777,4 +1842,3 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
