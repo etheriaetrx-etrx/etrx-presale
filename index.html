@@ -2031,16 +2031,17 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         async backfillRecentContributions() {
-            if (!this.contract) return;
+            if (!this.contract || !this.provider) return;
             const list = $('contribution-list');
             if (!list) return;
-            list.innerHTML = ''; // Clear list to prevent duplicates on re-init
+            list.innerHTML = ''; // Clear list to prevent duplicates
 
             try {
+                const latestBlock = await this.provider.getBlockNumber();
+                const startBlock = Math.max(0, latestBlock - 250000); // More reliable query window (~1 month)
                 const filter = this.contract.filters.Contributed();
-                const events = await this.contract.queryFilter(filter, 'earliest', 'latest');
+                const events = await this.contract.queryFilter(filter, startBlock, latestBlock);
                 
-                // Get the last 5 events, and reverse to show newest first
                 const recentEvents = events.slice(-5).reverse();
 
                 recentEvents.forEach(event => {
@@ -2056,7 +2057,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         async fetchOnChainData() {
-            if (!this.contract) {
+            if (!this.contract || !this.provider) {
                 console.error("Contract is not initialized.");
                 return;
             }
@@ -2065,9 +2066,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const totalWeiBigNumber = await this.contract.weiRaised(); 
                 const totalEthRaised = ethers.utils.formatEther(totalWeiBigNumber);
                 
-                // Fetch contributor count by querying past events
+                const latestBlock = await this.provider.getBlockNumber();
+                const startBlock = Math.max(0, latestBlock - 2000000); // Wider range for total contributor count
                 const filter = this.contract.filters.Contributed();
-                const events = await this.contract.queryFilter(filter);
+                const events = await this.contract.queryFilter(filter, startBlock, latestBlock);
                 const uniqueContributors = new Set(events.map(e => e.args.buyer)).size;
 
                 this.updateUI({
@@ -2085,6 +2087,7 @@ document.addEventListener('DOMContentLoaded', () => {
         async fetchUserTotalContribution(userAddress) {
             if (!this.contract || !userAddress) return 0;
             try {
+                // For a single user's total, querying all history is fine because it's a targeted, indexed search
                 const filter = this.contract.filters.Contributed(userAddress);
                 const events = await this.contract.queryFilter(filter);
                 let totalWei = ethers.BigNumber.from(0);
@@ -2118,9 +2121,8 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         updateUI(data) {
-            const isPresaleActive = new Date() >= PRESALE_START && new Date() <= PRESALE_END;
-            const raised = isPresaleActive ? data.totalRaised : 0;
-            const contributors = isPresaleActive ? data.contributors : 0;
+            const raised = data.totalRaised;
+            const contributors = data.contributors;
 
             const totalRaisedEl = $('total-raised');
             const totalContributorsEl = $('total-contributors');
