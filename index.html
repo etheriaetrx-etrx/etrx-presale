@@ -32,7 +32,7 @@
            script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline';
            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
            font-src https://fonts.gstatic.com;
-           connect-src 'self' https://api.web3forms.com https://cloudflare-eth.com https://rpc.ankr.com/eth https://api.etherscan.io https://api.coingecko.com;
+           connect-src 'self' https://api.web3forms.com https://cloudflare-eth.com https://rpc.ankr.com/eth https://eth.public-rpc.com https://api.etherscan.io https://api.coingecko.com;
            worker-src 'self';
            object-src 'none';
            base-uri 'self';
@@ -1679,7 +1679,13 @@ document.addEventListener('DOMContentLoaded', () => {
       async init() {
         if (typeof ethers === 'undefined') return console.error("Ethers.js not loaded.");
         try {
-          this.provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/eth");
+          const providers = [
+              new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/eth"),
+              new ethers.providers.JsonRpcProvider("https://cloudflare-eth.com"),
+              new ethers.providers.JsonRpcProvider("https://eth.public-rpc.com")
+          ];
+          this.provider = new ethers.providers.FallbackProvider(providers);
+
           this.contract  = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
           await this.fetchOnChainData();
           await this.backfillRecentContributions();
