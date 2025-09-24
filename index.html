@@ -32,7 +32,7 @@
            script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline';
            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
            font-src https://fonts.gstatic.com;
-           connect-src 'self' https://api.web3forms.com https://cloudflare-eth.com https://rpc.ankr.com/eth https://eth.public-rpc.com https://api.etherscan.io https://api.coingecko.com;
+           connect-src 'self' https://api.web3forms.com https://cloudflare-eth.com https://eth.llamarpc.com https://rpc.ankr.com/eth https://api.etherscan.io https://api.coingecko.com;
            worker-src 'self';
            object-src 'none';
            base-uri 'self';
@@ -62,7 +62,7 @@
 
 
 <!-- Assets -->
-<link rel="preload" as="image" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/background.png">
+<link rel="preload" as="image" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/background.png" crossorigin>
 <link rel="icon" type="image/png" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png">
 
 <style>
@@ -410,7 +410,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 </head>
 <body>
 <div id="preloader">
-    <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png" alt="Etheria Logo" class="h-16 w-16"/>
+    <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png" alt="Etheria Logo" class="h-16 w-16" crossorigin="anonymous"/>
 </div>
 
 <noscript>
@@ -434,7 +434,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 <header id="siteHeader" class="sticky top-0 z-40">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
     <div class="flex items-center gap-3">
-      <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-orange-400/20 object-contain"/>
+      <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-orange-400/20 object-contain" crossorigin="anonymous"/>
       <div class="text-sm tracking-wide small-dim">Etheria</div>
     </div>
     <nav class="hidden gap-6 text-sm opacity-80 md:flex items-center" aria-label="Primary">
@@ -600,7 +600,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
   <!-- Right: Hero Image -->
   <div class="order-1 md:order-2 reveal" data-delay="0">
     <div class="hero-glow relative rounded-3xl">
-        <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/background.png" alt="An ethereal, glowing cavern representing the world of Etheria" class="w-full h-auto object-cover rounded-3xl ring-1 ring-orange-400/20"/>
+        <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/background.png" alt="An ethereal, glowing cavern representing the world of Etheria" class="w-full h-auto object-cover rounded-3xl ring-1 ring-orange-400/20" crossorigin="anonymous"/>
     </div>
   </div>
 </section>
@@ -982,7 +982,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
         -->
         <div class="glass card card-outline holo p-5 reveal">
             <div class="flex items-start gap-4">
-                <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-full flex-shrink-0"/>
+                <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-full flex-shrink-0" crossorigin="anonymous"/>
                 <div>
                     <div class="flex items-center gap-2">
                         <h4 class="font-bold">Etheria</h4>
@@ -1010,7 +1010,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
     <!-- CoinGecko Listing Card -->
     <div class="mb-8 max-w-sm mx-auto reveal" data-delay="0">
         <div class="glass card card-outline holo p-5 text-center">
-            <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo2.avif" alt="Listed on CoinGecko" class="h-16 mx-auto mb-3" onerror="this.style.display='none'"/>
+            <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo2.avif" alt="Listed on CoinGecko" class="h-16 mx-auto mb-3" onerror="this.style.display='none'" crossorigin="anonymous"/>
             <h3 class="text-lg font-bold neon-text">
                 Tracked by CoinGecko
             </h3>
@@ -1663,6 +1663,31 @@ document.addEventListener('DOMContentLoaded', () => {
     /* =================================================================
      * ==================== ON-CHAIN DATA FETCHER ======================
      * ================================================================= */
+    
+    const SAFE_RPC = [
+      "https://cloudflare-eth.com",
+      "https://eth.llamarpc.com",
+      "https://rpc.ankr.com/eth"
+    ];
+
+    const FALLBACKS = SAFE_RPC.map((url) =>
+      new ethers.providers.StaticJsonRpcProvider(
+        { url, timeout: 12000 },
+        { chainId: 1, name: "homestead" }   // skip detectNetwork
+      )
+    );
+
+    // If a wallet is present, prefer it for reads when connected
+    function makeReadProvider() {
+      try {
+        if (window.ethereum) {
+          const injected = new ethers.providers.Web3Provider(window.ethereum, "any");
+          return new ethers.providers.FallbackProvider([injected, ...FALLBACKS], 1);
+        }
+      } catch (e) {}
+      return new ethers.providers.FallbackProvider(FALLBACKS, 1);
+    }
+     
     const onChain = {
       contractAddress: "0x7E5e15d7FA217861ab9df5a47218942D1181e0e7",
       contractABI: [
@@ -1679,14 +1704,9 @@ document.addEventListener('DOMContentLoaded', () => {
       async init() {
         if (typeof ethers === 'undefined') return console.error("Ethers.js not loaded.");
         try {
-          const providers = [
-              new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/eth"),
-              new ethers.providers.JsonRpcProvider("https://cloudflare-eth.com"),
-              new ethers.providers.JsonRpcProvider("https://eth.public-rpc.com")
-          ];
-          this.provider = new ethers.providers.FallbackProvider(providers);
-
+          this.provider = makeReadProvider();
           this.contract  = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
+          
           await this.fetchOnChainData();
           await this.backfillRecentContributions();
           setInterval(() => this.fetchOnChainData(), 15000);
