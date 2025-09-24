@@ -461,6 +461,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
       </div>
     </nav>
     <div class="flex items-center gap-3">
+      <div id="utc-clock" class="hidden md:block text-sm tabular small-dim mr-4"></div>
       <button id="wp-btn-header" class="btn-ghost text-sm hidden sm:inline-flex">Whitepaper</button>
       <button id="connectBtn" class="btn-primary text-sm" aria-haspopup="dialog" aria-controls="walletModal">Connect Wallet</button>
       <div id="walletPill" class="btn-ghost text-xs hidden" aria-live="polite">
@@ -661,7 +662,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
             <div id="presale-status-card" class="glass card card-outline p-5 reveal holo text-center" data-delay="0">
                 <h3 id="presale-status-title" class="text-lg font-semibold neon-text">Presale Begins</h3>
                 <p id="presale-status-date" class="text-2xl font-bold text-white/90 mt-2">September 24, 2025</p>
-                <p id="presale-status-time" class="text-lg small-dim">2:00 AM CDT (07:00 UTC)</p>
+                <p id="presale-status-time" class="text-lg small-dim">3:00 AM CDT (08:00 UTC)</p>
                 <!-- Overall Progress -->
                 <div class="mt-4 text-left">
                     <div class="flex items-center justify-between text-xs small-dim">
@@ -1015,7 +1016,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
         <div class="glass card card-outline holo p-5 text-center">
             <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo2.avif" alt="Listed on CoinGecko" class="h-16 mx-auto mb-3" onerror="this.style.display='none'"/>
             <h3 class="text-lg font-bold neon-text">
-                Listed on CoinGecko
+                Tracked by CoinGecko
             </h3>
             <p class="small-dim mt-2 text-xs">Request ID: CL1509250041</p>
             <a href="https://www.coingecko.com/en/coins/etheria-token" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Listing</a>
@@ -1201,7 +1202,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
         <span class="faq-chevron" aria-hidden="true">⌄</span>
       </button>
       <div class="faq-body" id="faq-when-body" role="region" aria-labelledby="faq-when-btn" hidden>
-        <p class="small-dim">The presale starts September 24, 2025 at 07:00 UTC (2:00 AM CDT) and ends on September 30, 2025 at midnight UTC. The $ETRX token is now live on the Ethereum mainnet.</p>
+        <p class="small-dim">The presale starts September 24, 2025 at 08:00 UTC (3:00 AM CDT) and ends on September 30, 2025 at midnight UTC. The $ETRX token is now live on the Ethereum mainnet.</p>
       </div>
     </div>
     <div class="faq-item reveal">
@@ -1265,7 +1266,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
   "@context": "https://schema.org",
   "@type": "Event",
   "name": "ETRX Presale",
-  "startDate": "2025-09-24T07:00:00Z",
+  "startDate": "2025-09-24T08:00:00Z",
   "endDate": "2025-10-01T00:00:00Z",
   "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
@@ -1287,13 +1288,13 @@ document.addEventListener('DOMContentLoaded', () => {
     /* =================================================================
      * ================== CONFIG: DATES + TIERS ========================
      * ================================================================= */
-    // --- Presale start time is Sep 24, 2025, 2:00 AM (Arkansas Time / CDT) which is Sep 24, 07:00 UTC
-    const PRESALE_START = new Date('2025-09-24T07:00:00Z');
+    // --- Presale start time is Sep 24, 2025, 3:00 AM (Arkansas Time / CDT) which is Sep 24, 08:00 UTC
+    const PRESALE_START = new Date('2025-09-24T08:00:00Z');
     const PRESALE_END   = new Date('2025-10-01T00:00:00Z'); // Midnight UTC at the end of Sep 30
     const LISTING_PRICE = 0.12; // USD
 
     const PHASES = [
-      { name:'Phase 1', start:'2025-09-24T07:00:00Z', end:'2025-09-26T23:59:59Z', price:0.08 },
+      { name:'Phase 1', start:'2025-09-24T08:00:00Z', end:'2025-09-26T23:59:59Z', price:0.08 },
       { name:'Phase 2', start:'2025-09-27T00:00:00Z', end:'2025-09-28T23:59:59Z', price:0.10 },
       { name:'Phase 3', start:'2025-09-29T00:00:00Z', end:'2025-09-30T23:59:59Z', price:0.11 },
     ];
@@ -1319,6 +1320,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let primaryUTC = (safeGet('etrx_tz', 'utc') || 'utc') === 'utc';
     let ethPriceUSD = 3200; // Default/fallback ETH price
     
+    // --- UTC CLOCK ---
+    const clockEl = $('utc-clock');
+    if (clockEl) {
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getUTCHours()).padStart(2, '0');
+            const m = String(now.getUTCMinutes()).padStart(2, '0');
+            const s = String(now.getUTCSeconds()).padStart(2, '0');
+            clockEl.textContent = `${h}:${m}:${s} UTC`;
+        }
+        updateClock(); // Initial call to display clock immediately
+        setInterval(updateClock, 1000); // Update every second
+    }
+    // --- END UTC CLOCK ---
+
     // Preloader
     $('preloader')?.classList.add('loaded');
     
@@ -1457,7 +1473,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isUpcoming) {
             statusTitle.textContent = 'Presale Begins';
             statusDate.textContent = 'September 24, 2025';
-            statusTime.textContent = '2:00 AM CDT (07:00 UTC)';
+            statusTime.textContent = '3:00 AM CDT (08:00 UTC)';
         } else if (isLive) {
             statusTitle.textContent = 'Presale is Live!';
             statusDate.textContent = 'Ends September 30, 2025';
@@ -1522,7 +1538,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Active nav highlight
-    const allNavLinks = [...document.querySelectorAll('header nav a, #more-menu-dropdown a')];
+    const allNavLinks = Array.from(document.querySelectorAll('header nav a, #more-menu-dropdown a'));
     const moreMenuBtn = $('more-menu-btn');
     const navSections = allNavLinks.map(link => $(link.getAttribute('href').substring(1))).filter(Boolean);
     const navObserver = new IntersectionObserver(entries => {
@@ -1792,7 +1808,8 @@ document.addEventListener('DOMContentLoaded', () => {
       else {
           walletShort.textContent=shortAddr(connectedAccount);  
           safeSet('etrx_wallet', connectedAccount);  
-          updateContributionUIState();
+          const isLive = new Date() >= PRESALE_START && new Date() <= PRESALE_END;
+          updateContributionUIState(isLive);
           updateReferralUI();
           updateUserContributionSummary();
       }
@@ -1815,7 +1832,8 @@ document.addEventListener('DOMContentLoaded', () => {
       provider.on?.('chainChanged', onChainChanged);
       
       toast('Wallet connected ✅');
-      updateContributionUIState();
+      const isLive = new Date() >= PRESALE_START && new Date() <= PRESALE_END;
+      updateContributionUIState(isLive);
       updateReferralUI();
       updateUserContributionSummary();
     }
@@ -1828,7 +1846,8 @@ document.addEventListener('DOMContentLoaded', () => {
       walletPill.classList.add('hidden');
       connectBtn.classList.remove('hidden-important');
       toast('Disconnected', true);
-      updateContributionUIState();
+      const isLive = new Date() >= PRESALE_START && new Date() <= PRESALE_END;
+      updateContributionUIState(isLive);
       updateReferralUI();
       updateUserContributionSummary();
     }
@@ -1862,9 +1881,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const bonusDisplay = $('bonus-display');
 
     function updateContributionUIState(isLive) {
-        $('contribute-ready').classList.toggle('hidden', !connectedAccount || !isLive);
-        $('contribute-connect-wallet').classList.toggle('hidden', connectedAccount || !isLive);
-        $('contribute-not-live').classList.toggle('hidden', isLive);
+        $('contribute-ready')?.classList.toggle('hidden', !connectedAccount || !isLive);
+        $('contribute-connect-wallet')?.classList.toggle('hidden', connectedAccount || !isLive);
+        $('contribute-not-live')?.classList.toggle('hidden', isLive);
 
         updateUserContributionSummary();
     }
@@ -1874,7 +1893,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return tier ? tier.bonus : 0;
     }
     
-    function updateETRXValue() {
+    async function updateETRXValue() {
+        if (!ethAmountInput || !etrxReceiveInput) return;
         const ethAmount = parseFloat(ethAmountInput.value);
 
         // Reset bonus tier highlights
@@ -1882,7 +1902,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (isNaN(ethAmount) || ethAmount <= 0) {
             etrxReceiveInput.value = '';
-            bonusDisplay.textContent = '';
+            if(bonusDisplay) bonusDisplay.textContent = '';
             return;
         }
         
@@ -1891,50 +1911,59 @@ document.addEventListener('DOMContentLoaded', () => {
             const usdValue = ethAmount * ethPriceUSD;
             const baseEtrx = usdValue / tokenPrice;
             
-            const totalEthContributed = getUserTotalContribution() + ethAmount;
+            const totalEthContributed = await onChain.fetchUserTotalContribution(connectedAccount) + ethAmount;
             const bonusRate = getBonusForAmount(totalEthContributed);
             const bonusEtrx = baseEtrx * bonusRate;
             const totalEtrx = baseEtrx + bonusEtrx;
 
             etrxReceiveInput.value = totalEtrx.toLocaleString(undefined, { maximumFractionDigits: 2 });
             
-            if (bonusRate > 0) {
-                bonusDisplay.textContent = `+${(bonusRate * 100).toFixed(1)}% bonus included!`;
-                // Highlight the active tier
-                const activeTier = BONUS_TIERS.find(t => totalEthContributed >= t.threshold);
-                if(activeTier) $(activeTier.id)?.classList.add('active');
-            } else {
-                const nextTier = BONUS_TIERS.slice().reverse().find(t => totalEthContributed < t.threshold);
-                if (nextTier) {
-                    bonusDisplay.textContent = `Contribute ${(nextTier.threshold - totalEthContributed).toFixed(2)} more ETH for a bonus.`;
+            if (bonusDisplay) {
+                if (bonusRate > 0) {
+                    bonusDisplay.textContent = `+${(bonusRate * 100).toFixed(1)}% bonus included!`;
+                    // Highlight the active tier
+                    const activeTier = BONUS_TIERS.find(t => totalEthContributed >= t.threshold);
+                    if(activeTier) $(activeTier.id)?.classList.add('active');
                 } else {
-                    bonusDisplay.textContent = '';
+                    const nextTier = BONUS_TIERS.slice().reverse().find(t => totalEthContributed < t.threshold);
+                    if (nextTier) {
+                        bonusDisplay.textContent = `Contribute ${(nextTier.threshold - totalEthContributed).toFixed(2)} more ETH for a bonus.`;
+                    } else {
+                        bonusDisplay.textContent = '';
+                    }
                 }
             }
         }
     }
     
-    ethAmountInput.addEventListener('input', updateETRXValue);
+    ethAmountInput?.addEventListener('input', updateETRXValue);
 
-    maxBtn.addEventListener('click', async () => {
+    maxBtn?.addEventListener('click', async () => {
         if (!activeProvider || !connectedAccount) {
             toast('Please connect your wallet first.', true);
             return;
         }
         try {
-            // In a real app, this would get the actual balance. Here we simulate it.
-            const simulatedBalance = (Math.random() * 2 + 0.1).toFixed(5); // Simulate a balance between 0.1 and 2.1 ETH
-            const gasReserve = 0.01;
-            const usableBalance = Math.max(0, parseFloat(simulatedBalance) - gasReserve);
-            ethAmountInput.value = usableBalance.toFixed(5);
-            updateETRXValue();
-            toast(`Set to max balance (simulated)`);
+            const provider = new ethers.providers.Web3Provider(activeProvider);
+            const balance = await provider.getBalance(connectedAccount);
+            const gasPrice = await provider.getGasPrice();
+            const gasReserve = gasPrice.mul(21000).mul(2); // Standard tx fee * 2 for safety
+            const usableBalance = balance.sub(gasReserve);
+
+            if (usableBalance.gt(0)) {
+                ethAmountInput.value = ethers.utils.formatEther(usableBalance);
+                updateETRXValue();
+                toast(`Set to max balance`);
+            } else {
+                ethAmountInput.value = '0';
+                toast('Not enough balance for transaction fee.', true);
+            }
         } catch (e) {
             toast('Could not get wallet balance.', true);
         }
     });
 
-    contributeBtn.addEventListener('click', async () => {
+    contributeBtn?.addEventListener('click', async () => {
         if (!activeProvider) {
             toast('Please connect your wallet first.', true);
             return;
@@ -1943,7 +1972,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const ethAmountStr = ethAmountInput.value;
         const ethAmount = parseFloat(ethAmountStr);
 
-        if (!ethAmountStr || ethAmount <= 0) {
+        if (!ethAmountStr || isNaN(ethAmount) || ethAmount <= 0) {
             toast('Please enter a valid ETH amount.', true);
             return;
         }
@@ -1951,56 +1980,54 @@ document.addEventListener('DOMContentLoaded', () => {
         contributeBtn.disabled = true;
         contributeBtn.textContent = 'Processing...';
 
-        // --- SIMULATION ---
-        // NOTE: This section simulates a blockchain transaction for demonstration purposes.
-        // For a real presale, this would be replaced with an Ethers.js call to your
-        // smart contract's `contribute` function.
-        // e.g., const tx = await yourContract.contribute({ value: ethers.utils.parseEther(ethAmountStr) });
-        // The tracking of total contributions would be handled by the smart contract itself.
-        setTimeout(() => {
-            const txHash = `0x${[...Array(64)].map(() => Math.floor(Math.random() * 16).toString(16)).join('')}`;
-            toast(`Transaction sent! ${shortAddr(txHash)}`);
+        try {
+            const provider = new ethers.providers.Web3Provider(activeProvider);
+            const signer = provider.getSigner();
             
-            // This part simulates tracking the user's contribution locally.
-            // In a real app, you would read this data from the blockchain.
-            const currentTotal = getUserTotalContribution();
-            saveUserTotalContribution(currentTotal + ethAmount);
-            updateUserContributionSummary();
+            // Re-using contract address and ABI from the onChain object
+            const contract = new ethers.Contract(onChain.contractAddress, onChain.contractABI, signer);
 
-            // This simulates a new on-chain event appearing in the UI.
-            onChain.addContributionToList({ address: connectedAccount, amount: ethAmountStr, hash: txHash });
+            const tx = await contract.contribute({
+                value: ethers.utils.parseEther(ethAmountStr)
+            });
+            
+            toast(`Transaction sent! ${shortAddr(tx.hash)}`);
 
+            await tx.wait(); // Wait for the transaction to be mined
+
+            toast('Contribution successful! ✅');
+            onChain.fetchOnChainData(); // Refresh on-chain data
+            updateUserContributionSummary(); // Refresh user-specific data
+            
             ethAmountInput.value = '';
             updateETRXValue();
 
+        } catch (err) {
+            console.error("Contribution failed:", err);
+            let errorMessage = 'Contribution failed.';
+            if (err.code === 4001) { // User rejected the transaction
+                errorMessage = 'Transaction rejected.';
+            } else if (err.data?.message) {
+                errorMessage = err.data.message;
+            } else if (err.message) {
+                errorMessage = err.message;
+            }
+            toast(errorMessage, true);
+        } finally {
             contributeBtn.disabled = false;
             contributeBtn.textContent = 'Contribute Now';
-        }, 1500);
+        }
     });
     
-    function getUserTotalContribution() {
-        if (!connectedAccount) return 0;
-        // User contributions are saved in their browser's local storage for this demo.
-        const data = JSON.parse(safeGet('etrx_user_contributions', '{}'));
-        return data[connectedAccount]?.eth || 0;
-    }
-
-    function saveUserTotalContribution(amount) {
-        if (!connectedAccount) return;
-        const data = JSON.parse(safeGet('etrx_user_contributions', '{}'));
-        if (!data[connectedAccount]) data[connectedAccount] = {};
-        data[connectedAccount].eth = amount;
-        safeSet('etrx_user_contributions', JSON.stringify(data));
-    }
-
-    function updateUserContributionSummary() {
+    async function updateUserContributionSummary() {
         const summaryCard = $('your-contribution-summary');
-        if (!connectedAccount) {
-            summaryCard.classList.add('hidden');
+        if (!summaryCard || !connectedAccount) {
+            summaryCard?.classList.add('hidden');
             return;
         }
         
-        const totalEth = getUserTotalContribution();
+        const totalEth = await onChain.fetchUserTotalContribution(connectedAccount);
+
         if(totalEth > 0) {
             summaryCard.classList.remove('hidden');
         } else {
@@ -2050,6 +2077,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.fetchOnChainData();
                 setInterval(() => this.fetchOnChainData(), 15000); 
 
+                // Listen for new contributions and add them to the list
+                this.contract.on('Contributed', (buyer, weiAmount, tokensOut, event) => {
+                    this.addContributionToList({
+                        address: buyer,
+                        amount: ethers.utils.formatEther(weiAmount),
+                        hash: event.transactionHash
+                    });
+                });
+
             } catch (error) {
                 console.error("Could not initialize contract instance:", error);
                 this.updateUI(this.initialState);
@@ -2067,20 +2103,39 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             try {
-                // Calling the 'weiRaised' function from your contract
                 const totalWeiBigNumber = await this.contract.weiRaised(); 
                 const totalEthRaised = ethers.utils.formatEther(totalWeiBigNumber);
+                
+                // Fetch contributor count by querying past events
+                const filter = this.contract.filters.Contributed();
+                const events = await this.contract.queryFilter(filter);
+                const uniqueContributors = new Set(events.map(e => e.args.buyer)).size;
 
-                // As your contract does not have a contributor count function, we keep it as '-'
                 this.updateUI({
                     totalRaised: totalEthRaised,
-                    contributors: '-', 
+                    contributors: uniqueContributors, 
                     telegram: this.initialState.telegram,
                     twitter: this.initialState.twitter
                 });
 
             } catch (error) {
                 console.error("Error fetching data from smart contract:", error);
+            }
+        },
+
+        async fetchUserTotalContribution(userAddress) {
+            if (!this.contract || !userAddress) return 0;
+            try {
+                const filter = this.contract.filters.Contributed(userAddress);
+                const events = await this.contract.queryFilter(filter);
+                let totalWei = ethers.BigNumber.from(0);
+                events.forEach(event => {
+                    totalWei = totalWei.add(event.args.weiAmount);
+                });
+                return parseFloat(ethers.utils.formatEther(totalWei));
+            } catch (error) {
+                console.error("Could not fetch user contributions:", error);
+                return 0;
             }
         },
 
@@ -2094,7 +2149,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span>
                     <a href="https://etherscan.io/tx/${tx.hash}" target="_blank" rel="noopener noreferrer" class="font-mono laser hover:text-white/80">${shortAddr(tx.address)}</a>
                 </span>
-                <span class="text-white/90 font-semibold">${tx.amount} ETH</span>
+                <span class="text-white/90 font-semibold">${parseFloat(tx.amount).toFixed(3)} ETH</span>
             `;
             list.prepend(item);
 
@@ -2106,35 +2161,43 @@ document.addEventListener('DOMContentLoaded', () => {
         updateUI(data) {
             const isPresaleActive = new Date() >= PRESALE_START && new Date() <= PRESALE_END;
             const raised = isPresaleActive ? data.totalRaised : 0;
-            const contributors = isPresaleActive ? data.contributors : '-';
+            const contributors = isPresaleActive ? data.contributors : 0;
 
-            $('total-raised').textContent = `${parseFloat(raised).toFixed(2)} ETH`;
-            $('total-contributors').textContent = contributors.toString();
-            const progress = (parseFloat(raised) / this.hardCap) * 100;
-            $('live-progress-bar').style.width = `${Math.min(100, progress)}%`;
-            $('progress-percentage').textContent = `${Math.min(100, progress).toFixed(1)}%`;
+            const totalRaisedEl = $('total-raised');
+            const totalContributorsEl = $('total-contributors');
+            const liveProgressBarEl = $('live-progress-bar');
+            const progressPercentageEl = $('progress-percentage');
+            const telegramCountEl = $('telegram-count');
+            const twitterCountEl = $('twitter-count');
+
+            if(totalRaisedEl) totalRaisedEl.textContent = `${parseFloat(raised).toFixed(2)} ETH`;
+            if(totalContributorsEl) totalContributorsEl.textContent = contributors.toString();
             
-            $('telegram-count').textContent = data.telegram.toLocaleString();
-            $('twitter-count').textContent = data.twitter.toLocaleString();
+            const progress = (parseFloat(raised) / this.hardCap) * 100;
+            if(liveProgressBarEl) liveProgressBarEl.style.width = `${Math.min(100, progress)}%`;
+            if(progressPercentageEl) progressPercentageEl.textContent = `${Math.min(100, progress).toFixed(1)}%`;
+            
+            if(telegramCountEl) telegramCountEl.textContent = data.telegram.toLocaleString();
+            if(twitterCountEl) twitterCountEl.textContent = data.twitter.toLocaleString();
         }
     };
     
     async function fetchETHPrice() {
         try {
-            // Simulate API call to CoinGecko for demo purposes. In a real app, you would fetch this live.
-            // const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
-            // const data = await response.json();
-            // ethPriceUSD = data.ethereum.usd;
+            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
+            if (!response.ok) throw new Error('Network response was not ok');
+            const data = await response.json();
+            ethPriceUSD = data.ethereum.usd;
             
-            // For this demo, we'll simulate a fluctuating price.
-            ethPriceUSD = 3200 + (Math.random() - 0.5) * 50;
+            const ethPriceDisplayEl = $('eth-price-display');
+            if(ethPriceDisplayEl) ethPriceDisplayEl.textContent = `1 ETH ≈ $${ethPriceUSD.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
             
-            $('eth-price-display').textContent = `1 ETH ≈ $${ethPriceUSD.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
             updateETRXValue(); // Re-calculate on new ETH price
             updateUserContributionSummary(); // Also update the user summary card
         } catch (e) {
-            console.error("Failed to fetch ETH price", e);
-            $('eth-price-display').textContent = `1 ETH ≈ $${ethPriceUSD.toLocaleString()}`; // Show last known
+            console.error("Failed to fetch ETH price:", e);
+            const ethPriceDisplayEl = $('eth-price-display');
+            if(ethPriceDisplayEl) ethPriceDisplayEl.textContent = `1 ETH ≈ $${ethPriceUSD.toLocaleString()}`; // Show last known
         }
     }
     
@@ -2143,16 +2206,17 @@ document.addEventListener('DOMContentLoaded', () => {
      * ================================================================= */
     function updateReferralUI(){
         const referralSection = $('referral-section');
-        if (connectedAccount) {
+        if (connectedAccount && referralSection) {
             const link = `${window.location.origin}${window.location.pathname}?ref=${connectedAccount}`;
             $('referral-link').value = link;
             referralSection.classList.remove('hidden');
-        } else {
+        } else if (referralSection) {
             referralSection.classList.add('hidden');
         }
     }
-    $('copy-referral').addEventListener('click', () => {
+    $('copy-referral')?.addEventListener('click', () => {
         const linkInput = $('referral-link');
+        if(!linkInput) return;
         linkInput.select();
         try {
             // Use execCommand as a fallback for broader compatibility in sandboxed environments
