@@ -9,7 +9,6 @@
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
 
-<!-- Canonical & Social -->
 <link rel="canonical" href="https://etheriaetrx-etrx.github.io/etrx-presale/">
 <meta property="og:site_name" content="Etheria">
 <meta property="og:title" content="$ETRX • Etheria Presale">
@@ -25,14 +24,13 @@
 <meta name="twitter:image" content="https://etheriaetrx-etrx.github.io/etrx-presale/assets/background.png">
 <meta name="twitter:image:alt" content="Etheria presale hero art">
 
-<!-- CSP (single-file build) -->
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self' https://etheriaetrx-etrx.github.io;
            img-src 'self' data: https:;
            script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline';
            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
            font-src https://fonts.gstatic.com;
-           connect-src 'self' https://api.web3forms.com https://cloudflare-eth.com https://api.etherscan.io;
+           connect-src 'self' https://api.web3forms.com https://cloudflare-eth.com https://api.etherscan.io https://api.coingecko.com;
            worker-src 'self';
            object-src 'none';
            base-uri 'self';
@@ -41,13 +39,11 @@
 <meta name="theme-color" content="#100c14">
 <meta name="robots" content="index,follow,max-image-preview:large"/>
 
-<!-- Performance -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
-<!-- Fonts & Libraries -->
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script>
@@ -61,14 +57,9 @@
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" defer></script>
 
 
-<!-- Assets -->
 <link rel="preload" as="image" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/background.png">
 <link rel="icon" type="image/png" href="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png">
 
-<!--
-  NOTE: In a production build, this CSS would be moved to an external file (e.g., style.css)
-  and linked here: <link rel="stylesheet" href="style.css">
--->
 <style>
 :root{
   color-scheme: dark;
@@ -423,7 +414,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
   </div>
 </noscript>
 
-<!-- Background & layers -->
 <div id="bgAurora" aria-hidden="true"></div>
 <canvas id="wispCanvas" aria-hidden="true"></canvas>
 <div class="scanlines" aria-hidden="true"></div>
@@ -473,7 +463,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 </header>
 
 
-<!-- Wallet modal -->
 <div id="walletModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
      role="dialog" aria-modal="true" aria-labelledby="walletModalTitle" inert>
   <div class="glass card card-outline w-[min(420px,92vw)] p-4" data-modal-surface>
@@ -487,7 +476,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
   </div>
 </div>
 
-<!-- Whitepaper Modal -->
 <div id="whitepaperModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
      role="dialog" aria-modal="true" aria-labelledby="whitepaperModalTitle" inert>
   <div class="glass card card-outline w-full max-w-3xl max-h-[90vh] flex flex-col" data-modal-surface>
@@ -499,7 +487,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
       </div>
     </div>
     <div id="whitepaper-content" class="p-6 overflow-y-auto small-dim">
-        <!-- Whitepaper content from original file goes here -->
         <h2>Abstract</h2>
         <p>Etheria is a decentralized, community-driven world-building project on the Ethereum blockchain. It combines the narrative depth of a fantasy universe with the tangible ownership of Non-Fungible Tokens (NFTs) and the governance power of a utility token, $ETRX. The project's mission is to create an evolving ecosystem where the community is not just an audience, but an integral part of its creation and governance. Through a series of foundational NFT collections and the upcoming $ETRX token, Etheria provides a framework for collective storytelling, on-chain utility, and long-term value creation.</p>
         
@@ -587,12 +574,10 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
   </div>
 </div>
 
-<!-- Main Content -->
 <main>
 <section class="hero relative z-10 mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:items-center md:pt-10">
   <div class="hero-vignette" aria-hidden="true"></div>
 
-  <!-- Left: copy -->
   <div class="order-2 md:order-1">
     <h1 class="title-glow neon-text text-hero leading-tight md:text-6xl">
         The Official Token of Etheria<br/>
@@ -601,7 +586,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
     <p class="mt-4 max-w-measure small-dim">Powering realms, artifacts, governance and community rewards. Built on Ethereum for permanence and reach.</p>
   </div>
 
-  <!-- Right: Hero Image -->
   <div class="order-1 md:order-2 reveal" data-delay="0">
     <div class="hero-glow relative rounded-3xl">
         <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/background.png" alt="An ethereal, glowing cavern representing the world of Etheria" class="w-full h-auto object-cover rounded-3xl ring-1 ring-orange-400/20"/>
@@ -609,7 +593,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
   </div>
 </section>
 
-<!-- Live On-Chain Data -->
 <section id="live-data" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
     <div class="glass card card-outline p-5 reveal holo">
         <h3 class="text-center text-lg font-semibold neon-text mb-4">Live Presale Status</h3>
@@ -622,8 +605,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 <div class="text-xs uppercase small-dim">Contributors</div>
                 <div id="total-contributors" class="text-3xl font-bold text-orange-300 mt-1 tabular">0</div>
             </div>
-             <!-- NEW: Community Growth Stats -->
-            <div class="md:col-span-1 grid grid-cols-2 gap-2">
+             <div class="md:col-span-1 grid grid-cols-2 gap-2">
                 <div class="text-center">
                     <div class="text-xs uppercase small-dim">Telegram</div>
                     <div id="telegram-count" class="text-xl font-bold text-violet-300 mt-1 tabular">92</div>
@@ -643,27 +625,22 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 <div id="live-progress-bar" class="bg-gradient-to-r from-orange-400 to-red-500 h-2.5 rounded-full" style="width: 0%"></div>
             </div>
         </div>
-        <!-- Recent Contributions -->
         <div id="recent-contributions" class="mt-4 pt-4 border-t border-white/10">
             <h4 class="text-xs uppercase small-dim text-center mb-2">Recent Contributions</h4>
             <ul id="contribution-list" class="space-y-1">
-                <!-- JS will populate this -->
-            </ul>
+                </ul>
         </div>
     </div>
 </section>
 
 
-<!-- Presale Details Section -->
 <section id="presale-details" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Left Column: Details & Schedule -->
         <div class="space-y-6">
             <div id="presale-status-card" class="glass card card-outline p-5 reveal holo text-center" data-delay="0">
                 <h3 id="presale-status-title" class="text-lg font-semibold neon-text">Presale Begins</h3>
                 <p id="presale-status-date" class="text-2xl font-bold text-white/90 mt-2">September 24, 2025</p>
                 <p id="presale-status-time" class="text-lg small-dim">3:00 AM CDT (08:00 UTC)</p>
-                <!-- Overall Progress -->
                 <div class="mt-4 text-left">
                     <div class="flex items-center justify-between text-xs small-dim">
                         <span id="phaseName" class="font-semibold">Phase: Presale</span><span id="phaseEta"></span>
@@ -684,7 +661,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
             </div>
         </div>
     
-        <!-- Right Column: Contribution Card -->
         <div id="contribution-card" class="glass card card-outline p-5 reveal holo flex flex-col" data-delay="100">
             <div id="contribute-ready">
                 <div class="flex justify-between items-baseline">
@@ -745,30 +721,25 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Bonus Tiers Section -->
 <section id="bonus-tiers" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <h2 class="text-2xl font-bold neon-text reveal text-center">Contribution Bonus Tiers</h2>
     <p class="mt-2 max-w-2xl mx-auto text-center small-dim reveal">Contribute more to earn bonus $ETRX tokens. Bonuses are calculated based on your total contribution amount during the presale.</p>
     <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Tier 1 -->
         <div id="bonus-tier-1" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="0">
             <h4 class="font-bold text-lg text-orange-300">Seeker</h4>
             <p class="text-2xl font-extrabold my-2">+2.5%</p>
             <p class="text-sm small-dim">Contribute 1+ ETH</p>
         </div>
-        <!-- Tier 2 -->
         <div id="bonus-tier-2.5" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="100">
             <h4 class="font-bold text-lg text-orange-300">Guardian</h4>
             <p class="text-2xl font-extrabold my-2">+5%</p>
             <p class="text-sm small-dim">Contribute 2.5+ ETH</p>
         </div>
-        <!-- Tier 3 -->
         <div id="bonus-tier-5" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="200">
             <h4 class="font-bold text-lg text-purple-300">Ascendant</h4>
             <p class="text-2xl font-extrabold my-2">+7.5%</p>
             <p class="text-sm small-dim">Contribute 5+ ETH</p>
         </div>
-        <!-- Tier 4 -->
         <div id="bonus-tier-10" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="300">
             <h4 class="font-bold text-lg text-red-400">Harbinger</h4>
             <p class="text-2xl font-extrabold my-2">+10%</p>
@@ -780,11 +751,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- About -->
 <section id="about" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
   <h2 class="text-2xl font-bold neon-text reveal text-center">What is $ETRX?</h2>
   <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
-    <!-- Utility Card -->
     <div class="glass card card-outline holo p-5 text-center reveal" data-delay="0">
       <div class="mx-auto h-16 w-16 rounded-2xl bg-orange-500/10 flex items-center justify-center ring-1 ring-orange-500/20">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-300"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
@@ -792,7 +761,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
       <h4 class="mt-3 font-bold text-lg">Utility</h4>
       <p class="text-sm small-dim mt-1">Unlock rare Realms & Artifacts, access exclusive drops, and get in-world boosts.</p>
     </div>
-    <!-- Governance Card -->
     <div class="glass card card-outline holo p-5 text-center reveal" data-delay="100">
       <div class="mx-auto h-16 w-16 rounded-2xl bg-red-500/10 flex items-center justify-center ring-1 ring-red-500/20">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-300"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
@@ -800,7 +768,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
       <h4 class="mt-3 font-bold text-lg">Governance</h4>
       <p class="text-sm small-dim mt-1">Vote on community proposals, project direction, and the evolution of Etheria's lore.</p>
     </div>
-    <!-- Rewards Card -->
     <div class="glass card card-outline holo p-5 text-center reveal" data-delay="200">
       <div class="mx-auto h-16 w-16 rounded-2xl bg-purple-500/10 flex items-center justify-center ring-1 ring-purple-500/20">
          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-300"><path d="M20.2 6.2c.4-.5.4-1.2 0-1.7l-2.8-2.8c-.5-.4-1.2-.4-1.7 0L14 3.4 12 5.1l-1.7-2.3L8.6 1c-.5-.4-1.2-.4-1.7 0L4 3.8c-.4.5-.4 1.2 0 1.7L6.2 8 3.4 9.7c-.4.5-.4 1.2 0 1.7l2.8 2.8c.5.4 1.2.4 1.7 0L10 12.6l2 1.7 1.7 2.3 1.7 1.7c.5.4 1.2.4 1.7 0l2.8-2.8c.4-.5.4-1.2 0-1.7L17.8 16l2.4-1.7 2.8-2.8c.4-.5.4-1.2 0-1.7L20.2 6.2z"></path></svg>
@@ -816,7 +783,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Lore of Etheria Section -->
 <section id="lore" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <h2 class="text-2xl font-bold neon-text reveal text-center">The Lore of Etheria</h2>
     <div class="mt-6 max-w-3xl mx-auto space-y-4 text-center small-dim reveal">
@@ -834,11 +800,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- How to Buy -->
 <section id="how-to-buy" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <h2 class="text-2xl font-bold neon-text reveal text-center">How to Participate</h2>
     <div class="mt-8 timeline space-y-8">
-        <!-- Step 1 -->
         <div class="timeline-item reveal" data-delay="0">
             <div class="timeline-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12"></path><path d="M20 12v4h-4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h4z"></path></svg>
@@ -848,7 +812,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 <p class="small-dim">Download and set up a self-custody wallet like MetaMask, Rabby, or Trust Wallet. This is where your $ETRX tokens will be sent.</p>
             </div>
         </div>
-        <!-- Step 2 -->
         <div class="timeline-item reveal" data-delay="50">
              <div class="timeline-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 15 6 6v-4.5"></path><path d="m12 9-6-6v4.5"></path><path d="M14.5 12 21 5.5"></path><path d="M3 21l6.5-6.5"></path><path d="M12 9h.01"></path><path d="M12 15h.01"></path></svg>
@@ -858,7 +821,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 <p class="small-dim">Purchase Ethereum (ETH) from an exchange and send it to your wallet. Make sure you have enough for your desired contribution plus a little extra for gas fees.</p>
             </div>
         </div>
-        <!-- Step 3 -->
         <div class="timeline-item reveal" data-delay="100">
              <div class="timeline-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
@@ -874,7 +836,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Milestones -->
 <section id="milestones" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
   <h2 class="text-2xl font-bold neon-text reveal text-center">NFT Milestones & The Future</h2>
   <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -903,13 +864,11 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Tokenomics -->
 <section id="token" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <h2 class="text-2xl font-bold neon-text reveal">Tokenomics</h2>
     <p class="mt-2 max-w-3xl small-dim reveal">Total Supply: 10,000,000 $ETRX</p>
     
     <div class="mt-5 grid grid-cols-1 gap-8 md:grid-cols-2">
-        <!-- Left: Allocation List -->
         <div id="pie-legend" class="reveal" data-delay="50">
             <h3 class="font-semibold text-lg neon-text">Distribution</h3>
             <ul id="pie-legend-list" class="mt-3 space-y-2 small-dim">
@@ -935,7 +894,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 </li>
             </ul>
         </div>
-        <!-- Right: Pie Chart SVG -->
         <div class="flex items-center justify-center reveal" data-delay="100">
             <svg id="pieChart" viewBox="0 0 100 100" class="w-full max-w-[280px] h-auto" aria-labelledby="pie-title">
                 <title id="pie-title">Tokenomics Distribution Chart</title>
@@ -954,15 +912,13 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
             </svg>
         </div>
     </div>
-    <!-- Vesting Schedule Section -->
     <div class="mt-8 glass card card-outline p-5 reveal holo" data-delay="150">
         <h3 class="font-semibold text-lg neon-text">Team Vesting Schedule</h3>
         <p class="text-sm small-dim mt-1 mb-4">To ensure long-term commitment, team tokens are subject to a 24-month linear vesting schedule with a 6-month cliff. The vesting contract is now live and verified on the Ethereum Mainnet.</p>
         <div class="space-y-2 text-xs small-dim">
             <div class="vesting-bar">
                 <div class="vesting-fill" style="width: 100%;"></div>
-                <div class="vesting-marker" style="left: 25%;"></div> <!-- 6 months / 24 months -->
-            </div>
+                <div class="vesting-marker" style="left: 25%;"></div> </div>
             <div class="flex justify-between">
                 <span>Launch</span>
                 <span>6mo Cliff</span>
@@ -975,15 +931,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Social Feed Section -->
 <section id="social-feed" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <h2 class="text-2xl font-bold neon-text reveal text-center">Join the Conversation</h2>
     <div class="mt-6 max-w-xl mx-auto">
-        <!--  
-            NOTE: This is a placeholder for a real Twitter feed. 
-            For a live version, you would use Twitter's official embed generator and paste the code here.
-            The required script is often blocked by strict CSPs, so this placeholder is a safe fallback.
-        -->
         <div class="glass card card-outline holo p-5 reveal">
             <div class="flex items-start gap-4">
                 <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-full flex-shrink-0"/>
@@ -1007,11 +957,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
 
-<!-- Audit & Trust Section -->
 <section id="trust" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
      <h2 class="text-2xl font-bold neon-text reveal text-center mb-8">Trust & Security</h2>
 
-    <!-- CoinGecko Listing Card -->
     <div class="mb-8 max-w-sm mx-auto reveal" data-delay="0">
         <div class="glass card card-outline holo p-5 text-center">
             <img src="https://etheriaetrx-etrx.github.io/etrx-presale/assets/Logo2.avif" alt="Listed on CoinGecko" class="h-16 mx-auto mb-3" onerror="this.style.display='none'"/>
@@ -1061,12 +1009,10 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Team -->
 <section id="team" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
     <h2 class="text-2xl font-bold neon-text reveal">Core Contributors</h2>
     <p class="mt-2 max-w-3xl small-dim reveal">The public-facing team behind Etheria, dedicated to building a lasting world.</p>
     <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4" style="perspective: 1000px;">
-        <!-- Team Member 1 -->
         <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="0">
             <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-orange-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
                  <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--c-fire));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--c-ember));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g1)"/><path d="M20,80 Q50,20 80,80" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round" /></svg>
@@ -1077,7 +1023,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white" aria-label="ETRXDreamscapes on X/Twitter"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
             </div>
         </div>
-        <!-- Team Member 2 -->
         <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="50">
             <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-red-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--c-ember));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--c-dusk));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g2)"/><path d="M25,25 L75,75 M75,25 L25,75" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
@@ -1088,7 +1033,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 <a href="https://x.com/HeisCaifu" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white" aria-label="HeisCaifu on X/Twitter"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
             </div>
         </div>
-        <!-- Team Member 3 -->
         <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="100">
             <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-purple-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
                  <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--c-dusk));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--c-highlight));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g3)"/><circle cx="50" cy="50" r="25" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none"/></svg>
@@ -1099,7 +1043,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                  <a href="https://x.com/0x_Cheetah_x0" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white" aria-label="DxCheetah on X/Twitter"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
             </div>
         </div>
-        <!-- Team Member 4 -->
         <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="150">
             <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-orange-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
                  <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--c-highlight));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--c-fire));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g4)"/><path d="M50,20 L80,80 L20,80 Z" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1115,7 +1058,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Road -->
 <section id="road" class="relative z-10 mx-auto max-w-6xl px-6 py-14">
   <h2 class="text-2xl font-bold neon-text reveal">Roadmap: The Path Forward</h2>
   <div class="mt-5 timeline space-y-6 small-dim">
@@ -1140,7 +1082,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
 <div class="section-divider max-w-6xl mx-auto"></div>
 
-<!-- Notify & Allowlist -->
 <section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-24">
   <div class="glass card card-outline holo p-6 reveal">
     <h3 class="text-xl font-semibold neon-text">Get notified when the presale opens</h3>
@@ -1149,7 +1090,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
       <label class="sr-only" for="email">Email</label>
       <input required id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"
              class="flex-1 rounded-2xl border border-orange-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-orange-400"/>
-      <!-- Honeypot -->
       <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
       <button class="btn-primary" type="submit">Notify Me</button>
     </form>
@@ -1179,7 +1119,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
       </div>
       <p id="wlMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
 
-      <!-- Referral Section -->
       <div id="referral-section" class="mt-4 hidden">
           <p class="text-xs small-dim">Generate your unique referral link to earn an $ETRX bonus for every contributor you bring!</p>
           <div class="mt-2 flex flex-col sm:flex-row gap-2">
@@ -1192,7 +1131,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
   </div>
 </section>
 
-<!-- FAQ -->
 <section id="faq" class="relative z-10 mx-auto max-w-6xl px-6 pb-8">
   <h2 class="text-2xl font-bold neon-text reveal">FAQ</h2>
   <div class="mt-4 grid gap-3">
@@ -1260,7 +1198,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
 <a href="#notify" id="stickyCTA" class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">Get notified for $ETRX</a>
 
-<!-- Schema.org event (SEO) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -1277,10 +1214,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 }
 </script>
 
-<!--
-  NOTE: In a production build, this JavaScript would be moved to an external file (e.g., app.js)
-  and linked here: <script src="app.js" defer></script>
--->
 <script>
 'use strict'
 document.addEventListener('DOMContentLoaded', () => {
@@ -2075,6 +2008,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.contract = new ethers.Contract(this.contractAddress, this.contractABI, this.provider);
                 
                 this.fetchOnChainData();
+                this.backfillRecentContributions(); // Backfill historical contributions
                 setInterval(() => this.fetchOnChainData(), 15000); 
 
                 // Listen for new contributions and add them to the list
@@ -2094,6 +2028,31 @@ document.addEventListener('DOMContentLoaded', () => {
             fetchETHPrice();
             setInterval(fetchETHPrice, 60000);
             this.updateUI(this.initialState); // Show initial state immediately
+        },
+
+        async backfillRecentContributions() {
+            if (!this.contract) return;
+            const list = $('contribution-list');
+            if (!list) return;
+            list.innerHTML = ''; // Clear list to prevent duplicates on re-init
+
+            try {
+                const filter = this.contract.filters.Contributed();
+                const events = await this.contract.queryFilter(filter, 'earliest', 'latest');
+                
+                // Get the last 5 events, and reverse to show newest first
+                const recentEvents = events.slice(-5).reverse();
+
+                recentEvents.forEach(event => {
+                    this.addContributionToList({
+                        address: event.args.buyer,
+                        amount: ethers.utils.formatEther(event.args.weiAmount),
+                        hash: event.transactionHash
+                    });
+                });
+            } catch (error) {
+                console.error("Could not backfill recent contributions:", error);
+            }
         },
 
         async fetchOnChainData() {
@@ -2232,9 +2191,11 @@ document.addEventListener('DOMContentLoaded', () => {
      * ================================================================= */
     onChain.init();
     updateReferralUI();
+    if (connectedAccount) {
+        updateUserContributionSummary();
+    }
     loop();
 });
 </script>
 </body>
 </html>
-
