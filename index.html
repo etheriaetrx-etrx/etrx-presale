@@ -1337,6 +1337,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = $('siteHeader');
     addEventListener('scroll', ()=> header.classList.toggle('header-float', scrollY > 12), { passive:true });
 
+    function renderPhaseTable(){
+        const now = new Date();
+        const wrap = $('phaseTable');
+        if (!wrap) return;
+        wrap.innerHTML = '';
+        
+        // Hardcoded to UTC for consistency.
+        $('phaseScheduleTz').textContent = `Times in UTC`;
+
+        const fmtBase = { month:'short', day:'2-digit' };
+        const fmt = (d) => d.toLocaleString([], { ...fmtBase, timeZone: 'UTC' });
+
+        PHASES.forEach(p => {
+            const row = document.createElement('div');
+            row.className = 'row text-sm';
+            const isNow = now >= new Date(p.start) && now <= new Date(p.end);
+            if(isNow) row.classList.add('active-phase');
+            
+            row.innerHTML = `
+              <div class="font-semibold">${p.name} ${isNow ? '<span class="badge badge-now">Now</span>' : ''}</div>
+              <div class="opacity-90">$${p.price.toFixed(3)}</div>
+              <div class="small-dim">${fmt(new Date(p.start))} → ${fmt(new Date(p.end))}</div>
+            `;
+            wrap.appendChild(row);
+        });
+    }
+
     // Phase helpers & UI
     function clamp01(x){ return Math.max(0, Math.min(1, x)); }
     function getCurrentPhase(t = new Date()) {
@@ -1381,6 +1408,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         currentPhaseInfo = getCurrentPhase(now);
         updateContributionUIState(isLive);
+        renderPhaseTable();
         requestAnimationFrame(loop);
     }
     
@@ -1687,7 +1715,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const totalWei = await this.contract.weiRaised(); 
                 const totalEthRaised = ethers.utils.formatEther(totalWei);
                 const filter = this.contract.filters.Contributed();
-                const events = await this.contract.queryFilter(filter, 0, 'latest');
+                const latestBlock = await this.provider.getBlockNumber();
+                const startBlock = Math.max(0, latestBlock - 2000000); // Query a large but finite window (~30 days) to prevent RPC timeout
+                const events = await this.contract.queryFilter(filter, startBlock, 'latest');
                 const uniqueContributors = new Set(events.map(e => e.args.buyer)).size;
                 this.updateUI(totalEthRaised, uniqueContributors);
             } catch (error) { console.error("Error fetching contract data:", error); }
@@ -1747,3 +1777,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
