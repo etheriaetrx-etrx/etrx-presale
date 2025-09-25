@@ -384,6 +384,16 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
     transform: translateY(-4px) scale(1.02);
 }
 
+/* All Contributions Box */
+#all-contributions-box {
+    max-height: 200px; /* Or any height you prefer */
+    overflow-y: auto;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0.75rem;
+    padding: 0.5rem 1rem;
+}
+
+
 /* Countdown Animation */
 .countdown-value {
     display: inline-block;
@@ -639,12 +649,15 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 <div id="live-progress-bar" class="bg-gradient-to-r from-orange-400 to-red-500 h-2.5 rounded-full" style="width: 0%"></div>
             </div>
         </div>
-        <!-- Recent Contributions -->
-        <div id="recent-contributions" class="mt-4 pt-4 border-t border-white/10">
-            <h4 class="text-xs uppercase small-dim text-center mb-2">Recent Contributions</h4>
-            <ul id="contribution-list" class="space-y-1">
-                <!-- JS will populate this -->
-            </ul>
+        
+        <!-- All Contributions -->
+        <div id="all-contributions" class="mt-4 pt-4 border-t border-white/10">
+            <h4 class="text-xs uppercase small-dim text-center mb-2">All Contributions</h4>
+            <div id="all-contributions-box">
+                <ul id="contribution-list" class="space-y-1">
+                    <!-- JS will populate this -->
+                </ul>
+            </div>
         </div>
     </div>
 </section>
@@ -714,7 +727,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 <h4 class="text-sm font-semibold neon-text">Your Contributions</h4>
                 <div class="mt-2 text-xs small-dim space-y-1">
                     <div class="flex justify-between"><span>Total ETH Contributed:</span> <span id="user-total-eth" class="font-bold text-white/90">0.00</span></div>
-                    <div class="flex justify-between"><span>Your ETRX Balance:</span> <span id="user-total-etrx" class="font-bold text-white/90">0</span></div>
+                    <div class="flex justify-between"><span>Your $ETRX Received:</span> <span id="user-total-etrx" class="font-bold text-white/90">0</span></div>
                 </div>
             </div>
 
@@ -1274,14 +1287,13 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 </script>
 
 <script>
-'use strict'
+'use strict';
 
 /** CONFIG **/
 const PRESALE_ADDRESS = "0x7E5e15d7FA217861ab9df5a47218942D1181e0e7";
 const INITIAL_TOKENS = 3_000_000;
-const ETHERSCAN_API_KEY = ""; // <-- It is highly recommended to add a key to avoid rate limits
+const ETHERSCAN_API_KEY = ""; // It is highly recommended to add a key to avoid rate limits
 
-// Minimal ABIs
 const PRESALE_ABI = [
   {"inputs":[],"name":"contribute","stateMutability":"payable","type":"function"},
   {"inputs":[],"name":"live","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
@@ -1294,33 +1306,27 @@ const ERC20_ABI = [
   {"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"stateMutability":"view","type":"function"},
   {"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"stateMutability":"view","type":"function"}
 ];
-
-let provider, sale, token, tokenDecimals, tokenAddr;
 const RPCS = [
   "https://cloudflare-eth.com",
   "https://eth.llamarpc.com",
   "https://rpc.ankr.com/eth"
 ];
 
+let provider, sale, token, tokenDecimals, tokenAddr;
+
 // ----- Loader controller -----
 function hideLoader() {
   const splash = document.getElementById('preloader');
-  if (splash) {
-      splash.classList.add('loaded');
-  }
+  if (splash) splash.style.display = 'none';
 }
 function showLoader() {
   const splash = document.getElementById('preloader');
-  if (splash) {
-      splash.classList.remove('loaded');
-      splash.style.display = '';
-  }
+  if (splash) splash.style.display = 'flex';
 }
 let __loaderWatchdog = setTimeout(() => {
   console.warn('[BOOT] Watchdog releasing loader after 7s');
   hideLoader();
 }, 7000);
-
 function finishBoot() {
   clearTimeout(__loaderWatchdog);
   hideLoader();
@@ -1351,25 +1357,21 @@ async function makeProvider() {
     }
   }
   console.error('[RPC] all endpoints failed');
-  return null; // DO NOT throw; allow UI to render
+  return null;
 }
 
 async function initOnce() {
   if (provider) return true;
-
   provider = await makeProvider();
-  if (!provider) return false; // UI will still render without live data
+  if (!provider) return false;
 
   try {
-    const code = await callWithTimeout(
-      provider.getCode(PRESALE_ADDRESS), 1500, 'getCode'
-    ).catch(err => {
+    const code = await callWithTimeout(provider.getCode(PRESALE_ADDRESS), 1500, 'getCode').catch(err => {
       console.warn('[BOOT] getCode warning:', err.message || err);
-      return '0xcode-unknown'; // sentinel, proceed
+      return '0xcode-unknown';
     });
-
     if (code === '0x') {
-      console.error('[BOOT] No bytecode at presale address; continuing UI in read-only mode');
+      console.error('[BOOT] No bytecode at presale address');
       return false;
     }
   } catch (e) {
@@ -1401,14 +1403,8 @@ function setCoreUI({raisedEth, pct, live}){
 
   const notLive = document.getElementById('contribute-not-live');
   const ready   = document.getElementById('contribute-ready');
-  const connectWallet = document.getElementById('contribute-connect-wallet');
-
-  const isConnected = !!window.connectedAccount;
-
   if (notLive) notLive.style.display = live ? 'none' : 'flex';
-  if (ready)   ready.style.display   = live && isConnected ? 'block' : 'none';
-  if (connectWallet) connectWallet.style.display = live && !isConnected ? 'flex' : 'none';
-
+  if (ready)   ready.style.display   = live ? 'flex' : 'none';
 }
 
 async function refreshCore(){
@@ -1461,16 +1457,10 @@ async function refreshRecent(){
     const parsed = logs.map(l => ({...IFACE.parseLog(l), txHash:l.transactionHash, block:l.blockNumber}))
                        .sort((a,b)=>b.block-a.block);
 
-    const allBuyersLogs = await provider.getLogs({
-        address: PRESALE_ADDRESS,
-        topics: [TOPIC],
-        fromBlock: 0,
-        toBlock: 'latest'
-    });
-    const uniq = new Set(allBuyersLogs.map(l => IFACE.parseLog(l).args.buyer.toLowerCase()));
-
+    const uniq = new Set();
     for (const ev of parsed) {
       const buyer = ev.args.buyer;
+      uniq.add(buyer.toLowerCase());
       if (seen.has(ev.txHash)) continue;
       seen.add(ev.txHash);
 
@@ -1510,7 +1500,7 @@ async function updateUserTotals(address){
 
   // sum ETH from on-chain logs where buyer == address
   const latest = await provider.getBlockNumber();
-  const fromB = Math.max(0, latest - 500_000); // ~3 months window; widen if needed
+  const fromB = Math.max(0, latest - 500_000); // ~3 months window
   const logs = await provider.getLogs({
     address: PRESALE_ADDRESS,
     topics: [TOPIC, ethers.utils.hexZeroPad(address, 32)],
@@ -1523,7 +1513,7 @@ async function updateUserTotals(address){
     totalEth += Number(ethers.utils.formatEther(ev.args.weiAmount));
   }
   if ($userEth) $userEth.textContent = nf(totalEth, 6);
-  if ($userCard) $userCard.classList.toggle("hidden", totalEth === 0);
+  if($userCard) $userCard.classList.toggle("hidden", totalEth === 0);
 }
 
 async function onWalletConnected(){
@@ -1535,103 +1525,16 @@ async function onWalletConnected(){
     addr = accts?.[0];
   }
   if (addr) {
-      window.connectedAccount = addr; // Set global state
-      const connectBtn = document.getElementById('connectBtn');
-      const walletPill = document.getElementById('walletPill');
-      const walletShort = document.getElementById('walletShort');
-      if (walletShort) walletShort.textContent = `${addr.slice(0,6)}…${addr.slice(-4)}`;
-      if (walletPill) walletPill.classList.remove('hidden');
-      if (connectBtn) connectBtn.classList.add('hidden-important');
+      window.connectedAccount = addr;
+      document.getElementById('walletShort').textContent = `${addr.slice(0,6)}…${addr.slice(-4)}`;
+      document.getElementById('walletPill').classList.remove('hidden');
+      document.getElementById('connectBtn').classList.add('hidden-important');
       
       updateUserTotals(addr);
-      refreshCore(); // Refresh core UI to show contribution card
+      refreshCore();
       window.addEventListener("focus", ()=>updateUserTotals(addr));
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    const PRESALE_START = new Date('2025-09-24T08:00:00Z');
-    const PRESALE_END   = new Date('2025-10-01T00:00:00Z');
-    
-    const $ = (id)=> document.getElementById(id);
-    $('year').textContent = new Date().getFullYear();
-    const connectBtn=$('connectBtn'), modal=$('walletModal'), modalClose=$('modalClose');
-    
-    // UI Setup
-    const clockEl = $('utc-clock');
-    if (clockEl) {
-        function updateClock() {
-            const now = new Date();
-            const h = String(now.getUTCHours()).padStart(2, '0');
-            const m = String(now.getUTCMinutes()).padStart(2, '0');
-            const s = String(now.getUTCSeconds()).padStart(2, '0');
-            clockEl.textContent = `${h}:${m}:${s} UTC`;
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
-    }
-    
-    let lastFocus=null;
-    function showModal(modalId, show){
-      const modal = $(modalId);
-      if(show){
-        lastFocus = document.activeElement;
-        modal.classList.remove('hidden'); modal.classList.add('flex'); modal.removeAttribute('inert');
-        modal.querySelector('button, [href], input')?.focus();
-      } else {
-        modal.classList.add('hidden'); modal.classList.remove('flex'); modal.setAttribute('inert','');
-        lastFocus?.focus();
-      }
-    }
-    connectBtn?.addEventListener('click', () => { showModal('walletModal', true); });
-    $('connect-btn-card')?.addEventListener('click', () => { showModal('walletModal', true); });
-    modalClose?.addEventListener('click', () => showModal('walletModal', false));
-    modal?.addEventListener('click', (e)=>{ if(e.target===modal) showModal('walletModal', false); });
-    
-    const whitepaperModal = $('whitepaperModal');
-    ['wp-btn-header', 'wp-btn-about'].forEach(id => $(id)?.addEventListener('click', () => showModal('whitepaperModal', true)));
-    $('wpModalClose')?.addEventListener('click', () => showModal('whitepaperModal', false));
-    whitepaperModal?.addEventListener('click', (e) => { if (e.target === whitepaperModal) showModal('whitepaperModal', false); });
-
-    document.addEventListener('keydown', (e)=>{
-        if (e.key === 'Escape') {
-            if(!modal.classList.contains('hidden')) showModal('walletModal', false);
-            if(!whitepaperModal.classList.contains('hidden')) showModal('whitepaperModal', false);
-        }
-    });
-
-    const walletList = $('walletList');
-    function discoverInjected(){
-        walletList.innerHTML = '';
-        const providers = new Set();
-        function addProvider(detail) {
-            if (providers.has(detail.provider)) return;
-            providers.add(detail.provider);
-            const btn=document.createElement('button');
-            btn.className='btn-ghost text-left flex items-center justify-between';
-            btn.textContent = `🧩 ${detail.info.name}`;
-            btn.onclick = async () => {
-                showModal('walletModal', false);
-                try {
-                    await onWalletConnected();
-                } catch(err){ toast('Could not connect to wallet.', true); }
-            };
-            walletList.appendChild(btn);
-        }
-        window.addEventListener('eip6963:announceProvider', (e) => addProvider(e.detail));
-        window.dispatchEvent(new Event('eip6963:requestProvider'));
-        setTimeout(() => {
-            if(providers.size === 0 && window.ethereum) {
-                addProvider({ info: { name: 'Browser Wallet' }, provider: window.ethereum });
-            }
-            if (walletList.innerHTML === '') {
-                 walletList.textContent = 'No browser wallet detected.';
-            }
-        }, 200);
-    }
-    discoverInjected();
-});
 
 window.addEventListener('load', async () => {
   try {
@@ -1657,15 +1560,13 @@ window.addEventListener('load', async () => {
           window.__debounceRecent = setTimeout(refreshRecent, 6000);
         });
     }
-
-    document.getElementById('connectBtn')?.addEventListener('click', onWalletConnected);
-    document.getElementById('connect-btn-card')?.addEventListener('click', onWalletConnected);
-    document.getElementById('disconnectBtn')?.addEventListener('click', () => {
+    
+    document.getElementById('connectBtn').addEventListener('click', onWalletConnected);
+    document.getElementById('connect-btn-card').addEventListener('click', onWalletConnected);
+    document.getElementById('disconnectBtn').addEventListener('click', () => {
         window.connectedAccount = null;
-        const connectBtn = document.getElementById('connectBtn');
-        const walletPill = document.getElementById('walletPill');
-        if(walletPill) walletPill.classList.add('hidden');
-        if(connectBtn) connectBtn.classList.remove('hidden-important');
+        document.getElementById('walletPill').classList.add('hidden');
+        document.getElementById('connectBtn').classList.remove('hidden-important');
         updateUserTotals(null);
         refreshCore();
     });
@@ -1680,7 +1581,6 @@ window.addEventListener('load', async () => {
 window.addEventListener('unhandledrejection', (e) => {
   console.error('[UNHANDLED]', e.reason || e);
 });
-
 </script>
 </body>
 </html>
@@ -1696,4 +1596,16 @@ Instructions to follow:
   * Make sure to refer to the document as "Canvas" in your response.
 
 There are no more finishing touches i need to add, can you just give the file a final check for any errors. If there are no errors just say that there are no errors and that the file is ready to go.
+" in the most up-to-date Canvas "Final Corrected Etheria Presale Page" document above and am asking a query about/based on this code below.
+Instructions to follow:
+  * Don't output/edit the document if the query is Direct/Simple. For example, if the query asks for a simple explanation, output a direct answer.
+  * Make sure to **edit** the document if the query shows the intent of editing the document, in which case output the entire edited document, **not just that section or the edits**.
+    * Don't output the same document/empty document and say that you have edited it.
+    * Don't change unrelated code in the document.
+  * Don't output  and  in your final response.
+  * Any references like "this" or "selected code" refers to the code between  and  tags.
+  * Just acknowledge my request in the introduction.
+  * Make sure to refer to the document as "Canvas" in your response.
+
+i have those setup in my github folder, that is correct
 
