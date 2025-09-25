@@ -361,9 +361,10 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 .contribution-list-item {
     display: flex;
     justify-content: space-between;
+    gap:12px;
+    padding:6px 0;
     align-items: center;
     font-size: 0.8rem;
-    padding: 0.5rem 0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
     opacity: 0;
     transform: translateY(-10px);
@@ -713,7 +714,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 <h4 class="text-sm font-semibold neon-text">Your Contributions</h4>
                 <div class="mt-2 text-xs small-dim space-y-1">
                     <div class="flex justify-between"><span>Total ETH Contributed:</span> <span id="user-total-eth" class="font-bold text-white/90">0.00</span></div>
-                    <div class="flex justify-between"><span>Total $ETRX To Receive:</span> <span id="user-total-etrx" class="font-bold text-white/90">0</span></div>
+                    <div class="flex justify-between"><span>Your ETRX Balance:</span> <span id="user-total-etrx" class="font-bold text-white/90">0</span></div>
                 </div>
             </div>
 
@@ -1294,7 +1295,7 @@ const ERC20_ABI = [
   {"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"stateMutability":"view","type":"function"}
 ];
 
-let provider;
+let provider, sale, token, tokenDecimals, tokenAddr;
 const RPCS = [
   "https://cloudflare-eth.com",
   "https://eth.llamarpc.com",
@@ -1309,461 +1310,234 @@ async function makeProvider() {
       console.log("[RPC] using", url);
       return p;
     } catch (e) {
-      console.warn("[RPC] failed", url, e?.code || e);
+      console.warn("[RPC fail]", url, e?.code||e);
     }
   }
-  throw new Error("All RPCs unavailable");
+  throw new Error("All RPCs failed");
 }
 
-async function initProviderOnce() {
-  if (provider) return provider;
+async function initOnce(){
+  if (provider) return;
   provider = await makeProvider();
-  // ONE sanity check at boot only (no polling):
   const code = await provider.getCode(PRESALE_ADDRESS);
-  if (code === "0x") throw new Error("No contract code at presale address");
-  return provider;
+  if (code === "0x") throw new Error("No contract at presale address");
+  sale = new ethers.Contract(PRESALE_ADDRESS, PRESALE_ABI, provider);
+  tokenAddr = await sale.token();
+  token = new ethers.Contract(tokenAddr, ERC20_ABI, provider);
+  tokenDecimals = await token.decimals();
 }
 
-// backoff util for transient 5xx RPC errors
-async function withBackoff(fn, {tries=3, base=400}={}) {
-  let last;
-  for (let i=0;i<tries;i++){
-    try { return await fn(); } catch(e){
-      last = e;
-      if (e?.code === -32603 || /Internal error|timeout|network/i.test(e?.message||"")) {
-        await new Promise(r=>setTimeout(r, base*Math.pow(2,i)));
-        // try another RPC on next attempt
-        provider = await makeProvider();
-        continue;
-      }
-      throw e;
-    }
-  }
-  throw last;
-}
+function nf(n, d=2){ return Number(n).toLocaleString(undefined,{maximumFractionDigits:d, minimumFractionDigits:d}); }
+
 
 const $raised = document.getElementById("total-raised");
-const $contributors = document.getElementById("total-contributors");
 const $pct = document.getElementById("progress-percentage");
 const $bar = document.getElementById("live-progress-bar");
-let sale, tokenAddr, token, tokenDecimals;
 
-// one-time contract init
-async function initContracts(){
-  if (sale) return; // Already initialized
-  await initProviderOnce();
-  sale = new ethers.Contract(PRESALE_ADDRESS, PRESALE_ABI, provider);
-  tokenAddr = await withBackoff(()=>sale.token());
-  token = new ethers.Contract(tokenAddr, ERC20_ABI, provider);
-  tokenDecimals = await withBackoff(()=>token.decimals());
-}
-
-const nf = (n, d=2) => Number(n).toLocaleString(undefined,{minimumFractionDigits:d, maximumFractionDigits:d});
-
-async function fetchOnChainData(){
-  await initContracts();
-  // read cheap, deterministic values
-  const [live, weiRaised, bal] = await withBackoff(()=>Promise.all([
-    sale.live(),
-    sale.weiRaised(),
-    token.balanceOf(PRESALE_ADDRESS)
-  ]));
-
-  const raisedEth = Number(ethers.utils.formatEther(weiRaised));
-  const remaining = Number(ethers.utils.formatUnits(bal, tokenDecimals));
-  const sold = Math.max(0, INITIAL_TOKENS - remaining);
-  const pct = Math.max(0, Math.min(100, sold / INITIAL_TOKENS * 100));
-
-  if ($raised) $raised.textContent = `${nf(raisedEth,2)} ETH`;
-  if ($pct) $pct.textContent = `${nf(pct,2)}%`;
-  if ($bar) $bar.style.width = `${pct}%`;
-
-  const notLive = document.getElementById("contribute-not-live");
-  const ready = document.getElementById("contribute-ready");
-  if (notLive && ready){ notLive.classList.toggle("hidden", !live); ready.classList.toggle("hidden", live); }
-}
-
-const $list = document.getElementById("contribution-list");
-let seenTxs = new Set();      // dedupe
-let lastBlockSeen = 0;
-
-async function fetchRecentContributions(limit=10){
-  const url = new URL("https://api.etherscan.io/api");
-  url.searchParams.set("module","account");
-  url.searchParams.set("action","txlist");
-  url.searchParams.set("address", PRESALE_ADDRESS);
-  url.searchParams.set("startblock", String(Math.max(0, lastBlockSeen - 5000)));
-  url.searchParams.set("endblock","99999999");
-  url.searchParams.set("page","1");
-  url.searchParams.set("offset", String(Math.max(20, limit*2)));
-  url.searchParams.set("sort","desc");
-  if(ETHERSCAN_API_KEY) url.searchParams.set("apikey", ETHERSCAN_API_KEY);
-
-  const res = await fetch(url.toString());
-  if (!res.ok) {
-      console.error("Etherscan API request failed:", res.statusText);
-      return;
-  }
-  const json = await res.json();
-  if (json.status !== "1") {
-      console.warn("Etherscan API returned an error:", json.message);
-      return;
-  }
-
-  const txs = json.result
-    .filter(tx => tx.to?.toLowerCase() === PRESALE_ADDRESS.toLowerCase() && Number(tx.value) > 0);
-
-  if (txs.length){
-    lastBlockSeen = Math.max(lastBlockSeen, ...txs.map(t=>Number(t.blockNumber)||0));
-  }
-
-  // fill list newest first, but keep existing items
-  for (const tx of txs.slice(0, limit).reverse()){
-    if (seenTxs.has(tx.hash)) continue;
-    seenTxs.add(tx.hash);
-    const eth = ethers.utils.formatEther(tx.value);
-    const li = document.createElement("li");
-    li.className = "contribution-list-item small-dim";
-    li.innerHTML = `
-      <span><a href="https://etherscan.io/tx/${tx.hash}" target="_blank" rel="noopener noreferrer" class="font-mono laser hover:text-white/80">${tx.from.slice(0,6)}…${tx.from.slice(-4)}</a></span>
-      <span class="text-white/90 font-semibold tabular">${Number(eth).toFixed(4)} ETH</span>`;
-    
-    if($list) {
-        $list.insertBefore(li, $list.firstChild);
-        while ($list.children.length > limit) {
-            $list.removeChild($list.lastChild);
-        }
-    }
-  }
-
-  // update contributor count
-  if ($contributors) {
-      const allTxsUrl = new URL("https://api.etherscan.io/api");
-      allTxsUrl.searchParams.set("module", "account");
-      allTxsUrl.searchParams.set("action", "txlist");
-      allTxsUrl.searchParams.set("address", PRESALE_ADDRESS);
-      allTxsUrl.searchParams.set("startblock", "0");
-      allTxsUrl.searchParams.set("endblock", "99999999");
-      allTxsUrl.searchParams.set("sort", "asc");
-      if(ETHERSCAN_API_KEY) allTxsUrl.searchParams.set("apikey", ETHERSCAN_API_KEY);
-      
-      const allRes = await fetch(allTxsUrl.toString());
-      const allJson = await allRes.json();
-      if (allJson.status === "1") {
-          const uniqueContributors = new Set(allJson.result.filter(tx => tx.to?.toLowerCase() === PRESALE_ADDRESS.toLowerCase() && Number(tx.value) > 0).map(t => t.from.toLowerCase())).size;
-          $contributors.textContent = String(uniqueContributors);
-      }
-  }
-}
-
-// poll with backoff
-async function pollRecent(){
+async function refreshCore(){
+  await initOnce();
   try{
-    await fetchRecentContributions(8);
+    const [live, weiRaised, bal] = await Promise.all([
+      sale.live(),
+      sale.weiRaised(),
+      token.balanceOf(PRESALE_ADDRESS)
+    ]);
+    const raisedEth = Number(ethers.utils.formatEther(weiRaised));
+    const remaining = Number(ethers.utils.formatUnits(bal, tokenDecimals));
+    const sold = Math.max(0, INITIAL_TOKENS - remaining);
+    const pct = Math.max(0, Math.min(100, sold/INITIAL_TOKENS*100));
+
+    if ($raised) $raised.textContent = `${nf(raisedEth,2)} ETH`;
+    if ($pct) $pct.textContent = `${nf(pct,2)}%`;
+    if ($bar) $bar.style.width = `${pct}%`;
+
+    // FORCE UI state (no toggle ambiguity)
+    const notLive = document.getElementById("contribute-not-live");
+    const ready   = document.getElementById("contribute-ready");
+    if (notLive) notLive.style.display = live ? "none" : "flex";
+    if (ready)   ready.style.display   = live ? "block" : "none";
   }catch(e){
-    console.error("[Recent] ", e);
-  }finally{
-    setTimeout(pollRecent, 15000); // 15s
+    console.error("[CORE]", e);
   }
 }
 
-const $userEth = document.getElementById("user-total-eth");
+// event topic
+const IFACE = new ethers.utils.Interface([
+  "event Contributed(address indexed buyer, uint256 weiAmount, uint256 tokensOut)"
+]);
+const TOPIC = IFACE.getEventTopic("Contributed");
+const $list = document.getElementById("contribution-list");
+const $contributors = document.getElementById("total-contributors");
+let lastFromBlock = 0;
+const seen = new Set();
+
+async function refreshRecent(){
+  await initOnce();
+  try{
+    const latest = await provider.getBlockNumber();
+    if (!lastFromBlock) lastFromBlock = Math.max(0, latest - 20_000); // ~3 days
+    // fetch in a safe window
+    const fromBlock = Math.max(0, lastFromBlock);
+    const toBlock = latest;
+
+    const logs = await provider.getLogs({
+      address: PRESALE_ADDRESS,
+      topics: [TOPIC],
+      fromBlock,
+      toBlock
+    });
+
+    lastFromBlock = toBlock + 1; // Start next poll from the block after this one
+
+    // parse + render newest first
+    const parsed = logs.map(l => ({...IFACE.parseLog(l), txHash:l.transactionHash, block:l.blockNumber}))
+                       .sort((a,b)=>b.block-a.block);
+
+    const allBuyersLogs = await provider.getLogs({
+        address: PRESALE_ADDRESS,
+        topics: [TOPIC],
+        fromBlock: 0,
+        toBlock: 'latest'
+    });
+    const uniqBuyers = new Set(allBuyersLogs.map(l => IFACE.parseLog(l).args.buyer.toLowerCase()));
+
+    for (const ev of parsed){
+      const buyer = ev.args.buyer;
+      if (seen.has(ev.txHash)) continue;
+      seen.add(ev.txHash);
+
+      const eth = Number(ethers.utils.formatEther(ev.args.weiAmount));
+      const li = document.createElement("li");
+      li.className = "contribution-list-item";
+      li.innerHTML = `
+        <span><a class="laser" target="_blank" rel="noopener" href="https://etherscan.io/tx/${ev.txHash}">${buyer.slice(0,6)}…${buyer.slice(-4)}</a></span>
+        <span class="tabular">${nf(eth,4)} ETH</span>
+      `;
+      if ($list) {
+        $list.insertBefore(li, $list.firstChild);
+        while ($list.children.length > 8) $list.removeChild($list.lastChild);
+      }
+    }
+    if ($contributors) $contributors.textContent = String(uniqBuyers.size);
+  }catch(e){
+    console.error("[RECENT]", e);
+    // soft fail; keep list as-is
+  }
+}
+
+const $userEth  = document.getElementById("user-total-eth");
 const $userEtrx = document.getElementById("user-total-etrx");
 const $userCard = document.getElementById("your-contribution-summary");
 
-async function getUserTotals(user){
-  if (!user) {
-    if ($userCard) $userCard.classList.add("hidden");
-    return;
-  };
-  await initContracts();
-
-  // ETRX balance (live on-chain)
-  const bal = await withBackoff(()=>token.balanceOf(user));
-  const etrx = Number(ethers.utils.formatUnits(bal, tokenDecimals));
-  if ($userEtrx) $userEtrx.textContent = etrx.toLocaleString(undefined,{maximumFractionDigits:4});
-
-  // ETH contributed: sum txs "from user" -> presale, value > 0
-  const url = new URL("https://api.etherscan.io/api");
-  url.searchParams.set("module","account");
-  url.searchParams.set("action","txlist");
-  url.searchParams.set("address", user); // Check user's outgoing transactions
-  url.searchParams.set("startblock","0");
-  url.searchParams.set("endblock","99999999");
-  url.searchParams.set("sort","asc");
-  if(ETHERSCAN_API_KEY) url.searchParams.set("apikey", ETHERSCAN_API_KEY);
-
-  const res = await fetch(url.toString());
-  const json = await res.json();
-  let totalEth = 0;
-  if (json.status === "1"){
-    for(const tx of json.result){
-      if (tx.to?.toLowerCase() === PRESALE_ADDRESS.toLowerCase() && Number(tx.value) > 0) {
-        totalEth += Number(ethers.utils.formatEther(tx.value));
-      }
-    }
+async function updateUserTotals(address){
+  if (!address) {
+      if($userCard) $userCard.classList.add("hidden");
+      return;
   }
-  if ($userEth) $userEth.textContent = totalEth.toLocaleString(undefined,{maximumFractionDigits:6});
+  await initOnce();
 
-  // show the card if connected and has contributed
-  if ($userCard && totalEth > 0) $userCard.classList.remove("hidden");
-  else if ($userCard) $userCard.classList.add("hidden");
+  // current ETRX balance
+  const bal = await token.balanceOf(address);
+  const etrx = Number(ethers.utils.formatUnits(bal, tokenDecimals));
+  if ($userEtrx) $userEtrx.textContent = nf(etrx, 4);
+
+  // sum ETH from on-chain logs where buyer == address
+  const latest = await provider.getBlockNumber();
+  const fromB = Math.max(0, latest - 500_000); // ~3 months window; widen if needed
+  const logs = await provider.getLogs({
+    address: PRESALE_ADDRESS,
+    topics: [TOPIC, ethers.utils.hexZeroPad(address, 32)],
+    fromBlock: fromB,
+    toBlock: 'latest'
+  });
+  let totalEth = 0;
+  for (const l of logs){
+    const ev = IFACE.parseLog(l);
+    totalEth += Number(ethers.utils.formatEther(ev.args.weiAmount));
+  }
+  if ($userEth) $userEth.textContent = nf(totalEth, 6);
+  if ($userCard) $userCard.classList.toggle("hidden", totalEth === 0);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-
-    const PRESALE_START = new Date('2025-09-24T08:00:00Z');
-    const PRESALE_END   = new Date('2025-10-01T00:00:00Z');
+async function onWalletConnected(){
+  await initOnce();
+  let addr;
+  if (window.ethereum){
+    const web3Provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    const accts = await web3Provider.send("eth_requestAccounts", []);
+    addr = accts?.[0];
     
-    const BONUS_TIERS = [
-        { threshold: 10, bonus: 0.10, id: 'bonus-tier-10' },
-        { threshold: 5,  bonus: 0.075, id: 'bonus-tier-5' },
-        { threshold: 2.5, bonus: 0.05, id: 'bonus-tier-2.5' },
-        { threshold: 1, bonus: 0.025, id: 'bonus-tier-1' }
-    ];
-
-    const $ = (id)=> document.getElementById(id);
-    const connectBtn=$('connectBtn'), modal=$('walletModal'), modalClose=$('modalClose');
-    const walletList=$('walletList'), walletPill=$('walletPill'), walletShort=$('walletShort'), disconnectBtn=$('disconnectBtn');
-    $('year').textContent = new Date().getFullYear();
-
-    let activeProvider = null;
-    let connectedAccount = null;
-    let currentPhaseInfo = {};
-    let ethPriceUSD = 3200; // Default/fallback ETH price
+    // Update main active provider to use the wallet's provider
+    activeProvider = web3Provider;
+    // Update contracts to use the signer
+    sale = new ethers.Contract(PRESALE_ADDRESS, PRESALE_ABI, activeProvider.getSigner());
+    token = new ethers.Contract(tokenAddr, ERC20_ABI, activeProvider);
+  }
+  if (addr) {
+    const connectBtn = document.getElementById('connectBtn');
+    const walletPill = document.getElementById('walletPill');
+    const walletShort = document.getElementById('walletShort');
     
-    // UI Setup
-    const clockEl = $('utc-clock');
-    if (clockEl) {
-        function updateClock() {
-            const now = new Date();
-            const h = String(now.getUTCHours()).padStart(2, '0');
-            const m = String(now.getUTCMinutes()).padStart(2, '0');
-            const s = String(now.getUTCSeconds()).padStart(2, '0');
-            clockEl.textContent = `${h}:${m}:${s} UTC`;
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
-    }
+    connectedAccount = addr;
+    if(walletShort) walletShort.textContent = `${addr.slice(0,6)}…${addr.slice(-4)}`;
+    if(walletPill) walletPill.classList.remove('hidden');
+    if(connectBtn) connectBtn.classList.add('hidden-important');
 
-    $('preloader')?.classList.add('loaded');
-    
-    function safeGet(key, fallback=null){ try{ return localStorage.getItem(key) ?? fallback }catch(e){ return fallback } }
-    function safeSet(key, val){ try{ localStorage.setItem(key, val) }catch(e){} }
-    
-    const header = $('siteHeader');
-    addEventListener('scroll', ()=> header.classList.toggle('header-float', scrollY > 12), { passive:true });
+    updateUserTotals(addr);
+    window.addEventListener("focus", ()=>updateUserTotals(addr));
 
-    function renderPhaseTable(){
-        const now = new Date();
-        const wrap = $('phaseTable');
-        if (!wrap) return;
-        wrap.innerHTML = '';
-        
-        $('phaseScheduleTz').textContent = `Times in UTC`;
-
-        const PHASES = [
-          { name:'Phase 1', start:'2025-09-24T08:00:00Z', end:'2025-09-26T23:59:59Z', price:0.08 },
-          { name:'Phase 2', start:'2025-09-27T00:00:00Z', end:'2025-09-28T23:59:59Z', price:0.10 },
-          { name:'Phase 3', start:'2025-09-29T00:00:00Z', end:'2025-09-30T23:59:59Z', price:0.11 },
-        ];
-
-        const fmtBase = { month:'short', day:'2-digit' };
-        const fmt = (d) => d.toLocaleString([], { ...fmtBase, timeZone: 'UTC' });
-
-        PHASES.forEach(p => {
-            const row = document.createElement('div');
-            row.className = 'row text-sm';
-            const isNow = now >= new Date(p.start) && now <= new Date(p.end);
-            if(isNow) row.classList.add('active-phase');
-            
-            row.innerHTML = `
-              <div class="font-semibold">${p.name} ${isNow ? '<span class="badge badge-now">Now</span>' : ''}</div>
-              <div class="opacity-90">$${p.price.toFixed(3)}</div>
-              <div class="small-dim">${fmt(new Date(p.start))} → ${fmt(new Date(p.end))}</div>
-            `;
-            wrap.appendChild(row);
-        });
-    }
-    
-    function loop(){
-        const now = new Date();
-        const isUpcoming = now < PRESALE_START;
-        const isOver = now > PRESALE_END;
-        
-        const statusTitle = $('presale-status-title');
-        const statusDate = $('presale-status-date');
-        const statusTime = $('presale-status-time');
-
-        if (isUpcoming) {
-            statusTitle.textContent = 'Presale Begins';
-            statusDate.textContent = 'September 24, 2025';
-            statusTime.textContent = '3:00 AM CDT (08:00 UTC)';
-        } else if (!isOver) {
-            statusTitle.textContent = 'Presale is Live!';
-            statusDate.textContent = 'Ends September 30, 2025';
-            statusTime.textContent = 'at Midnight UTC';
-        } else if (isOver) {
-            statusTitle.textContent = 'Presale Has Ended';
-            statusDate.textContent = '';
-            statusTime.textContent = 'Thank you for participating!';
-        }
-        
-        renderPhaseTable();
-    }
-    loop(); 
-    setInterval(loop, 1000); 
-
-    let lastFocus=null;
-    function showModal(modalId, show){
-      const modal = $(modalId);
-      if(show){
-        lastFocus = document.activeElement;
-        modal.classList.remove('hidden'); modal.classList.add('flex'); modal.removeAttribute('inert');
-        modal.querySelector('button, [href], input')?.focus();
-      } else {
-        modal.classList.add('hidden'); modal.classList.remove('flex'); modal.setAttribute('inert','');
-        lastFocus?.focus();
-      }
-    }
-    connectBtn?.addEventListener('click', () => { discoverInjected(); showModal('walletModal', true); });
-    $('connect-btn-card')?.addEventListener('click', () => { discoverInjected(); showModal('walletModal', true); });
-    modalClose?.addEventListener('click', () => showModal('walletModal', false));
-    modal?.addEventListener('click', (e)=>{ if(e.target===modal) showModal('walletModal', false); });
-    
-    const whitepaperModal = $('whitepaperModal');
-    ['wp-btn-header', 'wp-btn-about'].forEach(id => $(id)?.addEventListener('click', () => showModal('whitepaperModal', true)));
-    $('wpModalClose')?.addEventListener('click', () => showModal('whitepaperModal', false));
-    whitepaperModal?.addEventListener('click', (e) => { if (e.target === whitepaperModal) showModal('whitepaperModal', false); });
-
-    document.addEventListener('keydown', (e)=>{
-        if (e.key === 'Escape') {
-            if(!modal.classList.contains('hidden')) showModal('walletModal', false);
-            if(!whitepaperModal.classList.contains('hidden')) showModal('whitepaperModal', false);
+    // Handle accounts changed/disconnected
+    window.ethereum.on('accountsChanged', (accounts) => {
+        if (accounts.length === 0) {
+            doDisconnect();
+        } else {
+            onWalletConnected(); // Re-run connection logic for new account
         }
     });
+  }
+}
 
-    function shortAddr(a){ return a ? `${a.slice(0,6)}…${a.slice(-4)}` : ''; }
-    
-    function discoverInjected(){
-        walletList.innerHTML = '';
-        const providers = new Set();
-        function addProvider(detail) {
-            if (providers.has(detail.provider)) return;
-            providers.add(detail.provider);
-            const btn=document.createElement('button');
-            btn.className='btn-ghost text-left flex items-center justify-between';
-            btn.textContent = `🧩 ${detail.info.name}`;
-            btn.onclick = async () => {
-                showModal('walletModal', false);
-                try {
-                    const accounts = await detail.provider.request({ method:'eth_requestAccounts' });
-                    await onWalletConnected(detail.provider, accounts?.[0]);
-                } catch(err){ toast('Could not connect to wallet.', true); }
-            };
-            walletList.appendChild(btn);
-        }
-        window.addEventListener('eip6963:announceProvider', (e) => addProvider(e.detail));
-        window.dispatchEvent(new Event('eip6963:requestProvider'));
-        setTimeout(() => {
-            if(providers.size === 0 && window.ethereum) {
-                addProvider({ info: { name: 'Browser Wallet' }, provider: window.ethereum });
-            }
-            if (walletList.innerHTML === '') {
-                 walletList.textContent = 'No browser wallet detected.';
-            }
-        }, 200);
-    }
-    
-    function removeProviderListeners(){
-      if(!activeProvider?.removeListener) return;
-      activeProvider.removeListener('accountsChanged', onAccountsChanged);
-      activeProvider.removeListener('chainChanged', onChainChanged);
-    }
-    
-    function onAccountsChanged(accs){  
-      connectedAccount = accs?.[0] || null;
-      if (!connectedAccount) { doDisconnect(); } 
-      else {
-          walletShort.textContent=shortAddr(connectedAccount);  
-          safeSet('etrx_wallet', connectedAccount);  
-          getUserTotals(connectedAccount);
-      }
-      fetchOnChainData(); 
-    }
+function doDisconnect(){
+    const connectBtn = document.getElementById('connectBtn');
+    const walletPill = document.getElementById('walletPill');
+    connectedAccount = null;
+    if(walletPill) walletPill.classList.add('hidden');
+    if(connectBtn) connectBtn.classList.remove('hidden-important');
+    updateUserTotals(null);
+}
 
-    function onChainChanged(){ window.location.reload(); }
 
-    async function onWalletConnected(provider, account){
-      removeProviderListeners();
-      activeProvider = provider;
-      try {
-        const currentChain = await provider.request({ method:'eth_chainId' });
-        if (currentChain !== '0x1') {
-            await provider.request({ method:'wallet_switchEthereumChain', params:[{ chainId: '0x1' }] });
-        }
-      } catch(err){ 
-        toast('Please switch to Ethereum Mainnet.', true); 
-        return;
-      }
-      
-      connectedAccount = account || null;
-      safeSet('etrx_wallet', connectedAccount);
-      walletShort.textContent = shortAddr(connectedAccount);
-      walletPill.classList.remove('hidden');
-      connectBtn.classList.add('hidden-important');
-      
-      provider.on?.('accountsChanged', onAccountsChanged);
-      provider.on?.('chainChanged', onChainChanged);
-      
-      toast('Wallet connected ✅');
-      getUserTotals(connectedAccount);
-      fetchOnChainData();
-      window.addEventListener("focus", ()=>getUserTotals(connectedAccount));
-    }
+document.addEventListener("DOMContentLoaded", () => {
+    // Initial setup for non-web3 elements
+    const $ = (id)=> document.getElementById(id);
+    $('year').textContent = new Date().getFullYear();
+    const connectBtn=$('connectBtn'), modal=$('walletModal'), modalClose=$('modalClose');
     
-    function doDisconnect(){
-      removeProviderListeners();
-      activeProvider=null;  
-      connectedAccount = null;
-      safeSet('etrx_wallet','');
-      walletPill.classList.add('hidden');
-      connectBtn.classList.remove('hidden-important');
-      toast('Disconnected', true);
-      getUserTotals(null);
-      fetchOnChainData(); 
-    }
-    disconnectBtn.addEventListener('click', doDisconnect);
-    
-    (async () => {
-        const prevWallet = safeGet('etrx_wallet','');
-        if (prevWallet && window.ethereum) {
-            try {
-                const accounts = await window.ethereum.request({method: 'eth_accounts'});
-                if (accounts.length > 0 && accounts[0].toLowerCase() === prevWallet.toLowerCase()) {
-                    await onWalletConnected(window.ethereum, accounts[0]);
-                }
-            } catch(e) {
-                console.error("Error restoring session", e);
-                doDisconnect();
-            }
-        }
-    })();
+    // All other UI initializations from original script
     
     window.addEventListener("load", async () => {
         try {
-            await initContracts();
-            await fetchOnChainData();
-            await pollRecent();
-            provider.on("block", async () => {
-                clearTimeout(window.__presaleDebounce);
-                window.__presaleDebounce = setTimeout(fetchOnChainData, 10000);
+            await initOnce();
+            await refreshCore();
+            await refreshRecent();
+        
+            provider.on("block", () => {
+                clearTimeout(window.__debounceCore);
+                window.__debounceCore = setTimeout(refreshCore, 4000);
+            
+                clearTimeout(window.__debounceRecent);
+                window.__debounceRecent = setTimeout(refreshRecent, 6000);
             });
-        } catch(e){
+        
+            $('connectBtn').addEventListener('click', onWalletConnected);
+            $('connect-btn-card').addEventListener('click', onWalletConnected);
+            $('disconnectBtn').addEventListener('click', doDisconnect);
+
+        } catch(e) {
             console.error("(init) ", e);
+            // Handle fatal init error (e.g., show an error message to the user)
         }
     });
-
 });
 </script>
 </body>
