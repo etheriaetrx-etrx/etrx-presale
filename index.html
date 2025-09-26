@@ -1,339 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>$ETRX • Etheria Presale</title>
-<meta name="description" content="$ETRX — the official utility token of Etheria. Presale on Ethereum."/>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
-<meta http-equiv="Pragma" content="no-cache"/>
-<meta http-equiv="Expires" content="0"/>
-
-<!-- Canonical & Social -->
-<link rel="canonical" href="https://enteretheria.io/">
-<meta property="og:site_name" content="Etheria">
-<meta property="og:title" content="$ETRX • Etheria Presale">
-<meta property="og:description" content="The official utility token of Etheria. Presale runs Sep 24 → Sep 30, 2025.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://enteretheria.io/">
-<meta property="og:image" content="/assets/background.png">
-<meta property="og:image:width" content="1280">
-<meta property="og:image:height" content="720">
-<meta property="og:locale" content="en_US">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@ETRXDreamscapes">
-<meta name="twitter:image" content="/assets/background.png">
-<meta name="twitter:image:alt" content="Etheria presale hero art">
-
-<!-- CSP (single-file build) -->
-<meta http-equiv="Content-Security-Policy"
-  content="default-src 'self';
-           img-src 'self' data: https:;
-           script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline';
-           style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-           font-src https://fonts.gstatic.com;
-           connect-src 'self' https://cloudflare-eth.com https://eth.llamarpc.com https://rpc.ankr.com/eth https://api.etherscan.io https://api.coingecko.com;
-           worker-src 'self';
-           object-src 'none';
-           base-uri 'self';
-           upgrade-insecure-requests">
-<meta name="theme-color" content="#100c14">
-<meta name="robots" content="index,follow,max-image-preview:large"/>
-
-<!-- Performance -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="preconnect" href="https://cdnjs.cloudflare.com">
-
-<!-- Fonts & Libraries -->
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-<script>
-  window.tailwind = {}
-  tailwind.config = { theme:{ extend:{
-    fontSize:{ 'hero':'clamp(2.25rem, 4vw + 1rem, 3.75rem)' },
-    maxWidth:{ 'measure':'65ch' }
-  }}}
-</script>
-<script src="https://cdn.tailwindcss.com?v=3" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js" crossorigin="anonymous"></script>
-
-
-<!-- Assets -->
-<link rel="preload" as="image" href="/assets/background.png">
-<link rel="icon" type="image/png" href="/assets/Logo.png">
-
-<style>
-:root{
-  color-scheme: dark;
-  --bg:#100c14; --panel:rgba(255,204,137,.06); --ring:rgba(255,140,66,.18);
-  --dim:rgba(255,230,200,.72); --muted:rgba(255,240,220,.9);
-  
-  --c-fire: 255 140 66; 
-  --c-dusk: 91 69 112; 
-  --c-ember: 229 90 90;
-  --c-highlight: 255 204 137;
-
-  --c-presale: #ff8c42; --c-liquidity: #ffb86c; --c-eco: #6247aa; --c-team: #e06c75; --c-treasury: #9ca3af;
-}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow-x:hidden}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: rgba(0,0,0,.2); }
-::-webkit-scrollbar-thumb { background: linear-gradient(var(--c-presale), var(--c-eco)); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: linear-gradient(var(--c-eco), var(--c-presale)); }
-
-/* Accessibility Focus States */
-:focus-visible { outline: 2px solid var(--c-presale); outline-offset: 2px; border-radius: 4px; }
-
-/* Preloader */
-#preloader{ position:fixed; inset:0; z-index:100; background:var(--bg); transition: opacity .4s ease; display:flex; align-items:center; justify-content:center; }
-#preloader.loaded{ opacity:0; pointer-events:none; }
-#preloader img{ animation: pulse 1.5s ease-in-out infinite; }
-@keyframes pulse { 0%, 100% { opacity:.7; transform: scale(0.95); } 50% { opacity:1; transform: scale(1.05); } }
-
-/* Layers */
-main, section, header, footer, .glass, .card { position:relative; z-index:2; isolation:isolate }
-.scanlines { position:fixed; inset:0; z-index:0; pointer-events:none; background: repeating-linear-gradient( to bottom, rgba(255,255,255,.03), rgba(255,255,255,.03) 1px, transparent 2px, transparent 4px ); mix-blend-mode: soft-light; opacity:.18; }
-
-/* Aurora background */
-#bgAurora{
-  position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
-  background:
-    radial-gradient(120% 60% at 50% -10%, rgba(var(--c-ember),.10), transparent 60%),
-    radial-gradient(80% 50% at 20% 10%, rgba(var(--c-dusk),.12), transparent 60%),
-    radial-gradient(80% 50% at 80% 15%, rgba(var(--c-fire),.10), transparent 60%);
-}
-#bgAurora::before,
-#bgAurora::after{
-  content:""; position:absolute; inset:-20%; pointer-events:none; filter: blur(24px) saturate(1.1);
-  mix-blend-mode:screen; opacity:.45;
-  background:
-    conic-gradient(from 0deg at 50% 50%,
-      rgba(var(--c-fire),.28),
-      rgba(var(--c-ember),.28),
-      rgba(var(--c-dusk),.26),
-      rgba(var(--c-highlight),.22),
-      rgba(var(--c-fire),.28));
-  animation: auroraSweep 28s linear infinite;
-}
-#bgAurora::after{
-  opacity:.30; filter: blur(34px);
-  background:
-    radial-gradient(120% 120% at 30% 20%, rgba(var(--c-fire),.22), transparent 55%),
-    radial-gradient(120% 120% at 70% 25%, rgba(var(--c-dusk),.16), transparent 55%),
-    radial-gradient(140% 100% at 50% -10%, rgba(var(--c-ember),.18), transparent 60%);
-  animation: auroraDrift 22s ease-in-out infinite alternate;
-}
-@keyframes auroraSweep { to { transform: rotate(360deg); } }
-@keyframes auroraDrift { from { transform: translateY(-3%) } to { transform: translateY(3%) } }
-
-/* Wisps canvas */
-#wispCanvas{ position:fixed; inset:0; z-index:1; pointer-events:none; }
-
-/* Neon text */
-.neon-text{
-  text-shadow: 0 0 6px rgba(var(--c-highlight)/.8), 0 0 24px rgba(var(--c-fire)/.45), 0 0 48px rgba(var(--c-dusk)/.35);
-}
-.neon-grad{
-  background: linear-gradient(90deg, rgb(var(--c-fire)), rgb(var(--c-highlight)));
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-  background-size:200% 100%; animation: sweep 6s linear infinite;
-}
-@keyframes sweep{ to{ background-position:-200% 0 } }
-
-/* Links laser underline */
-a.laser{ background: linear-gradient(90deg, var(--c-presale) 0 0) bottom left / 0 2px no-repeat; transition: background-size .3s ease; }
-a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) }
-
-/* Cards */
-.glass{backdrop-filter: blur(12px); background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border:1px solid var(--ring)}
-.card{
-  border-radius:18px; box-shadow: 0 0 0 1px rgba(var(--c-fire),.08) inset, 0 8px 30px rgba(var(--c-fire),.08), 0 0 60px rgba(var(--c-dusk),.06);
-  transition: transform .2s ease, box-shadow .25s ease;
-}
-.card:hover{ transform: translateY(-2px) }
-.card:active{ transform: translateY(0) scale(.997) }
-.card:focus-within{ box-shadow: 0 0 0 2px rgba(var(--c-fire),.25), 0 8px 30px rgba(var(--c-fire),.08) }
-.card-outline{position:relative}
-.card-outline::before{
-  content:""; position:absolute; inset:-1px; border-radius:inherit; pointer-events:none;
-  background: conic-gradient(from 180deg at 50% 50%, rgba(var(--c-fire)/.7), rgba(var(--c-ember)/.7), rgba(var(--c-dusk)/.7), rgba(var(--c-fire)/.7));
-  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
-  filter: blur(8px) saturate(1.4); opacity:.35; animation: spinBorder 10s linear infinite;
-}
-@keyframes spinBorder { to { transform: rotate(360deg) } }
-
-/* 3D Tilt Card */
-.card-3d-tilt { transform-style: preserve-3d; }
-
-/* Holo hover (pointer-follow glow) */
-.holo{ position:relative; overflow:hidden }
-.holo::before{
-  content:""; position:absolute; inset:-1px; pointer-events:none; border-radius:inherit;
-  background:
-    radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(var(--c-highlight),.22), transparent 45%),
-    radial-gradient(360px circle at var(--mx,50%) var(--my,50%), rgba(var(--c-dusk),.18), transparent 55%),
-    radial-gradient(520px circle at var(--mx,50%) var(--my,50%), rgba(var(--c-fire),.14), transparent 60%);
-  mix-blend-mode:screen; opacity:.45; transition: opacity .18s ease;
-}
-.holo:hover::before{ opacity:.7 }
-/* Optional sweeping sheen */
-.holo::after{
-  content:""; position:absolute; inset:-160% -160%;
-  background: conic-gradient(from 0deg, #fff0, #fff3 10%, #fff0 20%), linear-gradient(120deg, #ff934c44, #e06c7544, #6247aa44);
-  mix-blend-mode:screen; filter:saturate(1.3) blur(10px); opacity:.25; pointer-events:none;
-  transform:translateX(-30%); transition: transform .8s ease, opacity .3s ease;
-}
-.holo:hover::after{ transform:translateX(30%); opacity:.45 }
-
-/* Buttons */
-.btn-primary{
-  position:relative; display:inline-flex; align-items:center; justify-content:center; gap:.55rem; padding:.75rem 1rem;
-  border-radius:14px; font-weight:800; color:#100c14;
-  background:linear-gradient(90deg, rgb(var(--c-fire)), rgb(var(--c-highlight)));
-  box-shadow: 0 0 16px rgba(var(--c-fire),.45), 0 0 24px rgba(var(--c-highlight),.35);
-  transition: box-shadow .3s ease;
-}
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-.btn-primary:hover:not(:disabled){
-  box-shadow: 0 0 24px rgba(var(--c-fire),.65), 0 0 36px rgba(var(--c-highlight),.55);
-}
-.btn-ghost{ border:1px solid rgba(var(--c-fire),.25); background: rgba(255,255,255,.03); padding:.6rem .9rem; border-radius:12px; }
-.hidden-important{ display:none !important }
-.small-dim{ color:var(--dim) }
-.title-glow{ text-shadow:0 0 14px rgba(var(--c-fire),.3), 0 0 36px rgba(var(--c-ember),.25) }
-.tabular{ font-variant-numeric: tabular-nums }
-
-/* Header elevation */
-.header-float{ backdrop-filter: blur(10px); background:rgba(16,12,20,.5); border-bottom:1px solid rgba(var(--c-fire),.12); transition: background .2s ease }
-
-/* FAQ */
-.faq-item{ border:1px solid rgba(var(--c-fire),.22); border-radius:14px; overflow:hidden }
-.faq-header{ position:relative; width:100%; display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding:1rem 1.25rem; text-align:left }
-.faq-header::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background: linear-gradient(90deg, rgba(var(--c-fire),.44), transparent); pointer-events:none }
-.faq-body{ padding: 0 1.25rem; max-height:0; transition:max-height .28s ease, padding .2s ease }
-.faq-body.open { padding: .25rem 1.25rem 1rem; }
-.faq-chevron { transition: transform .25s ease }
-.faq-item.open{ box-shadow:0 0 24px rgba(var(--c-fire),.22) inset }
-
-/* Hero glow */
-.hero-vignette{ position:absolute; inset:0; pointer-events:none; background: radial-gradient(80% 60% at 50% 10%, transparent 0 60%, rgba(0,0,0,.35) 100%); z-index:1 }
-.hero-glow{ position:relative; border-radius:1.5rem; overflow:visible; }
-.hero-glow::before,
-.hero-glow::after{
-  content:""; position:absolute; border-radius:inherit; pointer-events:none; inset:-22px;
-  mix-blend-mode:screen;
-}
-.hero-glow::before{
-  background: conic-gradient(from 0deg at 50% 50%,
-    rgba(var(--c-fire),.32),
-    rgba(var(--c-ember),.36),
-    rgba(var(--c-dusk),.34),
-    rgba(var(--c-highlight),.30),
-    rgba(var(--c-fire),.32));
-  filter: blur(50px) saturate(1.35) brightness(1.05);
-  opacity:.75; animation: glowSpin 18s linear infinite;
-}
-.hero-glow::after{
-  background: radial-gradient(120% 120% at 50% 50%,
-    rgba(var(--c-fire),.22),
-    rgba(var(--c-ember),.18) 35%,
-    rgba(var(--c-dusk),.14) 60%,
-    rgba(var(--c-highlight),.12) 75%,
-    transparent 85%);
-  filter: blur(40px) saturate(1.15);
-  opacity:.6; animation: glowPulse 7.5s ease-in-out infinite alternate;
-}
-@keyframes glowSpin { to { transform: rotate(360deg); } }
-@keyframes glowPulse { from { opacity:.5; filter: blur(32px); } to { opacity:.65; filter: blur(44px); } }
-
-/* Badges + table */
-.badge{ display:inline-flex; align-items:center; gap:.4rem; padding:.15rem .5rem; border-radius:.5rem; font-size:.7rem; font-weight:700; letter-spacing:.02em }
-.badge-now{ background:rgba(16,185,129,.18); border:1px solid rgba(16,185,129,.35); color:#a7f3d0 }
-.row{ display:grid; grid-template-columns: 1fr auto auto; gap:.75rem; align-items:center; transition: background-color .2s ease; padding-left: 0.5rem; padding-right: 0.5rem; }
-.row.active-phase { background-color: rgba(var(--c-fire),0.05); border-radius: 0.5rem; }
-.row + .row{ border-top:1px solid rgba(255,255,255,.08); padding-top:.5rem; margin-top:.5rem }
-
-/* Pie Chart */
-.pie-slice { 
-  transition: transform .2s ease, opacity .2s ease;
-  transform-origin: center;
-}
-.pie-slice.highlight {
-  transform: scale(1.05);
-  filter: drop-shadow(0 0 8px var(--highlight-color));
-}
-#pie-legend-list .legend-item {
-  cursor: pointer;
-  transition: background-color .2s ease;
-  border-radius: 8px;
-}
-#pie-legend-list .legend-item.highlight {
-  background-color: rgba(255,255,255,0.08);
-}
-#pie-text-group { transition: opacity .2s ease; }
-
-/* Roadmap & How-to-Buy Timeline */
-.timeline { position: relative; }
-.timeline::before {
-  content: ''; position: absolute; left: 1rem; top: .5rem; bottom: .5rem; width: 2px;
-  background: linear-gradient(to bottom, var(--c-presale), var(--c-eco)); border-radius: 2px;
-}
-.timeline-item { position: relative; padding-left: 3rem; display: flex; align-items: flex-start; gap: 1rem; }
-.timeline-item .timeline-icon {
-    position: absolute;
-    left: calc(1rem - 12px);
-    top: 0;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 2px solid var(--c-presale);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--c-presale);
-}
-.timeline-item:hover .timeline-icon { border-color: white; color: white; }
-.timeline-item .timeline-content { padding-top: 2px; }
-
-/* Vesting Schedule */
-.vesting-bar { position: relative; height: 1rem; background-color: rgba(255,255,255,0.1); border-radius: .5rem; overflow: hidden; }
-.vesting-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, var(--c-team), var(--c-eco)); }
-.vesting-marker { position: absolute; top: -4px; bottom: -4px; width: 2px; background-color: rgba(255,255,255,0.5); }
-
-/* Whitepaper Modal */
-#whitepaper-content h2 { font-size: 1.5rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-#whitepaper-content h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; }
-#whitepaper-content h4 { font-size: 1.1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.25rem; }
-#whitepaper-content p { margin-bottom: 1rem; line-height: 1.6; }
-#whitepaper-content ul { list-style-position: inside; margin-left: 0.5rem; margin-bottom: 1rem; }
-#whitepaper-content li { margin-bottom: 0.5rem; }
-
-/* Contribution Card */
-.contribution-input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-.contribution-input {
-  background-color: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 0.75rem;
-  padding: 0.75rem 1rem;
-  padding-right: 6rem; /* space for the currency symbol and MAX button */
-  width: 100%;
-  outline: none;
-  transition: border-color .2s ease;
-}
-.contribution-input:focus {
-  border-color: var(--c-presale);
+@@ -337,64 +337,67 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
 }
 .contribution-currency {
   position: absolute;
@@ -361,6 +26,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 .contribution-list-item {
     display: flex;
     justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0,1.1fr) repeat(2, auto) 48px;
     gap:12px;
     padding:6px 0;
     align-items: center;
@@ -373,6 +40,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 .contribution-list-item:last-child {
     border-bottom: none;
 }
+.contribution-list-item span.addr { font-family: "DM Mono", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.contribution-list-item span.tabular { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.contribution-list-item a { font-size: 0.75rem; }
 @keyframes fadeIn {
     to {
         opacity: 1;
@@ -398,20 +68,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 .countdown-value {
     display: inline-block;
     transition: transform 0.3s ease, opacity 0.3s ease;
-}
-.countdown-value.updated {
-    transform: translateY(-5px);
-    opacity: 0;
-}
-@keyframes flip-in {
-    from { transform: translateY(10px); opacity: 0; }
-    to   { transform: translateY(0); opacity: 1; }
-}
-.countdown-flip {
-    animation: flip-in 0.3s ease forwards;
-}
-
-/* Reduced motion */
+@@ -415,78 +418,66 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
   #bgAurora::before, #bgAurora::after, .card-outline::before, .holo::after, .hero-glow::before, .hero-glow::after{ display:none }
@@ -438,6 +95,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
 <div id="announcement-banner" class="relative z-50 text-center p-2 text-sm bg-gradient-to-r from-orange-500 to-red-500">
     <strong>We are live!</strong> $ETRX is now on the Ethereum Mainnet! The presale begins September 24. <span class="mx-2">|</span> <strong>Now Listed on CoinGecko!</strong>
+    <strong>We are live!</strong> $ETRX is now on the Ethereum Mainnet! The presale is live now. <span class="mx-2">|</span> <strong>Now Listed on CoinGecko!</strong>
 </div>
 
 
@@ -448,6 +106,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
       <div class="text-sm tracking-wide small-dim">Etheria</div>
     </div>
     <nav class="hidden gap-6 text-sm opacity-80 md:flex items-center" aria-label="Primary">
+      <a class="laser hover:opacity-100" href="#live-data">Live</a>
       <a class="laser hover:opacity-100" href="#about">About</a>
       <a class="laser hover:opacity-100" href="#lore">Lore</a>
       <a class="laser hover:opacity-100" href="#how-to-buy">How to Buy</a>
@@ -465,6 +124,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
           <a href="#faq" class="block px-3 py-2 rounded-md hover:bg-white/10">FAQ</a>
         </div>
       </div>
+      <a class="laser hover:opacity-100" href="#road">Roadmap</a>
+      <a class="laser hover:opacity-100" href="#faq">FAQ</a>
     </nav>
     <div class="flex items-center gap-3">
       <div id="utc-clock" class="hidden md:block text-sm tabular small-dim mr-4"></div>
@@ -490,145 +151,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
     <p class="mt-1 text-xs small-dim">Use a browser wallet (MetaMask, Rabby, Brave, Frame, etc.).</p>
     <div id="walletList" class="mt-4 grid gap-2" role="list"></div>
     <p class="mt-2 text-xs small-dim">Tip: If nothing shows up, install a wallet extension or use a browser with a built-in wallet.</p>
-  </div>
-</div>
-
-<!-- Whitepaper Modal -->
-<div id="whitepaperModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
-     role="dialog" aria-modal="true" aria-labelledby="whitepaperModalTitle" inert>
-  <div class="glass card card-outline w-full max-w-3xl max-h-[90vh] flex flex-col" data-modal-surface>
-    <div class="flex items-center justify-between p-4 border-b border-white/10 flex-shrink-0">
-      <h3 id="whitepaperModalTitle" class="text-lg font-semibold neon-text">Etheria Whitepaper v1.0</h3>
-      <div class="flex items-center gap-4">
-        <button id="wp-download-btn" class="btn-ghost text-sm">Download PDF</button>
-        <button id="wpModalClose" class="text-white/70 hover:text-white" aria-label="Close Whitepaper">✕</button>
-      </div>
-    </div>
-    <div id="whitepaper-content" class="p-6 overflow-y-auto small-dim">
-        <!-- Whitepaper content from original file goes here -->
-        <h2>Abstract</h2>
-        <p>Etheria is a decentralized, community-driven world-building project on the Ethereum blockchain. It combines the narrative depth of a fantasy universe with the tangible ownership of Non-Fungible Tokens (NFTs) and the governance power of a utility token, $ETRX. The project's mission is to create an evolving ecosystem where the community is not just an audience, but an integral part of its creation and governance. Through a series of foundational NFT collections and the upcoming $ETRX token, Etheria provides a framework for collective storytelling, on-chain utility, and long-term value creation.</p>
-        
-        <h2>1. Introduction</h2>
-        <p>The current digital landscape is saturated with projects that promise utility but often fail to deliver, leaving communities with speculative assets that lack intrinsic value. Many NFT projects exist as static pieces of art with no deeper function, and many utility tokens are created without a pre-existing ecosystem to support them.</p>
-        <p>Etheria is being built to challenge this paradigm. Our approach is <strong>build first, market second</strong>. Before launching a single token, we have already designed, developed, and deployed our foundational NFT collections on the Ethereum mainnet. The $ETRX token is not a promise to build an ecosystem; it is the key to unlocking and governing an ecosystem that already exists.</p>
-        
-        <h2>2. The Etheria Vision</h2>
-        <p>Our vision is to create a persistent, decentralized world that grows and evolves based on the collective decisions of its community. We are not just building a collection of JPEGs; we are laying the foundation for a new form of interactive lore.</p>
-        <p>The world of Etheria is a fantasy realm filled with ancient magic, powerful artifacts, and mysterious keepers. Holders of our NFTs and the $ETRX token will have the power to:</p>
-        <ul>
-            <li><strong>Influence the Narrative:</strong> Vote on key lore decisions, character arcs, and the future direction of the world's story.</li>
-            <li><strong>Own a Piece of the World:</strong> NFTs in Etheria are not just art; they are titles, keys, and functional items within the ecosystem.</li>
-            <li><strong>Participate in a Sustainable Economy:</strong> The $ETRX token will serve as the economic backbone for minting new assets, accessing exclusive content, and rewarding community participation.</li>
-        </ul>
-        
-        <h2>3. The Etheria Ecosystem</h2>
-        <p>The ecosystem is composed of two core components: the NFT Collections and the $ETRX Token.</p>
-        <h3>3.1. NFT Collections</h3>
-        <ul>
-            <li><strong>Etheria (Arc Genesis) & Etherian Keepers:</strong> The foundational art and character collections that represent the visual and thematic cornerstone of Etheria. These collections are now available on OpenSea.</li>
-            <li><strong>Eclipse of Etheria (Trial Arc):</strong> Unveiling the celestial and shadow aspects of Etheria's lore, also on OpenSea.</li>
-            <li><strong>Artifacts (Coming Soon):</strong> The next evolution of on-chain utility. Artifacts will be powerful, functional NFTs that can be equipped, combined, or staked to provide tangible benefits within the Etheria ecosystem, such as boosting rewards or granting access to exclusive mints.</li>
-        </ul>
-        <h3>3.2. The $ETRX Token</h3>
-        <p>$ETRX is an ERC-20 token on the Ethereum blockchain with a fixed supply of <strong>10,000,000</strong>. It is designed to be the primary medium of exchange and governance within Etheria.</p>
-        
-        <h2>4. Tokenomics ($ETRX)</h2>
-        <p>The tokenomics of $ETRX are designed for long-term sustainability, community empowerment, and team commitment.</p>
-        <ul>
-            <li><strong>Total Supply:</strong> 10,000,000 $ETRX</li>
-            <li><strong>Token Standard:</strong> ERC-20 on Ethereum</li>
-        </ul>
-        <p><strong>Distribution:</strong></p>
-        <ul>
-            <li><strong>Presale (30%):</strong> 3,000,000 ETRX for early supporters.</li>
-            <li><strong>Liquidity (25%):</strong> 2,500,000 ETRX for DEX listings and stable trading.</li>
-            <li><strong>Ecosystem & Rewards (20%):</strong> 2,000,000 ETRX to fund community grants and in-world rewards.</li>
-            <li><strong>Team (15%):</strong> 1,500,000 ETRX.</li>
-            <li><strong>Treasury & Advisors (10%):</strong> 1,000,000 ETRX for strategic partnerships and operational costs.</li>
-        </ul>
-        
-        <h2>5. Governance Mechanics</h2>
-        <p>The Etheria DAO will be the cornerstone of community-led development. The process is designed to be transparent and straightforward.</p>
-        <ul>
-            <li><strong>Proposal Process:</strong> Any community member holding a minimum of [e.g., 10,000 $ETRX] can submit a proposal for community review.</li>
-            <li><strong>Voting Power:</strong> Voting power will be based on a snapshot of $ETRX holdings. The standard will be 1 token = 1 vote.</li>
-            <li><strong>Quorum:</strong> For a vote to be considered valid, a minimum of [e.g., 5%] of the circulating supply must participate.</li>
-        </ul>
-        
-        <h2>6. Roadmap</h2>
-        <p>Our roadmap is divided into clear, deliverable phases.</p>
-        <ul>
-            <li><strong>Phase 1: Foundation (Completed):</strong> Presale site launched, whitepaper published, and initial contract scans completed.</li>
-            <li><strong>Phase 2: Token Live (Completed):</strong> The Token Generation Event (TGE) is complete! $ETRX is now live on the Ethereum mainnet and initial liquidity has been established.</li>
-            <li><strong>Phase 3: Presale & Utility (Sep 24, 2025):</strong> Conduct the $ETRX presale event. Launch the first on-chain Artifacts mint. Integrate $ETRX for governance voting on initial lore decisions.</li>
-            <li><strong>Phase 4: Expansion (Q2 2026 & Beyond):</strong> Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges.</li>
-        </ul>
-        
-        <h2>7. Competitive Landscape</h2>
-        <p>While many projects exist in the NFT and DeFi space, Etheria's unique advantage lies in our <strong>"build-first"</strong> philosophy. Unlike projects that launch a token based on promises, we have already delivered on-chain assets. Our focus is on deep, community-driven lore and tangible utility, creating an ecosystem with intrinsic value rather than purely speculative hype.</p>
-        
-        <h2>8. Risk Factors</h2>
-        <p>All investments in the cryptocurrency space carry inherent risks. We believe in transparency and want our community to be fully informed.</p>
-        <ul>
-            <li><strong>Market Volatility:</strong> The value of $ETRX can fluctuate significantly.</li>
-            <li><strong>Smart Contract Risk:</strong> Although our contracts will be audited, there is always a risk of vulnerabilities.</li>
-            <li><strong>Regulatory Uncertainty:</strong> The global regulatory landscape for crypto is still evolving.</li>
-        </ul>
-        <p>Our team is committed to mitigating these risks through rigorous security practices, sustainable tokenomics, and transparent communication.</p>
-
-        <h2>9. Team</h2>
-        <p>The Etheria project is led by a public-facing team of dedicated builders with experience in software development and community management.</p>
-        <ul>
-            <li>ETRXDreamscapes: The Developer</li>
-            <li>HeisCaifu: Telegram Page Owner</li>
-            <li>DxCheetah: Telegram Page Mod</li>
-            <li>Laidy_zee: Social Moderator</li>
-        </ul>
-        
-        <h2>10. Disclaimer</h2>
-        <p>This whitepaper is for informational purposes only and does not constitute an offer to sell or a solicitation to buy any financial instrument in any jurisdiction. The $ETRX token is a utility token designed for use within the Etheria ecosystem. It is not a security.</p>
-        <p>Participation in the presale and the purchase of crypto assets are subject to significant risks, including the risk of complete loss. All participants should conduct their own due diligence (DYOR) and consult with a financial advisor before making any decisions. The project roadmap is subject to change based on development progress and community feedback.</p>
-    </div>
-  </div>
-</div>
-
-<!-- Main Content -->
-<main>
-<section class="hero relative z-10 mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 pb-16 pt-6 md:grid-cols-2 md:items-center md:pt-10">
-  <div class="hero-vignette" aria-hidden="true"></div>
-
-  <!-- Left: copy -->
-  <div class="order-2 md:order-1">
-    <h1 class="title-glow neon-text text-hero leading-tight md:text-6xl">
-        The Official Token of Etheria<br/>
-        <span class="neon-grad">$ETRX Presale</span>
-    </h1>
-    <p class="mt-4 max-w-measure small-dim">Powering realms, artifacts, governance and community rewards. Built on Ethereum for permanence and reach.</p>
-  </div>
-
-  <!-- Right: Hero Image -->
-  <div class="order-1 md:order-2 reveal" data-delay="0">
-    <div class="hero-glow relative rounded-3xl">
-        <img src="/assets/background.png" alt="An ethereal, glowing cavern representing the world of Etheria" class="w-full h-auto object-cover rounded-3xl ring-1 ring-orange-400/20"/>
-    </div>
-  </div>
-</section>
-
-<!-- Live On-Chain Data -->
-<section id="live-data" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
-    <div class="glass card card-outline p-5 reveal holo">
-        <h3 class="text-center text-lg font-semibold neon-text mb-4">Live Presale Status</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-            <div>
-                <div class="text-xs uppercase small-dim">Total Raised</div>
-                <div id="total-raised" class="text-3xl font-bold text-orange-300 mt-1 tabular">0.00 ETH</div>
-            </div>
-            <div>
-                <div class="text-xs uppercase small-dim">Contributors</div>
-                <div id="total-contributors" class="text-3xl font-bold text-orange-300 mt-1 tabular">0</div>
-            </div>
-             <!-- NEW: Community Growth Stats -->
+@@ -632,68 +623,67 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
             <div class="md:col-span-1 grid grid-cols-2 gap-2">
                 <div class="text-center">
                     <div class="text-xs uppercase small-dim">Telegram</div>
@@ -657,6 +180,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 <ul id="contribution-list" class="space-y-1">
                     <!-- JS will populate this -->
                 </ul>
+                <div id="no-contributions" class="text-xs small-dim text-center py-4">No contributions yet — be the first to join the presale.</div>
+                <ul id="contribution-list" class="space-y-1"></ul>
             </div>
         </div>
     </div>
@@ -672,6 +197,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 <h3 id="presale-status-title" class="text-lg font-semibold neon-text">Presale Begins</h3>
                 <p id="presale-status-date" class="text-2xl font-bold text-white/90 mt-2">September 24, 2025</p>
                 <p id="presale-status-time" class="text-lg small-dim">3:00 AM CDT (08:00 UTC)</p>
+                <h3 id="presale-status-title" class="text-lg font-semibold neon-text">Presale Is Live</h3>
+                <p id="presale-status-date" class="text-2xl font-bold text-white/90 mt-2">Now accepting contributions</p>
+                <p id="presale-status-time" class="text-lg small-dim">Runs until September 30, 2025</p>
                 <!-- Overall Progress -->
                 <div class="mt-4 text-left">
                     <div class="flex items-center justify-between text-xs small-dim">
@@ -697,10 +225,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
         <div id="contribution-card" class="glass card card-outline p-5 reveal holo flex flex-col" data-delay="100">
             <div id="contribute-ready" style="display: none;">
                 <div class="flex justify-between items-baseline">
-                    <h3 class="text-lg font-semibold neon-text">Join the Presale</h3>
-                    <div id="eth-price-display" class="text-xs small-dim tabular"></div>
-                </div>
-                <div class="mt-4 space-y-4">
+@@ -704,64 +694,65 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
                     <div>
                         <label for="eth-amount" class="text-sm small-dim">Amount to Contribute</label>
                         <div class="contribution-input-wrapper mt-1">
@@ -728,6 +253,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 <div class="mt-2 text-xs small-dim space-y-1">
                     <div class="flex justify-between"><span>Total ETH Contributed:</span> <span id="user-total-eth" class="font-bold text-white/90">0</span></div>
                     <div class="flex justify-between"><span>Your ETRX Balance:</span> <span id="user-total-etrx" class="font-bold text-white/90">0</span></div>
+                    <div class="flex justify-between"><span>Total ETH Spent:</span> <span id="user-total-eth" class="font-bold text-white/90">0</span></div>
+                    <div class="flex justify-between"><span>$ETRX Reserved:</span> <span id="user-total-etrx" class="font-bold text-white/90">0</span></div>
+                    <div id="user-no-contributions" class="pt-2 text-[11px] text-white/60 hidden">You haven’t contributed yet — submit your first transaction above.</div>
                 </div>
             </div>
 
@@ -740,6 +268,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
             <div id="contribute-not-live" class="h-full flex flex-col items-center justify-center text-center">
                 <h3 class="text-lg font-semibold neon-text">Presale Not Active</h3>
                 <p class="mt-2 max-w-xs small-dim">The presale is not currently live. Please check the schedule and come back when a phase is active.</p>
+                <h3 id="contribute-not-live-title" class="text-lg font-semibold neon-text">Checking Presale Status…</h3>
+                <p id="contribute-not-live-copy" class="mt-2 max-w-xs small-dim">We’re syncing with the blockchain to confirm that the presale is live.</p>
             </div>
             
             <div class="mt-auto pt-4 text-xs small-dim flex items-start gap-2">
@@ -765,90 +295,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
             <p class="text-2xl font-extrabold my-2">+2.5%</p>
             <p class="text-sm small-dim">Contribute 1+ ETH</p>
         </div>
-        <!-- Tier 2 -->
-        <div id="bonus-tier-2.5" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="100">
-            <h4 class="font-bold text-lg text-orange-300">Guardian</h4>
-            <p class="text-2xl font-extrabold my-2">+5%</p>
-            <p class="text-sm small-dim">Contribute 2.5+ ETH</p>
-        </div>
-        <!-- Tier 3 -->
-        <div id="bonus-tier-5" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="200">
-            <h4 class="font-bold text-lg text-purple-300">Ascendant</h4>
-            <p class="text-2xl font-extrabold my-2">+7.5%</p>
-            <p class="text-sm small-dim">Contribute 5+ ETH</p>
-        </div>
-        <!-- Tier 4 -->
-        <div id="bonus-tier-10" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="300">
-            <h4 class="font-bold text-lg text-red-400">Harbinger</h4>
-            <p class="text-2xl font-extrabold my-2">+10%</p>
-            <p class="text-sm small-dim">Contribute 10+ ETH</p>
-        </div>
-    </div>
-</section>
-
-
-<div class="section-divider max-w-6xl mx-auto"></div>
-
-<!-- About -->
-<section id="about" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-  <h2 class="text-2xl font-bold neon-text reveal text-center">What is $ETRX?</h2>
-  <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
-    <!-- Utility Card -->
-    <div class="glass card card-outline holo p-5 text-center reveal" data-delay="0">
-      <div class="mx-auto h-16 w-16 rounded-2xl bg-orange-500/10 flex items-center justify-center ring-1 ring-orange-500/20">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-300"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-      </div>
-      <h4 class="mt-3 font-bold text-lg">Utility</h4>
-      <p class="text-sm small-dim mt-1">Unlock rare Realms & Artifacts, access exclusive drops, and get in-world boosts.</p>
-    </div>
-    <!-- Governance Card -->
-    <div class="glass card card-outline holo p-5 text-center reveal" data-delay="100">
-      <div class="mx-auto h-16 w-16 rounded-2xl bg-red-500/10 flex items-center justify-center ring-1 ring-red-500/20">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-300"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
-      </div>
-      <h4 class="mt-3 font-bold text-lg">Governance</h4>
-      <p class="text-sm small-dim mt-1">Vote on community proposals, project direction, and the evolution of Etheria's lore.</p>
-    </div>
-    <!-- Rewards Card -->
-    <div class="glass card card-outline holo p-5 text-center reveal" data-delay="200">
-      <div class="mx-auto h-16 w-16 rounded-2xl bg-purple-500/10 flex items-center justify-center ring-1 ring-purple-500/20">
-         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-300"><path d="M20.2 6.2c.4-.5.4-1.2 0-1.7l-2.8-2.8c-.5-.4-1.2-.4-1.7 0L14 3.4 12 5.1l-1.7-2.3L8.6 1c-.5-.4-1.2-.4-1.7 0L4 3.8c-.4.5-.4 1.2 0 1.7L6.2 8 3.4 9.7c-.4.5-.4 1.2 0 1.7l2.8 2.8c.5.4 1.2.4 1.7 0L10 12.6l2 1.7 1.7 2.3 1.7 1.7c.5.4 1.2.4 1.7 0l2.8-2.8c.4-.5.4-1.2 0-1.7L17.8 16l2.4-1.7 2.8-2.8c.4-.5.4-1.2 0-1.7L20.2 6.2z"></path></svg>
-      </div>
-      <h4 class="mt-3 font-bold text-lg">Rewards</h4>
-      <p class="text-sm small-dim mt-1">Earn airdrops, participate in holder-only events, and be rewarded for on-chain participation.</p>
-    </div>
-  </div>
-   <div class="text-center mt-6 reveal">
-        <button id="wp-btn-about" class="btn-ghost text-sm">Read the Whitepaper</button>
-    </div>
-</section>
-
-<div class="section-divider max-w-6xl mx-auto"></div>
-
-<!-- Lore of Etheria Section -->
-<section id="lore" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-    <h2 class="text-2xl font-bold neon-text reveal text-center">The Lore of Etheria</h2>
-    <div class="mt-6 max-w-3xl mx-auto space-y-4 text-center small-dim reveal">
-        <p>
-            In the beginning, there was the Arc Genesis—a celestial event that breathed life into the cosmos and scattered its divine essence across the nascent world of Etheria. These fragments, imbued with raw creation, became the foundation of all magic, shaping the mountains, rivers, and skies. The story of Etheria is the story of this scattered power and those who would seek to reclaim it.
-        </p>
-        <p>
-            From the heart of this Genesis emerged the Etherian Keepers, the first sentient beings and the sworn guardians of the world's balance. Each Keeper is a living conduit to the Arc's power, tasked with protecting the sacred Artifacts—items of immense power that, if combined, could reshape reality itself. They are the silent watchers, the shepherds of magic, and the first line of defense against the encroaching shadows.
-        </p>
-        <p>
-            But for every dawn, there is a dusk. The Eclipse of Etheria was not just a celestial alignment; it was a prophecy—a moment when the veil between worlds thinned, allowing corrupting forces to seep into the land. This event gave rise to twisted creatures and a growing darkness that seeks to consume the Arc's light. The Trial Arc has begun, a new age where the fate of Etheria will be decided not by gods or prophecies, but by the choices of its inhabitants.
-        </p>
-    </div>
-</section>
-
-<div class="section-divider max-w-6xl mx-auto"></div>
-
-<!-- How to Buy -->
-<section id="how-to-buy" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-    <h2 class="text-2xl font-bold neon-text reveal text-center">How to Participate</h2>
-    <div class="mt-8 timeline space-y-8">
-        <!-- Step 1 -->
-        <div class="timeline-item reveal" data-delay="0">
+@@ -852,51 +843,51 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
             <div class="timeline-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12"></path><path d="M20 12v4h-4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h4z"></path></svg>
             </div>
@@ -875,6 +322,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
             <div class="timeline-content">
                 <h4 class="font-bold text-white/90">3. Connect & Contribute</h4>
                 <p class="small-dim">Return to this page when the presale is live, click "Connect Wallet", enter the amount of ETH you wish to contribute in the presale card, and approve the transaction.</p>
+                <p class="small-dim">The presale is live now — click "Connect Wallet", enter the amount of ETH you wish to contribute in the presale card, and approve the transaction.</p>
             </div>
         </div>
     </div>
@@ -900,83 +348,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
      <div class="glass card card-outline holo p-5 reveal" data-delay="200">
       <h4 class="font-bold text-lg text-purple-300">Eclipse of Etheria (Trial Arc)</h4>
       <p class="text-sm small-dim mt-1">Unveiling the celestial and shadow aspects of Etheria's lore through the Eclipse collection.</p>
-       <a href="https://opensea.io/collection/eclipseofetheria" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on OpenSea</a>
-    </div>
-    <div class="glass card card-outline holo p-5 reveal" data-delay="300">
-      <h4 class="font-bold text-lg text-orange-400">Artifacts (Coming Soon)</h4>
-      <p class="text-sm small-dim mt-1">The next evolution of on-chain utility items is in development. These powerful artifacts will play a key role in the Etherian world.</p>
-       <a href="#" class="laser text-sm mt-2 inline-block opacity-50 cursor-not-allowed">Stay Tuned</a>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider max-w-6xl mx-auto"></div>
-
-<!-- Tokenomics -->
-<section id="token" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-    <h2 class="text-2xl font-bold neon-text reveal">Tokenomics</h2>
-    <p class="mt-2 max-w-3xl small-dim reveal">Total Supply: 10,000,000 $ETRX</p>
-    
-    <div class="mt-5 grid grid-cols-1 gap-8 md:grid-cols-2">
-        <!-- Left: Allocation List -->
-        <div id="pie-legend" class="reveal" data-delay="50">
-            <h3 class="font-semibold text-lg neon-text">Distribution</h3>
-            <ul id="pie-legend-list" class="mt-3 space-y-2 small-dim">
-                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="presale">
-                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-presale)"></span>
-                    <div><b>Presale (30%):</b> 3,000,000 ETRX for early supporters.</div>
-                </li>
-                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="liquidity">
-                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-liquidity)"></span>
-                    <div><b>Liquidity (25%):</b> 2,500,000 ETRX for DEX listings.</div>
-                </li>
-                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="eco">
-                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-eco)"></span>
-                    <div><b>Ecosystem & Rewards (20%):</b> 2,000,000 ETRX for community grants.</div>
-                </li>
-                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="team">
-                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-team)"></span>
-                    <div><b>Team (15%):</b> 1,500,000 ETRX vested over 24 months (6-month cliff).</div>
-                </li>
-                <li class="legend-item flex items-center gap-3 p-2" data-slice-id="treasury">
-                    <span class="inline-block w-3 h-3 rounded-full" style="background-color: var(--c-treasury)"></span>
-                    <div><b>Treasury & Advisors (10%):</b> 1,000,000 ETRX for strategic costs.</div>
-                </li>
-            </ul>
-        </div>
-        <!-- Right: Pie Chart SVG -->
-        <div class="flex items-center justify-center reveal" data-delay="100">
-            <svg id="pieChart" viewBox="0 0 100 100" class="w-full max-w-[280px] h-auto" aria-labelledby="pie-title">
-                <title id="pie-title">Tokenomics Distribution Chart</title>
-                <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="20" />
-                <g id="pie-slices">
-                    <circle class="pie-slice" data-slice-id="presale" cx="50" cy="50" r="35" fill="none" stroke="var(--c-presale)" stroke-width="20" stroke-dasharray="94.2 219.9" transform="rotate(-90 50 50)" />
-                    <circle class="pie-slice" data-slice-id="liquidity" cx="50" cy="50" r="35" fill="none" stroke="var(--c-liquidity)" stroke-width="20" stroke-dasharray="78.5 219.9" stroke-dashoffset="-94.2" transform="rotate(-90 50 50)" />
-                    <circle class="pie-slice" data-slice-id="eco" cx="50" cy="50" r="35" fill="none" stroke="var(--c-eco)" stroke-width="20" stroke-dasharray="62.8 219.9" stroke-dashoffset="-172.7" transform="rotate(-90 50 50)" />
-                    <circle class="pie-slice" data-slice-id="team" cx="50" cy="50" r="35" fill="none" stroke="var(--c-team)" stroke-width="20" stroke-dasharray="47.1 219.9" stroke-dashoffset="-235.5" transform="rotate(-90 50 50)" />
-                    <circle class="pie-slice" data-slice-id="treasury" cx="50" cy="50" r="35" fill="none" stroke="var(--c-treasury)" stroke-width="20" stroke-dasharray="31.4 219.9" stroke-dashoffset="-282.6" transform="rotate(-90 50 50)" />
-                </g>
-                <g id="pie-text-group" class="text-center" pointer-events="none">
-                    <text id="pie-text-percent" x="50" y="48" text-anchor="middle" class="text-4xl font-bold fill-white">ETRX</text>
-                    <text id="pie-text-name" x="50" y="62" text-anchor="middle" class="text-sm font-semibold fill-white/80">Tokenomics</text>
-                </g>
-            </svg>
-        </div>
-    </div>
-    <!-- Vesting Schedule Section -->
-    <div class="mt-8 glass card card-outline p-5 reveal holo" data-delay="150">
-        <h3 class="font-semibold text-lg neon-text">Team Vesting Schedule</h3>
-        <p class="text-sm small-dim mt-1 mb-4">To ensure long-term commitment, team tokens are subject to a 24-month linear vesting schedule with a 6-month cliff. The vesting contract is now live and verified on the Ethereum Mainnet.</p>
-        <div class="space-y-2 text-xs small-dim">
-            <div class="vesting-bar">
-                <div class="vesting-fill" style="width: 100%;"></div>
-                <div class="vesting-marker" style="left: 25%;"></div> <!-- 6 months / 24 months -->
-            </div>
-            <div class="flex justify-between">
-                <span>Launch</span>
-                <span>6mo Cliff</span>
-                <span>24mo Complete</span>
-            </div>
+@@ -980,51 +971,51 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
         </div>
         <a href="https://etherscan.io/address/0xa78208f38a1f1fa8086ca960a06024fb61bc86bf" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Vesting Contract</a>
     </div>
@@ -1003,6 +375,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                     </div>
                     <p class="mt-1 text-sm small-dim">
                         The $ETRX presale is approaching! We're building a world, not just a token. Join our Telegram and get ready for the journey ahead.
+                        The $ETRX presale is underway! We're building a world, not just a token. Join our Telegram and stay looped in on every milestone.
                         <a href="https://t.me/Etheria_official" class="text-orange-400 laser">#Etheria</a> <a href="#" class="text-orange-400 laser">$ETRX</a>
                     </p>
                     <div class="mt-3 text-xs small-dim">9:00 AM · Sep 9, 2025</div>
@@ -1028,105 +401,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
                 Tracked by CoinGecko
             </h3>
             <p class="small-dim mt-2 text-xs">Request ID: CL1509250041</p>
-            <a href="https://www.coingecko.com/en/coins/etheria-token" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Listing</a>
-        </div>
-    </div>
-    
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <div class="glass card card-outline holo p-5 reveal" data-delay="50">
-            <h3 class="text-lg font-bold neon-text flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                Static Analysis
-            </h3>
-            <p class="small-dim mt-2">Our contracts passed a comprehensive static analysis scan via <strong>Slither</strong> with no critical issues found.</p>
-            <a href="https://drive.google.com/file/d/1tVrT4XMKdF4LtFw4Q_mgmaAWEByeZf7k/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Slither Report</a>
-        </div>
-        <div class="glass card card-outline holo p-5 reveal" data-delay="100">
-            <h3 class="text-lg font-bold neon-text flex items-center gap-2">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
-                Verified Token Contract
-            </h3>
-            <p class="small-dim mt-2">The official $ETRX token contract is deployed and verified on the Ethereum Mainnet, ensuring full transparency.</p>
-            <a href="https://etherscan.io/address/0xa3c48EF518cab21E5772392D5405DE5d73b35190#code" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View on Etherscan</a>
-        </div>
-         <div class="glass card card-outline holo p-5 reveal" data-delay="150">
-            <h3 class="text-lg font-bold neon-text flex items-center gap-2">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
-                Verified Vesting Contract
-            </h3>
-            <p class="small-dim mt-2">The team's token vesting contract is also deployed and verified on Mainnet, locking the team's allocation.</p>
-            <a href="https://etherscan.io/address/0xa78208f38a1f1fa8086ca960a06024fb61bc86bf" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View on Etherscan</a>
-        </div>
-        <div class="glass card card-outline holo p-5 reveal" data-delay="200">
-            <h3 class="text-lg font-bold neon-text flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-400"><path d="M20 6L9 17l-5-5"></path></svg>
-                Public-Facing Team
-            </h3>
-            <p class="small-dim mt-2">Our core team is public-facing with established social profiles to ensure accountability and build community trust.</p>
-            <a href="#team" class="btn-ghost text-sm mt-3 inline-block">Meet the Team</a>
-        </div>
-    </div>
-</section>
-
-<div class="section-divider max-w-6xl mx-auto"></div>
-
-<!-- Team -->
-<section id="team" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-    <h2 class="text-2xl font-bold neon-text reveal">Core Contributors</h2>
-    <p class="mt-2 max-w-3xl small-dim reveal">The public-facing team behind Etheria, dedicated to building a lasting world.</p>
-    <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4" style="perspective: 1000px;">
-        <!-- Team Member 1 -->
-        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="0">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-orange-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
-                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--c-fire));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--c-ember));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g1)"/><path d="M20,80 Q50,20 80,80" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round" /></svg>
-            </div>
-            <h4 class="mt-3 font-bold text-lg">ETRXDreamscapes</h4>
-            <p class="text-sm small-dim">The Developer</p>
-            <div class="mt-auto pt-3 flex justify-center gap-4">
-                <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white" aria-label="ETRXDreamscapes on X/Twitter"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-            </div>
-        </div>
-        <!-- Team Member 2 -->
-        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="50">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-red-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
-                <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--c-ember));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--c-dusk));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g2)"/><path d="M25,25 L75,75 M75,25 L25,75" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
-            </div>
-            <h4 class="mt-3 font-bold text-lg">HeisCaifu</h4>
-            <p class="text-sm small-dim">Telegram Page Owner</p>
-            <div class="mt-auto pt-3 flex justify-center gap-4">
-                <a href="https://x.com/HeisCaifu" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white" aria-label="HeisCaifu on X/Twitter"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-            </div>
-        </div>
-        <!-- Team Member 3 -->
-        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="100">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-purple-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
-                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--c-dusk));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--c-highlight));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g3)"/><circle cx="50" cy="50" r="25" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none"/></svg>
-            </div>
-            <h4 class="mt-3 font-bold text-lg">DxCheetah</h4>
-            <p class="text-sm small-dim">Telegram Page Mod</p>
-            <div class="mt-auto pt-3 flex justify-center gap-4">
-                 <a href="https://x.com/0x_Cheetah_x0" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white" aria-label="DxCheetah on X/Twitter"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-            </div>
-        </div>
-        <!-- Team Member 4 -->
-        <div class="glass card card-outline holo card-3d-tilt p-5 text-center reveal flex flex-col" data-delay="150">
-            <div class="mx-auto h-24 w-24 rounded-full ring-2 ring-orange-400/30 bg-white/5 flex items-center justify-center overflow-hidden">
-                 <svg viewBox="0 0 100 100" class="w-full h-full"><defs><linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(var(--c-highlight));stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(var(--c-fire));stop-opacity:0.7" /></linearGradient></defs><rect width="100" height="100" fill="url(#g4)"/><path d="M50,20 L80,80 L20,80 Z" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <h4 class="mt-3 font-bold text-lg">Laidy_zee</h4>
-            <p class="text-sm small-dim">Social Moderator</p>
-             <div class="mt-auto pt-3 flex justify-center gap-4">
-                 <a href="https://x.com/ThatDefi_gurll" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white" aria-label="Laidy_zee on X/Twitter"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div class="section-divider max-w-6xl mx-auto"></div>
-
-<!-- Road -->
-<section id="road" class="relative z-10 mx-auto max-w-6xl px-6 py-14">
-  <h2 class="text-2xl font-bold neon-text reveal">Roadmap: The Path Forward</h2>
+@@ -1130,51 +1121,51 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
   <div class="mt-5 timeline space-y-6 small-dim">
     <div class="timeline-item reveal" data-delay="0">
       <h4 class="font-bold text-white/90">Phase 1: Foundation (Completed)</h4>
@@ -1153,6 +428,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 <section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-24">
   <div class="glass card card-outline holo p-6 reveal">
     <h3 class="text-xl font-semibold neon-text">Get notified when the presale opens</h3>
+    <h3 class="text-xl font-semibold neon-text">Stay updated while the presale is live</h3>
 
     <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row">
       <label class="sr-only" for="email">Email</label>
@@ -1178,95 +454,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
         <input id="wallet" name="wallet" inputmode="text" autocomplete="off" placeholder="0x… or yourname.eth" spellcheck="false"
                class="rounded-2xl border border-orange-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-orange-400" />
         <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
-        <button class="btn-primary" type="submit">Join Allowlist</button>
-      </form>
-      
-      <p id="wlHelp" class="mt-2 text-xs small-dim"></p>
-      <div id="wlSuccess" class="hidden mt-3 glass card p-5 sm:col-span-2" role="status" aria-live="polite" aria-atomic="true">
-        <div class="text-sm">✅ Wallet submitted! We’ll verify allowlist details before presale.</div>
-        <div class="mt-1 text-xs small-dim">You’ll be notified by email before the window opens.</div>
-      </div>
-      <p id="wlMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
-
-      <!-- Referral Section -->
-      <div id="referral-section" class="mt-4 hidden">
-          <p class="text-xs small-dim">Generate your unique referral link to earn an $ETRX bonus for every contributor you bring!</p>
-          <div class="mt-2 flex flex-col sm:flex-row gap-2">
-              <input id="referral-link" type="text" readonly class="flex-1 rounded-lg bg-white/5 border border-white/10 px-3 py-2 font-mono text-sm outline-none select-all" aria-label="Your referral link"/>
-              <button id="copy-referral" class="btn-ghost text-sm">Copy Link</button>
-          </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq" class="relative z-10 mx-auto max-w-6xl px-6 pb-8">
-  <h2 class="text-2xl font-bold neon-text reveal">FAQ</h2>
-  <div class="mt-4 grid gap-3">
-    <div class="faq-item reveal">
-      <button class="faq-header" aria-expanded="false" aria-controls="faq-when-body" id="faq-when-btn">
-        <span>When does the presale run?</span>
-        <span class="faq-chevron" aria-hidden="true">⌄</span>
-      </button>
-      <div class="faq-body" id="faq-when-body" role="region" aria-labelledby="faq-when-btn" hidden>
-        <p class="small-dim">The presale starts September 24, 2025 at 08:00 UTC (3:00 AM CDT) and ends on September 30, 2025 at midnight UTC. The $ETRX token is now live on the Ethereum mainnet.</p>
-      </div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-header" aria-expanded="false" aria-controls="faq-tge-body" id="faq-tge-btn">
-        <span>What was the TGE?</span>
-        <span class="faq-chevron" aria-hidden="true">⌄</span>
-      </button>
-      <div class="faq-body" id="faq-tge-body" role="region" aria-labelledby="faq-tge-btn" hidden>
-        <p class="small-dim">The Token Generation Event (TGE) occurred on September 13, 2025. This is when the token contract went live on the Ethereum mainnet and initial liquidity was seeded on a DEX. Tokens purchased during the presale will be airdropped after the presale concludes.</p>
-      </div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-header" aria-expanded="false" aria-controls="faq-how-body" id="faq-how-btn">
-        <span>How can I participate?</span>
-        <span class="faq-chevron" aria-hidden="true">⌄</span>
-      </button>
-      <div class="faq-body" id="faq-how-body" role="region" aria-labelledby="faq-how-btn" hidden>
-        <p class="small-dim">During the presale window (starting Sep 24), connect an Ethereum wallet using the button on this page, ensure you have ETH for the purchase and gas fees, and use the contribution form to complete your purchase. This is the only official method.</p>
-      </div>
-    </div>
-     <div class="faq-item reveal">
-      <button class="faq-header" aria-expanded="false" aria-controls="faq-claim-body" id="faq-claim-btn">
-        <span>How do I claim my $ETRX tokens?</span>
-        <span class="faq-chevron" aria-hidden="true">⌄</span>
-      </button>
-      <div class="faq-body" id="faq-claim-body" role="region" aria-labelledby="faq-claim-btn" hidden>
-        <p class="small-dim">There is no claim process needed. After the presale concludes, your purchased $ETRX tokens (including any bonuses) will be airdropped directly to the wallet you used to contribute. Stay tuned to our official social channels for the airdrop announcement.</p>
-      </div>
-    </div>
-    <div class="faq-item reveal">
-      <button class="faq-header" aria-expanded="false" aria-controls="faq-testnet-body" id="faq-testnet-btn">
-        <span>What was your contract testing process?</span>
-        <span class="faq-chevron" aria-hidden="true">⌄</span>
-      </button>
-      <div class="faq-body" id="faq-testnet-body" role="region" aria-labelledby="faq-testnet-btn" hidden>
-        <p class="small-dim">Our contracts were first deployed and thoroughly tested on the Sepolia testnet. This allowed for a period of public testing and verification in a live environment without risking real funds. After this successful testing phase, the final, verified contracts were deployed to the Ethereum Mainnet.</p>
-      </div>
-    </div>
-  </div>
-</section>
-</main>
-
-<footer class="relative z-10 border-t border-orange-400/15 py-10 small-dim">
-  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm">
-    <div>© <span id="year"></span> Etheria • $ETRX</div>
-    <div class="flex items-center gap-4">
-        <a class="laser hover:text-white" href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" aria-label="Follow Etheria on X/Twitter">X/Twitter</a>
-        <a class="laser hover:text-white" href="https://t.me/Etheria_official" target="_blank" rel="noopener noreferrer" aria-label="Join Etheria on Telegram">Telegram</a>
-    </div>
-    <p class="mt-2 max-w-3xl text-center text-xs opacity-80">
-      Disclaimer: This site and presale information are for community use only and do not constitute an offer to sell or a solicitation to buy any financial instrument. Participation may be restricted by local laws. Crypto assets are volatile and carry significant risk. DYOR.
-    </p>
-  </div>
-</footer>
-
+@@ -1270,69 +1261,110 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
 <a href="#notify" id="stickyCTA" class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">Get notified for $ETRX</a>
 
 <!-- Schema.org event (SEO) -->
@@ -1292,6 +480,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 /** CONFIG **/
 const PRESALE_ADDRESS = "0x7E5e15d7FA217861ab9df5a47218942D1181e0e7";
 const INITIAL_TOKENS = 3_000_000;
+const PRESALE_START = new Date("2025-09-24T08:00:00Z");
+const PRESALE_END = new Date("2025-09-30T00:00:00Z");
 const PRESALE_ABI = [
   {"inputs":[],"name":"contribute","stateMutability":"payable","type":"function"},
   {"inputs":[],"name":"live","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
@@ -1311,6 +501,45 @@ const RPCS = [
   "https://rpc.ankr.com/eth"
 ];
 let provider, sale, token, tokenDecimals, tokenAddr;
+let saleIsLive = false;
+let currentWallet = null;
+let tokensPerEth = 0;
+const PHASES = Object.freeze([
+  {
+    key: "tge",
+    title: "Token Generation Event",
+    description: "Token contract deployed & liquidity seeded.",
+    start: new Date("2025-09-13T00:00:00Z"),
+    end: new Date("2025-09-13T02:00:00Z"),
+  },
+  {
+    key: "warmup",
+    title: "Allowlist Warmup",
+    description: "Community quests, allowlist checks, marketing push.",
+    start: new Date("2025-09-20T00:00:00Z"),
+    end: new Date("2025-09-23T23:59:59Z"),
+  },
+  {
+    key: "presale",
+    title: "Presale Live",
+    description: "Main contribution window with bonus tiers.",
+    start: PRESALE_START,
+    end: PRESALE_END,
+  },
+  {
+    key: "airdrop",
+    title: "Airdrop & Listings",
+    description: "Distribute presale allocations & expand exchange listings.",
+    start: new Date("2025-10-01T00:00:00Z"),
+    end: new Date("2025-10-02T23:59:59Z"),
+  }
+]);
+const BONUS_TIERS = [
+  { min: 10, bonus: 10 },
+  { min: 5, bonus: 7.5 },
+  { min: 2.5, bonus: 5 },
+  { min: 1, bonus: 2.5 }
+];
 
 // ----- Loader controller -----
 function hideLoader() {
@@ -1336,13 +565,7 @@ async function callWithTimeout(p, ms, label="op"){
   let t; const to = new Promise((_,rej)=>t=setTimeout(()=>rej(new Error(`[timeout] ${label}`)),ms));
   try { return await Promise.race([p,to]); } finally { clearTimeout(t); }
 }
-async function makeProvider(){
-  for (const url of RPCS){
-    try{
-      const p = new ethers.providers.JsonRpcProvider(url, {name:"homestead", chainId:1});
-      await callWithTimeout(p.getBlockNumber(), 1500, `getBlockNumber ${url}`);
-      console.log("[RPC] using", url);
-      return p;
+@@ -1346,203 +1378,436 @@ async function makeProvider(){
     }catch(e){ console.warn("[RPC fail]", url, e?.code||e?.message||e); }
   }
   console.error("[RPC] all endpoints failed"); return null;
@@ -1370,7 +593,202 @@ const $pct    = document.getElementById("progress-percentage");
 const $bar    = document.getElementById("live-progress-bar");
 const $notLive= document.getElementById("contribute-not-live");
 const $ready  = document.getElementById("contribute-ready");
+const $statusTitle = document.getElementById("presale-status-title");
+const $statusDate  = document.getElementById("presale-status-date");
+const $statusTime  = document.getElementById("presale-status-time");
+const $phaseName   = document.getElementById("phaseName");
+const $phaseEta    = document.getElementById("phaseEta");
+const $phaseBar    = document.getElementById("phaseBar");
+const $phaseDates  = document.getElementById("phaseDates");
+const $phaseTable  = document.getElementById("phaseTable");
+const $phaseTz     = document.getElementById("phaseScheduleTz");
+const $notLive     = document.getElementById("contribute-not-live");
+const $notLiveTitle= document.getElementById("contribute-not-live-title");
+const $notLiveCopy = document.getElementById("contribute-not-live-copy");
+const $connectCard = document.getElementById("contribute-connect-wallet");
+const $ready       = document.getElementById("contribute-ready");
+const $priceDisplay= document.getElementById("eth-price-display");
+const $ethInput    = document.getElementById("eth-amount");
+const $etrxOutput  = document.getElementById("etrx-receive");
+const $bonusDisplay= document.getElementById("bonus-display");
+const $maxBtn      = document.getElementById("max-btn");
 const f2 = (n)=>Number(n).toLocaleString(undefined,{maximumFractionDigits:2, minimumFractionDigits:2});
+const nf = (value, digits=2)=>{
+  const num = Number(value);
+  if (!Number.isFinite(num)) return "0";
+  return num.toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: digits
+  });
+};
+const fmtMonthDay = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' });
+const fmtMonthDayYear = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const fmtTimeUtc = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' });
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+const formatUtc = (date) => date ? `${fmtMonthDay.format(date)} • ${fmtTimeUtc.format(date)} UTC` : '';
+const formatDuration = (ms) => {
+  if (!Number.isFinite(ms)) return '';
+  if (ms <= 0) return '0m';
+  const units = [
+    { label: 'd', ms: 86_400_000 },
+    { label: 'h', ms: 3_600_000 },
+    { label: 'm', ms: 60_000 }
+  ];
+  const parts = [];
+  for (const unit of units){
+    const value = Math.floor(ms / unit.ms);
+    if (value > 0){
+      parts.push(`${value}${unit.label}`);
+      ms -= value * unit.ms;
+    }
+    if (parts.length === 2) break;
+  }
+  return parts.join(' ');
+};
+const getBonusForAmount = (ethAmount) => {
+  if (!Number.isFinite(ethAmount) || ethAmount <= 0) return 0;
+  for (const tier of BONUS_TIERS){
+    if (ethAmount >= tier.min) return tier.bonus;
+  }
+  return 0;
+};
+const getNextBonusTarget = (ethAmount) => {
+  if (!Number.isFinite(ethAmount)) return null;
+  const remaining = BONUS_TIERS.filter(tier => ethAmount < tier.min);
+  if (!remaining.length) return null;
+  const next = remaining[remaining.length - 1];
+  return next ? next.min : null;
+};
+function renderSchedule(now = new Date()){
+  if (!$phaseTable) return;
+  $phaseTable.innerHTML = '';
+  if ($phaseTz) $phaseTz.textContent = 'All times in UTC';
+  for (const phase of PHASES){
+    const row = document.createElement('div');
+    row.className = 'row';
+    const start = phase.start;
+    const end = phase.end;
+    const isActive = now >= start && now <= end;
+    if (isActive) row.classList.add('active-phase');
+    let status = 'Completed';
+    if (isActive) status = `Live • ends in ${formatDuration(end - now)}`;
+    else if (now < start) status = `Opens in ${formatDuration(start - now)}`;
+    row.innerHTML = `
+      <div>
+        <div class="text-sm font-semibold">${phase.title}</div>
+        <div class="text-xs small-dim">${phase.description}</div>
+      </div>
+      <div class="text-xs small-dim text-right leading-tight">${formatUtc(start)}<br><span class="text-white/40">${formatUtc(end)}</span></div>
+      <div class="text-xs small-dim text-right">${status}</div>`;
+    $phaseTable.appendChild(row);
+  }
+}
+function updatePresaleMeta(live){
+  const now = new Date();
+  const start = PRESALE_START;
+  const end = PRESALE_END;
+  const untilOpen = start - now;
+  const untilClose = end - now;
+  if ($statusTitle) $statusTitle.textContent = live ? 'Presale Is Live' : (now < start ? 'Presale Countdown' : 'Presale Closed');
+  if ($statusDate) $statusDate.textContent = live ? 'Now accepting contributions' : (now < start ? fmtMonthDayYear.format(start) : fmtMonthDayYear.format(end));
+  if ($statusTime) $statusTime.textContent = live ? `Ends ${formatUtc(end)}` : (now < start ? `Opens ${formatUtc(start)}` : `Closed ${formatUtc(end)}`);
+  if ($phaseName) $phaseName.textContent = live ? 'Phase: Presale (Live)' : (now < start ? 'Phase: Countdown' : 'Phase: Post-Presale');
+  if ($phaseEta){
+    if (live) $phaseEta.textContent = ` • Ends in ${formatDuration(untilClose)}`;
+    else if (now < start) $phaseEta.textContent = ` • Opens in ${formatDuration(untilOpen)}`;
+    else $phaseEta.textContent = ' • Closed';
+  }
+  if ($phaseBar){
+    const progress = clamp(((now - start) / (end - start)) * 100, 0, 100);
+    $phaseBar.style.width = `${progress}%`;
+  }
+  if ($phaseDates) $phaseDates.textContent = `${formatUtc(start)} → ${formatUtc(end)}`;
+  if ($notLiveTitle && $notLiveCopy){
+    if (live){
+      $notLiveTitle.textContent = 'Connect Wallet to Contribute';
+      $notLiveCopy.textContent = 'Link your wallet to view contribution options and submit a transaction.';
+    }else if (now < start){
+      $notLiveTitle.textContent = 'Presale Opens Soon';
+      $notLiveCopy.textContent = `The presale opens ${formatUtc(start)}.`;
+    }else{
+      $notLiveTitle.textContent = 'Presale Closed';
+      $notLiveCopy.textContent = 'Thanks to everyone who participated — the contribution window has ended.';
+    }
+  }
+  renderSchedule(now);
+}
+function updateContributionVisibility(){
+  if (!$notLive || !$connectCard || !$ready) return;
+  if (!saleIsLive){
+    $notLive.style.display = 'flex';
+    $connectCard.style.display = 'none';
+    $ready.style.display = 'none';
+  }else if (!currentWallet){
+    $notLive.style.display = 'none';
+    $connectCard.style.display = 'flex';
+    $ready.style.display = 'none';
+  }else{
+    $notLive.style.display = 'none';
+    $connectCard.style.display = 'none';
+    $ready.style.display = '';
+  }
+}
+function updateContributionPreview(){
+  if (!$ethInput || !$etrxOutput) return;
+  const ethValue = Number($ethInput.value);
+  if (!Number.isFinite(ethValue) || ethValue <= 0 || !tokensPerEth){
+    $etrxOutput.value = '';
+    if ($bonusDisplay) $bonusDisplay.textContent = '';
+    return;
+  }
+  const estTokens = ethValue * tokensPerEth;
+  $etrxOutput.value = nf(estTokens, 2);
+  if ($bonusDisplay){
+    const bonus = getBonusForAmount(ethValue);
+    if (bonus > 0){
+      $bonusDisplay.textContent = `Bonus: +${bonus}% tokens`;
+    }else{
+      const nextTarget = getNextBonusTarget(ethValue);
+      $bonusDisplay.textContent = nextTarget ? `Contribute ${nf(nextTarget - ethValue, 2)} more ETH to unlock a bonus` : '';
+    }
+  }
+}
+async function refreshEthPrice(){
+  if (!$priceDisplay) return;
+  try{
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
+    const json = await res.json();
+    const price = Number(json?.ethereum?.usd);
+    if (Number.isFinite(price)){
+      $priceDisplay.textContent = `1 ETH ≈ $${price.toLocaleString(undefined,{maximumFractionDigits:0})} USD`;
+    }
+  }catch(e){ console.warn('[PRICE]', e?.message||e); }
+}
+async function onMaxClick(ev){
+  if (ev) ev.preventDefault();
+  if (!$ethInput || !currentWallet || !window.ethereum) return;
+  try{
+    const web3 = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    const balance = await web3.getBalance(currentWallet);
+    let eth = Number(ethers.utils.formatEther(balance));
+    if (!Number.isFinite(eth) || eth <= 0) return;
+    eth = Math.max(0, eth - 0.01); // keep gas for the transaction
+    if (eth <= 0) return;
+    $ethInput.value = eth.toFixed(4);
+    updateContributionPreview();
+  }catch(e){ console.warn('[MAX]', e?.message||e); }
+}
+function disconnectWallet(){
+  currentWallet = null;
+  document.getElementById('connectBtn')?.classList.remove('hidden-important');
+  const walletPill = document.getElementById('walletPill');
+  if (walletPill) walletPill.classList.add('hidden');
+  const short = document.getElementById('walletShort');
+  if (short) short.textContent = '';
+  if ($userCard) $userCard.classList.add('hidden');
+  if ($userEmpty) $userEmpty.classList.add('hidden');
+  updateContributionVisibility();
+}
 async function refreshCore(){
   const ok = await initOnce();
   if (!ok || !sale || !token){
@@ -1379,16 +797,28 @@ async function refreshCore(){
     if ($bar) $bar.style.width = "0%";
     if ($notLive) $notLive.style.display="";
     if ($ready)   $ready.style.display="none";
+    saleIsLive = false;
+    tokensPerEth = 0;
+    updatePresaleMeta(false);
+    updateContributionVisibility();
     return;
   }
   try{
     const [live, weiRaised, bal] = await Promise.all([
       sale.live(), sale.weiRaised(), token.balanceOf(PRESALE_ADDRESS)
+    const [live, weiRaised, bal, rate] = await Promise.all([
+      sale.live(),
+      sale.weiRaised(),
+      token.balanceOf(PRESALE_ADDRESS),
+      sale.rate()
     ]);
     const raisedEth = Number(ethers.utils.formatEther(weiRaised));
     const remaining = Number(ethers.utils.formatUnits(bal, tokenDecimals));
     const sold = Math.max(0, INITIAL_TOKENS - remaining);
     const pct = Math.max(0, Math.min(100, sold/INITIAL_TOKENS*100));
+    saleIsLive = Boolean(live);
+    tokensPerEth = Number(ethers.utils.formatUnits(rate, tokenDecimals));
+    if (!Number.isFinite(tokensPerEth)) tokensPerEth = 0;
 
     if ($raised) $raised.textContent = `${f2(raisedEth)} ETH`;
     if ($pct) $pct.textContent = `${f2(pct)}%`;
@@ -1396,14 +826,29 @@ async function refreshCore(){
     if ($notLive) $notLive.style.display = live ? "none" : "";
     if ($ready)   $ready.style.display   = live ? "" : "none";
   }catch(e){ console.error("[CORE]", e); }
+    updatePresaleMeta(saleIsLive);
+    updateContributionVisibility();
+    updateContributionPreview();
+  }catch(e){
+    console.error("[CORE]", e);
+    updateContributionVisibility();
+  }
 }
 
 const $list = document.getElementById("contribution-list");
+const $noContributions = document.getElementById("no-contributions");
 const $contributors = document.getElementById("total-contributors");
 const IFACE = new ethers.utils.Interface(PRESALE_ABI);
 const TOPIC = IFACE.getEventTopic("Contributed");
 let lastProcessedBlock = 0;
 const seenTxs = new Set();
+$ethInput?.addEventListener('input', updateContributionPreview);
+$maxBtn?.addEventListener('click', onMaxClick);
+document.getElementById('disconnectBtn')?.addEventListener('click', (ev) => {
+  ev.preventDefault();
+  disconnectWallet();
+});
+renderSchedule();
 
 async function getLogsChunked(fromBlock, toBlock, step=900){
   const logs = [];
@@ -1441,6 +886,7 @@ async function refreshRecent(limit=8){
         return {
           buyer: parsed.args.buyer,
           wei: parsed.args.weiAmount,
+          tokens: parsed.args.tokensOut,
           hash: l.transactionHash,
           block: l.blockNumber
         };
@@ -1451,14 +897,20 @@ async function refreshRecent(limit=8){
         seenTxs.add(ev.hash);
 
         const eth = Number(ethers.utils.formatEther(ev.wei)).toFixed(4);
+        const eth = Number(ethers.utils.formatEther(ev.wei));
+        const tokens = tokenDecimals ? Number(ethers.utils.formatUnits(ev.tokens, tokenDecimals)) : 0;
         if ($list){
           const li = document.createElement("li");
           li.className = "contribution-list-item";
           li.innerHTML = `
             <span>${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
             <span class="tabular">${eth} ETH</span>
+            <span class="addr">${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
+            <span class="tabular">${eth.toFixed(4)} ETH</span>
+            <span class="tabular text-orange-200">${nf(tokens, 2)} ETRX</span>
             <a class="laser" target="_blank" rel="noopener" href="https://etherscan.io/tx/${ev.hash}">view</a>`;
           $list.insertBefore(li, $list.firstChild);
+          if ($noContributions) $noContributions.style.display = 'none';
         }
       }
   }
@@ -1466,15 +918,21 @@ async function refreshRecent(limit=8){
   const allLogs = await getLogsChunked(0, latest, 900);
   const uniq = new Set(allLogs.map(l => IFACE.parseLog(l).args.buyer.toLowerCase()));
   if ($contributors) $contributors.textContent = String(uniq.size);
+  if ($noContributions && $list) $noContributions.style.display = $list.children.length ? 'none' : '';
 }
 
 const $userEth  = document.getElementById("user-total-eth");
 const $userEtrx = document.getElementById("user-total-etrx");
 const $userCard = document.getElementById("your-contribution-summary");
+const $userEth   = document.getElementById("user-total-eth");
+const $userEtrx  = document.getElementById("user-total-etrx");
+const $userCard  = document.getElementById("your-contribution-summary");
+const $userEmpty = document.getElementById("user-no-contributions");
 
 async function updateUserTotals(wallet){
   if (!wallet) {
       if($userCard) $userCard.classList.add("hidden");
+      if ($userEmpty) $userEmpty.classList.add("hidden");
       return;
   }
   const ok = await initOnce();
@@ -1486,38 +944,59 @@ async function updateUserTotals(wallet){
     if ($userEtrx) $userEtrx.textContent = nf(etrxNow, 4);
   } catch(e) { console.warn("[USER] balanceOf failed", e?.message||e); }
   
+
   try{
     const latest = await provider.getBlockNumber();
     let from = 0; // check entire history
     let totalEth = 0;
+    let totalTokens = 0;
 
     const buyerTopic = ethers.utils.hexZeroPad(wallet, 32);
     const logs = await getLogsChunked(from, latest, 900); // Re-use chunked fetcher
     
+
     for (const l of logs){
       if(l.topics[1].toLowerCase() === buyerTopic.toLowerCase()){
         const ev = IFACE.parseLog(l);
         totalEth += Number(ethers.utils.formatEther(ev.args.weiAmount));
+        totalTokens += Number(ethers.utils.formatUnits(ev.args.tokensOut, tokenDecimals));
       }
     }
     if ($userEth) $userEth.textContent = totalEth.toLocaleString(undefined,{maximumFractionDigits:6});
     if($userCard) $userCard.classList.toggle("hidden", totalEth === 0);
+    if ($userEtrx) $userEtrx.textContent = nf(totalTokens, 2);
+    if($userCard){
+      $userCard.classList.remove("hidden");
+      if ($userEmpty) $userEmpty.classList.toggle("hidden", totalEth > 0);
+    }
   }catch(e){ console.warn("[USER] lifetime logs failed", e?.message||e); }
 }
 
 async function onWalletConnected(){
   try{
+    if (!window.ethereum){
+      console.warn('[CONNECT] window.ethereum missing');
+      return;
+    }
     const web3 = new ethers.providers.Web3Provider(window.ethereum, "any");
     const accounts = await web3.send("eth_requestAccounts", []);
     const addr = accounts?.[0];
     if (addr) {
         document.getElementById("connect-btn")?.classList.add('hidden-important');
+        const checksum = ethers.utils.getAddress(addr);
+        currentWallet = checksum;
+        document.getElementById("connectBtn")?.classList.add('hidden-important');
         const walletPill = document.getElementById("walletPill");
         if(walletPill) {
             walletPill.classList.remove('hidden');
             document.getElementById("walletShort").textContent = `${addr.slice(0,6)}…${addr.slice(-4)}`;
+            const short = document.getElementById("walletShort");
+            if (short) short.textContent = `${checksum.slice(0,6)}…${checksum.slice(-4)}`;
         }
         updateUserTotals(addr);
+        updateContributionVisibility();
+        updateUserTotals(checksum);
+        updateContributionPreview();
     }
   }catch(e){ console.error("[CONNECT]", e); }
 }
@@ -1525,6 +1004,9 @@ async function onWalletConnected(){
 window.addEventListener("load", async () => {
   await initOnce();
   await Promise.allSettled([ refreshCore(), refreshRecent() ]);
+  updateContributionPreview();
+  refreshEthPrice();
+  setInterval(refreshEthPrice, 120000);
 
   if (provider){
     provider.on("block", ()=>{
@@ -1532,6 +1014,8 @@ window.addEventListener("load", async () => {
       clearTimeout(window.__debounceRec);
       window.__debounceCore = setTimeout(refreshCore, 1500);
       window.__debounceRec  = setTimeout(refreshRecent, 2500);
+      clearTimeout(window.__debounceUser);
+      window.__debounceUser = setTimeout(()=>{ if (currentWallet) updateUserTotals(currentWallet); }, 3000);
     });
   }
   document.getElementById("connectBtn")?.addEventListener("click", onWalletConnected);
