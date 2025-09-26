@@ -488,7 +488,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
   <div class="glass card card-outline w-[min(420px,92vw)] p-4" data-modal-surface>
     <div class="flex items-center justify-between">
       <h3 id="walletModalTitle" class="text-lg font-semibold neon-text">Choose a wallet</h3>
-      <button id="modalClose" class="text-white/70 hover:text-white" aria-label="Close dialog">✕</button>
+      <button id="modalClose" class="text-white/70 hover:text-white" aria-label="Close dialog" data-modal-close>✕</button>
     </div>
     <p class="mt-1 text-xs small-dim">Use a browser wallet (MetaMask, Rabby, Brave, Frame, etc.).</p>
     <div id="walletList" class="mt-4 grid gap-2" role="list"></div>
@@ -668,7 +668,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 
         <!-- Right Column: All Contributions -->
         <div id="all-contributions" class="glass card card-outline p-5 reveal holo flex flex-col">
-            <h4 class="text-base font-semibold neon-text text-center mb-2">Recent Contributions</h4>
+            <h4 class="text-base font-semibold neon-text text-center mb-2">All Contributions</h4>
             <div id="all-contributions-box" class="flex-grow">
                 <ul id="contribution-list" class="space-y-1">
                     <!-- JS will populate this -->
@@ -1329,7 +1329,8 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 'use strict';
 
 /** CONFIG **/
-const PRESALE_ADDRESS = "0x7E5e15d7FA217861ab9df5a47218942D1181e0e7";
+// IMPORTANT: Update this to your real, deployed presale contract address on Ethereum Mainnet.
+const PRESALE_ADDRESS = "0x7E5e15d7FA217861ab9df5a47218942D1181e0e7"; // <-- REPLACE WITH YOUR DEPLOYED CONTRACT
 const INITIAL_TOKENS = 3_000_000;
 const PHASES = [
     // End times are exclusive (up to, but not including)
@@ -1337,6 +1338,7 @@ const PHASES = [
     { id: 'phase-2', start: new Date('2025-09-27T08:00:00Z'), end: new Date('2025-09-29T08:00:00Z') },
     { id: 'phase-3', start: new Date('2025-09-29T08:00:00Z'), end: new Date('2025-10-01T00:00:00Z') } 
 ];
+// IMPORTANT: Ensure this ABI matches your contract's event signature exactly.
 const PRESALE_ABI = [
   {"inputs":[],"name":"contribute","stateMutability":"payable","type":"function"},
   {"inputs":[],"name":"live","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
@@ -1376,6 +1378,21 @@ function updateActivePhase() {
             badge.remove();
         }
     });
+}
+
+// ----- Modal Controllers -----
+function openWalletModal() {
+    const modal = document.getElementById('walletModal');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    modal.removeAttribute('inert');
+    // You can populate the #walletList here with links to MetaMask, Rabby, etc.
+}
+function closeWalletModal() {
+    const modal = document.getElementById('walletModal');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.setAttribute('inert', '');
 }
 
 // ----- Loader controller -----
@@ -1420,7 +1437,7 @@ async function initOnce(){
 
   try{
     const code = await callWithTimeout(provider.getCode(PRESALE_ADDRESS), 1500, "getCode");
-    if (code==="0x"){ console.error("[BOOT] no bytecode at presale"); return false; }
+    if (code==="0x"){ console.error("[BOOT] no bytecode at presale address. Update PRESALE_ADDRESS variable."); return false; }
   }catch(e){ console.warn("[BOOT] code check skipped:", e.message||e); }
 
   try{
@@ -1543,7 +1560,16 @@ async function refreshRecent(limit=8){
   if (!ok || !provider) return;
 
   const latest = await provider.getBlockNumber();
-  if (!lastProcessedBlock) lastProcessedBlock = 0; // Start from block 0 to get ALL contributions
+
+  // Always rebuild the list from genesis on the first run for this page load.
+  if (!window.__rebuiltOnce) {
+    if ($list) $list.innerHTML = "";
+    seenTxs.clear();
+    lastProcessedBlock = 0;
+    window.__rebuiltOnce = true;
+  }
+
+  if (!lastProcessedBlock) lastProcessedBlock = 0;
   
   if (latest > lastProcessedBlock) {
       const logs = await getLogsChunked(lastProcessedBlock, latest, 900);
@@ -1624,6 +1650,7 @@ async function onWalletConnected(){
   try{
     if (typeof window.ethereum === 'undefined') {
         alert('Please install a wallet extension like MetaMask.');
+        openWalletModal();
         return;
     }
     const web3 = new ethers.providers.Web3Provider(window.ethereum, "any");
@@ -1657,6 +1684,51 @@ function onWalletDisconnected() {
     refreshCore(null);
 }
 
+async function handleContribution() {
+    if (!currentAccount) {
+        alert("Please connect your wallet first.");
+        return;
+    }
+
+    const ethAmountEl = document.getElementById("eth-amount");
+    const amount = ethAmountEl.value;
+    if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+        alert("Please enter a valid amount of ETH to contribute.");
+        return;
+    }
+
+    const contributeBtn = document.getElementById("contribute-btn");
+    try {
+        contributeBtn.disabled = true;
+        contributeBtn.textContent = "Processing...";
+
+        const web3 = new ethers.providers.Web3Provider(window.ethereum, "any");
+        const signer = web3.getSigner();
+        const saleWritable = new ethers.Contract(PRESALE_ADDRESS, PRESALE_ABI, signer);
+
+        const value = ethers.utils.parseEther(amount);
+        const tx = await saleWritable.contribute({ value: value });
+        
+        contributeBtn.textContent = "Waiting for Confirmation...";
+        await tx.wait();
+
+        alert("Contribution successful! Your transaction has been confirmed.");
+        ethAmountEl.value = "";
+        refreshCore(currentAccount);
+        refreshRecent();
+        updateUserTotals(currentAccount);
+
+    } catch (err) {
+        console.error("Contribution failed:", err);
+        const reason = err.reason || err.message || "Transaction was rejected or failed.";
+        alert(`Contribution failed: ${reason}`);
+    } finally {
+        contributeBtn.disabled = false;
+        contributeBtn.textContent = "Contribute Now";
+    }
+}
+
+
 window.addEventListener("load", async () => {
   await initOnce();
   await Promise.allSettled([ refreshCore(null), refreshRecent() ]);
@@ -1674,6 +1746,15 @@ window.addEventListener("load", async () => {
   document.getElementById("connectBtn")?.addEventListener("click", onWalletConnected);
   document.getElementById("connect-btn-card")?.addEventListener("click", onWalletConnected);
   document.getElementById("disconnectBtn")?.addEventListener("click", onWalletDisconnected);
+  document.getElementById("contribute-btn")?.addEventListener("click", handleContribution);
+
+  // Modal close listeners
+  document.getElementById("walletModal")?.addEventListener("click", (e) => {
+      if (e.target === e.currentTarget || e.target.hasAttribute("data-modal-close")) {
+          closeWalletModal();
+      }
+  });
+
 
   if (window.ethereum) {
     window.ethereum.on('accountsChanged', (accounts) => {
@@ -1694,8 +1775,4 @@ window.addEventListener('unhandledrejection', (e) => {
 </script>
 </body>
 </html>
-
-
-
-
 
