@@ -1,1032 +1,1072 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/index.html b/index.html
+index 59b53179e2018abc619d85f2e00b1a993d5ce76f..f9fda99dc6de46e683affb68571c546ad0e7a281 100644
+--- a/index.html
++++ b/index.html
 @@ -337,64 +337,67 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
-}
-.contribution-currency {
-  position: absolute;
-  right: 4rem;
-  pointer-events: none;
-  color: var(--dim);
-}
-.btn-max {
-    position: absolute;
-    right: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    background-color: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: var(--dim);
-    transition: background-color .2s ease;
-}
-.btn-max:hover {
-    background-color: rgba(255,255,255,0.2);
-    color: #fff;
-}
-/* Recent Contributions */
-.contribution-list-item {
-    display: flex;
-    justify-content: space-between;
-    display: grid;
-    grid-template-columns: minmax(0,1.1fr) repeat(2, auto) 48px;
-    gap:12px;
-    padding:6px 0;
-    align-items: center;
-    font-size: 0.8rem;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    opacity: 0;
-    transform: translateY(-10px);
-    animation: fadeIn .4s ease forwards;
-}
-.contribution-list-item:last-child {
-    border-bottom: none;
-}
-.contribution-list-item span.addr { font-family: "DM Mono", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.contribution-list-item span.tabular { font-variant-numeric: tabular-nums; white-space: nowrap; }
-.contribution-list-item a { font-size: 0.75rem; }
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-.bonus-tier.active {
-    box-shadow: 0 0 0 2px var(--c-presale), 0 0 20px var(--c-presale);
-    transform: translateY(-4px) scale(1.02);
-}
-
-/* All Contributions Box */
-#all-contributions-box {
-    max-height: 200px; /* Or any height you prefer */
-    overflow-y: auto;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 0.75rem;
-    padding: 0.5rem 1rem;
-}
-
-
-/* Countdown Animation */
-.countdown-value {
-    display: inline-block;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+ }
+ .contribution-currency {
+   position: absolute;
+   right: 4rem;
+   pointer-events: none;
+   color: var(--dim);
+ }
+ .btn-max {
+     position: absolute;
+     right: 0.5rem;
+     padding: 0.25rem 0.5rem;
+     font-size: 0.75rem;
+     font-weight: 600;
+     border-radius: 0.5rem;
+     background-color: rgba(255,255,255,0.1);
+     border: 1px solid rgba(255,255,255,0.15);
+     color: var(--dim);
+     transition: background-color .2s ease;
+ }
+ .btn-max:hover {
+     background-color: rgba(255,255,255,0.2);
+     color: #fff;
+ }
+ /* Recent Contributions */
+ .contribution-list-item {
+-    display: flex;
+-    justify-content: space-between;
++    display: grid;
++    grid-template-columns: minmax(0,1.1fr) repeat(2, auto) 48px;
+     gap:12px;
+     padding:6px 0;
+     align-items: center;
+     font-size: 0.8rem;
+     border-bottom: 1px solid rgba(255,255,255,0.05);
+     opacity: 0;
+     transform: translateY(-10px);
+     animation: fadeIn .4s ease forwards;
+ }
+ .contribution-list-item:last-child {
+     border-bottom: none;
+ }
++.contribution-list-item span.addr { font-family: "DM Mono", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
++.contribution-list-item span.tabular { font-variant-numeric: tabular-nums; white-space: nowrap; }
++.contribution-list-item a { font-size: 0.75rem; }
+ @keyframes fadeIn {
+     to {
+         opacity: 1;
+         transform: translateY(0);
+     }
+ }
+ .bonus-tier.active {
+     box-shadow: 0 0 0 2px var(--c-presale), 0 0 20px var(--c-presale);
+     transform: translateY(-4px) scale(1.02);
+ }
+ 
+ /* All Contributions Box */
+ #all-contributions-box {
+     max-height: 200px; /* Or any height you prefer */
+     overflow-y: auto;
+     border: 1px solid rgba(255,255,255,0.1);
+     border-radius: 0.75rem;
+     padding: 0.5rem 1rem;
+ }
+ 
+ 
+ /* Countdown Animation */
+ .countdown-value {
+     display: inline-block;
+     transition: transform 0.3s ease, opacity 0.3s ease;
+diff --git a/index.html b/index.html
+index 59b53179e2018abc619d85f2e00b1a993d5ce76f..f9fda99dc6de46e683affb68571c546ad0e7a281 100644
+--- a/index.html
++++ b/index.html
 @@ -415,78 +418,66 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
-@media (prefers-reduced-motion: reduce){
-  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
-  #bgAurora::before, #bgAurora::after, .card-outline::before, .holo::after, .hero-glow::before, .hero-glow::after{ display:none }
-}
-</style>
-</head>
-<body>
-<div id="preloader">
-    <img src="/assets/Logo.png" alt="Etheria Logo" class="h-16 w-16"/>
-</div>
-
-<noscript>
-  <div style="position:relative;z-index:3;margin:1rem auto;max-width:60rem;padding:.75rem 1rem;border:1px solid #0ff3;border-radius:10px;background:#06121a;color:#bfefff;font:14px/1.3 Inter,system-ui">
-    JavaScript is disabled — countdown and forms require it.
-  </div>
-</noscript>
-
-<!-- Background & layers -->
-<div id="bgAurora" aria-hidden="true"></div>
-<canvas id="wispCanvas" aria-hidden="true"></canvas>
-<div class="scanlines" aria-hidden="true"></div>
-
-<a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
-
-<div id="announcement-banner" class="relative z-50 text-center p-2 text-sm bg-gradient-to-r from-orange-500 to-red-500">
-    <strong>We are live!</strong> $ETRX is now on the Ethereum Mainnet! The presale begins September 24. <span class="mx-2">|</span> <strong>Now Listed on CoinGecko!</strong>
-    <strong>We are live!</strong> $ETRX is now on the Ethereum Mainnet! The presale is live now. <span class="mx-2">|</span> <strong>Now Listed on CoinGecko!</strong>
-</div>
-
-
-<header id="siteHeader" class="sticky top-0 z-40">
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-    <div class="flex items-center gap-3">
-      <img src="/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-orange-400/20 object-contain"/>
-      <div class="text-sm tracking-wide small-dim">Etheria</div>
-    </div>
-    <nav class="hidden gap-6 text-sm opacity-80 md:flex items-center" aria-label="Primary">
-      <a class="laser hover:opacity-100" href="#live-data">Live</a>
-      <a class="laser hover:opacity-100" href="#about">About</a>
-      <a class="laser hover:opacity-100" href="#lore">Lore</a>
-      <a class="laser hover:opacity-100" href="#how-to-buy">How to Buy</a>
-      <a class="laser hover:opacity-100" href="#token">Tokenomics</a>
-      
-      <div class="relative group" id="more-menu">
-        <button id="more-menu-btn" class="flex items-center gap-1 laser hover:opacity-100" aria-haspopup="true" aria-expanded="false" aria-label="More sections">
-          More
-          <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-        </button>
-        <div id="more-menu-dropdown" class="absolute top-full right-0 mt-2 w-48 p-2 glass card hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-          <a href="#milestones" class="block px-3 py-2 rounded-md hover:bg-white/10">Milestones</a>
-          <a href="#team" class="block px-3 py-2 rounded-md hover:bg-white/10">Team</a>
-          <a href="#road" class="block px-3 py-2 rounded-md hover:bg-white/10">Roadmap</a>
-          <a href="#faq" class="block px-3 py-2 rounded-md hover:bg-white/10">FAQ</a>
-        </div>
-      </div>
-      <a class="laser hover:opacity-100" href="#road">Roadmap</a>
-      <a class="laser hover:opacity-100" href="#faq">FAQ</a>
-    </nav>
-    <div class="flex items-center gap-3">
-      <div id="utc-clock" class="hidden md:block text-sm tabular small-dim mr-4"></div>
-      <button id="wp-btn-header" class="btn-ghost text-sm hidden sm:inline-flex">Whitepaper</button>
-      <button id="connectBtn" class="btn-primary text-sm" aria-haspopup="dialog" aria-controls="walletModal">Connect Wallet</button>
-      <div id="walletPill" class="btn-ghost text-xs hidden" aria-live="polite">
-        <span id="walletShort" class="addr"></span>
-        <button id="disconnectBtn" class="ml-2 underline underline-offset-4" aria-label="Disconnect Wallet">Disconnect</button>
-      </div>
-    </div>
-  </div>
-</header>
-
-
-<!-- Wallet modal -->
-<div id="walletModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
-     role="dialog" aria-modal="true" aria-labelledby="walletModalTitle" inert>
-  <div class="glass card card-outline w-[min(420px,92vw)] p-4" data-modal-surface>
-    <div class="flex items-center justify-between">
-      <h3 id="walletModalTitle" class="text-lg font-semibold neon-text">Choose a wallet</h3>
-      <button id="modalClose" class="text-white/70 hover:text-white" aria-label="Close dialog">✕</button>
-    </div>
-    <p class="mt-1 text-xs small-dim">Use a browser wallet (MetaMask, Rabby, Brave, Frame, etc.).</p>
-    <div id="walletList" class="mt-4 grid gap-2" role="list"></div>
-    <p class="mt-2 text-xs small-dim">Tip: If nothing shows up, install a wallet extension or use a browser with a built-in wallet.</p>
+ @media (prefers-reduced-motion: reduce){
+   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
+   #bgAurora::before, #bgAurora::after, .card-outline::before, .holo::after, .hero-glow::before, .hero-glow::after{ display:none }
+ }
+ </style>
+ </head>
+ <body>
+ <div id="preloader">
+     <img src="/assets/Logo.png" alt="Etheria Logo" class="h-16 w-16"/>
+ </div>
+ 
+ <noscript>
+   <div style="position:relative;z-index:3;margin:1rem auto;max-width:60rem;padding:.75rem 1rem;border:1px solid #0ff3;border-radius:10px;background:#06121a;color:#bfefff;font:14px/1.3 Inter,system-ui">
+     JavaScript is disabled — countdown and forms require it.
+   </div>
+ </noscript>
+ 
+ <!-- Background & layers -->
+ <div id="bgAurora" aria-hidden="true"></div>
+ <canvas id="wispCanvas" aria-hidden="true"></canvas>
+ <div class="scanlines" aria-hidden="true"></div>
+ 
+ <a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
+ 
+ <div id="announcement-banner" class="relative z-50 text-center p-2 text-sm bg-gradient-to-r from-orange-500 to-red-500">
+-    <strong>We are live!</strong> $ETRX is now on the Ethereum Mainnet! The presale begins September 24. <span class="mx-2">|</span> <strong>Now Listed on CoinGecko!</strong>
++    <strong>We are live!</strong> $ETRX is now on the Ethereum Mainnet! The presale is live now. <span class="mx-2">|</span> <strong>Now Listed on CoinGecko!</strong>
+ </div>
+ 
+ 
+ <header id="siteHeader" class="sticky top-0 z-40">
+   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+     <div class="flex items-center gap-3">
+       <img src="/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-orange-400/20 object-contain"/>
+       <div class="text-sm tracking-wide small-dim">Etheria</div>
+     </div>
+     <nav class="hidden gap-6 text-sm opacity-80 md:flex items-center" aria-label="Primary">
++      <a class="laser hover:opacity-100" href="#live-data">Live</a>
+       <a class="laser hover:opacity-100" href="#about">About</a>
+-      <a class="laser hover:opacity-100" href="#lore">Lore</a>
+-      <a class="laser hover:opacity-100" href="#how-to-buy">How to Buy</a>
+       <a class="laser hover:opacity-100" href="#token">Tokenomics</a>
+-      
+-      <div class="relative group" id="more-menu">
+-        <button id="more-menu-btn" class="flex items-center gap-1 laser hover:opacity-100" aria-haspopup="true" aria-expanded="false" aria-label="More sections">
+-          More
+-          <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+-        </button>
+-        <div id="more-menu-dropdown" class="absolute top-full right-0 mt-2 w-48 p-2 glass card hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+-          <a href="#milestones" class="block px-3 py-2 rounded-md hover:bg-white/10">Milestones</a>
+-          <a href="#team" class="block px-3 py-2 rounded-md hover:bg-white/10">Team</a>
+-          <a href="#road" class="block px-3 py-2 rounded-md hover:bg-white/10">Roadmap</a>
+-          <a href="#faq" class="block px-3 py-2 rounded-md hover:bg-white/10">FAQ</a>
+-        </div>
+-      </div>
++      <a class="laser hover:opacity-100" href="#road">Roadmap</a>
++      <a class="laser hover:opacity-100" href="#faq">FAQ</a>
+     </nav>
+     <div class="flex items-center gap-3">
+       <div id="utc-clock" class="hidden md:block text-sm tabular small-dim mr-4"></div>
+       <button id="wp-btn-header" class="btn-ghost text-sm hidden sm:inline-flex">Whitepaper</button>
+       <button id="connectBtn" class="btn-primary text-sm" aria-haspopup="dialog" aria-controls="walletModal">Connect Wallet</button>
+       <div id="walletPill" class="btn-ghost text-xs hidden" aria-live="polite">
+         <span id="walletShort" class="addr"></span>
+         <button id="disconnectBtn" class="ml-2 underline underline-offset-4" aria-label="Disconnect Wallet">Disconnect</button>
+       </div>
+     </div>
+   </div>
+ </header>
+ 
+ 
+ <!-- Wallet modal -->
+ <div id="walletModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
+      role="dialog" aria-modal="true" aria-labelledby="walletModalTitle" inert>
+   <div class="glass card card-outline w-[min(420px,92vw)] p-4" data-modal-surface>
+     <div class="flex items-center justify-between">
+       <h3 id="walletModalTitle" class="text-lg font-semibold neon-text">Choose a wallet</h3>
+       <button id="modalClose" class="text-white/70 hover:text-white" aria-label="Close dialog">✕</button>
+     </div>
+     <p class="mt-1 text-xs small-dim">Use a browser wallet (MetaMask, Rabby, Brave, Frame, etc.).</p>
+     <div id="walletList" class="mt-4 grid gap-2" role="list"></div>
+     <p class="mt-2 text-xs small-dim">Tip: If nothing shows up, install a wallet extension or use a browser with a built-in wallet.</p>
+diff --git a/index.html b/index.html
+index 59b53179e2018abc619d85f2e00b1a993d5ce76f..f9fda99dc6de46e683affb68571c546ad0e7a281 100644
+--- a/index.html
++++ b/index.html
 @@ -632,68 +623,67 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
-            <div class="md:col-span-1 grid grid-cols-2 gap-2">
-                <div class="text-center">
-                    <div class="text-xs uppercase small-dim">Telegram</div>
-                    <div id="telegram-count" class="text-xl font-bold text-violet-300 mt-1 tabular">92</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-xs uppercase small-dim">X/Twitter</div>
-                    <div id="twitter-count" class="text-xl font-bold text-violet-300 mt-1 tabular">44</div>
-                </div>
-            </div>
-        </div>
-        <div class="mt-4">
-            <div class="flex justify-between text-xs small-dim mb-1">
-                <span>Progress</span>
-                <span id="progress-percentage">0%</span>
-            </div>
-            <div class="w-full bg-white/10 rounded-full h-2.5">
-                <div id="live-progress-bar" class="bg-gradient-to-r from-orange-400 to-red-500 h-2.5 rounded-full" style="width: 0%"></div>
-            </div>
-        </div>
-        
-        <!-- All Contributions -->
-        <div id="all-contributions" class="mt-4 pt-4 border-t border-white/10">
-            <h4 class="text-xs uppercase small-dim text-center mb-2">All Contributions</h4>
-            <div id="all-contributions-box">
-                <ul id="contribution-list" class="space-y-1">
-                    <!-- JS will populate this -->
-                </ul>
-                <div id="no-contributions" class="text-xs small-dim text-center py-4">No contributions yet — be the first to join the presale.</div>
-                <ul id="contribution-list" class="space-y-1"></ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- Presale Details Section -->
-<section id="presale-details" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Left Column: Details & Schedule -->
-        <div class="space-y-6">
-            <div id="presale-status-card" class="glass card card-outline p-5 reveal holo text-center" data-delay="0">
-                <h3 id="presale-status-title" class="text-lg font-semibold neon-text">Presale Begins</h3>
-                <p id="presale-status-date" class="text-2xl font-bold text-white/90 mt-2">September 24, 2025</p>
-                <p id="presale-status-time" class="text-lg small-dim">3:00 AM CDT (08:00 UTC)</p>
-                <h3 id="presale-status-title" class="text-lg font-semibold neon-text">Presale Is Live</h3>
-                <p id="presale-status-date" class="text-2xl font-bold text-white/90 mt-2">Now accepting contributions</p>
-                <p id="presale-status-time" class="text-lg small-dim">Runs until September 30, 2025</p>
-                <!-- Overall Progress -->
-                <div class="mt-4 text-left">
-                    <div class="flex items-center justify-between text-xs small-dim">
-                        <span id="phaseName" class="font-semibold">Phase: Presale</span><span id="phaseEta"></span>
-                    </div>
-                    <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
-                        <div id="phaseBar" class="h-full" style="background:linear-gradient(90deg, var(--c-fire), var(--c-ember)); width:0%"></div>
-                    </div>
-                    <div class="mt-1 text-xs small-dim" id="phaseDates"></div>
-                </div>
-            </div>
-
-            <div class="glass card card-outline p-5 reveal holo" data-delay="50">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-semibold neon-text">Phase Schedule</h3>
-                    <div id="phaseScheduleTz" class="text-[11px] small-dim opacity-80">Times in UTC</div>
-                </div>
-                <div id="phaseTable" class="mt-2 space-y-2"></div>
-            </div>
-        </div>
-    
-        <!-- Right Column: Contribution Card -->
-        <div id="contribution-card" class="glass card card-outline p-5 reveal holo flex flex-col" data-delay="100">
-            <div id="contribute-ready" style="display: none;">
-                <div class="flex justify-between items-baseline">
+             <div class="md:col-span-1 grid grid-cols-2 gap-2">
+                 <div class="text-center">
+                     <div class="text-xs uppercase small-dim">Telegram</div>
+                     <div id="telegram-count" class="text-xl font-bold text-violet-300 mt-1 tabular">92</div>
+                 </div>
+                 <div class="text-center">
+                     <div class="text-xs uppercase small-dim">X/Twitter</div>
+                     <div id="twitter-count" class="text-xl font-bold text-violet-300 mt-1 tabular">44</div>
+                 </div>
+             </div>
+         </div>
+         <div class="mt-4">
+             <div class="flex justify-between text-xs small-dim mb-1">
+                 <span>Progress</span>
+                 <span id="progress-percentage">0%</span>
+             </div>
+             <div class="w-full bg-white/10 rounded-full h-2.5">
+                 <div id="live-progress-bar" class="bg-gradient-to-r from-orange-400 to-red-500 h-2.5 rounded-full" style="width: 0%"></div>
+             </div>
+         </div>
+         
+         <!-- All Contributions -->
+         <div id="all-contributions" class="mt-4 pt-4 border-t border-white/10">
+             <h4 class="text-xs uppercase small-dim text-center mb-2">All Contributions</h4>
+             <div id="all-contributions-box">
+-                <ul id="contribution-list" class="space-y-1">
+-                    <!-- JS will populate this -->
+-                </ul>
++                <div id="no-contributions" class="text-xs small-dim text-center py-4">No contributions yet — be the first to join the presale.</div>
++                <ul id="contribution-list" class="space-y-1"></ul>
+             </div>
+         </div>
+     </div>
+ </section>
+ 
+ 
+ <!-- Presale Details Section -->
+ <section id="presale-details" class="relative z-10 mx-auto max-w-6xl px-6 pb-16">
+     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+         <!-- Left Column: Details & Schedule -->
+         <div class="space-y-6">
+             <div id="presale-status-card" class="glass card card-outline p-5 reveal holo text-center" data-delay="0">
+-                <h3 id="presale-status-title" class="text-lg font-semibold neon-text">Presale Begins</h3>
+-                <p id="presale-status-date" class="text-2xl font-bold text-white/90 mt-2">September 24, 2025</p>
+-                <p id="presale-status-time" class="text-lg small-dim">3:00 AM CDT (08:00 UTC)</p>
++                <h3 id="presale-status-title" class="text-lg font-semibold neon-text">Presale Is Live</h3>
++                <p id="presale-status-date" class="text-2xl font-bold text-white/90 mt-2">Now accepting contributions</p>
++                <p id="presale-status-time" class="text-lg small-dim">Runs until September 30, 2025</p>
+                 <!-- Overall Progress -->
+                 <div class="mt-4 text-left">
+                     <div class="flex items-center justify-between text-xs small-dim">
+                         <span id="phaseName" class="font-semibold">Phase: Presale</span><span id="phaseEta"></span>
+                     </div>
+                     <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+                         <div id="phaseBar" class="h-full" style="background:linear-gradient(90deg, var(--c-fire), var(--c-ember)); width:0%"></div>
+                     </div>
+                     <div class="mt-1 text-xs small-dim" id="phaseDates"></div>
+                 </div>
+             </div>
+ 
+             <div class="glass card card-outline p-5 reveal holo" data-delay="50">
+                 <div class="flex items-center justify-between">
+                     <h3 class="font-semibold neon-text">Phase Schedule</h3>
+                     <div id="phaseScheduleTz" class="text-[11px] small-dim opacity-80">Times in UTC</div>
+                 </div>
+                 <div id="phaseTable" class="mt-2 space-y-2"></div>
+             </div>
+         </div>
+     
+         <!-- Right Column: Contribution Card -->
+         <div id="contribution-card" class="glass card card-outline p-5 reveal holo flex flex-col" data-delay="100">
+             <div id="contribute-ready" style="display: none;">
+                 <div class="flex justify-between items-baseline">
+diff --git a/index.html b/index.html
+index 59b53179e2018abc619d85f2e00b1a993d5ce76f..f9fda99dc6de46e683affb68571c546ad0e7a281 100644
+--- a/index.html
++++ b/index.html
 @@ -704,64 +694,65 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
-                    <div>
-                        <label for="eth-amount" class="text-sm small-dim">Amount to Contribute</label>
-                        <div class="contribution-input-wrapper mt-1">
-                            <input id="eth-amount" type="number" min="0" step="0.01" placeholder="0.1" class="contribution-input">
-                            <span class="contribution-currency">ETH</span>
-                            <button id="max-btn" class="btn-max">MAX</button>
-                        </div>
-                    </div>
-                    <div>
-                        <label for="etrx-receive" class="text-sm small-dim">You will receive (approx.)</label>
-                        <div class="contribution-input-wrapper mt-1">
-                            <input id="etrx-receive" type="text" readonly placeholder="~ 40,000" class="contribution-input bg-white/5 opacity-80 cursor-not-allowed">
-                            <span class="contribution-currency">$ETRX</span>
-                        </div>
-                        <div id="bonus-display" class="text-xs text-green-400 mt-1 h-4"></div>
-                    </div>
-                    <button id="contribute-btn" class="btn-primary w-full text-base py-3">
-                        Contribute Now
-                    </button>
-                </div>
-            </div>
-
-            <div id="your-contribution-summary" class="glass card p-4 mt-4 hidden">
-                <h4 class="text-sm font-semibold neon-text">Your Contributions</h4>
-                <div class="mt-2 text-xs small-dim space-y-1">
-                    <div class="flex justify-between"><span>Total ETH Contributed:</span> <span id="user-total-eth" class="font-bold text-white/90">0</span></div>
-                    <div class="flex justify-between"><span>Your ETRX Balance:</span> <span id="user-total-etrx" class="font-bold text-white/90">0</span></div>
-                    <div class="flex justify-between"><span>Total ETH Spent:</span> <span id="user-total-eth" class="font-bold text-white/90">0</span></div>
-                    <div class="flex justify-between"><span>$ETRX Reserved:</span> <span id="user-total-etrx" class="font-bold text-white/90">0</span></div>
-                    <div id="user-no-contributions" class="pt-2 text-[11px] text-white/60 hidden">You haven’t contributed yet — submit your first transaction above.</div>
-                </div>
-            </div>
-
-            <div id="contribute-connect-wallet" class="h-full flex flex-col items-center justify-center text-center hidden">
-                <h3 class="text-lg font-semibold neon-text">Connect to Participate</h3>
-                <p class="mt-2 max-w-xs small-dim">Connect your wallet to see contribution options and join the presale.</p>
-                <button id="connect-btn-card" class="btn-primary mt-4">Connect Wallet</button>
-            </div>
-
-            <div id="contribute-not-live" class="h-full flex flex-col items-center justify-center text-center">
-                <h3 class="text-lg font-semibold neon-text">Presale Not Active</h3>
-                <p class="mt-2 max-w-xs small-dim">The presale is not currently live. Please check the schedule and come back when a phase is active.</p>
-                <h3 id="contribute-not-live-title" class="text-lg font-semibold neon-text">Checking Presale Status…</h3>
-                <p id="contribute-not-live-copy" class="mt-2 max-w-xs small-dim">We’re syncing with the blockchain to confirm that the presale is live.</p>
-            </div>
-            
-            <div class="mt-auto pt-4 text-xs small-dim flex items-start gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 text-orange-400 mt-0.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                <span>
-                    <b class="text-orange-400">Security:</b> This interface is the only official way to contribute. The team will never DM you an address. Always verify you are on the correct website.
-                </span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div class="section-divider max-w-6xl mx-auto"></div>
-
-<!-- Bonus Tiers Section -->
-<section id="bonus-tiers" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-    <h2 class="text-2xl font-bold neon-text reveal text-center">Contribution Bonus Tiers</h2>
-    <p class="mt-2 max-w-2xl mx-auto text-center small-dim reveal">Contribute more to earn bonus $ETRX tokens. Bonuses are calculated based on your total contribution amount during the presale.</p>
-    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Tier 1 -->
-        <div id="bonus-tier-1" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="0">
-            <h4 class="font-bold text-lg text-orange-300">Seeker</h4>
-            <p class="text-2xl font-extrabold my-2">+2.5%</p>
-            <p class="text-sm small-dim">Contribute 1+ ETH</p>
-        </div>
+                     <div>
+                         <label for="eth-amount" class="text-sm small-dim">Amount to Contribute</label>
+                         <div class="contribution-input-wrapper mt-1">
+                             <input id="eth-amount" type="number" min="0" step="0.01" placeholder="0.1" class="contribution-input">
+                             <span class="contribution-currency">ETH</span>
+                             <button id="max-btn" class="btn-max">MAX</button>
+                         </div>
+                     </div>
+                     <div>
+                         <label for="etrx-receive" class="text-sm small-dim">You will receive (approx.)</label>
+                         <div class="contribution-input-wrapper mt-1">
+                             <input id="etrx-receive" type="text" readonly placeholder="~ 40,000" class="contribution-input bg-white/5 opacity-80 cursor-not-allowed">
+                             <span class="contribution-currency">$ETRX</span>
+                         </div>
+                         <div id="bonus-display" class="text-xs text-green-400 mt-1 h-4"></div>
+                     </div>
+                     <button id="contribute-btn" class="btn-primary w-full text-base py-3">
+                         Contribute Now
+                     </button>
+                 </div>
+             </div>
+ 
+             <div id="your-contribution-summary" class="glass card p-4 mt-4 hidden">
+                 <h4 class="text-sm font-semibold neon-text">Your Contributions</h4>
+                 <div class="mt-2 text-xs small-dim space-y-1">
+-                    <div class="flex justify-between"><span>Total ETH Contributed:</span> <span id="user-total-eth" class="font-bold text-white/90">0</span></div>
+-                    <div class="flex justify-between"><span>Your ETRX Balance:</span> <span id="user-total-etrx" class="font-bold text-white/90">0</span></div>
++                    <div class="flex justify-between"><span>Total ETH Spent:</span> <span id="user-total-eth" class="font-bold text-white/90">0</span></div>
++                    <div class="flex justify-between"><span>$ETRX Reserved:</span> <span id="user-total-etrx" class="font-bold text-white/90">0</span></div>
++                    <div id="user-no-contributions" class="pt-2 text-[11px] text-white/60 hidden">You haven’t contributed yet — submit your first transaction above.</div>
+                 </div>
+             </div>
+ 
+             <div id="contribute-connect-wallet" class="h-full flex flex-col items-center justify-center text-center hidden">
+                 <h3 class="text-lg font-semibold neon-text">Connect to Participate</h3>
+                 <p class="mt-2 max-w-xs small-dim">Connect your wallet to see contribution options and join the presale.</p>
+                 <button id="connect-btn-card" class="btn-primary mt-4">Connect Wallet</button>
+             </div>
+ 
+             <div id="contribute-not-live" class="h-full flex flex-col items-center justify-center text-center">
+-                <h3 class="text-lg font-semibold neon-text">Presale Not Active</h3>
+-                <p class="mt-2 max-w-xs small-dim">The presale is not currently live. Please check the schedule and come back when a phase is active.</p>
++                <h3 id="contribute-not-live-title" class="text-lg font-semibold neon-text">Checking Presale Status…</h3>
++                <p id="contribute-not-live-copy" class="mt-2 max-w-xs small-dim">We’re syncing with the blockchain to confirm that the presale is live.</p>
+             </div>
+             
+             <div class="mt-auto pt-4 text-xs small-dim flex items-start gap-2">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0 text-orange-400 mt-0.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                 <span>
+                     <b class="text-orange-400">Security:</b> This interface is the only official way to contribute. The team will never DM you an address. Always verify you are on the correct website.
+                 </span>
+             </div>
+         </div>
+     </div>
+ </section>
+ 
+ <div class="section-divider max-w-6xl mx-auto"></div>
+ 
+ <!-- Bonus Tiers Section -->
+ <section id="bonus-tiers" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
+     <h2 class="text-2xl font-bold neon-text reveal text-center">Contribution Bonus Tiers</h2>
+     <p class="mt-2 max-w-2xl mx-auto text-center small-dim reveal">Contribute more to earn bonus $ETRX tokens. Bonuses are calculated based on your total contribution amount during the presale.</p>
+     <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+         <!-- Tier 1 -->
+         <div id="bonus-tier-1" class="bonus-tier glass card card-outline holo p-5 text-center reveal" data-delay="0">
+             <h4 class="font-bold text-lg text-orange-300">Seeker</h4>
+             <p class="text-2xl font-extrabold my-2">+2.5%</p>
+             <p class="text-sm small-dim">Contribute 1+ ETH</p>
+         </div>
+diff --git a/index.html b/index.html
+index 59b53179e2018abc619d85f2e00b1a993d5ce76f..f9fda99dc6de46e683affb68571c546ad0e7a281 100644
+--- a/index.html
++++ b/index.html
 @@ -852,51 +843,51 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
-            <div class="timeline-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12"></path><path d="M20 12v4h-4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h4z"></path></svg>
-            </div>
-            <div class="timeline-content">
-                <h4 class="font-bold text-white/90">1. Get a Wallet</h4>
-                <p class="small-dim">Download and set up a self-custody wallet like MetaMask, Rabby, or Trust Wallet. This is where your $ETRX tokens will be sent.</p>
-            </div>
-        </div>
-        <!-- Step 2 -->
-        <div class="timeline-item reveal" data-delay="50">
              <div class="timeline-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 15 6 6v-4.5"></path><path d="m12 9-6-6v4.5"></path><path d="M14.5 12 21 5.5"></path><path d="M3 21l6.5-6.5"></path><path d="M12 9h.01"></path><path d="M12 15h.01"></path></svg>
-            </div>
-            <div class="timeline-content">
-                <h4 class="font-bold text-white/90">2. Fund with ETH</h4>
-                <p class="small-dim">Purchase Ethereum (ETH) from an exchange and send it to your wallet. Make sure you have enough for your desired contribution plus a little extra for gas fees.</p>
-            </div>
-        </div>
-        <!-- Step 3 -->
-        <div class="timeline-item reveal" data-delay="100">
-             <div class="timeline-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
-            </div>
-            <div class="timeline-content">
-                <h4 class="font-bold text-white/90">3. Connect & Contribute</h4>
-                <p class="small-dim">Return to this page when the presale is live, click "Connect Wallet", enter the amount of ETH you wish to contribute in the presale card, and approve the transaction.</p>
-                <p class="small-dim">The presale is live now — click "Connect Wallet", enter the amount of ETH you wish to contribute in the presale card, and approve the transaction.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<div class="section-divider max-w-6xl mx-auto"></div>
-
-<!-- Milestones -->
-<section id="milestones" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-  <h2 class="text-2xl font-bold neon-text reveal text-center">NFT Milestones & The Future</h2>
-  <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-    <div class="glass card card-outline holo p-5 reveal" data-delay="0">
-      <h4 class="font-bold text-lg text-orange-300">Etheria (Arc Genesis)</h4>
-      <p class="text-sm small-dim mt-1">The foundational Arc Genesis collection is now available on OpenSea, marking our first step into the NFT space.</p>
-      <a href="https://opensea.io/collection/arc-genesis-by-etheria" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on OpenSea</a>
-    </div>
-    <div class="glass card card-outline holo p-5 reveal" data-delay="100">
-      <h4 class="font-bold text-lg text-red-300">Etherian Keepers (NFT)</h4>
-      <p class="text-sm small-dim mt-1">The Etherian Keepers, the first generation of guardians within the Etheria ecosystem, are now available on OpenSea.</p>
-       <a href="https://opensea.io/collection/etherian-keepers" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on OpenSea</a>
-    </div>
-     <div class="glass card card-outline holo p-5 reveal" data-delay="200">
-      <h4 class="font-bold text-lg text-purple-300">Eclipse of Etheria (Trial Arc)</h4>
-      <p class="text-sm small-dim mt-1">Unveiling the celestial and shadow aspects of Etheria's lore through the Eclipse collection.</p>
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12"></path><path d="M20 12v4h-4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h4z"></path></svg>
+             </div>
+             <div class="timeline-content">
+                 <h4 class="font-bold text-white/90">1. Get a Wallet</h4>
+                 <p class="small-dim">Download and set up a self-custody wallet like MetaMask, Rabby, or Trust Wallet. This is where your $ETRX tokens will be sent.</p>
+             </div>
+         </div>
+         <!-- Step 2 -->
+         <div class="timeline-item reveal" data-delay="50">
+              <div class="timeline-icon">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 15 6 6v-4.5"></path><path d="m12 9-6-6v4.5"></path><path d="M14.5 12 21 5.5"></path><path d="M3 21l6.5-6.5"></path><path d="M12 9h.01"></path><path d="M12 15h.01"></path></svg>
+             </div>
+             <div class="timeline-content">
+                 <h4 class="font-bold text-white/90">2. Fund with ETH</h4>
+                 <p class="small-dim">Purchase Ethereum (ETH) from an exchange and send it to your wallet. Make sure you have enough for your desired contribution plus a little extra for gas fees.</p>
+             </div>
+         </div>
+         <!-- Step 3 -->
+         <div class="timeline-item reveal" data-delay="100">
+              <div class="timeline-icon">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
+             </div>
+             <div class="timeline-content">
+                 <h4 class="font-bold text-white/90">3. Connect & Contribute</h4>
+-                <p class="small-dim">Return to this page when the presale is live, click "Connect Wallet", enter the amount of ETH you wish to contribute in the presale card, and approve the transaction.</p>
++                <p class="small-dim">The presale is live now — click "Connect Wallet", enter the amount of ETH you wish to contribute in the presale card, and approve the transaction.</p>
+             </div>
+         </div>
+     </div>
+ </section>
+ 
+ 
+ <div class="section-divider max-w-6xl mx-auto"></div>
+ 
+ <!-- Milestones -->
+ <section id="milestones" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
+   <h2 class="text-2xl font-bold neon-text reveal text-center">NFT Milestones & The Future</h2>
+   <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+     <div class="glass card card-outline holo p-5 reveal" data-delay="0">
+       <h4 class="font-bold text-lg text-orange-300">Etheria (Arc Genesis)</h4>
+       <p class="text-sm small-dim mt-1">The foundational Arc Genesis collection is now available on OpenSea, marking our first step into the NFT space.</p>
+       <a href="https://opensea.io/collection/arc-genesis-by-etheria" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on OpenSea</a>
+     </div>
+     <div class="glass card card-outline holo p-5 reveal" data-delay="100">
+       <h4 class="font-bold text-lg text-red-300">Etherian Keepers (NFT)</h4>
+       <p class="text-sm small-dim mt-1">The Etherian Keepers, the first generation of guardians within the Etheria ecosystem, are now available on OpenSea.</p>
+        <a href="https://opensea.io/collection/etherian-keepers" target="_blank" rel="noopener noreferrer" class="laser text-sm mt-2 inline-block">View on OpenSea</a>
+     </div>
+      <div class="glass card card-outline holo p-5 reveal" data-delay="200">
+       <h4 class="font-bold text-lg text-purple-300">Eclipse of Etheria (Trial Arc)</h4>
+       <p class="text-sm small-dim mt-1">Unveiling the celestial and shadow aspects of Etheria's lore through the Eclipse collection.</p>
+diff --git a/index.html b/index.html
+index 59b53179e2018abc619d85f2e00b1a993d5ce76f..f9fda99dc6de46e683affb68571c546ad0e7a281 100644
+--- a/index.html
++++ b/index.html
 @@ -980,51 +971,51 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
-        </div>
-        <a href="https://etherscan.io/address/0xa78208f38a1f1fa8086ca960a06024fb61bc86bf" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Vesting Contract</a>
-    </div>
-</section>
-
-<div class="section-divider max-w-6xl mx-auto"></div>
-
-<!-- Social Feed Section -->
-<section id="social-feed" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-    <h2 class="text-2xl font-bold neon-text reveal text-center">Join the Conversation</h2>
-    <div class="mt-6 max-w-xl mx-auto">
-        <!--  
-            NOTE: This is a placeholder for a real Twitter feed. 
-            For a live version, you would use Twitter's official embed generator and paste the code here.
-            The required script is often blocked by strict CSPs, so this placeholder is a safe fallback.
-        -->
-        <div class="glass card card-outline holo p-5 reveal">
-            <div class="flex items-start gap-4">
-                <img src="/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-full flex-shrink-0"/>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <h4 class="font-bold">Etheria</h4>
-                        <span class="small-dim">@ETRXDreamscapes</span>
-                    </div>
-                    <p class="mt-1 text-sm small-dim">
-                        The $ETRX presale is approaching! We're building a world, not just a token. Join our Telegram and get ready for the journey ahead.
-                        The $ETRX presale is underway! We're building a world, not just a token. Join our Telegram and stay looped in on every milestone.
-                        <a href="https://t.me/Etheria_official" class="text-orange-400 laser">#Etheria</a> <a href="#" class="text-orange-400 laser">$ETRX</a>
-                    </p>
-                    <div class="mt-3 text-xs small-dim">9:00 AM · Sep 9, 2025</div>
-                </div>
-            </div>
-             <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-4 w-full text-center block">View on X/Twitter</a>
-        </div>
-    </div>
-</section>
-
-<div class="section-divider max-w-6xl mx-auto"></div>
-
-
-<!-- Audit & Trust Section -->
-<section id="trust" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
-     <h2 class="text-2xl font-bold neon-text reveal text-center mb-8">Trust & Security</h2>
-
-    <!-- CoinGecko Listing Card -->
-    <div class="mb-8 max-w-sm mx-auto reveal" data-delay="0">
-        <div class="glass card card-outline holo p-5 text-center">
-            <img src="/assets/Logo2.avif" alt="Listed on CoinGecko" class="h-16 mx-auto mb-3" onerror="this.style.display='none'"/>
-            <h3 class="text-lg font-bold neon-text">
-                Tracked by CoinGecko
-            </h3>
-            <p class="small-dim mt-2 text-xs">Request ID: CL1509250041</p>
+         </div>
+         <a href="https://etherscan.io/address/0xa78208f38a1f1fa8086ca960a06024fb61bc86bf" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-3 inline-block">View Vesting Contract</a>
+     </div>
+ </section>
+ 
+ <div class="section-divider max-w-6xl mx-auto"></div>
+ 
+ <!-- Social Feed Section -->
+ <section id="social-feed" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
+     <h2 class="text-2xl font-bold neon-text reveal text-center">Join the Conversation</h2>
+     <div class="mt-6 max-w-xl mx-auto">
+         <!--  
+             NOTE: This is a placeholder for a real Twitter feed. 
+             For a live version, you would use Twitter's official embed generator and paste the code here.
+             The required script is often blocked by strict CSPs, so this placeholder is a safe fallback.
+         -->
+         <div class="glass card card-outline holo p-5 reveal">
+             <div class="flex items-start gap-4">
+                 <img src="/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-full flex-shrink-0"/>
+                 <div>
+                     <div class="flex items-center gap-2">
+                         <h4 class="font-bold">Etheria</h4>
+                         <span class="small-dim">@ETRXDreamscapes</span>
+                     </div>
+                     <p class="mt-1 text-sm small-dim">
+-                        The $ETRX presale is approaching! We're building a world, not just a token. Join our Telegram and get ready for the journey ahead.
++                        The $ETRX presale is underway! We're building a world, not just a token. Join our Telegram and stay looped in on every milestone.
+                         <a href="https://t.me/Etheria_official" class="text-orange-400 laser">#Etheria</a> <a href="#" class="text-orange-400 laser">$ETRX</a>
+                     </p>
+                     <div class="mt-3 text-xs small-dim">9:00 AM · Sep 9, 2025</div>
+                 </div>
+             </div>
+              <a href="https://x.com/ETRXDreamscapes" target="_blank" rel="noopener noreferrer" class="btn-ghost text-sm mt-4 w-full text-center block">View on X/Twitter</a>
+         </div>
+     </div>
+ </section>
+ 
+ <div class="section-divider max-w-6xl mx-auto"></div>
+ 
+ 
+ <!-- Audit & Trust Section -->
+ <section id="trust" class="relative z-10 mx-auto max-w-6xl px-6 py-12">
+      <h2 class="text-2xl font-bold neon-text reveal text-center mb-8">Trust & Security</h2>
+ 
+     <!-- CoinGecko Listing Card -->
+     <div class="mb-8 max-w-sm mx-auto reveal" data-delay="0">
+         <div class="glass card card-outline holo p-5 text-center">
+             <img src="/assets/Logo2.avif" alt="Listed on CoinGecko" class="h-16 mx-auto mb-3" onerror="this.style.display='none'"/>
+             <h3 class="text-lg font-bold neon-text">
+                 Tracked by CoinGecko
+             </h3>
+             <p class="small-dim mt-2 text-xs">Request ID: CL1509250041</p>
+diff --git a/index.html b/index.html
+index 59b53179e2018abc619d85f2e00b1a993d5ce76f..f9fda99dc6de46e683affb68571c546ad0e7a281 100644
+--- a/index.html
++++ b/index.html
 @@ -1130,51 +1121,51 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
-  <div class="mt-5 timeline space-y-6 small-dim">
-    <div class="timeline-item reveal" data-delay="0">
-      <h4 class="font-bold text-white/90">Phase 1: Foundation (Completed)</h4>
-      <p>Presale site launched, whitepaper published, and initial contract scans completed.</p>
-    </div>
-    <div class="timeline-item reveal" data-delay="50">
-      <h4 class="font-bold text-white/90">Phase 2: Token Live (Completed)</h4>
-      <p>The Token Generation Event (TGE) is complete! $ETRX is now live on the Ethereum mainnet and initial liquidity has been established.</p>
-    </div>
-    <div class="timeline-item reveal" data-delay="100">
-      <h4 class="font-bold text-white/90">Phase 3: Presale & Utility (Sep 24, 2025)</h4>
-      <p>Conduct the $ETRX presale event. Launch the first on-chain Artifacts mint. Integrate $ETRX for governance voting on initial lore decisions.</p>
-    </div>
-    <div class="timeline-item reveal" data-delay="150">
-      <h4 class="font-bold text-white/90">Phase 4: Expansion (Q2 2026 & Beyond)</h4>
-      <p>Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges.</p>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider max-w-6xl mx-auto"></div>
-
-<!-- Notify & Allowlist -->
-<section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-24">
-  <div class="glass card card-outline holo p-6 reveal">
-    <h3 class="text-xl font-semibold neon-text">Get notified when the presale opens</h3>
-    <h3 class="text-xl font-semibold neon-text">Stay updated while the presale is live</h3>
-
-    <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row">
-      <label class="sr-only" for="email">Email</label>
-      <input required id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"
-             class="flex-1 rounded-2xl border border-orange-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-orange-400"/>
-      <!-- Honeypot -->
-      <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
-      <button class="btn-primary" type="submit">Notify Me</button>
-    </form>
-
-    <div id="notifySuccess" class="hidden mt-4 glass card p-5" role="status" aria-live="polite" aria-atomic="true">
-      <div class="text-sm">✅ Thanks! Please check your inbox to confirm your email.</div>
-      <div class="mt-1 text-xs small-dim">Tip: If you don’t see it, look in spam/promotions.</div>
-    </div>
-
-    <p id="notifyMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
-    <p class="mt-1 text-xs small-dim">We only use your info for presale notifications. No spam.</p>
-
-    <div class="mt-8">
-      <h4 class="text-base font-semibold neon-text">Allowlist & Referrals</h4>
-      <form id="wlForm" class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]">
-        <label class="sr-only" for="wallet">Ethereum wallet or ENS</label>
-        <input id="wallet" name="wallet" inputmode="text" autocomplete="off" placeholder="0x… or yourname.eth" spellcheck="false"
-               class="rounded-2xl border border-orange-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-orange-400" />
-        <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
+   <div class="mt-5 timeline space-y-6 small-dim">
+     <div class="timeline-item reveal" data-delay="0">
+       <h4 class="font-bold text-white/90">Phase 1: Foundation (Completed)</h4>
+       <p>Presale site launched, whitepaper published, and initial contract scans completed.</p>
+     </div>
+     <div class="timeline-item reveal" data-delay="50">
+       <h4 class="font-bold text-white/90">Phase 2: Token Live (Completed)</h4>
+       <p>The Token Generation Event (TGE) is complete! $ETRX is now live on the Ethereum mainnet and initial liquidity has been established.</p>
+     </div>
+     <div class="timeline-item reveal" data-delay="100">
+       <h4 class="font-bold text-white/90">Phase 3: Presale & Utility (Sep 24, 2025)</h4>
+       <p>Conduct the $ETRX presale event. Launch the first on-chain Artifacts mint. Integrate $ETRX for governance voting on initial lore decisions.</p>
+     </div>
+     <div class="timeline-item reveal" data-delay="150">
+       <h4 class="font-bold text-white/90">Phase 4: Expansion (Q2 2026 & Beyond)</h4>
+       <p>Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, and exploration of cross-chain bridges.</p>
+     </div>
+   </div>
+ </section>
+ 
+ <div class="section-divider max-w-6xl mx-auto"></div>
+ 
+ <!-- Notify & Allowlist -->
+ <section id="notify" class="relative z-10 mx-auto max-w-6xl px-6 pb-24">
+   <div class="glass card card-outline holo p-6 reveal">
+-    <h3 class="text-xl font-semibold neon-text">Get notified when the presale opens</h3>
++    <h3 class="text-xl font-semibold neon-text">Stay updated while the presale is live</h3>
+ 
+     <form id="notifyForm" class="mt-4 flex flex-col gap-3 sm:flex-row">
+       <label class="sr-only" for="email">Email</label>
+       <input required id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email"
+              class="flex-1 rounded-2xl border border-orange-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-orange-400"/>
+       <!-- Honeypot -->
+       <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
+       <button class="btn-primary" type="submit">Notify Me</button>
+     </form>
+ 
+     <div id="notifySuccess" class="hidden mt-4 glass card p-5" role="status" aria-live="polite" aria-atomic="true">
+       <div class="text-sm">✅ Thanks! Please check your inbox to confirm your email.</div>
+       <div class="mt-1 text-xs small-dim">Tip: If you don’t see it, look in spam/promotions.</div>
+     </div>
+ 
+     <p id="notifyMsg" class="mt-2 text-xs hidden small-dim" aria-live="polite" aria-atomic="true"></p>
+     <p class="mt-1 text-xs small-dim">We only use your info for presale notifications. No spam.</p>
+ 
+     <div class="mt-8">
+       <h4 class="text-base font-semibold neon-text">Allowlist & Referrals</h4>
+       <form id="wlForm" class="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]">
+         <label class="sr-only" for="wallet">Ethereum wallet or ENS</label>
+         <input id="wallet" name="wallet" inputmode="text" autocomplete="off" placeholder="0x… or yourname.eth" spellcheck="false"
+                class="rounded-2xl border border-orange-400/20 bg-white/5 px-4 py-3 outline-none placeholder:text-white/40 focus:ring-2 focus:ring-orange-400" />
+         <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
+diff --git a/index.html b/index.html
+index 59b53179e2018abc619d85f2e00b1a993d5ce76f..f9fda99dc6de46e683affb68571c546ad0e7a281 100644
+--- a/index.html
++++ b/index.html
 @@ -1270,69 +1261,110 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale)
-<a href="#notify" id="stickyCTA" class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">Get notified for $ETRX</a>
-
-<!-- Schema.org event (SEO) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Event",
-  "name": "ETRX Presale",
-  "startDate": "2025-09-24T08:00:00Z",
-  "endDate": "2025-10-01T00:00:00Z",
-  "eventStatus": "https://schema.org/EventScheduled",
-  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
-  "url": "https://enteretheria.io/",
-  "image": "/assets/background.png",
-  "organizer": { "@type": "Organization", "name": "Etheria" },
-  "description": "Etheria’s official $ETRX presale on Ethereum."
-}
-</script>
-
-<script>
-'use strict';
-
-/** CONFIG **/
-const PRESALE_ADDRESS = "0x7E5e15d7FA217861ab9df5a47218942D1181e0e7";
-const INITIAL_TOKENS = 3_000_000;
-const PRESALE_START = new Date("2025-09-24T08:00:00Z");
-const PRESALE_END = new Date("2025-09-30T00:00:00Z");
-const PRESALE_ABI = [
-  {"inputs":[],"name":"contribute","stateMutability":"payable","type":"function"},
-  {"inputs":[],"name":"live","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
-  {"inputs":[],"name":"rate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
-  {"inputs":[],"name":"weiRaised","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
-  {"inputs":[],"name":"token","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
-  "event Contributed(address indexed buyer, uint256 weiAmount, uint256 tokensOut)"
-];
-const ERC20_ABI = [
-  {"inputs":[{"name":"account","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
-  {"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"stateMutability":"view","type":"function"},
-  {"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"stateMutability":"view","type":"function"}
-];
-const RPCS = [
-  "https://cloudflare-eth.com",
-  "https://eth.llamarpc.com",
-  "https://rpc.ankr.com/eth"
-];
-let provider, sale, token, tokenDecimals, tokenAddr;
-let saleIsLive = false;
-let currentWallet = null;
-let tokensPerEth = 0;
-const PHASES = Object.freeze([
-  {
-    key: "tge",
-    title: "Token Generation Event",
-    description: "Token contract deployed & liquidity seeded.",
-    start: new Date("2025-09-13T00:00:00Z"),
-    end: new Date("2025-09-13T02:00:00Z"),
-  },
-  {
-    key: "warmup",
-    title: "Allowlist Warmup",
-    description: "Community quests, allowlist checks, marketing push.",
-    start: new Date("2025-09-20T00:00:00Z"),
-    end: new Date("2025-09-23T23:59:59Z"),
-  },
-  {
-    key: "presale",
-    title: "Presale Live",
-    description: "Main contribution window with bonus tiers.",
-    start: PRESALE_START,
-    end: PRESALE_END,
-  },
-  {
-    key: "airdrop",
-    title: "Airdrop & Listings",
-    description: "Distribute presale allocations & expand exchange listings.",
-    start: new Date("2025-10-01T00:00:00Z"),
-    end: new Date("2025-10-02T23:59:59Z"),
-  }
-]);
-const BONUS_TIERS = [
-  { min: 10, bonus: 10 },
-  { min: 5, bonus: 7.5 },
-  { min: 2.5, bonus: 5 },
-  { min: 1, bonus: 2.5 }
-];
-
-// ----- Loader controller -----
-function hideLoader() {
-  const splash = document.getElementById('preloader');
-  if (splash) splash.style.display = 'none';
-}
-function showLoader() {
-  const splash = document.getElementById('preloader');
-  if (splash) splash.style.display = 'flex';
-}
-let __loaderWatchdog = setTimeout(() => {
-  console.warn('[BOOT] Watchdog releasing loader after 7s');
-  hideLoader();
-}, 7000);
-function finishBoot() {
-  clearTimeout(__loaderWatchdog);
-  hideLoader();
-}
-
-// ----- Provider + Contracts -----
-const sleep = (ms)=>new Promise(r=>setTimeout(r,ms));
-async function callWithTimeout(p, ms, label="op"){
-  let t; const to = new Promise((_,rej)=>t=setTimeout(()=>rej(new Error(`[timeout] ${label}`)),ms));
-  try { return await Promise.race([p,to]); } finally { clearTimeout(t); }
-}
+ <a href="#notify" id="stickyCTA" class="fixed left-1/2 bottom-4 z-50 hidden -translate-x-1/2 rounded-full px-5 py-3 text-sm btn-primary shadow-lg">Get notified for $ETRX</a>
+ 
+ <!-- Schema.org event (SEO) -->
+ <script type="application/ld+json">
+ {
+   "@context": "https://schema.org",
+   "@type": "Event",
+   "name": "ETRX Presale",
+   "startDate": "2025-09-24T08:00:00Z",
+   "endDate": "2025-10-01T00:00:00Z",
+   "eventStatus": "https://schema.org/EventScheduled",
+   "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+   "url": "https://enteretheria.io/",
+   "image": "/assets/background.png",
+   "organizer": { "@type": "Organization", "name": "Etheria" },
+   "description": "Etheria’s official $ETRX presale on Ethereum."
+ }
+ </script>
+ 
+ <script>
+ 'use strict';
+ 
+ /** CONFIG **/
+ const PRESALE_ADDRESS = "0x7E5e15d7FA217861ab9df5a47218942D1181e0e7";
+ const INITIAL_TOKENS = 3_000_000;
++const PRESALE_START = new Date("2025-09-24T08:00:00Z");
++const PRESALE_END = new Date("2025-09-30T00:00:00Z");
+ const PRESALE_ABI = [
+   {"inputs":[],"name":"contribute","stateMutability":"payable","type":"function"},
+   {"inputs":[],"name":"live","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},
+   {"inputs":[],"name":"rate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+   {"inputs":[],"name":"weiRaised","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+   {"inputs":[],"name":"token","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
+   "event Contributed(address indexed buyer, uint256 weiAmount, uint256 tokensOut)"
+ ];
+ const ERC20_ABI = [
+   {"inputs":[{"name":"account","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+   {"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"stateMutability":"view","type":"function"},
+   {"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"stateMutability":"view","type":"function"}
+ ];
+ const RPCS = [
+   "https://cloudflare-eth.com",
+   "https://eth.llamarpc.com",
+   "https://rpc.ankr.com/eth"
+ ];
+ let provider, sale, token, tokenDecimals, tokenAddr;
++let saleIsLive = false;
++let currentWallet = null;
++let tokensPerEth = 0;
++const PHASES = Object.freeze([
++  {
++    key: "tge",
++    title: "Token Generation Event",
++    description: "Token contract deployed & liquidity seeded.",
++    start: new Date("2025-09-13T00:00:00Z"),
++    end: new Date("2025-09-13T02:00:00Z"),
++  },
++  {
++    key: "warmup",
++    title: "Allowlist Warmup",
++    description: "Community quests, allowlist checks, marketing push.",
++    start: new Date("2025-09-20T00:00:00Z"),
++    end: new Date("2025-09-23T23:59:59Z"),
++  },
++  {
++    key: "presale",
++    title: "Presale Live",
++    description: "Main contribution window with bonus tiers.",
++    start: PRESALE_START,
++    end: PRESALE_END,
++  },
++  {
++    key: "airdrop",
++    title: "Airdrop & Listings",
++    description: "Distribute presale allocations & expand exchange listings.",
++    start: new Date("2025-10-01T00:00:00Z"),
++    end: new Date("2025-10-02T23:59:59Z"),
++  }
++]);
++const BONUS_TIERS = [
++  { min: 10, bonus: 10 },
++  { min: 5, bonus: 7.5 },
++  { min: 2.5, bonus: 5 },
++  { min: 1, bonus: 2.5 }
++];
+ 
+ // ----- Loader controller -----
+ function hideLoader() {
+   const splash = document.getElementById('preloader');
+   if (splash) splash.style.display = 'none';
+ }
+ function showLoader() {
+   const splash = document.getElementById('preloader');
+   if (splash) splash.style.display = 'flex';
+ }
+ let __loaderWatchdog = setTimeout(() => {
+   console.warn('[BOOT] Watchdog releasing loader after 7s');
+   hideLoader();
+ }, 7000);
+ function finishBoot() {
+   clearTimeout(__loaderWatchdog);
+   hideLoader();
+ }
+ 
+ // ----- Provider + Contracts -----
+ const sleep = (ms)=>new Promise(r=>setTimeout(r,ms));
+ async function callWithTimeout(p, ms, label="op"){
+   let t; const to = new Promise((_,rej)=>t=setTimeout(()=>rej(new Error(`[timeout] ${label}`)),ms));
+   try { return await Promise.race([p,to]); } finally { clearTimeout(t); }
+ }
+diff --git a/index.html b/index.html
+index 59b53179e2018abc619d85f2e00b1a993d5ce76f..f9fda99dc6de46e683affb68571c546ad0e7a281 100644
+--- a/index.html
++++ b/index.html
 @@ -1346,203 +1378,436 @@ async function makeProvider(){
-    }catch(e){ console.warn("[RPC fail]", url, e?.code||e?.message||e); }
-  }
-  console.error("[RPC] all endpoints failed"); return null;
-}
-async function initOnce(){
-  if (provider) return true;
-  provider = await makeProvider();
-  if (!provider) return false;
-
-  try{
-    const code = await callWithTimeout(provider.getCode(PRESALE_ADDRESS), 1500, "getCode");
-    if (code==="0x"){ console.error("[BOOT] no bytecode at presale"); return false; }
-  }catch(e){ console.warn("[BOOT] code check skipped:", e.message||e); }
-
-  try{
-    sale = new ethers.Contract(PRESALE_ADDRESS, PRESALE_ABI, provider);
-    tokenAddr = await callWithTimeout(sale.token(), 2000, "sale.token");
-    token = new ethers.Contract(tokenAddr, ERC20_ABI, provider);
-    tokenDecimals = await callWithTimeout(token.decimals(), 2000, "token.decimals");
-  }catch(e){ console.error("[BOOT] contract init failed", e.message||e); return false; }
-  return true;
-}
-const $raised = document.getElementById("total-raised");
-const $pct    = document.getElementById("progress-percentage");
-const $bar    = document.getElementById("live-progress-bar");
-const $notLive= document.getElementById("contribute-not-live");
-const $ready  = document.getElementById("contribute-ready");
-const $statusTitle = document.getElementById("presale-status-title");
-const $statusDate  = document.getElementById("presale-status-date");
-const $statusTime  = document.getElementById("presale-status-time");
-const $phaseName   = document.getElementById("phaseName");
-const $phaseEta    = document.getElementById("phaseEta");
-const $phaseBar    = document.getElementById("phaseBar");
-const $phaseDates  = document.getElementById("phaseDates");
-const $phaseTable  = document.getElementById("phaseTable");
-const $phaseTz     = document.getElementById("phaseScheduleTz");
-const $notLive     = document.getElementById("contribute-not-live");
-const $notLiveTitle= document.getElementById("contribute-not-live-title");
-const $notLiveCopy = document.getElementById("contribute-not-live-copy");
-const $connectCard = document.getElementById("contribute-connect-wallet");
-const $ready       = document.getElementById("contribute-ready");
-const $priceDisplay= document.getElementById("eth-price-display");
-const $ethInput    = document.getElementById("eth-amount");
-const $etrxOutput  = document.getElementById("etrx-receive");
-const $bonusDisplay= document.getElementById("bonus-display");
-const $maxBtn      = document.getElementById("max-btn");
-const f2 = (n)=>Number(n).toLocaleString(undefined,{maximumFractionDigits:2, minimumFractionDigits:2});
-const nf = (value, digits=2)=>{
-  const num = Number(value);
-  if (!Number.isFinite(num)) return "0";
-  return num.toLocaleString(undefined, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: digits
-  });
-};
-const fmtMonthDay = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' });
-const fmtMonthDayYear = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-const fmtTimeUtc = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' });
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-const formatUtc = (date) => date ? `${fmtMonthDay.format(date)} • ${fmtTimeUtc.format(date)} UTC` : '';
-const formatDuration = (ms) => {
-  if (!Number.isFinite(ms)) return '';
-  if (ms <= 0) return '0m';
-  const units = [
-    { label: 'd', ms: 86_400_000 },
-    { label: 'h', ms: 3_600_000 },
-    { label: 'm', ms: 60_000 }
-  ];
-  const parts = [];
-  for (const unit of units){
-    const value = Math.floor(ms / unit.ms);
-    if (value > 0){
-      parts.push(`${value}${unit.label}`);
-      ms -= value * unit.ms;
-    }
-    if (parts.length === 2) break;
-  }
-  return parts.join(' ');
-};
-const getBonusForAmount = (ethAmount) => {
-  if (!Number.isFinite(ethAmount) || ethAmount <= 0) return 0;
-  for (const tier of BONUS_TIERS){
-    if (ethAmount >= tier.min) return tier.bonus;
-  }
-  return 0;
-};
-const getNextBonusTarget = (ethAmount) => {
-  if (!Number.isFinite(ethAmount)) return null;
-  const remaining = BONUS_TIERS.filter(tier => ethAmount < tier.min);
-  if (!remaining.length) return null;
-  const next = remaining[remaining.length - 1];
-  return next ? next.min : null;
-};
-function renderSchedule(now = new Date()){
-  if (!$phaseTable) return;
-  $phaseTable.innerHTML = '';
-  if ($phaseTz) $phaseTz.textContent = 'All times in UTC';
-  for (const phase of PHASES){
-    const row = document.createElement('div');
-    row.className = 'row';
-    const start = phase.start;
-    const end = phase.end;
-    const isActive = now >= start && now <= end;
-    if (isActive) row.classList.add('active-phase');
-    let status = 'Completed';
-    if (isActive) status = `Live • ends in ${formatDuration(end - now)}`;
-    else if (now < start) status = `Opens in ${formatDuration(start - now)}`;
-    row.innerHTML = `
-      <div>
-        <div class="text-sm font-semibold">${phase.title}</div>
-        <div class="text-xs small-dim">${phase.description}</div>
-      </div>
-      <div class="text-xs small-dim text-right leading-tight">${formatUtc(start)}<br><span class="text-white/40">${formatUtc(end)}</span></div>
-      <div class="text-xs small-dim text-right">${status}</div>`;
-    $phaseTable.appendChild(row);
-  }
-}
-function updatePresaleMeta(live){
-  const now = new Date();
-  const start = PRESALE_START;
-  const end = PRESALE_END;
-  const untilOpen = start - now;
-  const untilClose = end - now;
-  if ($statusTitle) $statusTitle.textContent = live ? 'Presale Is Live' : (now < start ? 'Presale Countdown' : 'Presale Closed');
-  if ($statusDate) $statusDate.textContent = live ? 'Now accepting contributions' : (now < start ? fmtMonthDayYear.format(start) : fmtMonthDayYear.format(end));
-  if ($statusTime) $statusTime.textContent = live ? `Ends ${formatUtc(end)}` : (now < start ? `Opens ${formatUtc(start)}` : `Closed ${formatUtc(end)}`);
-  if ($phaseName) $phaseName.textContent = live ? 'Phase: Presale (Live)' : (now < start ? 'Phase: Countdown' : 'Phase: Post-Presale');
-  if ($phaseEta){
-    if (live) $phaseEta.textContent = ` • Ends in ${formatDuration(untilClose)}`;
-    else if (now < start) $phaseEta.textContent = ` • Opens in ${formatDuration(untilOpen)}`;
-    else $phaseEta.textContent = ' • Closed';
-  }
-  if ($phaseBar){
-    const progress = clamp(((now - start) / (end - start)) * 100, 0, 100);
-    $phaseBar.style.width = `${progress}%`;
-  }
-  if ($phaseDates) $phaseDates.textContent = `${formatUtc(start)} → ${formatUtc(end)}`;
-  if ($notLiveTitle && $notLiveCopy){
-    if (live){
-      $notLiveTitle.textContent = 'Connect Wallet to Contribute';
-      $notLiveCopy.textContent = 'Link your wallet to view contribution options and submit a transaction.';
-    }else if (now < start){
-      $notLiveTitle.textContent = 'Presale Opens Soon';
-      $notLiveCopy.textContent = `The presale opens ${formatUtc(start)}.`;
-    }else{
-      $notLiveTitle.textContent = 'Presale Closed';
-      $notLiveCopy.textContent = 'Thanks to everyone who participated — the contribution window has ended.';
-    }
-  }
-  renderSchedule(now);
-}
-function updateContributionVisibility(){
-  if (!$notLive || !$connectCard || !$ready) return;
-  if (!saleIsLive){
-    $notLive.style.display = 'flex';
-    $connectCard.style.display = 'none';
-    $ready.style.display = 'none';
-  }else if (!currentWallet){
-    $notLive.style.display = 'none';
-    $connectCard.style.display = 'flex';
-    $ready.style.display = 'none';
-  }else{
-    $notLive.style.display = 'none';
-    $connectCard.style.display = 'none';
-    $ready.style.display = '';
-  }
-}
-function updateContributionPreview(){
-  if (!$ethInput || !$etrxOutput) return;
-  const ethValue = Number($ethInput.value);
-  if (!Number.isFinite(ethValue) || ethValue <= 0 || !tokensPerEth){
-    $etrxOutput.value = '';
-    if ($bonusDisplay) $bonusDisplay.textContent = '';
-    return;
-  }
-  const estTokens = ethValue * tokensPerEth;
-  $etrxOutput.value = nf(estTokens, 2);
-  if ($bonusDisplay){
-    const bonus = getBonusForAmount(ethValue);
-    if (bonus > 0){
-      $bonusDisplay.textContent = `Bonus: +${bonus}% tokens`;
-    }else{
-      const nextTarget = getNextBonusTarget(ethValue);
-      $bonusDisplay.textContent = nextTarget ? `Contribute ${nf(nextTarget - ethValue, 2)} more ETH to unlock a bonus` : '';
-    }
-  }
-}
-async function refreshEthPrice(){
-  if (!$priceDisplay) return;
-  try{
-    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
-    const json = await res.json();
-    const price = Number(json?.ethereum?.usd);
-    if (Number.isFinite(price)){
-      $priceDisplay.textContent = `1 ETH ≈ $${price.toLocaleString(undefined,{maximumFractionDigits:0})} USD`;
-    }
-  }catch(e){ console.warn('[PRICE]', e?.message||e); }
-}
-async function onMaxClick(ev){
-  if (ev) ev.preventDefault();
-  if (!$ethInput || !currentWallet || !window.ethereum) return;
-  try{
-    const web3 = new ethers.providers.Web3Provider(window.ethereum, 'any');
-    const balance = await web3.getBalance(currentWallet);
-    let eth = Number(ethers.utils.formatEther(balance));
-    if (!Number.isFinite(eth) || eth <= 0) return;
-    eth = Math.max(0, eth - 0.01); // keep gas for the transaction
-    if (eth <= 0) return;
-    $ethInput.value = eth.toFixed(4);
-    updateContributionPreview();
-  }catch(e){ console.warn('[MAX]', e?.message||e); }
-}
-function disconnectWallet(){
-  currentWallet = null;
-  document.getElementById('connectBtn')?.classList.remove('hidden-important');
-  const walletPill = document.getElementById('walletPill');
-  if (walletPill) walletPill.classList.add('hidden');
-  const short = document.getElementById('walletShort');
-  if (short) short.textContent = '';
-  if ($userCard) $userCard.classList.add('hidden');
-  if ($userEmpty) $userEmpty.classList.add('hidden');
-  updateContributionVisibility();
-}
-async function refreshCore(){
-  const ok = await initOnce();
-  if (!ok || !sale || !token){
-    if ($raised) $raised.textContent = "0.00 ETH";
-    if ($pct) $pct.textContent = "0.00%";
-    if ($bar) $bar.style.width = "0%";
-    if ($notLive) $notLive.style.display="";
-    if ($ready)   $ready.style.display="none";
-    saleIsLive = false;
-    tokensPerEth = 0;
-    updatePresaleMeta(false);
-    updateContributionVisibility();
-    return;
-  }
-  try{
-    const [live, weiRaised, bal] = await Promise.all([
-      sale.live(), sale.weiRaised(), token.balanceOf(PRESALE_ADDRESS)
-    const [live, weiRaised, bal, rate] = await Promise.all([
-      sale.live(),
-      sale.weiRaised(),
-      token.balanceOf(PRESALE_ADDRESS),
-      sale.rate()
-    ]);
-    const raisedEth = Number(ethers.utils.formatEther(weiRaised));
-    const remaining = Number(ethers.utils.formatUnits(bal, tokenDecimals));
-    const sold = Math.max(0, INITIAL_TOKENS - remaining);
-    const pct = Math.max(0, Math.min(100, sold/INITIAL_TOKENS*100));
-    saleIsLive = Boolean(live);
-    tokensPerEth = Number(ethers.utils.formatUnits(rate, tokenDecimals));
-    if (!Number.isFinite(tokensPerEth)) tokensPerEth = 0;
-
-    if ($raised) $raised.textContent = `${f2(raisedEth)} ETH`;
-    if ($pct) $pct.textContent = `${f2(pct)}%`;
-    if ($bar) $bar.style.width = `${pct}%`;
-    if ($notLive) $notLive.style.display = live ? "none" : "";
-    if ($ready)   $ready.style.display   = live ? "" : "none";
-  }catch(e){ console.error("[CORE]", e); }
-    updatePresaleMeta(saleIsLive);
-    updateContributionVisibility();
-    updateContributionPreview();
-  }catch(e){
-    console.error("[CORE]", e);
-    updateContributionVisibility();
-  }
-}
-
-const $list = document.getElementById("contribution-list");
-const $noContributions = document.getElementById("no-contributions");
-const $contributors = document.getElementById("total-contributors");
-const IFACE = new ethers.utils.Interface(PRESALE_ABI);
-const TOPIC = IFACE.getEventTopic("Contributed");
-let lastProcessedBlock = 0;
-const seenTxs = new Set();
-$ethInput?.addEventListener('input', updateContributionPreview);
-$maxBtn?.addEventListener('click', onMaxClick);
-document.getElementById('disconnectBtn')?.addEventListener('click', (ev) => {
-  ev.preventDefault();
-  disconnectWallet();
-});
-renderSchedule();
-
-async function getLogsChunked(fromBlock, toBlock, step=900){
-  const logs = [];
-  for (let start=fromBlock; start<=toBlock; start+=step+1){
-    const end = Math.min(start+step, toBlock);
-    try{
-      const chunk = await provider.getLogs({
-        address: PRESALE_ADDRESS,
-        topics: [TOPIC],
-        fromBlock: start,
-        toBlock: end
-      });
-      logs.push(...chunk);
-    }catch(e){
-      console.warn("[getLogsChunked] range", start,"-",end,"failed:", e?.code||e?.message||e);
-      provider = await makeProvider() || provider;
-      await sleep(250);
-    }
-  }
-  return logs;
-}
-async function refreshRecent(limit=8){
-  const ok = await initOnce();
-  if (!ok || !provider) return;
-
-  const latest = await provider.getBlockNumber();
-  if (!lastProcessedBlock) lastProcessedBlock = 0; // Start from block 0 to get ALL contributions
-  
-  if (latest > lastProcessedBlock) {
-      const logs = await getLogsChunked(lastProcessedBlock, latest, 900);
-      lastProcessedBlock = latest + 1;
-
-      const events = logs.map(l => {
-        const parsed = IFACE.parseLog(l);
-        return {
-          buyer: parsed.args.buyer,
-          wei: parsed.args.weiAmount,
-          tokens: parsed.args.tokensOut,
-          hash: l.transactionHash,
-          block: l.blockNumber
-        };
-      }).sort((a,b)=>b.block-a.block);
-
-      for (const ev of events){
-        if (seenTxs.has(ev.hash)) continue;
-        seenTxs.add(ev.hash);
-
-        const eth = Number(ethers.utils.formatEther(ev.wei)).toFixed(4);
-        const eth = Number(ethers.utils.formatEther(ev.wei));
-        const tokens = tokenDecimals ? Number(ethers.utils.formatUnits(ev.tokens, tokenDecimals)) : 0;
-        if ($list){
-          const li = document.createElement("li");
-          li.className = "contribution-list-item";
-          li.innerHTML = `
-            <span>${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
-            <span class="tabular">${eth} ETH</span>
-            <span class="addr">${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
-            <span class="tabular">${eth.toFixed(4)} ETH</span>
-            <span class="tabular text-orange-200">${nf(tokens, 2)} ETRX</span>
-            <a class="laser" target="_blank" rel="noopener" href="https://etherscan.io/tx/${ev.hash}">view</a>`;
-          $list.insertBefore(li, $list.firstChild);
-          if ($noContributions) $noContributions.style.display = 'none';
-        }
-      }
-  }
-  // Always update contributor count from full history
-  const allLogs = await getLogsChunked(0, latest, 900);
-  const uniq = new Set(allLogs.map(l => IFACE.parseLog(l).args.buyer.toLowerCase()));
-  if ($contributors) $contributors.textContent = String(uniq.size);
-  if ($noContributions && $list) $noContributions.style.display = $list.children.length ? 'none' : '';
-}
-
-const $userEth  = document.getElementById("user-total-eth");
-const $userEtrx = document.getElementById("user-total-etrx");
-const $userCard = document.getElementById("your-contribution-summary");
-const $userEth   = document.getElementById("user-total-eth");
-const $userEtrx  = document.getElementById("user-total-etrx");
-const $userCard  = document.getElementById("your-contribution-summary");
-const $userEmpty = document.getElementById("user-no-contributions");
-
-async function updateUserTotals(wallet){
-  if (!wallet) {
-      if($userCard) $userCard.classList.add("hidden");
-      if ($userEmpty) $userEmpty.classList.add("hidden");
-      return;
-  }
-  const ok = await initOnce();
-  if (!ok || !provider) return;
-  
-  try {
-    const bal = await token.balanceOf(wallet);
-    const etrxNow = Number(ethers.utils.formatUnits(bal, tokenDecimals));
-    if ($userEtrx) $userEtrx.textContent = nf(etrxNow, 4);
-  } catch(e) { console.warn("[USER] balanceOf failed", e?.message||e); }
-  
-
-  try{
-    const latest = await provider.getBlockNumber();
-    let from = 0; // check entire history
-    let totalEth = 0;
-    let totalTokens = 0;
-
-    const buyerTopic = ethers.utils.hexZeroPad(wallet, 32);
-    const logs = await getLogsChunked(from, latest, 900); // Re-use chunked fetcher
-    
-
-    for (const l of logs){
-      if(l.topics[1].toLowerCase() === buyerTopic.toLowerCase()){
-        const ev = IFACE.parseLog(l);
-        totalEth += Number(ethers.utils.formatEther(ev.args.weiAmount));
-        totalTokens += Number(ethers.utils.formatUnits(ev.args.tokensOut, tokenDecimals));
-      }
-    }
-    if ($userEth) $userEth.textContent = totalEth.toLocaleString(undefined,{maximumFractionDigits:6});
-    if($userCard) $userCard.classList.toggle("hidden", totalEth === 0);
-    if ($userEtrx) $userEtrx.textContent = nf(totalTokens, 2);
-    if($userCard){
-      $userCard.classList.remove("hidden");
-      if ($userEmpty) $userEmpty.classList.toggle("hidden", totalEth > 0);
-    }
-  }catch(e){ console.warn("[USER] lifetime logs failed", e?.message||e); }
-}
-
-async function onWalletConnected(){
-  try{
-    if (!window.ethereum){
-      console.warn('[CONNECT] window.ethereum missing');
-      return;
-    }
-    const web3 = new ethers.providers.Web3Provider(window.ethereum, "any");
-    const accounts = await web3.send("eth_requestAccounts", []);
-    const addr = accounts?.[0];
-    if (addr) {
-        document.getElementById("connect-btn")?.classList.add('hidden-important');
-        const checksum = ethers.utils.getAddress(addr);
-        currentWallet = checksum;
-        document.getElementById("connectBtn")?.classList.add('hidden-important');
-        const walletPill = document.getElementById("walletPill");
-        if(walletPill) {
-            walletPill.classList.remove('hidden');
-            document.getElementById("walletShort").textContent = `${addr.slice(0,6)}…${addr.slice(-4)}`;
-            const short = document.getElementById("walletShort");
-            if (short) short.textContent = `${checksum.slice(0,6)}…${checksum.slice(-4)}`;
-        }
-        updateUserTotals(addr);
-        updateContributionVisibility();
-        updateUserTotals(checksum);
-        updateContributionPreview();
-    }
-  }catch(e){ console.error("[CONNECT]", e); }
-}
-
-window.addEventListener("load", async () => {
-  await initOnce();
-  await Promise.allSettled([ refreshCore(), refreshRecent() ]);
-  updateContributionPreview();
-  refreshEthPrice();
-  setInterval(refreshEthPrice, 120000);
-
-  if (provider){
-    provider.on("block", ()=>{
-      clearTimeout(window.__debounceCore);
-      clearTimeout(window.__debounceRec);
-      window.__debounceCore = setTimeout(refreshCore, 1500);
-      window.__debounceRec  = setTimeout(refreshRecent, 2500);
-      clearTimeout(window.__debounceUser);
-      window.__debounceUser = setTimeout(()=>{ if (currentWallet) updateUserTotals(currentWallet); }, 3000);
-    });
-  }
-  document.getElementById("connectBtn")?.addEventListener("click", onWalletConnected);
-  document.getElementById("connect-btn-card")?.addEventListener("click", onWalletConnected);
-  finishBoot();
-});
-
-window.addEventListener('unhandledrejection', (e) => {
-  console.error('[UNHANDLED]', e.reason || e);
-});
-</script>
-</body>
-</html>
-
+     }catch(e){ console.warn("[RPC fail]", url, e?.code||e?.message||e); }
+   }
+   console.error("[RPC] all endpoints failed"); return null;
+ }
+ async function initOnce(){
+   if (provider) return true;
+   provider = await makeProvider();
+   if (!provider) return false;
+ 
+   try{
+     const code = await callWithTimeout(provider.getCode(PRESALE_ADDRESS), 1500, "getCode");
+     if (code==="0x"){ console.error("[BOOT] no bytecode at presale"); return false; }
+   }catch(e){ console.warn("[BOOT] code check skipped:", e.message||e); }
+ 
+   try{
+     sale = new ethers.Contract(PRESALE_ADDRESS, PRESALE_ABI, provider);
+     tokenAddr = await callWithTimeout(sale.token(), 2000, "sale.token");
+     token = new ethers.Contract(tokenAddr, ERC20_ABI, provider);
+     tokenDecimals = await callWithTimeout(token.decimals(), 2000, "token.decimals");
+   }catch(e){ console.error("[BOOT] contract init failed", e.message||e); return false; }
+   return true;
+ }
+ const $raised = document.getElementById("total-raised");
+ const $pct    = document.getElementById("progress-percentage");
+ const $bar    = document.getElementById("live-progress-bar");
+-const $notLive= document.getElementById("contribute-not-live");
+-const $ready  = document.getElementById("contribute-ready");
++const $statusTitle = document.getElementById("presale-status-title");
++const $statusDate  = document.getElementById("presale-status-date");
++const $statusTime  = document.getElementById("presale-status-time");
++const $phaseName   = document.getElementById("phaseName");
++const $phaseEta    = document.getElementById("phaseEta");
++const $phaseBar    = document.getElementById("phaseBar");
++const $phaseDates  = document.getElementById("phaseDates");
++const $phaseTable  = document.getElementById("phaseTable");
++const $phaseTz     = document.getElementById("phaseScheduleTz");
++const $notLive     = document.getElementById("contribute-not-live");
++const $notLiveTitle= document.getElementById("contribute-not-live-title");
++const $notLiveCopy = document.getElementById("contribute-not-live-copy");
++const $connectCard = document.getElementById("contribute-connect-wallet");
++const $ready       = document.getElementById("contribute-ready");
++const $priceDisplay= document.getElementById("eth-price-display");
++const $ethInput    = document.getElementById("eth-amount");
++const $etrxOutput  = document.getElementById("etrx-receive");
++const $bonusDisplay= document.getElementById("bonus-display");
++const $maxBtn      = document.getElementById("max-btn");
+ const f2 = (n)=>Number(n).toLocaleString(undefined,{maximumFractionDigits:2, minimumFractionDigits:2});
++const nf = (value, digits=2)=>{
++  const num = Number(value);
++  if (!Number.isFinite(num)) return "0";
++  return num.toLocaleString(undefined, {
++    minimumFractionDigits: 0,
++    maximumFractionDigits: digits
++  });
++};
++const fmtMonthDay = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' });
++const fmtMonthDayYear = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
++const fmtTimeUtc = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' });
++const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
++const formatUtc = (date) => date ? `${fmtMonthDay.format(date)} • ${fmtTimeUtc.format(date)} UTC` : '';
++const formatDuration = (ms) => {
++  if (!Number.isFinite(ms)) return '';
++  if (ms <= 0) return '0m';
++  const units = [
++    { label: 'd', ms: 86_400_000 },
++    { label: 'h', ms: 3_600_000 },
++    { label: 'm', ms: 60_000 }
++  ];
++  const parts = [];
++  for (const unit of units){
++    const value = Math.floor(ms / unit.ms);
++    if (value > 0){
++      parts.push(`${value}${unit.label}`);
++      ms -= value * unit.ms;
++    }
++    if (parts.length === 2) break;
++  }
++  return parts.join(' ');
++};
++const getBonusForAmount = (ethAmount) => {
++  if (!Number.isFinite(ethAmount) || ethAmount <= 0) return 0;
++  for (const tier of BONUS_TIERS){
++    if (ethAmount >= tier.min) return tier.bonus;
++  }
++  return 0;
++};
++const getNextBonusTarget = (ethAmount) => {
++  if (!Number.isFinite(ethAmount)) return null;
++  const remaining = BONUS_TIERS.filter(tier => ethAmount < tier.min);
++  if (!remaining.length) return null;
++  const next = remaining[remaining.length - 1];
++  return next ? next.min : null;
++};
++function renderSchedule(now = new Date()){
++  if (!$phaseTable) return;
++  $phaseTable.innerHTML = '';
++  if ($phaseTz) $phaseTz.textContent = 'All times in UTC';
++  for (const phase of PHASES){
++    const row = document.createElement('div');
++    row.className = 'row';
++    const start = phase.start;
++    const end = phase.end;
++    const isActive = now >= start && now <= end;
++    if (isActive) row.classList.add('active-phase');
++    let status = 'Completed';
++    if (isActive) status = `Live • ends in ${formatDuration(end - now)}`;
++    else if (now < start) status = `Opens in ${formatDuration(start - now)}`;
++    row.innerHTML = `
++      <div>
++        <div class="text-sm font-semibold">${phase.title}</div>
++        <div class="text-xs small-dim">${phase.description}</div>
++      </div>
++      <div class="text-xs small-dim text-right leading-tight">${formatUtc(start)}<br><span class="text-white/40">${formatUtc(end)}</span></div>
++      <div class="text-xs small-dim text-right">${status}</div>`;
++    $phaseTable.appendChild(row);
++  }
++}
++function updatePresaleMeta(live){
++  const now = new Date();
++  const start = PRESALE_START;
++  const end = PRESALE_END;
++  const untilOpen = start - now;
++  const untilClose = end - now;
++  if ($statusTitle) $statusTitle.textContent = live ? 'Presale Is Live' : (now < start ? 'Presale Countdown' : 'Presale Closed');
++  if ($statusDate) $statusDate.textContent = live ? 'Now accepting contributions' : (now < start ? fmtMonthDayYear.format(start) : fmtMonthDayYear.format(end));
++  if ($statusTime) $statusTime.textContent = live ? `Ends ${formatUtc(end)}` : (now < start ? `Opens ${formatUtc(start)}` : `Closed ${formatUtc(end)}`);
++  if ($phaseName) $phaseName.textContent = live ? 'Phase: Presale (Live)' : (now < start ? 'Phase: Countdown' : 'Phase: Post-Presale');
++  if ($phaseEta){
++    if (live) $phaseEta.textContent = ` • Ends in ${formatDuration(untilClose)}`;
++    else if (now < start) $phaseEta.textContent = ` • Opens in ${formatDuration(untilOpen)}`;
++    else $phaseEta.textContent = ' • Closed';
++  }
++  if ($phaseBar){
++    const progress = clamp(((now - start) / (end - start)) * 100, 0, 100);
++    $phaseBar.style.width = `${progress}%`;
++  }
++  if ($phaseDates) $phaseDates.textContent = `${formatUtc(start)} → ${formatUtc(end)}`;
++  if ($notLiveTitle && $notLiveCopy){
++    if (live){
++      $notLiveTitle.textContent = 'Connect Wallet to Contribute';
++      $notLiveCopy.textContent = 'Link your wallet to view contribution options and submit a transaction.';
++    }else if (now < start){
++      $notLiveTitle.textContent = 'Presale Opens Soon';
++      $notLiveCopy.textContent = `The presale opens ${formatUtc(start)}.`;
++    }else{
++      $notLiveTitle.textContent = 'Presale Closed';
++      $notLiveCopy.textContent = 'Thanks to everyone who participated — the contribution window has ended.';
++    }
++  }
++  renderSchedule(now);
++}
++function updateContributionVisibility(){
++  if (!$notLive || !$connectCard || !$ready) return;
++  if (!saleIsLive){
++    $notLive.style.display = 'flex';
++    $connectCard.style.display = 'none';
++    $ready.style.display = 'none';
++  }else if (!currentWallet){
++    $notLive.style.display = 'none';
++    $connectCard.style.display = 'flex';
++    $ready.style.display = 'none';
++  }else{
++    $notLive.style.display = 'none';
++    $connectCard.style.display = 'none';
++    $ready.style.display = '';
++  }
++}
++function updateContributionPreview(){
++  if (!$ethInput || !$etrxOutput) return;
++  const ethValue = Number($ethInput.value);
++  if (!Number.isFinite(ethValue) || ethValue <= 0 || !tokensPerEth){
++    $etrxOutput.value = '';
++    if ($bonusDisplay) $bonusDisplay.textContent = '';
++    return;
++  }
++  const estTokens = ethValue * tokensPerEth;
++  $etrxOutput.value = nf(estTokens, 2);
++  if ($bonusDisplay){
++    const bonus = getBonusForAmount(ethValue);
++    if (bonus > 0){
++      $bonusDisplay.textContent = `Bonus: +${bonus}% tokens`;
++    }else{
++      const nextTarget = getNextBonusTarget(ethValue);
++      $bonusDisplay.textContent = nextTarget ? `Contribute ${nf(nextTarget - ethValue, 2)} more ETH to unlock a bonus` : '';
++    }
++  }
++}
++async function refreshEthPrice(){
++  if (!$priceDisplay) return;
++  try{
++    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
++    const json = await res.json();
++    const price = Number(json?.ethereum?.usd);
++    if (Number.isFinite(price)){
++      $priceDisplay.textContent = `1 ETH ≈ $${price.toLocaleString(undefined,{maximumFractionDigits:0})} USD`;
++    }
++  }catch(e){ console.warn('[PRICE]', e?.message||e); }
++}
++async function onMaxClick(ev){
++  if (ev) ev.preventDefault();
++  if (!$ethInput || !currentWallet || !window.ethereum) return;
++  try{
++    const web3 = new ethers.providers.Web3Provider(window.ethereum, 'any');
++    const balance = await web3.getBalance(currentWallet);
++    let eth = Number(ethers.utils.formatEther(balance));
++    if (!Number.isFinite(eth) || eth <= 0) return;
++    eth = Math.max(0, eth - 0.01); // keep gas for the transaction
++    if (eth <= 0) return;
++    $ethInput.value = eth.toFixed(4);
++    updateContributionPreview();
++  }catch(e){ console.warn('[MAX]', e?.message||e); }
++}
++function disconnectWallet(){
++  currentWallet = null;
++  document.getElementById('connectBtn')?.classList.remove('hidden-important');
++  const walletPill = document.getElementById('walletPill');
++  if (walletPill) walletPill.classList.add('hidden');
++  const short = document.getElementById('walletShort');
++  if (short) short.textContent = '';
++  if ($userCard) $userCard.classList.add('hidden');
++  if ($userEmpty) $userEmpty.classList.add('hidden');
++  updateContributionVisibility();
++}
+ async function refreshCore(){
+   const ok = await initOnce();
+   if (!ok || !sale || !token){
+     if ($raised) $raised.textContent = "0.00 ETH";
+     if ($pct) $pct.textContent = "0.00%";
+     if ($bar) $bar.style.width = "0%";
+-    if ($notLive) $notLive.style.display="";
+-    if ($ready)   $ready.style.display="none";
++    saleIsLive = false;
++    tokensPerEth = 0;
++    updatePresaleMeta(false);
++    updateContributionVisibility();
+     return;
+   }
+   try{
+-    const [live, weiRaised, bal] = await Promise.all([
+-      sale.live(), sale.weiRaised(), token.balanceOf(PRESALE_ADDRESS)
++    const [live, weiRaised, bal, rate] = await Promise.all([
++      sale.live(),
++      sale.weiRaised(),
++      token.balanceOf(PRESALE_ADDRESS),
++      sale.rate()
+     ]);
+     const raisedEth = Number(ethers.utils.formatEther(weiRaised));
+     const remaining = Number(ethers.utils.formatUnits(bal, tokenDecimals));
+     const sold = Math.max(0, INITIAL_TOKENS - remaining);
+     const pct = Math.max(0, Math.min(100, sold/INITIAL_TOKENS*100));
++    saleIsLive = Boolean(live);
++    tokensPerEth = Number(ethers.utils.formatUnits(rate, tokenDecimals));
++    if (!Number.isFinite(tokensPerEth)) tokensPerEth = 0;
+ 
+     if ($raised) $raised.textContent = `${f2(raisedEth)} ETH`;
+     if ($pct) $pct.textContent = `${f2(pct)}%`;
+     if ($bar) $bar.style.width = `${pct}%`;
+-    if ($notLive) $notLive.style.display = live ? "none" : "";
+-    if ($ready)   $ready.style.display   = live ? "" : "none";
+-  }catch(e){ console.error("[CORE]", e); }
++    updatePresaleMeta(saleIsLive);
++    updateContributionVisibility();
++    updateContributionPreview();
++  }catch(e){
++    console.error("[CORE]", e);
++    updateContributionVisibility();
++  }
+ }
+ 
+ const $list = document.getElementById("contribution-list");
++const $noContributions = document.getElementById("no-contributions");
+ const $contributors = document.getElementById("total-contributors");
+ const IFACE = new ethers.utils.Interface(PRESALE_ABI);
+ const TOPIC = IFACE.getEventTopic("Contributed");
+ let lastProcessedBlock = 0;
+ const seenTxs = new Set();
++$ethInput?.addEventListener('input', updateContributionPreview);
++$maxBtn?.addEventListener('click', onMaxClick);
++document.getElementById('disconnectBtn')?.addEventListener('click', (ev) => {
++  ev.preventDefault();
++  disconnectWallet();
++});
++renderSchedule();
+ 
+ async function getLogsChunked(fromBlock, toBlock, step=900){
+   const logs = [];
+   for (let start=fromBlock; start<=toBlock; start+=step+1){
+     const end = Math.min(start+step, toBlock);
+     try{
+       const chunk = await provider.getLogs({
+         address: PRESALE_ADDRESS,
+         topics: [TOPIC],
+         fromBlock: start,
+         toBlock: end
+       });
+       logs.push(...chunk);
+     }catch(e){
+       console.warn("[getLogsChunked] range", start,"-",end,"failed:", e?.code||e?.message||e);
+       provider = await makeProvider() || provider;
+       await sleep(250);
+     }
+   }
+   return logs;
+ }
+ async function refreshRecent(limit=8){
+   const ok = await initOnce();
+   if (!ok || !provider) return;
+ 
+   const latest = await provider.getBlockNumber();
+   if (!lastProcessedBlock) lastProcessedBlock = 0; // Start from block 0 to get ALL contributions
+   
+   if (latest > lastProcessedBlock) {
+       const logs = await getLogsChunked(lastProcessedBlock, latest, 900);
+       lastProcessedBlock = latest + 1;
+ 
+       const events = logs.map(l => {
+         const parsed = IFACE.parseLog(l);
+         return {
+           buyer: parsed.args.buyer,
+           wei: parsed.args.weiAmount,
++          tokens: parsed.args.tokensOut,
+           hash: l.transactionHash,
+           block: l.blockNumber
+         };
+       }).sort((a,b)=>b.block-a.block);
+ 
+       for (const ev of events){
+         if (seenTxs.has(ev.hash)) continue;
+         seenTxs.add(ev.hash);
+ 
+-        const eth = Number(ethers.utils.formatEther(ev.wei)).toFixed(4);
++        const eth = Number(ethers.utils.formatEther(ev.wei));
++        const tokens = tokenDecimals ? Number(ethers.utils.formatUnits(ev.tokens, tokenDecimals)) : 0;
+         if ($list){
+           const li = document.createElement("li");
+           li.className = "contribution-list-item";
+           li.innerHTML = `
+-            <span>${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
+-            <span class="tabular">${eth} ETH</span>
++            <span class="addr">${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
++            <span class="tabular">${eth.toFixed(4)} ETH</span>
++            <span class="tabular text-orange-200">${nf(tokens, 2)} ETRX</span>
+             <a class="laser" target="_blank" rel="noopener" href="https://etherscan.io/tx/${ev.hash}">view</a>`;
+           $list.insertBefore(li, $list.firstChild);
++          if ($noContributions) $noContributions.style.display = 'none';
+         }
+       }
+   }
+   // Always update contributor count from full history
+   const allLogs = await getLogsChunked(0, latest, 900);
+   const uniq = new Set(allLogs.map(l => IFACE.parseLog(l).args.buyer.toLowerCase()));
+   if ($contributors) $contributors.textContent = String(uniq.size);
++  if ($noContributions && $list) $noContributions.style.display = $list.children.length ? 'none' : '';
+ }
+ 
+-const $userEth  = document.getElementById("user-total-eth");
+-const $userEtrx = document.getElementById("user-total-etrx");
+-const $userCard = document.getElementById("your-contribution-summary");
++const $userEth   = document.getElementById("user-total-eth");
++const $userEtrx  = document.getElementById("user-total-etrx");
++const $userCard  = document.getElementById("your-contribution-summary");
++const $userEmpty = document.getElementById("user-no-contributions");
+ 
+ async function updateUserTotals(wallet){
+   if (!wallet) {
+       if($userCard) $userCard.classList.add("hidden");
++      if ($userEmpty) $userEmpty.classList.add("hidden");
+       return;
+   }
+   const ok = await initOnce();
+   if (!ok || !provider) return;
+-  
+-  try {
+-    const bal = await token.balanceOf(wallet);
+-    const etrxNow = Number(ethers.utils.formatUnits(bal, tokenDecimals));
+-    if ($userEtrx) $userEtrx.textContent = nf(etrxNow, 4);
+-  } catch(e) { console.warn("[USER] balanceOf failed", e?.message||e); }
+-  
++
+   try{
+     const latest = await provider.getBlockNumber();
+     let from = 0; // check entire history
+     let totalEth = 0;
++    let totalTokens = 0;
+ 
+     const buyerTopic = ethers.utils.hexZeroPad(wallet, 32);
+     const logs = await getLogsChunked(from, latest, 900); // Re-use chunked fetcher
+-    
++
+     for (const l of logs){
+       if(l.topics[1].toLowerCase() === buyerTopic.toLowerCase()){
+         const ev = IFACE.parseLog(l);
+         totalEth += Number(ethers.utils.formatEther(ev.args.weiAmount));
++        totalTokens += Number(ethers.utils.formatUnits(ev.args.tokensOut, tokenDecimals));
+       }
+     }
+     if ($userEth) $userEth.textContent = totalEth.toLocaleString(undefined,{maximumFractionDigits:6});
+-    if($userCard) $userCard.classList.toggle("hidden", totalEth === 0);
++    if ($userEtrx) $userEtrx.textContent = nf(totalTokens, 2);
++    if($userCard){
++      $userCard.classList.remove("hidden");
++      if ($userEmpty) $userEmpty.classList.toggle("hidden", totalEth > 0);
++    }
+   }catch(e){ console.warn("[USER] lifetime logs failed", e?.message||e); }
+ }
+ 
+ async function onWalletConnected(){
+   try{
++    if (!window.ethereum){
++      console.warn('[CONNECT] window.ethereum missing');
++      return;
++    }
+     const web3 = new ethers.providers.Web3Provider(window.ethereum, "any");
+     const accounts = await web3.send("eth_requestAccounts", []);
+     const addr = accounts?.[0];
+     if (addr) {
+-        document.getElementById("connect-btn")?.classList.add('hidden-important');
++        const checksum = ethers.utils.getAddress(addr);
++        currentWallet = checksum;
++        document.getElementById("connectBtn")?.classList.add('hidden-important');
+         const walletPill = document.getElementById("walletPill");
+         if(walletPill) {
+             walletPill.classList.remove('hidden');
+-            document.getElementById("walletShort").textContent = `${addr.slice(0,6)}…${addr.slice(-4)}`;
++            const short = document.getElementById("walletShort");
++            if (short) short.textContent = `${checksum.slice(0,6)}…${checksum.slice(-4)}`;
+         }
+-        updateUserTotals(addr);
++        updateContributionVisibility();
++        updateUserTotals(checksum);
++        updateContributionPreview();
+     }
+   }catch(e){ console.error("[CONNECT]", e); }
+ }
+ 
+ window.addEventListener("load", async () => {
+   await initOnce();
+   await Promise.allSettled([ refreshCore(), refreshRecent() ]);
++  updateContributionPreview();
++  refreshEthPrice();
++  setInterval(refreshEthPrice, 120000);
+ 
+   if (provider){
+     provider.on("block", ()=>{
+       clearTimeout(window.__debounceCore);
+       clearTimeout(window.__debounceRec);
+       window.__debounceCore = setTimeout(refreshCore, 1500);
+       window.__debounceRec  = setTimeout(refreshRecent, 2500);
++      clearTimeout(window.__debounceUser);
++      window.__debounceUser = setTimeout(()=>{ if (currentWallet) updateUserTotals(currentWallet); }, 3000);
+     });
+   }
+   document.getElementById("connectBtn")?.addEventListener("click", onWalletConnected);
+   document.getElementById("connect-btn-card")?.addEventListener("click", onWalletConnected);
+   finishBoot();
+ });
+ 
+ window.addEventListener('unhandledrejection', (e) => {
+   console.error('[UNHANDLED]', e.reason || e);
+ });
+ </script>
+ </body>
+ </html>
+-
+ 
+EOF
+)
