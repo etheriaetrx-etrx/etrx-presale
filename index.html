@@ -1363,15 +1363,39 @@ const ERC20_ABI = [
 ];
 // --- FIX: Using a more robust and diverse list of public RPCs ---
 const RPCS = [
+  "https://cloudflare-eth.com",
   "https://rpc.ankr.com/eth",
   "https://eth.llamarpc.com",
   "https://mainnet.gateway.tenderly.co",
-  "https://ethereum.publicnode.com",
-  "https://cloudflare-eth.com"
+  "https://ethereum.publicnode.com"
 ];
 let provider;
 let initialProvider; // Keep a reference to the initial public provider
 let sale, token, tokenDecimals, tokenAddr;
+
+async function validateLogsProvider(p = provider) {
+  try {
+    const latest = await p.getBlockNumber();
+    // probe tiny logs request to trigger CORS path
+    await p.getLogs({
+      address: PRESALE_ADDRESS,
+      topics: [TOPIC],
+      fromBlock: latest,
+      toBlock: latest
+    });
+    return true;
+  } catch (e) {
+    const msg = (e?.message || e)?.toString().toLowerCase();
+    if (msg.includes("failed") || msg.includes("cors") || msg.includes("access-control") || e?.code === "NETWORK_ERROR") {
+      console.warn("[RPC] CORS/logs blocked on current endpoint — rotating");
+      // TODO: replace with your own rotation code if you maintain a list
+      // For now, just switch to Cloudflare which usually works in browsers
+      provider = new ethers.providers.JsonRpcProvider("https://cloudflare-eth.com");
+      return false;
+    }
+    return true;
+  }
+}
 
 // ----- Phase Highlighter -----
 function updateActivePhase() {
@@ -1450,6 +1474,10 @@ async function initOnce(){
   if (!initialProvider) return false;
   
   provider = initialProvider; // Start with the public provider
+
+  if (!(await validateLogsProvider(provider))) {
+    await validateLogsProvider(provider); // retry once after rotation
+  }
 
   try{
     const code = await callWithTimeout(provider.getCode(PRESALE_ADDRESS), 2500, "getCode");
@@ -1818,6 +1846,12 @@ async function handleContribution() {
 
 
 window.addEventListener("load", async () => {
+  // --- Immediate button wiring (additive) ---
+  document.getElementById("connectBtn")?.addEventListener("click", onWalletConnected);
+  document.getElementById("connect-btn-card")?.addEventListener("click", onWalletConnected);
+  document.getElementById("disconnectBtn")?.addEventListener("click", onWalletDisconnected);
+  document.getElementById("contribute-btn")?.addEventListener("click", handleContribution);
+
   await initOnce();
   await Promise.allSettled([ refreshCore(null), refreshRecent() ]);
   updateActivePhase();
