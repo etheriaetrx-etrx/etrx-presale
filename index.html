@@ -1329,8 +1329,9 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-presale) 
 'use strict';
 
 /** CONFIG **/
-// IMPORTANT: Update this to your real, deployed presale contract address on Ethereum Mainnet.
-const PRESALE_ADDRESS = "0x7E5e15d7FA217861ab9df5a47218942D1181e0e7"; // <-- REPLACE WITH YOUR DEPLOYED CONTRACT
+// === Presale contract config (ADD/UPDATE) ===
+const PRESALE_ADDRESS = "0xa3c48EF518cab21E5772392D5405DE5d73b35190";
+const PRESALE_DEPLOY_BLOCK = 20_000_000; 
 const INITIAL_TOKENS = 3_000_000;
 const PHASES = [
     // End times are exclusive (up to, but not including)
@@ -1372,29 +1373,47 @@ const RPCS = [
 let provider;
 let initialProvider; // Keep a reference to the initial public provider
 let sale, token, tokenDecimals, tokenAddr;
+const LS_SCAN_FROM = "etrx.scan.from";
+
+// === Provider hardening (ADD) ===
+function withTighterTimeouts(p) {
+  // ethers v5: _getConnection() exists on JsonRpcProvider
+  try {
+    const c = p._getConnection();
+    // Backoff-friendly: smaller timeouts so we rotate faster
+    c.timeout = 9000;        // request timeout
+    c.headers = c.headers || {};
+  } catch {}
+  return p;
+}
 
 async function validateLogsProvider(p = provider) {
   try {
     const latest = await p.getBlockNumber();
-    // probe tiny logs request to trigger CORS path
-    await p.getLogs({
-      address: PRESALE_ADDRESS,
-      topics: [TOPIC],
-      fromBlock: latest,
-      toBlock: latest
-    });
+    // tiny probe to hit the same code path as big scans
+    await p.getLogs({ address: PRESALE_ADDRESS, fromBlock: Math.max(0, latest - 2), toBlock: latest });
     return true;
   } catch (e) {
-    const msg = (e?.message || e)?.toString().toLowerCase();
-    if (msg.includes("failed") || msg.includes("cors") || msg.includes("access-control") || e?.code === "NETWORK_ERROR") {
-      console.warn("[RPC] CORS/logs blocked on current endpoint — rotating");
-      // TODO: replace with your own rotation code if you maintain a list
-      // For now, just switch to Cloudflare which usually works in browsers
-      provider = new ethers.providers.JsonRpcProvider("https://cloudflare-eth.com");
+    const m = String(e?.message || e).toLowerCase();
+    const networky = e?.code === "NETWORK_ERROR" || m.includes("server_error") || m.includes("failed");
+    if (networky) {
+      console.warn("[RPC] probe failed — marking endpoint unhealthy");
+      // rotate to next RPC (use your existing list)
+      provider = withTighterTimeouts(new ethers.providers.JsonRpcProvider("https://ethereum.publicnode.com"));
       return false;
     }
     return true;
   }
+}
+
+function getScanStart(latest) {
+  const saved = Number(localStorage.getItem(LS_SCAN_FROM) || "0");
+  if (saved && saved < latest) return Math.max(saved, PRESALE_DEPLOY_BLOCK);
+  return PRESALE_DEPLOY_BLOCK;
+}
+function rememberScanEnd(endBlock) {
+  // keep small overlap for safety
+  localStorage.setItem(LS_SCAN_FROM, String(Math.max(PRESALE_DEPLOY_BLOCK, endBlock - 50)));
 }
 
 // ----- Phase Highlighter -----
@@ -1453,45 +1472,77 @@ function finishBoot() {
 
 // ----- Provider + Contracts -----
 const sleep = (ms)=>new Promise(r=>setTimeout(r,ms));
-async function callWithTimeout(p, ms, label="op"){
-  let t; const to = new Promise((_,rej)=>t=setTimeout(()=>rej(new Error(`[timeout] ${label}`)),ms));
-  try { return await Promise.race([p,to]); } finally { clearTimeout(t); }
-}
+
 async function makeProvider(){
   for (const url of RPCS){
     try{
-      const p = new ethers.providers.JsonRpcProvider(url, {name:"homestead", chainId:1});
-      await callWithTimeout(p.getBlockNumber(), 2500, `getBlockNumber ${url}`); // Increased timeout
+      const p = withTighterTimeouts(new ethers.providers.JsonRpcProvider(url, {name:"homestead", chainId:1}));
+      await p.getBlockNumber();
       console.log("[RPC] using", url);
       return p;
     }catch(e){ console.warn("[RPC fail]", url, e?.code||e?.message||e); }
   }
   console.error("[RPC] all endpoints failed"); return null;
 }
-async function initOnce(){
-  if (initialProvider) return true;
-  initialProvider = await makeProvider();
-  if (!initialProvider) return false;
-  
-  provider = initialProvider; // Start with the public provider
 
-  if (!(await validateLogsProvider(provider))) {
-    await validateLogsProvider(provider); // retry once after rotation
+async function safeGetCode(p, addr) {
+  try {
+    const ctl = new AbortController();
+    const t = setTimeout(() => ctl.abort(), 7000);
+    const code = await p.getCode(addr); // ethers v5 has no AbortSignal; rely on provider timeout from step #2
+    clearTimeout(t);
+    return code;
+  } catch (e) {
+    console.warn("[BOOT] getCode timed out; deferring contract init until after first render");
+    return "0x";
   }
-
-  try{
-    const code = await callWithTimeout(provider.getCode(PRESALE_ADDRESS), 2500, "getCode");
-    if (code==="0x"){ console.error("[BOOT] no bytecode at presale address. Update PRESALE_ADDRESS variable."); return false; }
-  }catch(e){ console.warn("[BOOT] code check skipped:", e.message||e); }
-
-  try{
-    sale = new ethers.Contract(PRESALE_ADDRESS, PRESALE_ABI, provider);
-    tokenAddr = await callWithTimeout(sale.token(), 2500, "sale.token");
-    token = new ethers.Contract(tokenAddr, ERC20_ABI, provider);
-    tokenDecimals = await callWithTimeout(token.decimals(), 2500, "token.decimals");
-  }catch(e){ console.error("[BOOT] contract init failed", e.message||e); return false; }
-  return true;
 }
+
+async function initOnce() {
+    if (initialProvider) return true;
+    initialProvider = await makeProvider();
+    if (!initialProvider) return false;
+
+    provider = initialProvider;
+
+    if (!(await validateLogsProvider(provider))) {
+        await validateLogsProvider(provider); // try once more after rotation
+    }
+
+    let code = await safeGetCode(provider, PRESALE_ADDRESS);
+    if (code && code !== "0x") {
+        try {
+            sale = new ethers.Contract(PRESALE_ADDRESS, PRESALE_ABI, provider);
+            tokenAddr = await sale.token();
+            token = new ethers.Contract(tokenAddr, ERC20_ABI, provider);
+            tokenDecimals = await token.decimals();
+            return true;
+        } catch (e) {
+            console.error("[BOOT] contract init failed", e.message || e);
+            return false;
+        }
+    } else {
+        // schedule a retry later so boot UI isn't blocked
+        setTimeout(async () => {
+            try {
+                const c = await provider.getCode(PRESALE_ADDRESS);
+                if (c && c !== "0x") {
+                    sale = new ethers.Contract(PRESALE_ADDRESS, PRESALE_ABI, provider);
+                    tokenAddr = await sale.token();
+                    token = new ethers.Contract(tokenAddr, ERC20_ABI, provider);
+                    tokenDecimals = await token.decimals();
+                    // now run your refreshers
+                    refreshCore(currentAccount).catch(console.warn);
+                    hydrateContributions().catch(console.warn);
+                }
+            } catch (e) {
+                console.error("[BOOT] contract init retry failed", e.message || e);
+            }
+        }, 4000);
+        return false; // Indicate that init is not fully complete
+    }
+}
+
 const $raised = document.getElementById("total-raised");
 const $pct    = document.getElementById("progress-percentage");
 const $bar    = document.getElementById("live-progress-bar");
@@ -1508,10 +1559,10 @@ const $statusTitleNotLive = document.getElementById("presale-status-title-not-li
 
 const f2 = (n)=>Number(n).toLocaleString(undefined,{maximumFractionDigits:2, minimumFractionDigits:2});
 async function refreshCore(walletAddress){
-  const ok = await initOnce();
+  const ok = sale && token; // check if contracts are initialized
   const isConnected = !!walletAddress;
   
-  if (!ok || !sale || !token){
+  if (!ok){
     if ($raised) $raised.textContent = "0.00 ETH";
     if ($pct) $pct.textContent = "0.00%";
     if ($bar) $bar.style.width = "0%";
@@ -1573,150 +1624,133 @@ async function refreshCore(walletAddress){
 const $list = document.getElementById("contribution-list");
 const $contributors = document.getElementById("total-contributors");
 const IFACE = new ethers.utils.Interface(PRESALE_ABI);
-const TOPIC = IFACE.getEventTopic("Contributed");
-let lastProcessedBlock = 0;
+const TOPIC_CONTRIBUTION = IFACE.getEventTopic("Contributed");
 const seenTxs = new Set();
 
-async function getLogsChunked(fromBlock, toBlock, step=9000){ // Increased step for full history
-  const logs = [];
-  for (let start=fromBlock; start<=toBlock; start+=step+1){
-    const end = Math.min(start+step, toBlock);
-    try{
-      const chunk = await provider.getLogs({
-        address: PRESALE_ADDRESS,
-        topics: [TOPIC],
-        fromBlock: start,
-        toBlock: end
+// === Adaptive logs scanner (ADD or REPLACE your getLogsChunked) ===
+async function getLogsChunkedAdaptive(p, params) {
+  const latest = await p.getBlockNumber();
+  let from = getScanStart(latest);
+  let to   = Math.min(latest, params.toBlock ?? latest);
+
+  // Start conservative. Many public RPCs limit eth_getLogs ranges to ~2k–5k blocks.
+  let step = 1500;
+
+  const maxStep   = 5000;
+  const minStep   = 250;
+  let backoffMs   = 600;   // grows on errors
+  const maxBackoff= 5000;
+  const logs      = [];
+
+  while (from <= to) {
+    const end = Math.min(from + step, to);
+    try {
+      const slice = await p.getLogs({
+        address: params.address,
+        topics:  params.topics,
+        fromBlock: from,
+        toBlock:   end
       });
-      logs.push(...chunk);
-    }catch(e){
-      console.warn("[getLogsChunked] range", start,"-",end,"failed:", e?.code||e?.message||e);
-      await sleep(500); // Wait a bit before next chunk on failure
+      logs.push(...slice);
+      rememberScanEnd(end);
+
+      // Gentle step-up when succeeding (to finish faster)
+      if (step < maxStep) step = Math.min(maxStep, Math.floor(step * 1.25));
+      // Reset backoff after a clean run
+      backoffMs = 400;
+
+      // Move window forward
+      from = end + 1;
+    } catch (e) {
+      const msg = String(e?.message || e).toLowerCase();
+      console.warn(`[getLogsChunked] ${from} - ${end} failed:`, e?.code || msg);
+
+      // Common RPC throttles or range errors → shrink the window + backoff
+      if (step > minStep) step = Math.max(minStep, Math.floor(step / 2));
+      backoffMs = Math.min(maxBackoff, Math.floor(backoffMs * 1.6));
+      await new Promise(r => setTimeout(r, backoffMs));
+
+      // If we’re still failing at the minimum window → rotate provider once
+      if (step === minStep) {
+        const rotated = await validateLogsProvider(p);
+        if (!rotated) {
+          // provider was rotated globally; rebind local p reference
+          p = provider;
+        }
+      }
+      // do NOT advance 'from'; retry same window after adjustments
     }
   }
   return logs;
 }
 
-async function refreshRecent(){
-  const ok = await initOnce();
-  if (!ok || !provider) return;
+function renderContributionList(logs) {
+  const ul = document.getElementById("contribution-list");
+  if (!ul) return;
+  if (!Array.isArray(logs)) logs = [];
+  
+  const events = logs.map(l => {
+        const parsed = IFACE.parseLog(l);
+        return {
+            buyer: parsed.args.buyer,
+            wei: parsed.args.weiAmount,
+            hash: l.transactionHash,
+            block: l.blockNumber
+        };
+    }).sort((a, b) => b.block - a.block);
 
-  try {
-    const latest = await provider.getBlockNumber();
-
-    if (!window.__rebuiltOnce) {
-        if ($list) $list.innerHTML = "";
-        seenTxs.clear();
-        lastProcessedBlock = 0; // Start from scratch
-    }
-
-    if (lastProcessedBlock === 0) { // Full history scan on first load
-        console.log("Performing full history scan for contributions...");
-        const allLogs = await getLogsChunked(0, latest);
-        
-        if (allLogs.length > 0) {
-            const events = allLogs.map(l => {
-                const parsed = IFACE.parseLog(l);
-                return {
-                buyer: parsed.args.buyer,
-                wei: parsed.args.weiAmount,
-                hash: l.transactionHash,
-                block: l.blockNumber
-                };
-            }).sort((a,b)=>b.block - a.block); // Sort descending to process latest first
-            
-            if ($list) $list.innerHTML = ""; // Clear list before repopulating
-            seenTxs.clear();
-
-            for (const ev of events){
-                if (seenTxs.has(ev.hash)) continue;
-                seenTxs.add(ev.hash);
-                const eth = Number(ethers.utils.formatEther(ev.wei)).toFixed(4);
-                const li = document.createElement("li");
-                li.className = "contribution-list-item";
-                li.innerHTML = `
-                <span>${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
-                <span class="tabular">${eth} ETH</span>
-                <a class="laser" target="_blank" rel="noopener" href="https://etherscan.io/tx/${ev.hash}">view</a>`;
-                // Append instead of prepend because we sorted descending
-                $list.appendChild(li);
-            }
-            const uniq = new Set(allLogs.map(l => IFACE.parseLog(l).args.buyer.toLowerCase()));
-            if ($contributors) $contributors.textContent = String(uniq.size);
-        } else {
-            console.log("No contribution events found in history.");
-        }
-        window.__rebuiltOnce = true; // Mark as done only if successful
-        lastProcessedBlock = latest + 1;
-
-    } else if (latest > lastProcessedBlock) { // Incremental update for new blocks
-        const newLogs = await getLogsChunked(lastProcessedBlock, latest);
-        lastProcessedBlock = latest + 1;
-        const events = newLogs.map(l => {
-            const parsed = IFACE.parseLog(l);
-            return { buyer: parsed.args.buyer, wei: parsed.args.weiAmount, hash: l.transactionHash, block: l.blockNumber };
-        }).sort((a,b)=>b.block - a.block); // Sort new events descending
-
-        for (const ev of events){
-            if (seenTxs.has(ev.hash)) continue;
-            seenTxs.add(ev.hash);
-            const eth = Number(ethers.utils.formatEther(ev.wei)).toFixed(4);
-            if ($list){
-            const li = document.createElement("li");
-            li.className = "contribution-list-item";
-            li.innerHTML = `
-                <span>${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
-                <span class="tabular">${eth} ETH</span>
-                <a class="laser" target="_blank" rel="noopener" href="https://etherscan.io/tx/${ev.hash}">view</a>`;
-            $list.insertBefore(li, $list.firstChild); // Prepend new events
-            }
-        }
-        // This count update is inefficient but simple. For production, a backend would be better.
-        if (newLogs.length > 0) {
-            const allLogsForCount = await getLogsChunked(0, latest);
-            const uniq = new Set(allLogsForCount.map(l => IFACE.parseLog(l).args.buyer.toLowerCase()));
-            if ($contributors) $contributors.textContent = String(uniq.size);
-        }
-    }
-  } catch(e) {
-      console.error("[refreshRecent] Failed to refresh recent contributions:", e);
+  if (events.length === 0) {
+    ul.innerHTML = `<li class="small-dim text-center p-2">No contributions yet or still loading…</li>`;
+    return;
   }
+  
+  ul.innerHTML = ""; // Clear list
+  seenTxs.clear();
+
+  for (const ev of events) {
+      if (seenTxs.has(ev.hash)) continue;
+      seenTxs.add(ev.hash);
+      const eth = Number(ethers.utils.formatEther(ev.wei)).toFixed(4);
+      const li = document.createElement("li");
+      li.className = "contribution-list-item";
+      li.innerHTML = `
+        <span>${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
+        <span class="tabular">${eth} ETH</span>
+        <a class="laser" target="_blank" rel="noopener" href="https://etherscan.io/tx/${ev.hash}">view</a>`;
+      ul.appendChild(li);
+  }
+
+  const uniq = new Set(events.map(ev => ev.buyer.toLowerCase()));
+  if ($contributors) $contributors.textContent = String(uniq.size);
+}
+
+async function hydrateContributions() {
+  if (!provider) return;
+  const p = provider;
+  const latest = await p.getBlockNumber();
+  const logs = await getLogsChunkedAdaptive(p, {
+    address: PRESALE_ADDRESS,
+    topics: [TOPIC_CONTRIBUTION],
+    fromBlock: PRESALE_DEPLOY_BLOCK,
+    toBlock: latest
+  });
+  renderContributionList(logs);
+}
+
+async function refreshRecent(){
+  hydrateContributions().catch(console.warn);
 }
 
 const $userEth  = document.getElementById("user-total-eth");
 const $userEtrx = document.getElementById("user-total-etrx");
 const $userCard = document.getElementById("your-contribution-summary");
 
-// --- FIX: Optimized function to get logs for a specific user ---
-async function getUserLogsChunked(userAddress, fromBlock, toBlock, step = 50000) {
-    const logs = [];
-    const buyerTopic = ethers.utils.hexZeroPad(userAddress, 32);
-    const topics = [TOPIC, buyerTopic]; // Filter by event AND user on the RPC side
-
-    for (let start = fromBlock; start <= toBlock; start += step + 1) {
-        const end = Math.min(start + step, toBlock);
-        try {
-            const chunk = await provider.getLogs({
-                address: PRESALE_ADDRESS,
-                topics: topics,
-                fromBlock: start,
-                toBlock: end
-            });
-            logs.push(...chunk);
-        } catch (e) {
-            console.warn(`[getUserLogsChunked] range ${start}-${end} failed for user ${userAddress}:`, e?.code || e?.message || e);
-            await sleep(250);
-        }
-    }
-    return logs;
-}
-
 async function updateUserTotals(wallet){
   if (!wallet) {
       if($userCard) $userCard.classList.add("hidden");
       return;
   }
-  const ok = await initOnce();
+  const ok = sale && token;
   if (!ok || !provider) return;
   
   const currentTokenContract = new ethers.Contract(tokenAddr, ERC20_ABI, provider);
@@ -1731,8 +1765,13 @@ async function updateUserTotals(wallet){
     const latest = await provider.getBlockNumber();
     let totalEth = 0;
 
-    // --- FIX: Use the new, much more efficient function ---
-    const userLogs = await getUserLogsChunked(wallet, 0, latest);
+    const buyerTopic = ethers.utils.hexZeroPad(wallet, 32);
+    const userLogs = await getLogsChunkedAdaptive(provider, {
+        address: PRESALE_ADDRESS,
+        topics: [TOPIC_CONTRIBUTION, buyerTopic],
+        fromBlock: PRESALE_DEPLOY_BLOCK,
+        toBlock: latest
+    });
     
     for (const l of userLogs){
         const ev = IFACE.parseLog(l);
@@ -1773,7 +1812,6 @@ async function onWalletConnected(){
         await refreshCore(addr);
         await updateUserTotals(addr);
         // We can re-trigger refreshRecent now that we have a good provider.
-        window.__rebuiltOnce = false; // Allow full history scan with new provider
         await refreshRecent();
     }
   }catch(e){ 
@@ -1900,3 +1938,4 @@ window.addEventListener('unhandledrejection', (e) => {
 </script>
 </body>
 </html>
+
