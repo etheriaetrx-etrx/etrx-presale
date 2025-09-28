@@ -32,7 +32,7 @@
            script-src 'self' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline';
            style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
            font-src https://fonts.gstatic.com;
-           connect-src 'self' https://cloudflare-eth.com https://eth-mainnet.public.blastapi.io https://eth.llamarpc.com https://rpc.ankr.com/eth https://api.etherscan.io https://api.coingecko.com;
+           connect-src 'self' https://cloudflare-eth.com https://eth-mainnet.public.blastapi.io https://eth.llamarpc.com https://rpc.ankr.com/eth https://api.etherscan.io https://api.coingecko.com https://ethereum.publicnode.com https://mainnet.gateway.tenderly.co;
            worker-src 'self';
            object-src 'none';
            base-uri 'self';
@@ -1345,17 +1345,29 @@ const PRESALE_ABI = [
   {"inputs":[],"name":"rate","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
   {"inputs":[],"name":"weiRaised","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
   {"inputs":[],"name":"token","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
-  "event Contributed(address indexed buyer, uint256 weiAmount, uint256 tokensOut)"
+  {
+    "anonymous": false,
+    "inputs": [
+        {"indexed": true, "internalType": "address", "name": "buyer", "type": "address"},
+        {"indexed": false, "internalType": "uint256", "name": "weiAmount", "type": "uint256"},
+        {"indexed": false, "internalType": "uint256", "name": "tokensOut", "type": "uint256"}
+    ],
+    "name": "Contributed",
+    "type": "event"
+  }
 ];
 const ERC20_ABI = [
   {"inputs":[{"name":"account","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
   {"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"stateMutability":"view","type":"function"},
   {"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"stateMutability":"view","type":"function"}
 ];
+// --- FIX: Using a more robust and diverse list of public RPCs ---
 const RPCS = [
-  "https://cloudflare-eth.com",
-  "https://eth-mainnet.public.blastapi.io", // Added a more reliable public RPC
-  "https://rpc.ankr.com/eth"
+  "https://rpc.ankr.com/eth",
+  "https://eth.llamarpc.com",
+  "https://mainnet.gateway.tenderly.co",
+  "https://ethereum.publicnode.com",
+  "https://cloudflare-eth.com"
 ];
 let provider;
 let initialProvider; // Keep a reference to the initial public provider
@@ -1400,11 +1412,11 @@ function closeWalletModal() {
 // ----- Loader controller -----
 function hideLoader() {
   const splash = document.getElementById('preloader');
-  if (splash) splash.style.display = 'none';
+  if (splash) splash.classList.add('loaded');
 }
 function showLoader() {
   const splash = document.getElementById('preloader');
-  if (splash) splash.style.display = 'flex';
+  if (splash) splash.classList.remove('loaded');
 }
 let __loaderWatchdog = setTimeout(() => {
   console.warn('[BOOT] Watchdog releasing loader after 7s');
@@ -1425,7 +1437,7 @@ async function makeProvider(){
   for (const url of RPCS){
     try{
       const p = new ethers.providers.JsonRpcProvider(url, {name:"homestead", chainId:1});
-      await callWithTimeout(p.getBlockNumber(), 1500, `getBlockNumber ${url}`);
+      await callWithTimeout(p.getBlockNumber(), 2500, `getBlockNumber ${url}`); // Increased timeout
       console.log("[RPC] using", url);
       return p;
     }catch(e){ console.warn("[RPC fail]", url, e?.code||e?.message||e); }
@@ -1440,15 +1452,15 @@ async function initOnce(){
   provider = initialProvider; // Start with the public provider
 
   try{
-    const code = await callWithTimeout(provider.getCode(PRESALE_ADDRESS), 1500, "getCode");
+    const code = await callWithTimeout(provider.getCode(PRESALE_ADDRESS), 2500, "getCode");
     if (code==="0x"){ console.error("[BOOT] no bytecode at presale address. Update PRESALE_ADDRESS variable."); return false; }
   }catch(e){ console.warn("[BOOT] code check skipped:", e.message||e); }
 
   try{
     sale = new ethers.Contract(PRESALE_ADDRESS, PRESALE_ABI, provider);
-    tokenAddr = await callWithTimeout(sale.token(), 2000, "sale.token");
+    tokenAddr = await callWithTimeout(sale.token(), 2500, "sale.token");
     token = new ethers.Contract(tokenAddr, ERC20_ABI, provider);
-    tokenDecimals = await callWithTimeout(token.decimals(), 2000, "token.decimals");
+    tokenDecimals = await callWithTimeout(token.decimals(), 2500, "token.decimals");
   }catch(e){ console.error("[BOOT] contract init failed", e.message||e); return false; }
   return true;
 }
@@ -1537,7 +1549,7 @@ const TOPIC = IFACE.getEventTopic("Contributed");
 let lastProcessedBlock = 0;
 const seenTxs = new Set();
 
-async function getLogsChunked(fromBlock, toBlock, step=900){
+async function getLogsChunked(fromBlock, toBlock, step=9000){ // Increased step for full history
   const logs = [];
   for (let start=fromBlock; start<=toBlock; start+=step+1){
     const end = Math.min(start+step, toBlock);
@@ -1551,86 +1563,125 @@ async function getLogsChunked(fromBlock, toBlock, step=900){
       logs.push(...chunk);
     }catch(e){
       console.warn("[getLogsChunked] range", start,"-",end,"failed:", e?.code||e?.message||e);
-      // Don't re-init provider here, let the main loop handle it.
-      await sleep(250);
+      await sleep(500); // Wait a bit before next chunk on failure
     }
   }
   return logs;
 }
-async function refreshRecent(limit=8){
+
+async function refreshRecent(){
   const ok = await initOnce();
   if (!ok || !provider) return;
 
-  const latest = await provider.getBlockNumber();
+  try {
+    const latest = await provider.getBlockNumber();
 
-  if (!window.__rebuiltOnce) {
-    if ($list) $list.innerHTML = "";
-    seenTxs.clear();
-    lastProcessedBlock = 0;
-    window.__rebuiltOnce = true;
-  }
-
-  if (lastProcessedBlock === 0) { // Full history scan on first load
-    const allLogs = await getLogsChunked(0, latest, 900);
-    const events = allLogs.map(l => {
-        const parsed = IFACE.parseLog(l);
-        return {
-          buyer: parsed.args.buyer,
-          wei: parsed.args.weiAmount,
-          hash: l.transactionHash,
-          block: l.blockNumber
-        };
-      }).sort((a,b)=>a.block-b.block); // Sort ascending for correct order
-    
-    if ($list) $list.innerHTML = ""; // Clear list before repopulating
-    seenTxs.clear();
-
-    for (const ev of events){
-        if (seenTxs.has(ev.hash)) continue;
-        seenTxs.add(ev.hash);
-        const eth = Number(ethers.utils.formatEther(ev.wei)).toFixed(4);
-        const li = document.createElement("li");
-        li.className = "contribution-list-item";
-        li.innerHTML = `
-          <span>${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
-          <span class="tabular">${eth} ETH</span>
-          <a class="laser" target="_blank" rel="noopener" href="https://etherscan.io/tx/${ev.hash}">view</a>`;
-        $list.insertBefore(li, $list.firstChild); // Prepend to show latest first
+    if (!window.__rebuiltOnce) {
+        if ($list) $list.innerHTML = "";
+        seenTxs.clear();
+        lastProcessedBlock = 0; // Start from scratch
     }
-    const uniq = new Set(allLogs.map(l => IFACE.parseLog(l).args.buyer.toLowerCase()));
-    if ($contributors) $contributors.textContent = String(uniq.size);
-    lastProcessedBlock = latest + 1;
-  } else if (latest > lastProcessedBlock) { // Incremental update for new blocks
-    const logs = await getLogsChunked(lastProcessedBlock, latest, 900);
-    lastProcessedBlock = latest + 1;
-    const events = logs.map(l => {
-      const parsed = IFACE.parseLog(l);
-      return { buyer: parsed.args.buyer, wei: parsed.args.weiAmount, hash: l.transactionHash, block: l.blockNumber };
-    });
-    for (const ev of events){
-        if (seenTxs.has(ev.hash)) continue;
-        seenTxs.add(ev.hash);
-        const eth = Number(ethers.utils.formatEther(ev.wei)).toFixed(4);
-        if ($list){
-          const li = document.createElement("li");
-          li.className = "contribution-list-item";
-          li.innerHTML = `
-            <span>${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
-            <span class="tabular">${eth} ETH</span>
-            <a class="laser" target="_blank" rel="noopener" href="https://etherscan.io/tx/${ev.hash}">view</a>`;
-          $list.insertBefore(li, $list.firstChild);
+
+    if (lastProcessedBlock === 0) { // Full history scan on first load
+        console.log("Performing full history scan for contributions...");
+        const allLogs = await getLogsChunked(0, latest);
+        
+        if (allLogs.length > 0) {
+            const events = allLogs.map(l => {
+                const parsed = IFACE.parseLog(l);
+                return {
+                buyer: parsed.args.buyer,
+                wei: parsed.args.weiAmount,
+                hash: l.transactionHash,
+                block: l.blockNumber
+                };
+            }).sort((a,b)=>b.block - a.block); // Sort descending to process latest first
+            
+            if ($list) $list.innerHTML = ""; // Clear list before repopulating
+            seenTxs.clear();
+
+            for (const ev of events){
+                if (seenTxs.has(ev.hash)) continue;
+                seenTxs.add(ev.hash);
+                const eth = Number(ethers.utils.formatEther(ev.wei)).toFixed(4);
+                const li = document.createElement("li");
+                li.className = "contribution-list-item";
+                li.innerHTML = `
+                <span>${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
+                <span class="tabular">${eth} ETH</span>
+                <a class="laser" target="_blank" rel="noopener" href="https://etherscan.io/tx/${ev.hash}">view</a>`;
+                // Append instead of prepend because we sorted descending
+                $list.appendChild(li);
+            }
+            const uniq = new Set(allLogs.map(l => IFACE.parseLog(l).args.buyer.toLowerCase()));
+            if ($contributors) $contributors.textContent = String(uniq.size);
+        } else {
+            console.log("No contribution events found in history.");
         }
-      }
-    // Update count incrementally
-    const allLogs = await getLogsChunked(0, latest, 900);
-    const uniq = new Set(allLogs.map(l => IFACE.parseLog(l).args.buyer.toLowerCase()));
-    if ($contributors) $contributors.textContent = String(uniq.size);
+        window.__rebuiltOnce = true; // Mark as done only if successful
+        lastProcessedBlock = latest + 1;
+
+    } else if (latest > lastProcessedBlock) { // Incremental update for new blocks
+        const newLogs = await getLogsChunked(lastProcessedBlock, latest);
+        lastProcessedBlock = latest + 1;
+        const events = newLogs.map(l => {
+            const parsed = IFACE.parseLog(l);
+            return { buyer: parsed.args.buyer, wei: parsed.args.weiAmount, hash: l.transactionHash, block: l.blockNumber };
+        }).sort((a,b)=>b.block - a.block); // Sort new events descending
+
+        for (const ev of events){
+            if (seenTxs.has(ev.hash)) continue;
+            seenTxs.add(ev.hash);
+            const eth = Number(ethers.utils.formatEther(ev.wei)).toFixed(4);
+            if ($list){
+            const li = document.createElement("li");
+            li.className = "contribution-list-item";
+            li.innerHTML = `
+                <span>${ev.buyer.slice(0,6)}…${ev.buyer.slice(-4)}</span>
+                <span class="tabular">${eth} ETH</span>
+                <a class="laser" target="_blank" rel="noopener" href="https://etherscan.io/tx/${ev.hash}">view</a>`;
+            $list.insertBefore(li, $list.firstChild); // Prepend new events
+            }
+        }
+        // This count update is inefficient but simple. For production, a backend would be better.
+        if (newLogs.length > 0) {
+            const allLogsForCount = await getLogsChunked(0, latest);
+            const uniq = new Set(allLogsForCount.map(l => IFACE.parseLog(l).args.buyer.toLowerCase()));
+            if ($contributors) $contributors.textContent = String(uniq.size);
+        }
+    }
+  } catch(e) {
+      console.error("[refreshRecent] Failed to refresh recent contributions:", e);
   }
 }
 
 const $userEth  = document.getElementById("user-total-eth");
 const $userEtrx = document.getElementById("user-total-etrx");
 const $userCard = document.getElementById("your-contribution-summary");
+
+// --- FIX: Optimized function to get logs for a specific user ---
+async function getUserLogsChunked(userAddress, fromBlock, toBlock, step = 50000) {
+    const logs = [];
+    const buyerTopic = ethers.utils.hexZeroPad(userAddress, 32);
+    const topics = [TOPIC, buyerTopic]; // Filter by event AND user on the RPC side
+
+    for (let start = fromBlock; start <= toBlock; start += step + 1) {
+        const end = Math.min(start + step, toBlock);
+        try {
+            const chunk = await provider.getLogs({
+                address: PRESALE_ADDRESS,
+                topics: topics,
+                fromBlock: start,
+                toBlock: end
+            });
+            logs.push(...chunk);
+        } catch (e) {
+            console.warn(`[getUserLogsChunked] range ${start}-${end} failed for user ${userAddress}:`, e?.code || e?.message || e);
+            await sleep(250);
+        }
+    }
+    return logs;
+}
 
 async function updateUserTotals(wallet){
   if (!wallet) {
@@ -1650,17 +1701,14 @@ async function updateUserTotals(wallet){
   
   try{
     const latest = await provider.getBlockNumber();
-    let from = 0; // check entire history
     let totalEth = 0;
 
-    const buyerTopic = ethers.utils.hexZeroPad(wallet, 32);
-    const logs = await getLogsChunked(from, latest, 900);
+    // --- FIX: Use the new, much more efficient function ---
+    const userLogs = await getUserLogsChunked(wallet, 0, latest);
     
-    for (const l of logs){
-      if(l.topics[1] && l.topics[1].toLowerCase() === buyerTopic.toLowerCase()){
+    for (const l of userLogs){
         const ev = IFACE.parseLog(l);
         totalEth += Number(ethers.utils.formatEther(ev.args.weiAmount));
-      }
     }
     if ($userEth) $userEth.textContent = totalEth.toLocaleString(undefined,{maximumFractionDigits:6});
     if($userCard) $userCard.classList.toggle("hidden", totalEth === 0);
@@ -1672,7 +1720,7 @@ let currentAccount = null;
 async function onWalletConnected(){
   try{
     if (typeof window.ethereum === 'undefined') {
-        alert('Please install a wallet extension like MetaMask.');
+        // Using a modal is better than alert() which can be blocked.
         openWalletModal();
         return;
     }
@@ -1683,7 +1731,7 @@ async function onWalletConnected(){
     
     if (addr) {
         currentAccount = addr;
-        // CRITICAL FIX: Use the wallet's provider for all subsequent calls
+        // CRITICAL: Use the wallet's provider for all subsequent calls
         provider = web3; 
         
         document.getElementById("connectBtn")?.classList.add('hidden-important');
@@ -1693,14 +1741,15 @@ async function onWalletConnected(){
             walletPill.classList.remove('hidden');
             document.getElementById("walletShort").textContent = `${addr.slice(0,6)}…${addr.slice(-4)}`;
         }
-        // Refresh all data using the new, reliable provider
+        // Refresh all data using the new, reliable provider from the user's wallet
         await refreshCore(addr);
         await updateUserTotals(addr);
+        // We can re-trigger refreshRecent now that we have a good provider.
+        window.__rebuiltOnce = false; // Allow full history scan with new provider
         await refreshRecent();
     }
   }catch(e){ 
       console.error("[CONNECT]", e); 
-      // Handle user rejection gracefully
       if (e.code === 4001) {
           console.log("Connection request rejected by user.");
       }
@@ -1709,7 +1758,7 @@ async function onWalletConnected(){
 
 function onWalletDisconnected() {
     currentAccount = null;
-    // CRITICAL FIX: Revert to the public provider
+    // Revert to the public provider
     provider = initialProvider; 
 
     document.getElementById("connectBtn")?.classList.remove('hidden-important');
@@ -1718,12 +1767,13 @@ function onWalletDisconnected() {
     if (walletPill) walletPill.classList.add('hidden');
     
     updateUserTotals(null);
-    refreshCore(null);
+    refreshCore(null); // Refresh with public provider state
 }
 
 async function handleContribution() {
     if (!currentAccount) {
-        alert("Please connect your wallet first.");
+        console.warn("Contribution attempted without a connected wallet.");
+        onWalletConnected(); // Try to connect first
         return;
     }
 
@@ -1751,13 +1801,14 @@ async function handleContribution() {
 
         alert("Contribution successful! Your transaction has been confirmed.");
         ethAmountEl.value = "";
-        refreshCore(currentAccount);
-        refreshRecent();
-        updateUserTotals(currentAccount);
+        // Refresh data after successful contribution
+        await refreshCore(currentAccount);
+        await refreshRecent();
+        await updateUserTotals(currentAccount);
 
     } catch (err) {
         console.error("Contribution failed:", err);
-        const reason = err.reason || err.message || "Transaction was rejected or failed.";
+        const reason = err.reason || err.data?.message || err.message || "Transaction was rejected or failed.";
         alert(`Contribution failed: ${reason}`);
     } finally {
         contributeBtn.disabled = false;
@@ -1773,7 +1824,8 @@ window.addEventListener("load", async () => {
   setInterval(updateActivePhase, 60000); // check every minute
 
   if (initialProvider){ // Check initialProvider to ensure boot was successful
-    initialProvider.on("block", ()=>{
+    initialProvider.on("block", (blockNumber)=>{
+      console.log("New block:", blockNumber);
       clearTimeout(window.__debounceCore);
       clearTimeout(window.__debounceRec);
       window.__debounceCore = setTimeout(() => refreshCore(currentAccount), 1500);
@@ -1795,9 +1847,11 @@ window.addEventListener("load", async () => {
 
   if (window.ethereum) {
     window.ethereum.on('accountsChanged', (accounts) => {
-        if (accounts.length > 0) {
+        if (accounts.length > 0 && accounts[0] !== currentAccount) {
+            console.log("Account changed, reconnecting...");
             onWalletConnected();
-        } else {
+        } else if (accounts.length === 0) {
+            console.log("Wallet disconnected.");
             onWalletDisconnected();
         }
     });
@@ -1812,4 +1866,3 @@ window.addEventListener('unhandledrejection', (e) => {
 </script>
 </body>
 </html>
-
