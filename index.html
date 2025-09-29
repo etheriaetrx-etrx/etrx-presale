@@ -917,8 +917,52 @@ window.addEventListener("load", () => {
     // --- Year for footer ---
     document.getElementById('year').textContent = new Date().getFullYear();
     
-    // --- Pie Chart Interaction (animations removed) ---
+    // --- Whitepaper Modal Logic ---
+    const whitepaperModal = document.getElementById('whitepaperModal');
+    const openWhitepaperButtons = [
+        document.getElementById('wp-btn-header'),
+        document.getElementById('wp-btn-about')
+    ];
+    const closeWhitepaperButton = document.getElementById('wpModalClose');
+    const downloadWhitepaperButton = document.getElementById('wp-download-btn');
 
+    function openWhitepaperModal() {
+        if (!whitepaperModal) return;
+        whitepaperModal.classList.remove('hidden');
+        whitepaperModal.removeAttribute('inert');
+    }
+
+    function closeWhitepaperModal() {
+        if (!whitepaperModal) return;
+        whitepaperModal.classList.add('hidden');
+        whitepaperModal.setAttribute('inert', '');
+    }
+
+    openWhitepaperButtons.forEach(btn => {
+        if (btn) {
+            btn.addEventListener('click', openWhitepaperModal);
+        }
+    });
+
+    if (closeWhitepaperButton) {
+        closeWhitepaperButton.addEventListener('click', closeWhitepaperModal);
+    }
+
+    if (whitepaperModal) {
+        whitepaperModal.addEventListener('click', (e) => {
+            if (e.target === whitepaperModal) { // Close only if clicking the backdrop
+                closeWhitepaperModal();
+            }
+        });
+    }
+
+    if (downloadWhitepaperButton) {
+        downloadWhitepaperButton.addEventListener('click', () => {
+             // In a real implementation, you would link to your PDF file.
+             // window.open('/path/to/your/whitepaper.pdf', '_blank');
+             console.log('Download button clicked. PDF link would go here.');
+        });
+    }
 });
 </script>
 </body>
