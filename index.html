@@ -247,7 +247,6 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-accent) }
 
 /* Pie Chart */
 .pie-slice { 
-  transition: transform .2s ease, opacity .2s ease;
   transform-origin: center;
 }
 .pie-slice.highlight {
@@ -256,105 +255,104 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-accent) }
 }
 #pie-legend-list .legend-item {
   cursor: pointer;
-  transition: background-color .2s ease;
   border-radius: 8px;
 }
 #pie-legend-list .legend-item.highlight {
   background-color: rgba(255,255,255,0.08);
 }
-#pie-text-group { transition: opacity .2s ease; }
+#pie-text-group { /* Animations removed */ }
 
 /* Roadmap & How-to-Buy Timeline */
 .timeline { position: relative; }
 .timeline::before {
   content: ''; position: absolute; left: 1rem; top: .5rem; bottom: .5rem; width: 2px;
   background: linear-gradient(to bottom, var(--c-accent), var(--c-eco)); border-radius: 2px;
-}
-.timeline-item { position: relative; padding-left: 3rem; display: flex; align-items: flex-start; gap: 1rem; }
-.timeline-item .timeline-icon {
-    position: absolute;
-    left: calc(1rem - 12px);
-    top: 0;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 2px solid var(--c-accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--c-accent);
-}
-.timeline-item:hover .timeline-icon { border-color: white; color: white; }
-.timeline-item .timeline-content { padding-top: 2px; }
+    <div id="whitepaper-content" class="p-6 overflow-y-auto small-dim">
+        <!-- Whitepaper content from original file goes here -->
+        <h2>Abstract</h2>
+        <p>Etheria is a decentralized, community-driven world-building project on the Ethereum blockchain. It combines the narrative depth of a fantasy universe with the tangible ownership of Non-Fungible Tokens (NFTs) and the governance power of a utility token, $ETRX. The project's mission is to create an evolving ecosystem where the community is not just an audience, but an integral part of its creation and governance. Through a series of foundational NFT collections and the upcoming $ETRX token, Etheria provides a framework for collective storytelling, on-chain utility, and long-term value creation.</p>
+        
+        <h2>1. Introduction</h2>
+        <p>The current digital landscape is saturated with projects that promise utility but often fail to deliver, leaving communities with speculative assets that lack intrinsic value. Many NFT projects exist as static pieces of art with no deeper function, and many utility tokens are created without a pre-existing ecosystem to support them.</p>
+        <p>Etheria is being built to challenge this paradigm. Our approach is <strong>build first, market second</strong>. Before launching a single token, we have already designed, developed, and deployed our foundational NFT collections on the Ethereum mainnet. The $ETRX token is not a promise to build an ecosystem; it is the key to unlocking and governing an ecosystem that already exists.</p>
+        
+        <h2>2. The Etheria Vision</h2>
+        <p>Our vision is to create a persistent, decentralized world that grows and evolves based on the collective decisions of its community. We are not just building a collection of JPEGs; we are laying the foundation for a new form of interactive lore.</p>
+        <p>The world of Etheria is a fantasy realm filled with ancient magic, powerful artifacts, and mysterious keepers. Holders of our NFTs and the $ETRX token will have the power to:</p>
+        <ul>
+            <li><strong>Influence the Narrative:</strong> Vote on key lore decisions, character arcs, and the future direction of the world's story.</li>
+            <li><strong>Own a Piece of the World:</strong> NFTs in Etheria are not just art; they are titles, keys, and functional items within the ecosystem.</li>
+            <li><strong>Participate in a Sustainable Economy:</strong> The $ETRX token will serve as the economic backbone for minting new assets, accessing exclusive content, and rewarding community participation.</li>
+        </ul>
+        
+        <h2>3. The Etheria Ecosystem</h2>
+        <p>The ecosystem is composed of two core components: the NFT Collections and the $ETRX Token.</p>
+        <h3>3.1. NFT Collections</h3>
+        <ul>
+            <li><strong>Etheria (Arc Genesis) & Etherian Keepers:</strong> The foundational art and character collections that represent the visual and thematic cornerstone of Etheria. These collections are now available on OpenSea.</li>
+            <li><strong>Eclipse of Etheria (Trial Arc):</strong> Unveiling the celestial and shadow aspects of Etheria's lore, also on OpenSea.</li>
+            <li><strong>Artifacts (Coming Soon):</strong> The next evolution of on-chain utility. Artifacts will be powerful, functional NFTs that can be equipped, combined, or staked to provide tangible benefits within the Etheria ecosystem, such as boosting rewards or granting access to exclusive mints.</li>
+        </ul>
+        <h3>3.2. The $ETRX Token</h3>
+        <p>$ETRX is an ERC-20 token on the Ethereum blockchain with a fixed supply of <strong>10,000,000</strong>. It is designed to be the primary medium of exchange and governance within Etheria.</p>
+        
+        <h2>4. Tokenomics ($ETRX)</h2>
+        <p>The tokenomics of $ETRX are designed for long-term sustainability, community empowerment, and team commitment.</p>
+        <ul>
+            <li><strong>Total Supply:</strong> 10,000,000 $ETRX</li>
+            <li><strong>Token Standard:</strong> ERC-20 on Ethereum</li>
+        </ul>
+        <p><strong>Distribution:</strong></p>
+        <ul>
+            <li><strong>Treasury & Ecosystem (55%):</strong> 5,500,000 ETRX to fund community grants, strategic partnerships, and operational costs.</li>
+            <li><strong>Community Rewards (20%):</strong> 2,000,000 ETRX to fund airdrops, staking rewards, and other in-world incentives.</li>
+            <li><strong>Team (15%):</strong> 1,500,000 ETRX, vested linearly over 24 months with a 6-month cliff to ensure long-term alignment.</li>
+            <li><strong>Initial Liquidity (10%):</strong> 1,000,000 ETRX for the initial Uniswap liquidity pool, which will be locked.</li>
+        </ul>
+        
+        <h2>5. Governance Mechanics</h2>
+        <p>The Etheria DAO will be the cornerstone of community-led development. The process is designed to be transparent and straightforward.</p>
+        <ul>
+            <li><strong>Proposal Process:</strong> Any community member holding a minimum threshold of $ETRX can submit a proposal for community review.</li>
+            <li><strong>Voting Power:</strong> Voting power will be based on a snapshot of $ETRX holdings. The standard will be 1 token = 1 vote.</li>
+            <li><strong>Quorum:</strong> For a vote to be considered valid, a minimum percentage of the circulating supply must participate.</li>
+        </ul>
+        
+        <h2>6. Roadmap</h2>
+        <p>Our roadmap is divided into clear, deliverable phases.</p>
+        <ul>
+            <li><strong>Phase 1 & 2: Foundation (Completed):</strong> Whitepaper published, contracts deployed and verified on Mainnet. Foundational NFT collections launched.</li>
+            <li><strong>Phase 3: Token Launch (January 1, 2026):</strong> The official fair launch of the $ETRX token on Uniswap. Initial liquidity will be provided and locked to establish the market.</li>
+            <li><strong>Phase 4: Expansion (Q2 2026 & Beyond):</strong> Development of the Etheria marketplace, introduction of advanced staking mechanisms for NFTs and $ETRX, launch of the first on-chain Artifacts mint, and exploration of cross-chain bridges.</li>
+        </ul>
+        
+        <h2>7. Competitive Landscape</h2>
+        <p>While many projects exist in the NFT and DeFi space, Etheria's unique advantage lies in our <strong>"build-first"</strong> philosophy. Unlike projects that launch a token based on promises, we have already delivered on-chain assets. Our focus is on deep, community-driven lore and tangible utility, creating an ecosystem with intrinsic value rather than purely speculative hype.</p>
+        
+        <h2>8. Risk Factors</h2>
+        <p>All investments in the cryptocurrency space carry inherent risks. We believe in transparency and want our community to be fully informed.</p>
+        <ul>
+            <li><strong>Market Volatility:</strong> The value of $ETRX can fluctuate significantly based on market conditions.</li>
+            <li><strong>Smart Contract Risk:</strong> Although our contracts are verified and tested, there is always an inherent risk of vulnerabilities.</li>
+            <li><strong>Regulatory Uncertainty:</strong> The global regulatory landscape for crypto is still evolving and could impact the project.</li>
+        </ul>
+        <p>Our team is committed to mitigating these risks through rigorous security practices, sustainable tokenomics, and transparent communication.</p>
 
-/* Vesting Schedule */
-.vesting-bar { position: relative; height: 1rem; background-color: rgba(255,255,255,0.1); border-radius: .5rem; overflow: hidden; }
-.vesting-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, var(--c-team), var(--c-eco)); }
-.vesting-marker { position: absolute; top: -4px; bottom: -4px; width: 2px; background-color: rgba(255,255,255,0.5); }
-
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce){
-  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
-  #bgAurora::before, #bgAurora::after, .card-outline::before, .holo::after, .hero-glow::before, .hero-glow::after{ display:none }
-}
-</style>
-</head>
-<body>
-<div id="preloader">
-    <img src="/assets/Logo.png" alt="Etheria Logo" class="h-16 w-16"/>
-</div>
-
-<noscript>
-  <div style="position:relative;z-index:3;margin:1rem auto;max-width:60rem;padding:.75rem 1rem;border:1px solid #0ff3;border-radius:10px;background:#06121a;color:#bfefff;font:14px/1.3 Inter,system-ui">
-    JavaScript is disabled for the full experience.
-  </div>
-</noscript>
-
-<!-- Background & layers -->
-<div id="bgAurora" aria-hidden="true"></div>
-<canvas id="wispCanvas" aria-hidden="true"></canvas>
-<div class="scanlines" aria-hidden="true"></div>
-
-<a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
-
-<div id="announcement-banner" class="relative z-50 text-center p-2 text-sm bg-gradient-to-r from-orange-500 to-red-500">
-    <strong>The $ETRX Token Launch is Coming!</strong> Mark your calendars for January 1, 2026.
-</div>
-
-
-<header id="siteHeader" class="sticky top-0 z-40">
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-    <div class="flex items-center gap-3">
-      <img src="/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-orange-400/20 object-contain"/>
-      <div class="text-sm tracking-wide">Etheria</div>
+        <h2>9. Team</h2>
+        <p>The Etheria project is led by a public-facing team of dedicated builders with experience in software development and community management.</p>
+        <ul>
+            <li>ETRXDreamscapes: The Developer</li>
+            <li>HeisCaifu: Telegram Page Owner</li>
+            <li>DxCheetah: Telegram Page Mod</li>
+            <li>Laidy_zee: Social Moderator</li>
+        </ul>
+        
+        <h2>10. Disclaimer</h2>
+        <p>This whitepaper is for informational purposes only and does not constitute an offer to sell or a solicitation to buy any financial instrument in any jurisdiction. The $ETRX token is a utility token designed for use within the Etheria ecosystem. It is not a security.</p>
+        <p>The purchase of crypto assets is subject to significant risks, including the risk of complete loss. All participants should conduct their own due diligence (DYOR) and consult with a financial advisor before making any decisions. The project roadmap is subject to change based on development progress and community feedback.</p>
     </div>
-    <nav class="hidden gap-8 text-base font-semibold md:flex items-center" aria-label="Primary">
-      <a class="laser hover:opacity-100" href="#about">About</a>
-      <a class="laser hover:opacity-100" href="#lore">Lore</a>
-      <a class="laser hover:opacity-100" href="#links">Links</a>
-      <a class="laser hover:opacity-100" href="#token">Tokenomics</a>
-      
-      <div class="relative group" id="more-menu">
-        <button id="more-menu-btn" class="flex items-center gap-1 laser hover:opacity-100" aria-haspopup="true" aria-expanded="false" aria-label="More sections">
-          More
-          <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-        </button>
-        <div id="more-menu-dropdown" class="absolute top-full right-0 mt-2 w-48 p-2 glass card hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-          <a href="#milestones" class="block px-3 py-2 rounded-md hover:bg-white/10">Milestones</a>
-          <a href="#team" class="block px-3 py-2 rounded-md hover:bg-white/10">Team</a>
-          <a href="#road" class="block px-3 py-2 rounded-md hover:bg-white/10">Roadmap</a>
-          <a href="#faq" class="block px-3 py-2 rounded-md hover:bg-white/10">FAQ</a>
-        </div>
-      </div>
-    </nav>
-    <div class="flex items-center gap-3">
-      <div id="utc-clock" class="hidden md:block text-sm tabular small-dim mr-4"></div>
-      <button id="wp-btn-header" class="btn-ghost text-sm">Whitepaper</button>
-    </div>
   </div>
-</header>
+</div>
 
 <!-- Main Content -->
 <main>
@@ -862,4 +860,5 @@ window.addEventListener("load", () => {
 </script>
 </body>
 </html>
+
 
