@@ -917,42 +917,7 @@ window.addEventListener("load", () => {
     // --- Year for footer ---
     document.getElementById('year').textContent = new Date().getFullYear();
     
-    // --- Pie Chart Interaction ---
-    const legendItems = document.querySelectorAll('#pie-legend-list .legend-item');
-    const slices = document.querySelectorAll('#pie-slices .pie-slice');
-    const pieTextPercent = document.getElementById('pie-text-percent');
-    const pieTextName = document.getElementById('pie-text-name');
-    
-    const tokenomicsData = {
-        'eco': { percent: '55%', name: 'Treasury/Ecosystem' },
-        'rewards': { percent: '20%', name: 'Community Rewards' },
-        'team': { percent: '15%', name: 'Team' },
-        'liquidity': { percent: '10%', name: 'Liquidity' },
-    };
-
-    const resetPie = () => {
-        slices.forEach(s => s.classList.remove('highlight'));
-        legendItems.forEach(li => li.classList.remove('highlight'));
-        if(pieTextPercent) pieTextPercent.textContent = 'ETRX';
-        if(pieTextName) pieTextName.textContent = 'Tokenomics';
-    };
-
-    legendItems.forEach(item => {
-        const sliceId = item.dataset.sliceId;
-        const slice = document.querySelector(`.pie-slice[data-slice-id="${sliceId}"]`);
-        
-        item.addEventListener('mouseenter', () => {
-            resetPie();
-            slice?.classList.add('highlight');
-            item.classList.add('highlight');
-            if(pieTextPercent) pieTextPercent.textContent = tokenomicsData[sliceId].percent;
-            if(pieTextName) pieTextName.textContent = tokenomicsData[sliceId].name;
-        });
-        
-        item.addEventListener('mouseleave', resetPie);
-    });
-
-    document.getElementById('pie-legend')?.addEventListener('mouseleave', resetPie);
+    // --- Pie Chart Interaction (animations removed) ---
 
 });
 </script>
