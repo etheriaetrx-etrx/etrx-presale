@@ -267,6 +267,104 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-accent) }
 .timeline::before {
   content: ''; position: absolute; left: 1rem; top: .5rem; bottom: .5rem; width: 2px;
   background: linear-gradient(to bottom, var(--c-accent), var(--c-eco)); border-radius: 2px;
+}
+.timeline-item { position: relative; padding-left: 3rem; display: flex; align-items: flex-start; gap: 1rem; }
+.timeline-item .timeline-icon {
+    position: absolute;
+    left: calc(1rem - 12px);
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--c-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--c-accent);
+}
+.timeline-item:hover .timeline-icon { border-color: white; color: white; }
+.timeline-item .timeline-content { padding-top: 2px; }
+
+/* Vesting Schedule */
+.vesting-bar { position: relative; height: 1rem; background-color: rgba(255,255,255,0.1); border-radius: .5rem; overflow: hidden; }
+.vesting-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, var(--c-team), var(--c-eco)); }
+.vesting-marker { position: absolute; top: -4px; bottom: -4px; width: 2px; background-color: rgba(255,255,255,0.5); }
+
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition:none !important }
+  #bgAurora::before, #bgAurora::after, .card-outline::before, .holo::after, .hero-glow::before, .hero-glow::after{ display:none }
+}
+</style>
+</head>
+<body>
+<div id="preloader">
+    <img src="/assets/Logo.png" alt="Etheria Logo" class="h-16 w-16"/>
+</div>
+
+<noscript>
+  <div style="position:relative;z-index:3;margin:1rem auto;max-width:60rem;padding:.75rem 1rem;border:1px solid #0ff3;border-radius:10px;background:#06121a;color:#bfefff;font:14px/1.3 Inter,system-ui">
+    JavaScript is disabled for the full experience.
+  </div>
+</noscript>
+
+<!-- Background & layers -->
+<div id="bgAurora" aria-hidden="true"></div>
+<canvas id="wispCanvas" aria-hidden="true"></canvas>
+<div class="scanlines" aria-hidden="true"></div>
+
+<a href="#about" class="skip-link sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-cyan-400 focus:px-3 focus:py-2 focus:text-black">Skip to content</a>
+
+<div id="announcement-banner" class="relative z-50 text-center p-2 text-sm bg-gradient-to-r from-orange-500 to-red-500">
+    <strong>The $ETRX Token Launch is Coming!</strong> Mark your calendars for January 1, 2026.
+</div>
+
+
+<header id="siteHeader" class="sticky top-0 z-40">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <div class="flex items-center gap-3">
+      <img src="/assets/Logo.png" alt="Etheria Logo" class="h-10 w-10 rounded-xl ring-1 ring-orange-400/20 object-contain"/>
+      <div class="text-sm tracking-wide">Etheria</div>
+    </div>
+    <nav class="hidden gap-8 text-base font-semibold md:flex items-center" aria-label="Primary">
+      <a class="laser hover:opacity-100" href="#about">About</a>
+      <a class="laser hover:opacity-100" href="#lore">Lore</a>
+      <a class="laser hover:opacity-100" href="#links">Links</a>
+      <a class="laser hover:opacity-100" href="#token">Tokenomics</a>
+      
+      <div class="relative group" id="more-menu">
+        <button id="more-menu-btn" class="flex items-center gap-1 laser hover:opacity-100" aria-haspopup="true" aria-expanded="false" aria-label="More sections">
+          More
+          <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+        <div id="more-menu-dropdown" class="absolute top-full right-0 mt-2 w-48 p-2 glass card hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+          <a href="#milestones" class="block px-3 py-2 rounded-md hover:bg-white/10">Milestones</a>
+          <a href="#team" class="block px-3 py-2 rounded-md hover:bg-white/10">Team</a>
+          <a href="#road" class="block px-3 py-2 rounded-md hover:bg-white/10">Roadmap</a>
+          <a href="#faq" class="block px-3 py-2 rounded-md hover:bg-white/10">FAQ</a>
+        </div>
+      </div>
+    </nav>
+    <div class="flex items-center gap-3">
+      <div id="utc-clock" class="hidden md:block text-sm tabular small-dim mr-4"></div>
+      <button id="wp-btn-header" class="btn-ghost text-sm">Whitepaper</button>
+    </div>
+  </div>
+</header>
+
+<!-- Whitepaper Modal -->
+<div id="whitepaperModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
+     role="dialog" aria-modal="true" aria-labelledby="whitepaperModalTitle" inert>
+  <div class="glass card card-outline w-full max-w-3xl max-h-[90vh] flex flex-col" data-modal-surface>
+    <div class="flex items-center justify-between p-4 border-b border-white/10 flex-shrink-0">
+      <h3 id="whitepaperModalTitle" class="text-lg font-semibold neon-text">Etheria Whitepaper v1.0</h3>
+      <div class="flex items-center gap-4">
+        <button id="wp-download-btn" class="btn-ghost text-sm">Download PDF</button>
+        <button id="wpModalClose" class="text-white/70 hover:text-white" aria-label="Close Whitepaper">✕</button>
+      </div>
+    </div>
     <div id="whitepaper-content" class="p-6 overflow-y-auto small-dim">
         <!-- Whitepaper content from original file goes here -->
         <h2>Abstract</h2>
@@ -860,5 +958,4 @@ window.addEventListener("load", () => {
 </script>
 </body>
 </html>
-
 
