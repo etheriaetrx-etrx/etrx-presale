@@ -291,6 +291,19 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-accent) }
 .vesting-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, var(--c-team), var(--c-eco)); }
 .vesting-marker { position: absolute; top: -4px; bottom: -4px; width: 2px; background-color: rgba(255,255,255,0.5); }
 
+/* Whitepaper Modal Content Styling */
+#whitepaper-content h2 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+#whitepaper-content p, 
+#whitepaper-content ul {
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+}
+
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
@@ -355,7 +368,7 @@ a.laser:hover{ background-size: 100% 2px; text-shadow:0 0 10px var(--c-accent) }
 </header>
 
 <!-- Whitepaper Modal -->
-<div id="whitepaperModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
+<div id="whitepaperModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 p-4"
      role="dialog" aria-modal="true" aria-labelledby="whitepaperModalTitle" inert>
   <div class="glass card card-outline w-full max-w-3xl max-h-[90vh] flex flex-col" data-modal-surface>
     <div class="flex items-center justify-between p-4 border-b border-white/10 flex-shrink-0">
